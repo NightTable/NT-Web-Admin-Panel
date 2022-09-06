@@ -1,0 +1,123 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.reservationDetailWhiteBubbleCompContainer {
+    display: flex;
+    width: 98%;
+    background-color: white;
+    min-height: 35rem;
+    height: 80%;
+    align-self: center;
+    margin-top: 0.4rem;
+    flex-direction: column;
+    border-radius: 0.9rem;
+    box-shadow: 0px 0px 2px gray;
+    align-items: center;
+    
+}
+
+.backButtonRowContainer {
+    display: flex;
+    width: 100%;
+    flex: 2;
+    margin-top: 1rem;
+}
+
+.backButtonImageContainer {
+    display: flex;
+    width: 10rem;
+}
+
+.middleRowReservationDetailBodyContainer {
+    display: flex;
+    flex: 15;
+    width: 90%;
+}
+
+.lowerButtonContainer {
+    display: flex;
+    width: 80%;
+    flex: 2;
+    justify-content: center;
+    align-items: center;
+}
+
+.leftSideOrganizerInfoColumn {
+    display: flex;
+    flex: 2;
+    height: 100%;
+    flex-direction: column;
+}
+
+.rightSideReservationTransactionInfoColumn {
+    display: flex;
+    flex: 2;
+    height: 100%;
+    flex-direction: column;
+}
+
+.generalInputContainer {
+    display: flex;
+    height: 2.8rem;
+    width: 100%;
+}
+
+.generalValueTextStyle {
+    display: flex;
+    margin-left: 0.7rem;
+    color: #c3195d;
+}
+
+.generalGreyTextValueStyle {
+    display: flex;
+    margin-left: 0.7rem;
+    color: #999999;
+}
+
+.generalGreyUnderlinedValueStyle {
+    display: flex;
+    margin-left: 0.7rem;
+    color: #999999;
+    text-decoration: underline;
+}
+
+.reservedTableDetailListContainer {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.cancelReservationButtonStyle {
+    display: flex;
+    width: 10rem;
+    background-color: #f3f3f3;
+    outline-style: none;
+    height: 60%;
+    border-style: none;
+    margin-right: 2rem;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    color: #ff0000;
+    border-radius: 0.3rem;
+    box-shadow: 0px 0px 0.1rem black;
+}
+
+.editReservationButtonStyle {
+    display: flex;
+    width: 10rem;
+    height: 60%;
+    background-color: #f3f3f3;
+    outline-style: none;
+    align-items: center;
+    justify-content: center;
+    border-style: none;
+    font-family: inherit;
+    color: #ff9900;
+    border-radius: 0.3rem;
+    box-shadow: 0px 0px 0.1rem black;
+}

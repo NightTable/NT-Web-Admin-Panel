@@ -1,0 +1,17 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+
+body {
+  margin: 0;
+  font-family: 'Comfortaa';
+  background-color: #f3f3f3;
+}

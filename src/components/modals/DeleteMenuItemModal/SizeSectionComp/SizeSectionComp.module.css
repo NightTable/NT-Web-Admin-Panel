@@ -1,0 +1,25 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.sizeSectionCompContainer {
+    display: flex;
+    /* background-color: lightgreen; */
+    margin-top: 1rem;
+    flex-direction: column;
+    width: 80%;
+    height: 11rem;
+    color: #c3195d;
+}
+
+.sizeSectionListContainer {
+    display: flex;
+    margin-top: 1rem;
+    width: 100%;
+    /* background-color: orange; */
+    flex-direction: column;
+    height: 8rem;
+    align-items: center;
+}

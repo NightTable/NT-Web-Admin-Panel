@@ -1,0 +1,54 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.revenueInfoDynamicDataCompContainer {
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+    height: 100%;
+}
+
+.dataDisplayHeadingRowContainer {
+    display: flex;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    align-items: center;
+    min-height: 2rem;
+}
+
+.dataDisplayRowContainer {
+    display: flex;
+    margin-top: 1.5rem;
+}
+
+.headingTextStyle {
+    margin-left: 1rem;
+    margin-right: 0.4rem;
+    font-weight: 700;
+}
+
+.timeLabelTextStyle {
+    margin-left: 4rem;
+}
+
+.valueLabelTextStyle {
+    margin-left: 0.5rem;
+    color: #c3195d; 
+}
+
+.profitCutHeadingTextStyle {
+    display: flex;
+    font-weight: 700;
+}
+
+.profitCutValueWhiteContainer {
+    display: flex;
+    background-color: white;
+    color: #c3195d;
+    margin-right: 0.4rem;
+    padding: 0.4rem;
+    border-radius: 0.3rem;
+}

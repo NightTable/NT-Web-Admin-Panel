@@ -1,0 +1,26 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.bidderChildHorizCompContainer {
+    display: flex;
+    width: 83.33%;
+    height: 2.5rem;
+    background-color: white;
+    align-self: flex-end;
+    border-radius: 0.3rem;
+    border: 0.1rem solid #c3195d;
+    margin-left: 0.4rem;
+}
+
+.bidderChildBlockContainerStyle {
+    display: flex;
+    height: 100%;
+    flex: 2;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    margin-left: 0.15rem;
+}

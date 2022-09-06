@@ -1,0 +1,120 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.transactionHistoryOverviewScreenContainer {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.topWelcomeHeaderContainer {
+    display: flex;
+    height: 4rem;
+    width: 100%;
+}
+
+.middleHeaderContainer {
+    display: flex;
+    height: 7rem;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.listCategoryHeaderContainer {
+    display: flex;
+    width: 95%;
+    height: 2.5rem;
+    border-bottom: 2px solid black;
+}
+
+.upperWelcomeTextStyle {
+    margin-left: 1rem;
+    margin-top: 1rem;
+}
+
+.leftSideMiddleHeaderContainer {
+    display: flex;
+    align-items: center;
+    margin-left: 1.5rem;
+    width: 15rem;
+}
+
+.rightSideMiddleHeaderContainer {
+    display: flex;
+    width: 28rem;
+    flex-direction: column;
+}
+
+.firstRightMiddleRowContainer {
+    display: flex;
+    width: 100%;
+    flex: 2;
+    justify-content: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.secondRightMiddleRowContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex: 2;
+}
+
+.filterButtonStyle {
+    display: flex;
+    width: 8rem;
+    background-color: white;
+    border: 2px solid #c3195d;
+    outline-style: none;
+    height: 1.5rem;
+    font-family: inherit;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.4rem;
+    margin-right: 1rem;
+}
+
+.filterButtonSelectedStyle {
+    display: flex;
+    width: 8rem;
+    background-color: #c3195d;
+    color: white;
+    border: 2px solid #c3195d;
+    outline-style: none;
+    height: 1.5rem;
+    font-family: inherit;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.4rem;
+    margin-right: 1rem;
+}
+
+.filterTextStyle {
+    margin-right: 1rem;
+}
+
+.categoryHeadingContainer {
+    display: flex;
+    height: 100%;
+    flex: 2;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.transactionListBodyContainer {
+    display: flex;
+    margin-top: 0.8rem;
+    flex-direction: column;
+    width: 95%;
+    height: 60%;
+}

@@ -1,0 +1,20 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.leftArrowCircleDetailContainer {
+    display: flex;
+    height: 2rem;
+    width: 2rem;
+    right: 0.9rem;
+    border-radius: 1rem;
+    margin-left: 1.5rem;
+    background-color: white;
+    border: 1px solid #c3195d;
+}
+
+.leftArrowImageStyle {
+    transform: translate(-0.4rem, 0) rotate(180deg);
+}

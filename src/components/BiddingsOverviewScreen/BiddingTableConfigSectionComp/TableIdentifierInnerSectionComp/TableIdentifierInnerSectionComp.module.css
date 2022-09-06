@@ -1,0 +1,30 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.tableIdentifierInnerSectionCompContainer {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.tableIdentifierCategoryRowContainer {
+    display: flex;
+    width: 97%;
+    height: 2.5rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.tableIdentifierCategoryBlockContainer {
+    display: flex;
+    height: 100%;
+    flex: 2;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+}

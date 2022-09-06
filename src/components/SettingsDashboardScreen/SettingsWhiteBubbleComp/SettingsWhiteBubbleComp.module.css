@@ -1,0 +1,204 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.settingsWhiteBubbleCompContainer {
+    display: flex;
+    background-color: white;
+    border-radius: 4rem;
+    height: 38rem;
+    width: 85%;
+    margin-top: 2rem;
+    box-shadow: 0px 0px 3px black;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.outerMiddleRowInfoContainer {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    height: 75%;
+}
+
+.personalInformationColumn {
+    display: flex;
+    flex: 2;
+    height: 100%;
+    flex-direction: column;
+
+}
+
+.clubInformationColumn {
+    display: flex;
+    flex: 2;
+    height: 100%;
+    flex-direction: column;
+}
+
+.personalInformationHeaderRowContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 2rem;
+    flex: 2;
+    align-items: center;
+}
+
+.clubInformationHeaderRowContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 2rem;
+    flex: 2;
+    align-items: center;
+}
+
+.pencilImageGraphicStyle {
+    display: flex;
+    height: 1.7rem;
+    width: 1.7rem;
+    
+}
+
+.outerEditButtonStyle {
+    font-family: inherit;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 4.5rem;
+    margin-left: 1rem;
+    height: 80%;
+    background-color: white;
+    outline-style: none;
+    border-style: none;
+}
+
+.editTextLabel {
+    display: flex;
+    margin-right: 0.3rem;
+}
+
+.personalInformationTextLabel {
+    display: flex;
+    color: #c3195d;
+}
+
+
+.clubInformationTextLabel {
+    display: flex;
+    color: #c3195d;
+}
+
+.personalInformationBodyContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex: 20;
+}
+
+.clubInformationBodyContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex: 20;
+}
+
+.generalInputContainer {
+    display: flex;
+    height: 2.8rem;
+    align-items: center;
+
+}
+
+.outerStateZipInputContainer {
+    display: flex;
+    justify-content: space-between;
+    height: 2rem;
+}
+
+.leftStateInputContainer {
+    display: flex;
+    width: 8rem;
+    align-items: center;
+}
+
+.rightZipInputContainer {
+    display: flex;
+    width: 8rem;
+    align-items: center;
+}
+
+.inputPromptTextLabel {
+    display: flex;
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.inputValueTextLabel {
+    display: flex;
+    color: #c3195d;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.editPhotoButtonStyle {
+    display: flex;
+    width: 8rem;
+    background-color: #f3f3f3;
+    border-style: none;
+    font-family: inherit;
+    height: 55%;
+    align-items: center;
+    justify-content: center;
+    outline-style: none;
+    color: #ff9900;
+    border-radius: 0.2rem;
+    box-shadow: 0px 0px 0.2rem black;
+}
+
+.statusIconGraphicStyle {
+    display: flex;
+    height: 1.7rem;
+    width: 1.7rem;
+    margin-right: 0.2rem;
+    margin-left: 0.2rem;
+}
+
+.stripeStatusButtonLabelStyle {
+    display: flex;
+    width: 8rem;
+    height: 70%;
+    border-style: none;
+    outline-style: none;
+    align-items: center;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0px 0px 0.2rem black;
+    font-family: inherit;
+    color: #ff0000;
+    cursor: pointer;
+}
+
+.stripeStatusButtonLabelStyleSelected {
+    display: flex;
+    width: 8rem;
+    height: 70%;
+    border-style: none;
+    outline-style: none;
+    align-items: center;
+    background-color: white;
+    border-radius: 0.2rem;
+    box-shadow: 0px 0px 0.2rem black;
+    font-family: inherit;
+    color: #6aa84f;
+    cursor: pointer;
+}
+
+.linkLabelStyle {
+    display: flex;
+    margin-left: 0.3rem;
+}

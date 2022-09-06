@@ -1,0 +1,41 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.addReservationModalContainer {
+    display: flex;
+    width: 40rem;
+    height: min(45rem, 70%);
+    background-color: #d9d9d9;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 0.5rem;
+}
+
+.reservationUpperHeaderContainer {
+    display: flex;
+    width: 90%;
+    background-color: white;
+    height: 4rem;
+    margin-top: 2rem;
+    align-items: center;
+    border-radius: 0.3rem;
+}
+
+.reservationLowerContainer {
+    display: flex;
+    width: 90%;
+    margin-top: 2rem;
+    background-color: white;
+    height: min(40rem, 70%);
+    flex-direction: column;
+    border-radius: 0.3rem;
+    overflow: scroll;
+}
+
+.addNewReservationLabelContainer {
+    display: flex;
+    margin-left: 0.8rem;
+}

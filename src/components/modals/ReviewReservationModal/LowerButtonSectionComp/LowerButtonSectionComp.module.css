@@ -1,0 +1,47 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.lowerButtonSectionCompContainer {
+    display: flex;
+    min-height: 4rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.reviewReservationCancelButtonStyle {
+    display: flex;
+    outline-style: none;
+    border-style: none;
+    background-color: #f3f3f3;
+    margin-right: 4rem;
+    height: 55%;
+    font-size: 0.8rem;
+    width: 10rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.3rem;
+    font-family: inherit;
+    color: red;
+    box-shadow: 0px 0px 3px grey;
+    cursor: pointer;
+}
+
+.reviewReservationSubmitPaymentButtonStyle {
+    display: flex;
+    outline-style: none;
+    border-style: none;
+    background-color: #f3f3f3;
+    height: 55%;
+    width: 10rem;
+    font-size: 0.8rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.3rem;
+    font-family: inherit;
+    color: #ff9900;
+    box-shadow: 0px 0px 3px grey;
+    cursor: pointer;
+}

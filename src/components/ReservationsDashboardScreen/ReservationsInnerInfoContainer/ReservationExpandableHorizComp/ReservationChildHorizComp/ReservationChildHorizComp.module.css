@@ -1,0 +1,25 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.reservationChildHorizCompContainer {
+    display: flex;
+    background-color: white;
+    border: 1px solid #c3195d;
+    border-radius: 0.3rem;
+    min-height: 2.5rem;
+    width: 33.33%;
+    margin-left: 50%;
+    margin-top: 0.05rem;
+}
+
+.reservationBlockChildContainer {
+    display: flex;
+    height: 100%;
+    flex: 2;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+}

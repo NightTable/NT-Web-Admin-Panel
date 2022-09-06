@@ -1,0 +1,51 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.parentItemHorizContainer {
+    display: flex;
+    width: 99%;
+    min-height: 2rem;
+    background-color: white;
+    cursor: pointer;
+    border: 1px solid #c3195d;
+    border-radius: 0.3rem;
+}
+
+.parentItemHorizContainerNotSelected {
+    display: flex;
+    width: 99%;
+    min-height: 2rem;
+    background-color: white;
+    cursor: pointer;
+    border-radius: 0.3rem;
+    margin-top: 1px;
+}
+
+.childHorizCompListContainer {
+    padding-top: 0.1rem;
+    flex-direction: column;
+    display: flex;
+    width: 99%;
+}
+
+.expandableHorizItemBlockContainer {
+    display: flex;
+    flex: 2;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    position: relative;
+}
+
+.arrowGraphicStyle {
+    display: flex;
+    height: 1.2rem;
+    width: 1.2rem;
+
+    position: absolute;
+    left: 0.2rem;
+}

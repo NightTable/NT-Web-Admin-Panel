@@ -1,0 +1,16 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.blackBackdropContainer {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-color: rgb(0, 0, 0, 0.6);
+    z-index: 2;
+    align-items: center;
+    justify-content: center;
+}

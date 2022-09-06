@@ -1,0 +1,108 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+
+.reservationsDashboardScreenContainer {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    align-items: center ;
+}
+
+.upperHeaderLabelContainer {
+    height: 2rem;
+    margin-top: 1rem;
+    align-self: flex-start;
+}
+
+.welcomeBackText {
+    margin-left: 1rem;
+}
+
+.clubIdentifierRowContainer {
+    display: flex;
+    height: 4rem;
+    justify-content: flex-end;
+    width: 98%;
+}
+
+.clubIdentifierSectionContainer {
+    display: flex;
+    width: 16rem;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.clubReadOnlyContainer {
+    display: flex;
+    background-color: white;
+    height: 55%;
+    width: 8.5rem;
+    border-radius: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.clubIdTextStyle {
+    display: flex;
+    margin-right: 0.8rem;
+    color: #999999;
+}
+
+.reservationUpperDateSectionRowContainer {
+    display: flex;
+    width: 98%;
+    height: 3rem;
+    align-self: center;
+    border: 1px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    justify-content: space-between;
+}
+
+.reservationHeaderTextContainer {
+    display: flex;
+    width: 10rem;
+    align-items: flex-end;
+}
+
+.dateButtonContainer {
+    display: flex;
+    width: 13rem;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.dateButtonStyle {
+    display: flex;
+    height: 70%;
+    width: 8.5rem;
+    border-style: none;
+    outline-style: none;
+    border-radius: 0.3rem;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    background-color: white;
+}
+
+.dateLabelTextStyle {
+    display: flex;
+    margin-right: 0.3rem;
+}
+
+.dateValueTextStyle {
+    display: flex;
+    color: #c3195d;
+}
+
+.reservationMainText {
+    display: flex;
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+}

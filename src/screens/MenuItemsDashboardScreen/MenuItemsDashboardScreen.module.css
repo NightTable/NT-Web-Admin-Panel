@@ -1,0 +1,173 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.menuItemsDashboardScreenContainer {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.upperOuterSectionContainer {
+    display: flex;
+    width: 100%;
+    flex: 3;
+    flex-direction: column;
+    height: 0;
+}
+
+.middleOuterSectionContainer {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex: 17;
+    max-height: 41rem;
+    flex-direction: column;
+    overflow: scroll;
+}
+
+.expandableMiddleSectionContainer {
+    display: flex;
+    min-height: 100%;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.lowerOuterSectionContainer {
+    display: flex;
+    width: 100%;
+    flex: 4;
+    flex-direction: column;
+    min-height: 8rem;
+}
+
+.topWelcomeHeaderContainer {
+    display: flex;
+    height: 3rem;
+    width: 100%;
+}
+
+.upperWelcomeTextStyle {
+    margin-left: 1rem;
+    margin-top: 1rem;
+}
+
+.editMenuCategoriesRowContainer {
+    display: flex;
+    height: 3rem;
+    width: 98%;
+    align-self: center;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 1px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.editMenuCategoriesButtonStyle {
+    display: flex;
+    height: 80%;
+    outline-style: none;
+    border-style: none;
+    width: 100%;
+    border-radius: 0.3rem;
+    justify-content: center;
+    background-color: white;
+    align-items: center;
+    border: 1px solid #c3195d;
+    font-family: inherit;
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+}
+
+.editMenuCategoryButtonContainer {
+    display: flex;
+    width: 10rem;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.menuItemLabelContainer {
+    display: flex;
+    width: 10rem;
+    height: 100%;
+
+    align-items: flex-end;
+}
+
+.menuItemsLabelStyle {
+    display: flex;
+    margin-bottom: 0.3rem;
+}
+
+.rowButtonContainer {
+    display: flex;
+    width: 100%;
+    flex: 2;
+}
+
+.buttonBlockContainer {
+    display: flex;
+    height: 100%;
+    flex: 2;
+    justify-content: center;
+    align-items: center;
+}
+
+.purpleWhiteButtonStyle {
+    display: flex;
+    outline-style: none;
+    border-style: none;
+    width: 14rem;
+    height: 70%;
+    justify-content: center;
+    align-items: center;
+    background-color: #c3195d;
+    color: white;
+    font-family: inherit;
+    border: 1px solid black;
+    box-shadow: 0px 0px 3px black;
+    cursor: pointer;
+}
+
+.editMenuItemButtonStyle {
+    display: flex;
+    outline-style: none;
+    border-style: none;
+    width: 14rem;
+    height: 70%;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: #ff9900;
+    font-family: inherit;
+    border: 1px solid black;
+    box-shadow: 0px 0px 3px black;
+    cursor: pointer;
+
+}
+
+.deleteMenuItemButtonStyle {
+    display: flex;
+    outline-style: none;
+    border-style: none;
+    width: 14rem;
+    height: 70%;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: #ff0000;
+    font-family: inherit;
+    border: 1px solid black;
+    box-shadow: 0px 0px 3px black;
+    cursor: pointer;
+
+}

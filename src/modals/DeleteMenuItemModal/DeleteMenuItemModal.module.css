@@ -1,0 +1,75 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.deleteMenuItemModalContainer {
+    display: flex;
+    width: 40rem;
+    height: min(40rem, 60%);
+    background-color: white;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 0.8rem;
+}
+
+.deleteMenuItemTitleContainer {
+    display: flex;
+    margin-top: 2rem;
+    width: 100%;
+    /* background-color: aqua; */
+    height: 3rem;
+}
+
+.questionPromptRowContainer {
+    display: flex;
+    width: 90%;
+    /* background-color: beige; */
+    height: 2rem;
+}
+
+.descriptionInfoRowContainer {
+    display: flex;
+    margin-top: 1rem;
+    width: 80%;
+    /* background-color: chocolate; */
+    height: 2rem;
+}
+
+.labelStyle {
+    display: flex;
+    color: #c3195d;
+
+}
+
+.valueStyle {
+    display: flex;
+    color: black;
+    margin-left: 0.5rem;
+}
+
+.buttonRowContainer {
+    display: flex;
+    margin-top: 1rem;
+    width: 80%;
+    /* background-color: red; */
+    height: 3rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.lowerButtonStyle {
+    display: flex;
+    height: 60%;
+    width: 8rem;
+    outline-style: none;
+    border-style: none;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.3rem;
+    box-shadow: 0px 1px 3px grey;
+    background-color: white;
+    color: #c3195d;
+    font-family: inherit;
+}

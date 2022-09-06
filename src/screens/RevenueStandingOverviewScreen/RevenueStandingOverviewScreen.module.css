@@ -1,0 +1,45 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.revenueStandingOverviewScreenContainer {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    overflow: scroll;
+}
+
+.welcomeHeaderRowContainer {
+    display: flex;
+    min-height: 3rem;
+    width: 100%;
+}
+
+.revenueStandingUpperWelcomeStyle {
+    margin-left: 1rem;
+    margin-top: 1rem;
+}
+
+.whitePinkButtonStyle {
+    display: flex;
+    background-color: white;
+    border: 1px solid #c3195d;
+    height: 70%;
+    width: 9rem;
+    border-radius: 0.3rem;
+    justify-content: center;
+    align-items: center;
+    font-family: inherit;
+    margin-right: 1rem;
+}
+
+.clubSelectionRowContainer {
+    display: flex;
+    justify-content: flex-end;
+    min-height: 2.5rem;
+    align-items: center;
+
+}

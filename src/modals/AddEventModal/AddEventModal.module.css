@@ -1,0 +1,116 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.addEventModalContainer {
+    display: flex;
+    height: 33rem;
+    width: 40rem;
+    background-color: #d9d9d9;
+    z-index: 5;
+    border-radius: 0.7rem;
+    align-items: center;
+    flex-direction: column;
+}
+
+.upperHeaderContainer {
+    display: flex;
+    background-color: white;
+    flex-direction: row;
+    align-items: center;
+    width: 90%;
+    height: 4rem;
+    margin-top: 2rem;
+    border-radius: 0.2rem;
+    box-shadow: 0px 0px 3px grey;
+}
+
+.photoLabelStyle {
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+    width: 80%;
+    height: 2rem;
+    margin-left: 3rem;
+    margin-bottom: 1.2rem;
+}
+
+.mainBodyContainer {
+    padding-top: 2rem;
+    display: flex;
+    background-color: white;
+    flex-direction: column;
+    width: 90%;
+    height: 18rem;
+    margin-top: 2rem;
+    border-radius: 0.2rem;
+    box-shadow: 0px 0px 3px grey;
+}
+
+.choosePhotoButtonStyle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0.8rem;
+    font-family: inherit;
+    height: 1.6rem;
+    cursor: pointer;
+    width: 9rem;
+    border-radius: 0.2rem;
+    box-shadow: 0px 0px 3px darkgrey;
+    display: flex;
+    background-color: #f3f3f3;
+    color: #ff9900;
+    outline-style: none;
+    border-style: none;
+}
+
+.cancelButtonStyle {
+    display: flex;
+    color: #ff0000;
+    font-family: inherit;
+    justify-content: center;
+    border-radius: 0.2rem;
+    align-items: center;
+    cursor: pointer;
+    flex-direction: row;
+    box-shadow: 0px 0px 3px darkgrey;
+    height: 1.8rem;
+    width: 7rem;
+    outline-style: none;
+    border-style: none;
+    margin-right: 7rem;
+}
+
+.lowerButtonRowContainer {
+    margin-top: 1rem;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    height: 3rem;
+    justify-content: center;
+}
+
+.addButtonStyle {
+    font-family: inherit;
+    display: flex;
+    cursor: pointer;
+    color: #ff9900;
+    border-radius: 0.2rem;
+    box-shadow: 0px 0px 3px darkgrey;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    height: 1.8rem;
+    width: 7rem;
+    outline-style: none;
+    border-style: none;
+
+}
+
+.addEventLabelContainer {
+    display: flex;
+    margin-left: 0.8rem;
+}

@@ -1,0 +1,78 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.clubDescriptionSectionCompContainer {
+    display: flex;
+    min-height: 19rem;
+    width: 100%;
+    margin-top: 2rem;
+    flex-direction: column;
+}
+
+.createClubAccountRowContainer {
+    display: flex;
+    width: 100%;
+    min-height: 2rem;
+}
+
+.createClubAccountDescriptionContainer {
+    display: flex;
+    width: 80%;
+    align-self: center;
+    min-height: 4rem;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+.clubHeadingDescriptionTextStyle {
+    display: flex;
+    color: #c3195d;
+}
+
+.clubLabelRowContainer {
+    display: flex;
+    width: 70%;
+    min-height: 2rem;
+    margin-top: 1.5rem;
+    align-self: center;
+    align-items: center;
+}
+
+.innerClubInfoBoxContainer {
+    display: flex;
+    width: 70%;
+    min-height: 6rem;
+    margin-top: 0.8rem;
+    align-self: center;
+    flex-direction: column;
+    border: 1px solid #c3195d;
+    border-radius: 0.6rem;
+    justify-content: center;
+}
+
+.innerInfoRowContainer {
+    display: flex;
+    width: 100%;
+    height: 2rem;
+}
+
+.labelTextStyle {
+    display: flex;
+    margin-left: 1.5rem;
+    color: #c3195d;
+}
+
+.valueTextStyle {
+    display: flex;
+    margin-left: 0.5rem;
+    color: #999999;
+}
+
+.createClubAdminTextHeadingStyle {
+    display: flex;
+    color: #c3195d;
+    margin-left: 1rem;
+}

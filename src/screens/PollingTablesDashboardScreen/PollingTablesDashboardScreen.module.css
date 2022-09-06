@@ -1,0 +1,57 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.pollingTablesDashboardContainer {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pollingTablesInnerContainer {
+    margin-top: 4rem;
+    width: 90%;
+}
+
+.pollingRequestsHeader {
+    display: flex;
+    flex-direction: row;
+    margin-top: 3rem;
+    width: 100%;
+    height: 2.5rem;
+    border-width: 0.1rem;
+    border-style: solid;
+    border-color: 'black';
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    flex: 1
+}
+
+.pollingRequestLabelContainer {
+    display: flex;
+    flex: 2;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.pollingTableRequestLabelText {
+    font-size: 0.8rem;
+}
+
+.pollingRequestRedText {
+    color: #ff0000;
+}
+
+.pollingRequestGreenText {
+    color: #6aa84f;
+}
+
+.pollingRequestPurpleText {
+    color: #c3195d;
+}

@@ -1,0 +1,53 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.parentBidInformationRowContainer {
+    display: flex;
+    width: 99%;
+    min-height: 2.5rem;
+    background-color: white;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    margin-top: 0.1rem;
+}
+
+.parentBidInformationRowContainerSelected {
+    display: flex;
+    width: 99%;
+    min-height: 2.5rem;
+    background-color: white;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    border: 0.1rem solid #c3195d;
+}
+
+.expandableBiddingHorizCompBlockContainer {
+    display: flex;
+    width: 100%;
+    flex: 2;
+    background-color: white;
+    border-radius: 0.3rem;
+    font-size: 0.9rem;
+    align-items: center;
+    justify-content: center;
+    position: relative; 
+
+}
+
+.arrowGraphicStyle {
+    display: flex;
+    height: 1.2rem;
+    width: 1.2rem;
+    position: absolute;
+    left: 0.5rem;
+}
+
+.bidderChildListContainer {
+    display: flex;
+    width: 99%;
+    height: 100%;
+    flex-direction: column;
+}

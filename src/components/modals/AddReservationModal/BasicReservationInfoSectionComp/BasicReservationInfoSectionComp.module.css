@@ -1,0 +1,42 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.basicReservationInfoSectionCompContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 10rem;
+    padding-top: 2rem;
+}
+
+.reservationBasicInfoTextStyle {
+    display: flex;
+    color: #c3195d;
+    font-size: 0.9rem;
+    margin-left: 1rem;
+}
+
+.basicReservationInputStyle {
+    display: flex;
+    margin-left: 0.5rem;
+    outline-style: none;
+    border-style: none;
+    font-family: inherit;
+    height: 50%;
+    width: 15rem;
+    border: 1px solid #c3195d;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.reservationInfoRowContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 3rem;
+    align-items: center;
+}

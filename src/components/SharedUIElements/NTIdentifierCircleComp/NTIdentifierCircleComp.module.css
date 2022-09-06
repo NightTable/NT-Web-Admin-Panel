@@ -1,0 +1,21 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.circleContainer {
+    display: flex;
+    margin-left: 0.5rem;
+    height: 1.7rem;
+    width: 1.7rem;
+    background-color: #c3195d;
+    border-radius: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.ntLabelText {
+    color: white;
+    font-size: 0.7rem;
+}

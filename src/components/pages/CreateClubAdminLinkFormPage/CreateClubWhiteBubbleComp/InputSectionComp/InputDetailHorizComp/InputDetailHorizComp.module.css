@@ -1,0 +1,31 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.inputDetailHorizCompContainer {
+    display: flex;
+    min-height: 6rem;
+    width: 100%;
+    flex-direction: column;
+}
+
+.innerInputRowContainer {
+    display: flex;
+    height: 2rem;
+
+}
+
+.clubInfoInputStyle {
+    display: flex;
+    outline-style: none;
+    border-style: none;
+    height: 50%;
+    margin-left: 0.5rem;
+    border: 1px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: inherit;
+}

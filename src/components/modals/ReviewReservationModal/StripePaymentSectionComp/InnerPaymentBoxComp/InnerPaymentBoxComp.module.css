@@ -1,0 +1,16 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.innerPaymentBoxCompContainer {
+    display: flex;
+    width: 90%;
+    align-self: center;
+    margin-top: 0.5rem;
+    min-height: 8rem;
+    border-radius: 0.8rem;
+    border: 1px solid #c3195d;
+
+}

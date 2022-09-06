@@ -1,0 +1,50 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.priceTaxSectionInfoCompContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 7rem;
+    color: #c3195d;
+    margin-top: 2rem;
+}
+
+.priceInfoLabelStyle {
+    display: flex;
+    font-size: 0.8rem;
+    margin-left: 1rem;
+}
+
+.priceInfoValueStyle {
+    display: flex;
+    font-size: 0.8rem;
+    margin-left: 0.3rem;
+}
+
+.priceInfoTotalLabelStyle {
+    display: flex;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-left: 1rem;
+}
+
+.priceInfoTotalValueStyle {
+    display: flex;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-left: 0.3rem;
+}
+
+.priceDivisionRowContainer {
+    display: flex;
+    height: 1.3rem;
+}
+
+.priceDivisionTotalInfoRowContainer {
+    display: flex;
+    height: 1.3rem;
+    margin-top: 0.7rem;
+}

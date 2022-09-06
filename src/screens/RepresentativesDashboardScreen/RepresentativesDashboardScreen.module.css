@@ -1,0 +1,123 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.representativesDashboardScreenContainer {
+    display: flex;
+    max-height: 100%;
+    width: 100%;
+    flex-direction: column;
+}
+
+.upperRepresentativeScreenContainer {
+    display: flex;
+    width: 100%;
+    flex: 2;
+    min-height: 5.3rem;
+}
+
+.middleRepresentativeScreenContainer {
+    display: flex;
+    width: 100%;
+    flex: 13;
+    align-items: center;
+    flex-direction: column;
+    overflow: scroll;
+    max-height: 37.3rem;
+}
+
+.expandableMiddleRepresentativeScreenContainer {
+    display: flex;
+    min-height: 100%;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.lowerRepresentativeScreenContainer {
+    display: flex;
+    width: 100%;
+    flex: 2;
+    min-height: 5.3rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.upperWelcomeTextRowContainer {
+    display: flex;
+    height: 2rem;
+    margin-top: 1rem;
+    align-self: flex-start;
+
+}
+
+.welcomeBackText {
+    display: flex;
+    margin-left: 1rem;
+}
+
+.representativeRowHeaderContainer {
+    display: flex;
+    width: 98%;
+    min-height: 2rem;
+    border: 1px solid black;
+    border-left: none;
+    border-top: none;
+    border-right: none;
+}
+
+.representativeCategoryLabelRowContainer {
+    display: flex;
+    width: 98%;
+    min-height: 3rem;
+}
+
+.representativeCategoryBlockContainer {
+    display: flex;
+    height: 100%;
+    flex: 2;
+    align-items: center;
+    justify-content: center;
+}
+
+.representativeItemListContainer {
+    display: flex;
+    width: 98%;
+    height: 100%;
+    flex-direction: column;
+}
+
+.representativeLabelTextStyle {
+    display: flex;
+    font-size: 0.9rem;
+    color: #c3195d;
+}
+
+.representativeHeaderText {
+    display: flex;
+    font-size: 1rem;
+}
+
+.addRepresentativeButtonStyle {
+    display: flex;
+    height: 50%;
+    width: 16rem;
+    outline-style: none;
+    border-style: none;
+    background-color: #c3195d;
+    border: 1px solid black;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 3px black;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.addNewRepresentativeTextStyle {
+    display: flex;
+    font-size: 1rem;
+}

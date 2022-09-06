@@ -1,0 +1,196 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.biddingsOverviewScreenContainer {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    overflow: scroll;
+}
+
+.biddingsUpperHeaderContainer {
+    display: flex;
+    width: 100%;
+    flex: 4;
+    flex-direction: column;
+}
+
+.biddingsMiddleContainer {
+    display: flex;
+    width: 100%;
+    flex: 15;
+    flex-direction: column;
+    align-items: center;
+}
+
+.biddingsLowerContainer {
+    display: flex;
+    width: 100%;
+    flex: 3;
+    justify-content: center;
+    align-items: center;
+    min-height: 5rem;
+}
+
+.addUpdateBidButtonStyle {
+    display: flex;
+    width: 15rem;
+    min-height: 45%;
+    outline-style: none;
+    border: 1px solid black;
+    box-shadow: 0px 0px 3px black;
+    color: white;
+    background-color: #c3195d;
+    font-size: 1rem;
+    font-family: inherit;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.topWelcomeHeaderContainer {
+    display: flex;
+    min-height: 2rem;
+    align-items: center;
+    width: 100%;
+}
+
+.upperWelcomeTextStyle {
+    margin-left: 1rem;
+    margin-top: 1rem;
+}
+
+.clubInfoRowContainer {
+    display: flex;
+    min-height: 2.8rem;
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.clubReadOnlyContainer {
+    display: flex;
+    width: 15rem;
+    height: 100%;
+    align-items: center;
+}
+
+.whiteClubTextContainer {
+    display: flex;
+    background-color: white;
+    border: 1px solid #c3195d;
+    height: 60%;
+    width: 50%;
+    border-radius: 0.3rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.clubIdTextStyle {
+    display: flex;
+    font-size: 0.8rem;
+    color: #999999;
+    margin-right: 0.5rem;
+}
+
+.dateInfoRowContainer {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.dateBoxContainer {
+    display: flex;
+    width: 15rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.dateWhiteDivisionBox {
+    display: flex;
+    background-color: white;
+    min-height: 2rem;
+    height: 45%;
+    width: 10rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.3rem;
+}
+
+.dateLabelTextStyle {
+    display: flex;
+    font-weight: 700;
+    margin-right: 0.5rem;
+}
+
+.dateValueLabelTextStyle {
+    display: flex;
+    color: #c3195d;
+}
+
+.biddingSectionHeaderRowContainer {
+    display: flex;
+    min-height: 2.2rem;
+    border: 1px solid black;
+    border-left: none;
+    border-top: none;
+    border-right: none;
+    align-items: center;
+    width: 98%;
+
+}
+
+.createEditIdentifierRowContainer {
+    display: flex;
+    width: 98%;
+    min-height: 2.8rem;
+    justify-content: flex-end;
+}
+
+.createEditIdentifierBlockContainer {
+    display: flex;
+    width: 15rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.createEditIdentifierButtonStyle {
+    display: flex;
+    background-color: white;
+    border-style: none;
+    outline-style: none;
+    height: 65%;
+    width: 80%;
+    justify-content: center;
+    border-radius: 0.3rem;
+    align-items: center;
+    font-size: 0.8rem;
+    font-family: inherit;
+    color: #c3195d;
+}
+
+.outerBiddingListContainer {
+    display: flex;
+    max-height: 30rem;
+    width: 98%;
+    overflow: scroll;
+}
+
+.outerBiddingListContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.expandableBiddingListContainer {
+    display: flex;
+    min-height: 100%;
+    width: 100%;
+    flex-direction: column;
+}
+

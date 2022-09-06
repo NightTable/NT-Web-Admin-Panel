@@ -1,0 +1,47 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.lowerButtonContainerCompContainer {
+    display: flex;
+    margin-top: 2rem;
+    width: 100%;
+    min-height: 4rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.cancelButtonStyle {
+    display: flex;
+    background-color: #f3f3f3;
+    border-style: none;
+    outline-style: none;
+    height: 50%;
+    width: 10rem;
+    margin-right: 2rem;
+    border-radius: 0.2rem;
+    font-family: inherit;
+    color: red;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 3px black;
+    cursor: pointer;
+}
+
+.continueButtonStyle {
+    display: flex;
+    background-color: #f3f3f3;
+    border-style: none;
+    outline-style: none;
+    height: 50%;
+    width: 10rem;
+    color: #ff9900;
+    border-radius: 0.2rem;
+    font-family: inherit;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 0px 3px black;
+    cursor: pointer;
+}

@@ -1,0 +1,69 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.settingsDashboardScreenContainer {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.welcomeBackText {
+    margin-left: 1rem;
+}
+
+.upperHeaderRowContainer {
+    height: 2rem;
+    margin-top: 1rem;
+    align-self: flex-start;
+}
+
+.settingsOverviewRowLabelContainer {
+    display: flex;
+    width: 97%;
+    border: 1px solid black;
+    height: 2.5rem;
+    padding-bottom: 0.5rem;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    justify-content: space-between;
+}
+
+.settingsLabelTextStyle {
+    display: flex;
+    margin-left: 0.2rem;
+
+}
+
+.reportIssueButtonContainer {
+    display: flex;
+    width: 8rem;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.reportIssueButtonStyle {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    background-color: white;
+    outline-style: none;
+    border-style: none;
+    height: 60%;
+    width: 8rem;
+    border: 1px solid #c3195d;
+    font-family: inherit;
+}
+
+.settingsLabelContainer {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    width: 10rem;
+}

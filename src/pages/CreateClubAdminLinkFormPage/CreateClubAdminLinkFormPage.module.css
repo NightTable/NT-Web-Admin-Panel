@@ -1,0 +1,34 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.createClubAdminLinkFormPageContainer {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    background-color: #c3195d;
+    flex-direction: column;
+}
+
+.nightTableAdminHeaderRowContainer {
+    display: flex;
+    height: 2rem;
+    color: white;
+}
+
+.nightTableAdminTextStyle {
+    display: flex;
+    margin-left: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.outerLowerSpaceContainer {
+    display: flex;
+    height: calc(100% - 2rem);
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

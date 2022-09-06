@@ -1,0 +1,32 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.categoryHeadingRowContainer {
+    display: flex;
+    width: 100%;
+    min-height: 2.5rem;
+}
+
+.categoryHeaderLabelStyle {
+    display: flex;
+    font-size: 1.3rem;
+    color: black;
+}
+
+.categoryItemRowContainer {
+    display: flex;
+    width: 99%;
+    min-height: 2rem;
+    margin-bottom: 0.1rem;
+}
+
+.categoryLabelContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    flex: 2;
+}

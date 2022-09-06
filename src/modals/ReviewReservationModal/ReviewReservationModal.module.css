@@ -1,0 +1,48 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.reviewReservationModalContainer {
+    display: flex;
+    background-color: #d9d9d9;
+    height: min(45rem, 70%);
+    width: 40rem;
+    align-items: center;
+    flex-direction: column;
+}
+
+.upperReviewReservationHeaderContainer {
+    display: flex;
+    background-color: white;
+    width: 90%;
+    height: 4rem;
+    margin-top: 2rem;
+    align-items: center;
+    border-radius: 0.3rem;
+}
+
+.lowerReviewReservationBodyContainer {
+    display: flex;
+    width: 90%;
+    margin-top: 2rem;
+    background-color: white;
+    height: min(40rem, 70%);
+    flex-direction: column;
+    border-radius: 0.3rem;
+    overflow: scroll;
+}
+
+.backButtonRowContainer {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding-top: 1rem;
+    min-height: 2rem;
+}
+
+.backLabelTextStyle {
+    display: flex;
+    margin-left: 0.5rem;
+}

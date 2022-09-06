@@ -1,0 +1,28 @@
+/* All information, source code contained in this document 
+is the property of StrynDev Solutions, LLC. It must not 
+be transmitted to others without the written consent of 
+StrynDev Solutions. It must be returned to StrynDev Solutions 
+when its authorized use is terminated. */
+
+.revenueHorizDataCompContainer {
+    display: flex;
+    background-color: white;
+    width: 97%;
+    min-height: 2rem;
+    margin-bottom: 0.3rem;
+    border-radius: 0.2rem;
+}
+
+.innerLeftSideContainer {
+    display: flex;
+    width: min(35rem, 40%);
+}
+
+.revenueHorizDataContainer {
+    display: flex;
+    flex: 2;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
