@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { Box, Typography, TextField, Autocomplete } from '@mui/material';
 
+
+//theme
+import palette from "../theme/palette";
+
+
 // props : textinputLabel , label ,data,
 export default function Dropdown(props) {
   return (
@@ -27,8 +32,12 @@ export default function Dropdown(props) {
             ...params.inputProps,
             autoComplete: 'new-password', // disable autocomplete and autofill,
             color:'white',
-            backgroundColor:'red'
+            backgroundColor:'red',
+            style:{color:palette.primary.gold}
           }}
+          InputLabelProps={{
+            style: { color: palette.primary.gold }, 
+         }}
         />
       )}
     />

@@ -394,7 +394,7 @@ export default function DashboardAppPage() {
             sx={{
               width: "100%",
               borderWidth: 4,
-              //backgroundColor: 'black',
+              backgroundColor: 'black',
               borderRadius: 4,
             }}
             autoComplete="on"
@@ -439,6 +439,10 @@ export default function DashboardAppPage() {
                     onChange={(text) => {
                       setclubName(text.target.value);
                     }}
+                    inputProps = {{style:{color:palette.primary.gold}}}
+                    InputLabelProps={{
+                      style: { color: palette.primary.gold }, 
+                   }}
                   />
                 </Box>
               </Stack>
@@ -461,6 +465,10 @@ export default function DashboardAppPage() {
                       onChange={(text) => {
                         setaddressLine1(text.target.value);
                       }}
+                      inputProps = {{style:{color:palette.primary.gold}}}
+                      InputLabelProps={{
+                        style: { color: palette.primary.gold }, 
+                     }}
                     />
                   </Box>
                   <Box sx={{ paddingBottom: 2 }}>
@@ -474,6 +482,10 @@ export default function DashboardAppPage() {
                       onChange={(text) => {
                         setaddressLine2(text.target.value);
                       }}
+                      inputProps = {{style:{color:palette.primary.gold}}}
+                      InputLabelProps={{
+                        style: { color: palette.primary.gold }, 
+                     }}
                     />
                   </Box>
                   <Stack flexDirection={"row"}>
@@ -485,7 +497,10 @@ export default function DashboardAppPage() {
                       textinputLabel={"Select State"}
                       data={countries}
                     />
-                    <Dropdown textinputLabel={"Select City"} data={countries} />
+                    <Dropdown 
+                      textinputLabel={"Select City"} 
+                      data={countries} 
+                    />
                   </Stack>
                 </Box>
               </Stack>
@@ -506,6 +521,10 @@ export default function DashboardAppPage() {
                       onChange={(text) => {
                         setWebsiteUrl(text.target.value);
                       }}
+                      inputProps = {{style:{color:palette.primary.gold}}}
+                      InputLabelProps={{
+                        style: { color: palette.primary.gold }, 
+                     }}
                     />
                   </Box>
                 </Box>
@@ -522,12 +541,16 @@ export default function DashboardAppPage() {
                     fullWidth
                     sx={{ width: "100%" }}
                     id="outlined-basic"
-                    label="Club Name"
+                    label="Stripe Account No."
                     variant="standard"
                     value={stripeAccountNo}
                     onChange={(text) => {
                       setstripeAccountNo(text.target.value);
                     }}
+                    inputProps = {{style:{color:palette.primary.gold}}}
+                    InputLabelProps={{
+                      style: { color: palette.primary.gold }, 
+                   }}
                   />
                 </Box>
               </Stack>
@@ -577,6 +600,10 @@ export default function DashboardAppPage() {
                       label="Line Item "
                       value={key}
                       onChange={(event) => setKey(event.target.value)}
+                      InputLabelProps={{
+                        style: { color: palette.primary.gold }, 
+                     }}
+                     inputProps = {{style:{color:palette.primary.gold}}}
                     />
                   </Box>
                   <Box sx={{ width: "50%" }}>
@@ -584,6 +611,10 @@ export default function DashboardAppPage() {
                       label="Value"
                       value={value}
                       onChange={(event) => setValue(event.target.value)}
+                      InputLabelProps={{
+                        style: { color: palette.primary.gold }, 
+                     }}
+                     inputProps = {{style:{color:palette.primary.gold}}}
                     />
                   </Box>
                 </Stack>
