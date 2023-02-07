@@ -1,6 +1,12 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 // @mui
-import { Box, TableRow, TableCell, TableHead, TableSortLabel } from '@mui/material';
+import {
+  Box,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableSortLabel,
+} from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -8,16 +14,16 @@ const visuallyHidden = {
   border: 0,
   margin: -1,
   padding: 0,
-  width: '1px',
-  height: '1px',
-  overflow: 'hidden',
-  position: 'absolute',
-  whiteSpace: 'nowrap',
-  clip: 'rect(0 0 0 0)',
+  width: "1px",
+  height: "1px",
+  overflow: "hidden",
+  position: "absolute",
+  whiteSpace: "nowrap",
+  clip: "rect(0 0 0 0)",
 };
 
 UserListHead.propTypes = {
-  order: PropTypes.oneOf(['asc', 'desc']),
+  order: PropTypes.oneOf(["asc", "desc"]),
   orderBy: PropTypes.string,
   rowCount: PropTypes.number,
   headLabel: PropTypes.array,
@@ -40,23 +46,15 @@ export default function UserListHead({
   };
 
   return (
-    <TableHead  sx={{backgroundColor:'black'}}> 
-      <TableRow  sx={{backgroundColor:'black'}}   >
+    <TableHead sx={{ backgroundColor: "black" }}>
+      <TableRow sx={{ backgroundColor: "black" }}>
         {headLabel.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.alignRight ? 'right' : 'left'}
-            sortDirection={orderBy === headCell.id ? order : false}
+            align={headCell.alignRight ? "right" : "left"}
+            //  sortDirection={orderBy === headCell.id ? order : false}
           >
-            <TableSortLabel
-              hideSortIcon
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label} 
-              
-            </TableSortLabel>
+            <TableSortLabel>{headCell.label}</TableSortLabel>
           </TableCell>
         ))}
       </TableRow>

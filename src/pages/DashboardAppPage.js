@@ -1,5 +1,7 @@
+import * as React from 'react';
+
 import { Helmet } from "react-helmet-async";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { filter } from "lodash";
 import { sentenceCase } from "change-case";
 import Box from "@mui/material/Box";
@@ -34,6 +36,15 @@ import Label from "../components/label";
 import Iconify from "../components/iconify";
 import InfoIcon from "@mui/icons-material/Info";
 import Scrollbar from "../components/scrollbar";
+//dialog 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { TransitionProps } from '@mui/material/transitions';
+
+//dropdown
 
 import Dropdown from "../components/Dropdown";
 // sections
@@ -48,25 +59,34 @@ import { ClubsData } from "src/_mock/club";
 import { Palette } from "@mui/icons-material";
 //jsons
 import { countries } from "src/_mock/countries";
+
+//servie files
+import { getClubs, addClubtoServer } from "src/services/club";
+
 const TABLE_HEAD = [
   { id: "name", label: "Name", alignRight: false },
+
+  { id: "phone Number", label: "Phone Number", alignRight: false },
+
   { id: "Address", label: "Address", alignRight: false },
-  { id: "Website", label: "Website", alignRight: false },
-
-  { id: "Region", label: "Region", alignRight: false },
-
-  { id: "" },
-  { id: "" },
+  { id: "website", label: "Website", alignRight: false },
+  { id: "edit", label: "Edit", alignRight: false },
+  { id: "delete", label: "Delete", alignRight: false },
 ];
 export default function DashboardAppPage() {
   const theme = useTheme();
   //States
 
   const [clubName, setclubName] = useState("");
-  const [addressLine1, setaddressLine1] = useState("");
-  const [addressLine2, setaddressLine2] = useState("");
+  const [addressLine, setaddressLine] = useState("");
+  const [country, setcountry] = useState();
+  const [instaHandle, setinstaHandle] = useState("");
   const [stripeAccountNo, setstripeAccountNo] = useState("");
   const [WebsiteUrl, setWebsiteUrl] = useState("");
+  const [phoneNumber, setphoneNumber] = useState("");
+  const [longitude, setlongitude] = useState('')
+  const [latitude, setlatitude] = useState('')
+  
   //add entities
   const [keyValuePairs, setKeyValuePairs] = useState({});
   const [key, setKey] = useState("");
@@ -104,6 +124,79 @@ export default function DashboardAppPage() {
 
   //add club pop-over open
   const [popOverOpen, setpopOverOpen] = useState(false);
+
+  //clubs
+  const [clubs_data, setclubs_data] = useState([]);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const checkLocationPermission = async () => {
+    if ("geolocation" in navigator) {
+      console.log("Available");
+      getGeolocation();
+    } else {
+      console.log("Not Available");
+    }
+  };
+
+  const getGeolocation = async () => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setlongitude(position.coords.latitude)
+      setlatitude(position.coords.longitude)
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+    });
+  };
+
+  // get the clubs
+  const loadData = async () => {
+    checkLocationPermission();
+    const data = await getClubs();
+    setclubs_data(data);
+  };
+
+  //add the clubs
+  const addClub = async () => {
+    var obj = {
+      name: clubName,
+      location: [longitude,latitude],
+      instaHandle: instaHandle,
+      phoneNumber: phoneNumber,
+      address: {
+        line1: addressLine,
+        City: "Moscow",
+        state: "",
+        country: country,
+      },
+      website: WebsiteUrl,
+      photos: ["", "", ""],
+      stripeAccountNumber: stripeAccountNo,
+      ownedBy: "god",
+      lineItems: keyValuePairs,
+    };
+console.log("keyValuePairs====>",keyValuePairs);
+       //const data = await addClubtoServer(obj);
+    console.log("Add Club :data", obj);
+  };
+
+
+  //dialog 
+  const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setdeleteDialogOpen(true);
+  };
+
+  const handleClose = (id) => {
+    if(id == '1'){
+
+    }
+    else(id == '2')
+    setdeleteDialogOpen(false);
+  };
+
 
   // const handleOpenMenu = (event) => {
   //   setOpen(event.currentTarget);
@@ -176,6 +269,31 @@ export default function DashboardAppPage() {
     return stabilizedThis.map((el) => el[0]);
   }
 
+
+  const DeleteClubDialog = () =>{
+    return(
+      <>
+       <Dialog
+        open={deleteDialogOpen}
+        keepMounted
+        onClose={handleClose('1')}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Are you sure want to delete the club, as you won't be able to recover it !
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose(`1`)}>Delete</Button>
+          <Button onClick={handleClose(`2`)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+      </>
+    )
+  }
+
   const filteredData = applySortFilter(ClubsData, filterName);
   const isNotFound = !!filterName;
 
@@ -220,11 +338,11 @@ export default function DashboardAppPage() {
           </Stack>
 
           <Card>
-            <UserListToolbar
+            {/* <UserListToolbar
               numSelected={selected.length}
               filterName={filterName}
               onFilterName={handleFilterByName}
-            />
+            /> */}
 
             <Scrollbar>
               <TableContainer
@@ -238,12 +356,12 @@ export default function DashboardAppPage() {
                 <Table>
                   <UserListHead
                     headLabel={TABLE_HEAD}
-                    rowCount={ClubsData.length}
+                    rowCount={clubs_data.length}
                     numSelected={selected.length}
                   />
                   <TableBody>
-                    {ClubsData.map((item) => {
-                      const { id, name, Address, Website, Region } = item;
+                    {clubs_data?.map((item, index) => {
+                      const { id, name, address, website, phoneNumber } = item;
                       return (
                         <>
                           <TableRow
@@ -266,23 +384,23 @@ export default function DashboardAppPage() {
                                 variant="subtitle2"
                                 noWrap
                               >
-                                {name}
-                              </Typography>
-                            </TableCell>
-
-                            <TableCell align="left">
-                              <Typography sx={{ color: "black" }}>
-                                {Address}
+                                {index + 1}) {name}
                               </Typography>
                             </TableCell>
                             <TableCell align="left">
                               <Typography sx={{ color: "black" }}>
-                                {Website}
+                                {phoneNumber}
                               </Typography>
                             </TableCell>
                             <TableCell align="left">
                               <Typography sx={{ color: "black" }}>
-                                {Region}
+                                {address?.line1},{address?.state},{" "}
+                                {address?.city},{address?.country}
+                              </Typography>
+                            </TableCell>
+                            <TableCell align="left">
+                              <Typography sx={{ color: "black" }}>
+                                {website}
                               </Typography>
                             </TableCell>
 
@@ -291,18 +409,24 @@ export default function DashboardAppPage() {
                                 <IconButton
                                   size="large"
                                   color="inherit"
-                                  //onClick={handleOpenMenu}
+                                  onClick={() => {
+                                    alert("EDIT ALERT");
+                                  }}
                                 >
                                   <Iconify icon={"material-symbols:edit"} />
                                 </IconButton>
-                                <IconButton
-                                  size="large"
-                                  color="inherit"
-                                  //onClick={handleOpenMenu}
-                                >
-                                  <Iconify icon={"ic:baseline-delete"} />
-                                </IconButton>
                               </Stack>
+                            </TableCell>
+                            <TableCell align="left">
+                              <IconButton
+                                size="large"
+                                color="inherit"
+                                onClick={() => {
+                                  handleClickOpen();
+                                }}
+                              >
+                                <Iconify icon={"ic:baseline-delete"} />
+                              </IconButton>
                             </TableCell>
                           </TableRow>
                         </>
@@ -315,7 +439,7 @@ export default function DashboardAppPage() {
                     )}
                   </TableBody>
 
-                  {isNotFound && (
+                  {/* {isNotFound && (
                     <TableBody>
                       <TableRow>
                         <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -338,7 +462,7 @@ export default function DashboardAppPage() {
                         </TableCell>
                       </TableRow>
                     </TableBody>
-                  )}
+                   )} */}
                 </Table>
               </TableContainer>
             </Scrollbar>
@@ -346,7 +470,7 @@ export default function DashboardAppPage() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
-              count={ClubsData.length}
+              count={clubs_data.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -354,6 +478,7 @@ export default function DashboardAppPage() {
             />
           </Card>
         </Container>
+
         <Popover
           open={popOverOpen}
           anchorEl={open}
@@ -389,309 +514,358 @@ export default function DashboardAppPage() {
             },
           }}
         >
-          <Box
-            component="form"
-            sx={{
-              width: "100%",
-              borderWidth: 4,
-              backgroundColor: 'black',
-              borderRadius: 4,
-            }}
-            autoComplete="on"
-          >
-            <Stack alignItems={"flex-end"} justifyItems={"right"}>
-              <IconButton
-                size="large"
-                color="inherit"
-                onClick={() => {
-                  setpopOverOpen(!true);
+          <Scrollbar>
+            <Box
+              component="form"
+              sx={{
+                width: "100%",
+                borderWidth: 4,
+                backgroundColor: "black",
+                borderRadius: 4,
+              }}
+              autoComplete="on"
+            >
+              <Stack alignItems={"flex-end"} justifyItems={"right"}>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  onClick={() => {
+                    setpopOverOpen(!true);
+                  }}
+                >
+                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                </IconButton>
+              </Stack>
+              <Typography
+                sx={{
+                  color: palette.primary.gold,
+                  textAlign: "center",
+                  paddingTop: 4,
+                  paddingBottom: 4,
+                  fontSize: 20,
+                  fontWeight: "bold",
                 }}
               >
-                <Iconify color={palette.primary.gold} icon={"maki:cross"} />
-              </IconButton>
-            </Stack>
-            <Typography
-              sx={{
-                color: palette.primary.gold,
-                textAlign: "center",
-                paddingTop: 4,
-                paddingBottom: 4,
-                fontSize: 20,
-                fontWeight: "bold",
-              }}
-            >
-              Add New Club
-            </Typography>
-            <Container sx={{ width: "100%" }}>
-              <Stack flexDirection={"row"}>
-                <Box sx={{ width: "30%" }}>
-                  <Typography sx={{ color: palette.primary.gold }}>
-                    Club Name
-                  </Typography>
-                </Box>
-                <Box sx={{ width: "70%", paddingBottom: 2 }}>
-                  <TextField
-                    fullWidth
-                    id="outlined-basic"
-                    label="Club Name"
-                    variant="outlined"
-                    value={clubName}
-                    onChange={(text) => {
-                      setclubName(text.target.value);
-                    }}
-                    inputProps = {{style:{color:palette.primary.gold}}}
-                    InputLabelProps={{
-                      style: { color: palette.primary.gold }, 
-                   }}
-                  />
-                </Box>
-              </Stack>
-
-              <Stack flexDirection={"row"}>
-                <Box sx={{ width: "30%" }}>
-                  <Typography fullWidth sx={{ color: palette.primary.gold }}>
-                    Address
-                  </Typography>
-                </Box>
-                <Box sx={{ width: "70%", paddingBottom: 2 }}>
-                  <Box sx={{ paddingBottom: 2 }}>
-                    <TextField
-                      fullWidth
-                      sx={{ width: "100%", paddingBottom: 2 }}
-                      id="outlined-basic"
-                      label="Address Line 1"
-                      variant="outlined"
-                      value={addressLine1}
-                      onChange={(text) => {
-                        setaddressLine1(text.target.value);
-                      }}
-                      inputProps = {{style:{color:palette.primary.gold}}}
-                      InputLabelProps={{
-                        style: { color: palette.primary.gold }, 
-                     }}
-                    />
+                Add New Club
+              </Typography>
+              <Container sx={{ width: "100%" }}>
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
+                    <Typography sx={{ color: palette.primary.gold }}>
+                      Club Name
+                    </Typography>
                   </Box>
-                  <Box sx={{ paddingBottom: 2 }}>
-                    <TextField
-                      fullWidth
-                      sx={{ width: "100%", paddingBottom: 2 }}
-                      id="outlined-basic"
-                      label="Address Line 2"
-                      variant="outlined"
-                      value={addressLine2}
-                      onChange={(text) => {
-                        setaddressLine2(text.target.value);
-                      }}
-                      inputProps = {{style:{color:palette.primary.gold}}}
-                      InputLabelProps={{
-                        style: { color: palette.primary.gold }, 
-                     }}
-                    />
-                  </Box>
-                  <Stack flexDirection={"row"}>
-                    <Dropdown
-                      textinputLabel={"Select Country"}
-                      data={countries}
-                    />
-                    <Dropdown
-                      textinputLabel={"Select State"}
-                      data={countries}
-                    />
-                    <Dropdown 
-                      textinputLabel={"Select City"} 
-                      data={countries} 
-                    />
-                  </Stack>
-                </Box>
-              </Stack>
-              <Stack flexDirection={"row"}>
-                <Box sx={{ width: "30%" }}>
-                  <Typography sx={{ color: palette.primary.gold }}>
-                    Website
-                  </Typography>
-                </Box>
-                <Box sx={{ width: "70%" }}>
-                  <Box sx={{ paddingBottom: 2 }}>
+                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
                     <TextField
                       fullWidth
                       id="outlined-basic"
-                      label="Website Url"
+                      label="Club Name"
                       variant="outlined"
-                      value={WebsiteUrl}
+                      value={clubName}
                       onChange={(text) => {
-                        setWebsiteUrl(text.target.value);
+                        setclubName(text.target.value);
                       }}
-                      inputProps = {{style:{color:palette.primary.gold}}}
+                      inputProps={{ style: { color: palette.primary.gold } }}
                       InputLabelProps={{
-                        style: { color: palette.primary.gold }, 
-                     }}
+                        style: { color: palette.primary.gold },
+                      }}
                     />
                   </Box>
-                </Box>
-              </Stack>
-
-              <Stack flexDirection={"row"}>
-                <Box sx={{ width: "30%" }}>
-                  <Typography sx={{ color: palette.primary.gold }}>
-                    Stripe Ac Number
-                  </Typography>
-                </Box>
-                <Box sx={{ width: "70%" }}>
-                  <TextField
-                    fullWidth
-                    sx={{ width: "100%" }}
-                    id="outlined-basic"
-                    label="Stripe Account No."
-                    variant="standard"
-                    value={stripeAccountNo}
-                    onChange={(text) => {
-                      setstripeAccountNo(text.target.value);
-                    }}
-                    inputProps = {{style:{color:palette.primary.gold}}}
-                    InputLabelProps={{
-                      style: { color: palette.primary.gold }, 
-                   }}
-                  />
-                </Box>
-              </Stack>
-              <Stack>
-                <Stack sx={{ paddingTop: 2 }} flexDirection={"row"}>
-                  <Box sx={{ width: "70%" }}>
-                    <Stack flexDirection={"row"}>
-                      <Typography
-                        sx={{
-                          color: palette.primary.gold,
-                          fontWeight: "bold",
-                          fontSize: 14,
-                          paddingRight: 2,
+                </Stack>
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
+                    <Typography fullWidth sx={{ color: palette.primary.gold }}>
+                      Phone Number
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                    <Box sx={{ paddingBottom: 2 }}>
+                      <TextField
+                        fullWidth
+                        sx={{ width: "100%", paddingBottom: 2 }}
+                        id="outlined-basic"
+                        label="Phone Number"
+                        variant="outlined"
+                        value={phoneNumber}
+                        onChange={(text) => {
+                          setphoneNumber(text.target.value);
                         }}
-                      >
-                        Line Items{" "}
-                      </Typography>
-                      <Tooltip
-                        title={
-                          "Table fee, Service Charges,tips, tax etc (All Items value will be consider as a percentage)"
-                        }
-                      >
-                        <InfoIcon sx={{ color: "red" }} />
-                      </Tooltip>
+                        inputProps={{ style: { color: palette.primary.gold } }}
+                        InputLabelProps={{
+                          style: { color: palette.primary.gold },
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </Stack>
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
+                    <Typography fullWidth sx={{ color: palette.primary.gold }}>
+                      Address
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                    <Box sx={{ paddingBottom: 2 }}>
+                      <TextField
+                        fullWidth
+                        sx={{ width: "100%", paddingBottom: 2 }}
+                        id="outlined-basic"
+                        label="Address Line"
+                        variant="outlined"
+                        value={addressLine}
+                        onChange={(text) => {
+                          setaddressLine(text.target.value);
+                        }}
+                        inputProps={{ style: { color: palette.primary.gold } }}
+                        InputLabelProps={{
+                          style: { color: palette.primary.gold },
+                        }}
+                      />
+                    </Box>
+
+                    <Stack flexDirection={"row"}>
+                      <Dropdown
+                        textinputLabel={"Select Country"}
+                        data={countries}
+                        changedValue={(item) => {
+                          setcountry(item.label);
+                        }}
+                      />
+                      <Dropdown
+                        textinputLabel={"Select State"}
+                        data={countries}
+                        changedValue={(item) => {
+                          setcountry(item.label);
+                        }}
+                      />
+                      <Dropdown
+                        textinputLabel={"Select City"}
+                        data={countries}
+                        changedValue={(item) => {
+                          setcountry(item.label);
+                        }}
+                      />
                     </Stack>
                   </Box>
-
+                </Stack>
+                <Stack flexDirection={"row"}>
                   <Box sx={{ width: "30%" }}>
-                    <Button
-                      sx={{
-                        backgroundColor: "#E4D0B5",
-                        color: "black",
-                        fontSize: 14,
-                        fontWeight: "600",
-                      }}
-                      variant="contained"
-                      onClick={handleAddKeyValue}
-                    >
-                      Add
-                    </Button>
+                    <Typography sx={{ color: palette.primary.gold }}>
+                      Website
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "70%" }}>
+                    <Box sx={{ paddingBottom: 2 }}>
+                      <TextField
+                        fullWidth
+                        id="outlined-basic"
+                        label="Website Url"
+                        variant="outlined"
+                        value={WebsiteUrl}
+                        onChange={(text) => {
+                          setWebsiteUrl(text.target.value);
+                        }}
+                        inputProps={{ style: { color: palette.primary.gold } }}
+                        InputLabelProps={{
+                          style: { color: palette.primary.gold },
+                        }}
+                      />
+                    </Box>
                   </Box>
                 </Stack>
-                <Typography>{showLineItemError}</Typography>
-                <Stack flexDirection={"row"} sx={{ paddingTop: 1 }}>
-                  <Box sx={{ width: "50%" }}>
-                    <TextField
-                      label="Line Item "
-                      value={key}
-                      onChange={(event) => setKey(event.target.value)}
-                      InputLabelProps={{
-                        style: { color: palette.primary.gold }, 
-                     }}
-                     inputProps = {{style:{color:palette.primary.gold}}}
-                    />
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
+                    <Typography sx={{ color: palette.primary.gold }}>
+                      Insta Handle
+                    </Typography>
                   </Box>
-                  <Box sx={{ width: "50%" }}>
-                    <TextField
-                      label="Value"
-                      value={value}
-                      onChange={(event) => setValue(event.target.value)}
-                      InputLabelProps={{
-                        style: { color: palette.primary.gold }, 
-                     }}
-                     inputProps = {{style:{color:palette.primary.gold}}}
-                    />
+                  <Box sx={{ width: "70%" }}>
+                    <Box sx={{ paddingBottom: 2 }}>
+                      <TextField
+                        fullWidth
+                        id="outlined-basic"
+                        label="Instagram"
+                        variant="outlined"
+                        value={instaHandle}
+                        onChange={(text) => {
+                          setinstaHandle(text.target.value);
+                        }}
+                        inputProps={{ style: { color: palette.primary.gold } }}
+                        InputLabelProps={{
+                          style: { color: palette.primary.gold },
+                        }}
+                      />
+                    </Box>
                   </Box>
                 </Stack>
 
-                {Object.entries(keyValuePairs).map(([key, value], index) => (
-                  <>
-                    <Stack flexDirection={"row"}>
-                      <Box sx={{ width: "50%" }}>
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
+                    <Typography sx={{ color: palette.primary.gold }}>
+                      Stripe Ac Number
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "70%" }}>
+                    <TextField
+                      fullWidth
+                      sx={{ width: "100%" }}
+                      id="outlined-basic"
+                      label="Stripe Account No."
+                      variant="outlined"
+                      value={stripeAccountNo}
+                      onChange={(text) => {
+                        setstripeAccountNo(text.target.value);
+                      }}
+                      inputProps={{ style: { color: palette.primary.gold } }}
+                      InputLabelProps={{
+                        style: { color: palette.primary.gold },
+                      }}
+                    />
+                  </Box>
+                </Stack>
+                <Stack>
+                  <Stack sx={{ paddingTop: 2 }} flexDirection={"row"}>
+                    <Box sx={{ width: "70%" }}>
+                      <Stack flexDirection={"row"}>
                         <Typography
                           sx={{
                             color: palette.primary.gold,
-                            fontSize: 16,
-                            fontWeight: "600",
+                            fontWeight: "bold",
+                            fontSize: 14,
+                            paddingRight: 2,
                           }}
-                          key={key}
                         >
-                          {index + 1}) {key}:
+                          Line Items{" "}
                         </Typography>
-                      </Box>
-                      <Box sx={{ width: "50%" }}>
-                        <Stack flexDirection={"row"}>
+                        <Tooltip
+                          title={
+                            "Table fee, Service Charges,tips, tax etc (All Items value will be consider as a percentage)"
+                          }
+                        >
+                          <InfoIcon sx={{ color: "red" }} />
+                        </Tooltip>
+                      </Stack>
+                    </Box>
+
+                    <Box sx={{ width: "30%" }}>
+                      <Button
+                        sx={{
+                          backgroundColor: "#E4D0B5",
+                          color: "black",
+                          fontSize: 14,
+                          fontWeight: "600",
+                        }}
+                        variant="contained"
+                        onClick={handleAddKeyValue}
+                      >
+                        Add
+                      </Button>
+                    </Box>
+                  </Stack>
+                  <Typography>{showLineItemError}</Typography>
+                  <Stack flexDirection={"row"} sx={{ paddingTop: 1 }}>
+                    <Box sx={{ width: "50%" }}>
+                      <TextField
+                        variant="outlined"
+                        label="Line Item "
+                        value={key}
+                        onChange={(event) => setKey(event.target.value)}
+                        InputLabelProps={{
+                          style: { color: palette.primary.gold },
+                        }}
+                        inputProps={{ style: { color: palette.primary.gold } }}
+                      />
+                    </Box>
+                    <Box sx={{ width: "50%" }}>
+                      <TextField
+                        variant="outlined"
+                        label="Value"
+                        value={value}
+                        onChange={(event) => setValue(event.target.value)}
+                        InputLabelProps={{
+                          style: { color: palette.primary.gold },
+                        }}
+                        inputProps={{ style: { color: palette.primary.gold } }}
+                      />
+                    </Box>
+                  </Stack>
+
+                  {Object.entries(keyValuePairs).map(([key, value], index) => (
+                    <>
+                      <Stack flexDirection={"row"}>
+                        <Box sx={{ width: "50%" }}>
                           <Typography
                             sx={{
                               color: palette.primary.gold,
                               fontSize: 16,
                               fontWeight: "600",
-                              paddingRight: 2,
                             }}
                             key={key}
                           >
-                            Value: {value} %
+                            {index + 1}) {key}:
                           </Typography>
-                          <Button
-                            sx={{
-                              color: palette.primary.gold,
-                              fontSize: 14,
-                              fontWeight: "600",
-                            }}
-                            variant="contained"
-                            onClick={() => handleDeleteKeyValue(key)}
-                          >
-                            Delete
-                          </Button>
-                        </Stack>
-                      </Box>
-                    </Stack>
-                  </>
-                ))}
-              </Stack>
-              <Box
-                sx={{
-                  width: "100%",
-                  paddingTop: 2,
-                }}
-              >
-                <Button
-                  onClick={() => {
-                    setpopOverOpen(true);
-                  }}
-                  variant="contained"
+                        </Box>
+                        <Box sx={{ width: "50%" }}>
+                          <Stack flexDirection={"row"}>
+                            <Typography
+                              sx={{
+                                color: palette.primary.gold,
+                                fontSize: 16,
+                                fontWeight: "600",
+                                paddingRight: 2,
+                              }}
+                              key={key}
+                            >
+                              Value: {value} %
+                            </Typography>
+                            <Button
+                              sx={{
+                                color: palette.primary.gold,
+                                fontSize: 14,
+                                fontWeight: "600",
+                              }}
+                              variant="contained"
+                              onClick={() => handleDeleteKeyValue(key)}
+                            >
+                              Delete
+                            </Button>
+                          </Stack>
+                        </Box>
+                      </Stack>
+                    </>
+                  ))}
+                </Stack>
+                <Box
                   sx={{
-                    backgroundColor: palette.primary.gold,
-                    textAlign: "center",
-                    fontSize: 16,
-                    fontWeight: "bold",
-                    color: "black",
-                    justifyContent: "center",
-                    alignItems: "center",
                     width: "100%",
+                    paddingTop: 2,
                   }}
                 >
-                  Add CLub
-                </Button>
-              </Box>
-            </Container>
-          </Box>
+                  <Button
+                    onClick={() => {
+                      addClub();
+                      //setpopOverOpen(true);
+                    }}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: palette.primary.gold,
+                      textAlign: "center",
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      color: "black",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    Add CLub
+                  </Button>
+                </Box>
+              </Container>
+            </Box>
+          </Scrollbar>
         </Popover>
+        <DeleteClubDialog/>
       </Container>
     </>
   );
