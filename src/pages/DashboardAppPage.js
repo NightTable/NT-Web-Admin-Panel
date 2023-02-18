@@ -28,7 +28,7 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
-  Alert,
+  
   withStyles,
 } from "@mui/material";
 import Switch from "@material-ui/core/Switch";
@@ -47,24 +47,28 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { TransitionProps } from "@mui/material/transitions";
 // import {REACT_APP_API_ENDPOINT } from '@env'
 //dropdown
-import AddHouseImage from "./Club/AddClubImage";
+import AddClubPosterImage from "./Club/AddClubImage";
 
 import Dropdown from "../components/Dropdown";
 // sections
 import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
-import USERLIST from "../_mock/user";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 //theme
 import palette from "../theme/palette";
 // ----------------------------------------------------------------------
 import { ClubsData } from "src/_mock/club";
-import { Palette } from "@mui/icons-material";
 //jsons
 import { countries } from "src/_mock/countries";
 //servie files
-import { getClubs, addClubtoServer } from "src/services/club";
+import {
+  getClubs,
+  addClubtoServer,
+  clubUpdate,
+  deleteClub,
+} from "src/services/club";
 import { DASHBOARD_TABLE_HEAD } from "../Table_Head/index";
+import ViewClubInfo from "./Club/ViewClubInfo";
 
 export default function DashboardAppPage() {
   const theme = useTheme();
@@ -103,17 +107,6 @@ export default function DashboardAppPage() {
 
   const [switchToggle, setswitchToggle] = React.useState(false);
 
-  const handleToggleSwitch = async (_id) => {
-    // setswitchToggle(!switchToggle);
-
-    let obj = {
-      isPublished: false,
-    };
-
-    const updateClubtoActive = await clubUpdate(obj, _id);
-    console.log("updateClubtoActive==>", updateClubtoActive);
-  };
-
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -127,9 +120,6 @@ export default function DashboardAppPage() {
   const [filterName, setFilterName] = useState("");
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  //add club pop-over open
-  const [popOverOpen, setpopOverOpen] = useState(false);
 
   //clubs
   const [clubs_data, setclubs_data] = useState([]);
@@ -159,11 +149,14 @@ export default function DashboardAppPage() {
   // get the clubs
   const loadData = async () => {
     checkLocationPermission();
+    getClubData();
+  };
+
+  const getClubData = async () => {
     const data = await getClubs();
     setclubs_data(data);
   };
-
-  //add the clubs
+  //API CALL : ADD CLUB
   const addClub = async () => {
     let keys = Object.keys(keyValuePairs);
     let arr = [];
@@ -191,92 +184,38 @@ export default function DashboardAppPage() {
       lineItems: arr,
     };
     const data = await addClubtoServer(obj);
+    console.log("data===>", data);
+    if (data?.status === true) {
+      alert("Club Added");
+      setaddClubPopUp(false);
+    } else {
+      alert("ERROR IN ADDING CLUB ");
+    }
   };
 
   //dialog
+
+  const [ImageDialogPopUp, setImageDialogPopUp] = useState(false);
+  const [ViewClubInfoPopUp, setViewClubInfoPopUp] = useState(false);
   const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
+  //add club pop-over open
+  const [addClubPopUp, setaddClubPopUp] = useState(false);
 
-  const handleClickOpen = () => {
-    setdeleteDialogOpen(true);
-  };
+  //selected club data
+  const [selectedClubData, setselectedClubData] = useState([]);
 
-  const handleClose = (id) => {
+  //close pop-up
+  const handleClose = async (id) => {
     if (id == "1") {
+      const clubtoDelete = await deleteClub(
+        selectedClubData,
+        selectedClubData._id
+      );
+      console.log("clubtoDelete",clubtoDelete)
     } else id == "2";
     setdeleteDialogOpen(false);
   };
 
-  // const handleOpenMenu = (event) => {
-  //   setOpen(event.currentTarget);
-  // };
-
-  // const handleCloseMenu = () => {
-  //   setOpen(null);
-  // };
-
-  // const handleRequestSort = (event, property) => {
-  //   const isAsc = orderBy === property && order === 'asc';
-  //   setOrder(isAsc ? 'desc' : 'asc');
-  //   setOrderBy(property);
-  // };
-
-  // const handleSelectAllClick = (event) => {
-  //   if (event.target.checked) {
-  //     const newSelecteds = USERLIST.map((n) => n.name);
-  //     setSelected(newSelecteds);
-  //     return;
-  //   }
-  //   setSelected([]);
-  // };
-
-  // const handleClick = (event, name) => {
-  //   const selectedIndex = selected.indexOf(name);
-  //   let newSelected = [];
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, name);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-  //   }
-  //   setSelected(newSelected);
-  // };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
-  };
-
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
-
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ClubsData.length) : 0;
-
-  function applySortFilter(array, query) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      // const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
-    if (query) {
-      return filter(
-        array,
-        (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
-      );
-    }
-    return stabilizedThis.map((el) => el[0]);
-  }
-  const [ImageDialogPopUp, setImageDialogPopUp] = useState(false);
   const AddImageDialog = () => {
     return (
       <>
@@ -326,7 +265,18 @@ export default function DashboardAppPage() {
               }}
               autoComplete="on"
             >
-              <AddHouseImage />
+                <Stack alignItems={"flex-end"} justifyItems={"right"}>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  onClick={() => {
+                    setViewClubInfoPopUp(!true);
+                  }}
+                >
+                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                </IconButton>
+              </Stack>
+              <AddClubPosterImage data={selectedClubData} />
             </Box>
           </Scrollbar>
         </Popover>
@@ -340,10 +290,12 @@ export default function DashboardAppPage() {
         <Dialog
           open={deleteDialogOpen}
           keepMounted
-          onClose={handleClose("1")}
+          onClose={()=>{
+            setdeleteDialogOpen(!deleteDialogOpen)
+          }}
           aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+          <DialogTitle>{"Delete the club?"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
               Are you sure want to delete the club, as you won't be able to
@@ -351,250 +303,26 @@ export default function DashboardAppPage() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose(`1`)}>Delete</Button>
-            <Button onClick={handleClose(`2`)}>Close</Button>
+            <Button onClick={()=>{
+              handleClose(`1`)
+            }}>Delete</Button>
+            <Button onClick={()=>{
+              handleClose(`2`)
+            }}>Close</Button>
           </DialogActions>
         </Dialog>
       </>
     );
   };
 
-  const filteredData = applySortFilter(ClubsData, filterName);
-  const isNotFound = !!filterName;
-
-  return (
-    <>
-      <Helmet>
-        <title> Night Table : Admin Dashboard </title>
-      </Helmet>
-
-      <Container
-        sx={{
-          bgcolor: "black",
-          width: "100%",
-          height: "100%",
-          borderTopColor: "red",
-        }}
-        maxWidth="xl"
-      >
-        <Typography variant="h4" sx={{ mb: 5, color: "#E4D0B5" }}>
-          Hi, Welcome back {process.env.REACT_APP_BASE_URL}
-        </Typography>
-        <Container>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={5}
-          >
-            <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
-              Clubs
-            </Typography>
-            <Button
-              onClick={() => {
-                setpopOverOpen(true);
-              }}
-              variant="contained"
-              sx={{ backgroundColor: "#E4D0B5", color: "black" }}
-              startIcon={<Iconify icon="eva:plus-fill" />}
-            >
-              Add CLub
-            </Button>
-          </Stack>
-
-          <Card>
-            {/* <UserListToolbar
-              numSelected={selected.length}
-              filterName={filterName}
-              onFilterName={handleFilterByName}
-            /> */}
-
-            <Scrollbar>
-              <TableContainer
-                sx={{
-                  minWidth: 800,
-                  backgroundColor: "black",
-                  borderWidth: 1,
-                  borderColor: palette.primary.gold,
-                }}
-              >
-                <Table>
-                  <UserListHead
-                    headLabel={DASHBOARD_TABLE_HEAD}
-                    rowCount={clubs_data.length}
-                    numSelected={selected.length}
-                  />
-                  <TableBody>
-                    {clubs_data?.map((item, index) => {
-                      console.log("item==>", item);
-                      const {
-                        _id,
-                        name,
-                        address,
-                        website,
-                        isPublished,
-                        phoneNumber,
-                      } = item;
-                      return (
-                        <>
-                          <TableRow
-                            style={{
-                              margin: 20,
-                            }}
-                            bgcolor={"#E4D0B5"}
-                            // hover
-                            key={_id}
-                            tabIndex={-1}
-                          >
-                             <TableCell align="right">
-                              <Stack flexDirection={"row"}>
-                                <IconButton
-                                  size="large"
-                                  color="inherit"
-                                  onClick={() => {
-                                    alert("EDIT ALERT");
-                                  }}
-                                >
-                                  <Iconify icon={"ic:sharp-remove-red-eye"} />
-                                </IconButton>
-                              </Stack>
-                            </TableCell>
-                            <TableCell
-                              bgcolor={"#E4D0B5"}
-                              component="th"
-                              scope="row"
-                              padding="none"
-                            >
-                              <Typography
-                                sx={{ color: "black", px: 2 }}
-                                variant="subtitle2"
-                                noWrap
-                              >
-                                {index + 1}) {name}
-                              </Typography>
-                            </TableCell>
-                            <TableCell align="left">
-                              <Typography sx={{ color: "black" }}>
-                                {phoneNumber}
-                              </Typography>
-                            </TableCell>
-                            <TableCell align="left">
-                              <Typography sx={{ color: "black" }}>
-                                {address?.line1},{address?.state},{" "}
-                                {address?.city},{address?.country}
-                              </Typography>
-                            </TableCell>
-                            <TableCell align="left">
-                              <Typography sx={{ color: "black" }}>
-                                {website}
-                              </Typography>
-                            </TableCell>
-                            <TableCell align="left">
-                              <IconButton
-                                size="large"
-                                color="inherit"
-                                onClick={() => {
-                                  //  handleClickOpen();
-                                  setImageDialogPopUp(true);
-                                }}
-                              >
-                                <Iconify icon={"material-symbols:image"} />
-                              </IconButton>
-                            </TableCell>
-                            <TableCell align="right">
-                              <Stack flexDirection={"row"}>
-                                <IconButton
-                                  size="large"
-                                  color="inherit"
-                                  onClick={() => {
-                                    alert("EDIT ALERT");
-                                  }}
-                                >
-                                  <Iconify icon={"material-symbols:edit"} />
-                                </IconButton>
-                              </Stack>
-                            </TableCell>
-                            <TableCell align="left">
-                              <IconButton
-                                size="large"
-                                color="inherit"
-                                onClick={() => {
-                                  handleClickOpen();
-                                }}
-                              >
-                                <Iconify icon={"ic:baseline-delete"} />
-                              </IconButton>
-                            </TableCell>
-                            <TableCell align="left">
-                              <Switch
-                                checked={isPublished === true ? true : false}
-                                onChange={() => {
-                                  if (photos >= 3) {
-                                    handleToggleSwitch(_id);
-                                  } else {
-                                    Alert(
-                                      "Please Add at least 3 Images to Make club Active!"
-                                    );
-                                  }
-                                }}
-                              />
-                            </TableCell>
-                          </TableRow>
-                        </>
-                      );
-                    })}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )}
-                  </TableBody>
-
-                  {/* {isNotFound && (
-                    <TableBody>
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <Paper
-                            sx={{
-                              textAlign: "center",
-                            }}
-                          >
-                            <Typography variant="h6" paragraph>
-                              Not found
-                            </Typography>
-
-                            <Typography variant="body2">
-                              No results found for &nbsp;
-                              <strong>&quot;{filterName}&quot;</strong>.
-                              <br /> Try checking for typos or using complete
-                              words.
-                            </Typography>
-                          </Paper>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                   )} */}
-                </Table>
-              </TableContainer>
-            </Scrollbar>
-
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={clubs_data.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Card>
-        </Container>
-
+  const ViewClubInforamtionDialog = () => {
+    return (
+      <>
         <Popover
-          open={popOverOpen}
+          open={ViewClubInfoPopUp}
           anchorEl={open}
           onClose={() => {
-            setpopOverOpen(!true);
+            setViewClubInfoPopUp(!true);
           }}
           anchorOrigin={{
             vertical: "center",
@@ -641,7 +369,321 @@ export default function DashboardAppPage() {
                   size="large"
                   color="inherit"
                   onClick={() => {
-                    setpopOverOpen(!true);
+                    setViewClubInfoPopUp(!true);
+                  }}
+                >
+                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                </IconButton>
+              </Stack>
+              <ViewClubInfo data={selectedClubData} />
+            </Box>
+          </Scrollbar>
+        </Popover>
+      </>
+    );
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
+  };
+
+  const handleToggleSwitch = async (_id, toggleBtn) => {
+    // setswitchToggle(!switchToggle);
+
+    let obj = {
+      isPublished: !toggleBtn,
+    };
+
+    const updateClubtoActive = await clubUpdate(obj, _id);
+    console.log("updateClubtoActive==>", updateClubtoActive);
+    getClubData();
+    // if(updateClubtoActive === true){
+    //   setswitchToggle(!switchToggle);
+    // }else {
+    //   alert("TECHNICAL ERROR ! CONTACT ADMIN ")
+    // }
+    setswitchToggle(!switchToggle);
+  };
+
+  const handleFilterByName = (event) => {
+    setPage(0);
+    setFilterName(event.target.value);
+  };
+
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ClubsData.length) : 0;
+
+  function applySortFilter(array, query) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      // const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    if (query) {
+      return filter(
+        array,
+        (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
+      );
+    }
+    return stabilizedThis.map((el) => el[0]);
+  }
+
+  const isNotFound = !!filterName;
+
+  return (
+    <>
+      <Helmet>
+        <title> Night Table : Admin Dashboard </title>
+      </Helmet>
+
+      <Container
+        sx={{
+          bgcolor: "black",
+          width: "100%",
+          height: "100%",
+          borderTopColor: "red",
+        }}
+        maxWidth="xl"
+      >
+        <Typography variant="h4" sx={{ mb: 5, color: "#E4D0B5" }}>
+          Hi, Welcome back {process.env.REACT_APP_BASE_URL}
+        </Typography>
+        <Container>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={5}
+          >
+            <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
+              Clubs
+            </Typography>
+            <Button
+              onClick={() => {
+                setaddClubPopUp(true);
+              }}
+              variant="contained"
+              sx={{ backgroundColor: "#E4D0B5", color: "black" }}
+              startIcon={<Iconify icon="eva:plus-fill" />}
+            >
+              Add CLub
+            </Button>
+          </Stack>
+
+          <Card>
+            {/* <UserListToolbar
+              numSelected={selected.length}
+              filterName={filterName}
+              onFilterName={handleFilterByName}
+            /> */}
+
+            <Scrollbar>
+              <TableContainer
+                sx={{
+                  minWidth: 800,
+                  backgroundColor: "black",
+                  borderWidth: 1,
+                  borderColor: palette.primary.gold,
+                }}
+              >
+                <Table>
+                  <UserListHead
+                    headLabel={DASHBOARD_TABLE_HEAD}
+                    rowCount={clubs_data.length}
+                    numSelected={selected.length}
+                  />
+                  <TableBody>
+                    {clubs_data?.map((item, index) => {
+                      const { _id, name, website, isPublished, phoneNumber } =
+                        item;
+                      return (
+                        <>
+                          <TableRow
+                            style={{
+                              margin: 20,
+                            }}
+                            bgcolor={"#E4D0B5"}
+                            // hover
+                            key={_id}
+                            tabIndex={-1}
+                          >
+                            <TableCell align="right">
+                              <Stack flexDirection={"row"}>
+                                <IconButton
+                                  size="large"
+                                  color="inherit"
+                                  onClick={() => {
+                                    setselectedClubData(item);
+                                    setViewClubInfoPopUp(true);
+                                  }}
+                                >
+                                  <Iconify icon={"ic:sharp-remove-red-eye"} />
+                                </IconButton>
+                              </Stack>
+                            </TableCell>
+                            <TableCell
+                              bgcolor={"#E4D0B5"}
+                              component="th"
+                              scope="row"
+                              padding="none"
+                            >
+                              <Typography
+                                sx={{ color: "black", px: 2 }}
+                                variant="subtitle2"
+                                noWrap
+                              >
+                                {index + 1}) {name}
+                              </Typography>
+                            </TableCell>
+                            <TableCell align="left">
+                              <Typography sx={{ color: "black" }}>
+                                {phoneNumber}
+                              </Typography>
+                            </TableCell>
+
+                            <TableCell align="left">
+                              <Typography sx={{ color: "black" }}>
+                                {website}
+                              </Typography>
+                            </TableCell>
+                            <TableCell align="left">
+                              <IconButton
+                                size="large"
+                                color="inherit"
+                                onClick={() => {
+                                  setselectedClubData(item)
+                                  setImageDialogPopUp(true);
+                                }}
+                              >
+                                <Iconify icon={"material-symbols:image"} />
+                              </IconButton>
+                            </TableCell>
+                            <TableCell align="right">
+                              <Stack flexDirection={"row"}>
+                                <IconButton
+                                  size="large"
+                                  color="inherit"
+                                  onClick={() => {
+                                    alert("EDIT alert");
+                                  }}
+                                >
+                                  <Iconify icon={"material-symbols:edit"} />
+                                </IconButton>
+                              </Stack>
+                            </TableCell>
+                            <TableCell align="left">
+                              <IconButton
+                                size="large"
+                                color="inherit"
+                                onClick={() => {
+                                  setselectedClubData(item);
+                                  setdeleteDialogOpen(true);
+                                }}
+                              >
+                                <Iconify icon={"ic:baseline-delete"} />
+                              </IconButton>
+                            </TableCell>
+                            <TableCell align="left">
+                              <Switch
+                                checked={isPublished === true ? true : false}
+                                onChange={() => {
+                                 // if (item?.photos >= 3) {
+                                    handleToggleSwitch(
+                                      item._id,
+                                      isPublished === true ? true : false
+                                    );
+                                  // } else {
+                                  //   alert(
+                                  //     "Please Add at least 3 Images to make club Active!"
+                                  //   );
+                                  // }
+                                }}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        </>
+                      );
+                    })}
+                    {emptyRows > 0 && (
+                      <TableRow style={{ height: 53 * emptyRows }}>
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Scrollbar>
+
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+              count={clubs_data.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Card>
+        </Container>
+
+        <Popover
+          open={addClubPopUp}
+          anchorEl={open}
+          onClose={() => {
+            setaddClubPopUp(!true);
+          }}
+          anchorOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          PaperProps={{
+            sx: {
+              p: 1,
+              width: "80%",
+              hieght: "100%",
+              borderColor: "#E4D0B5",
+              // backgroundColor: '#E4D0B5',
+              borderWidth: 1,
+
+              "& .MuiMenuItem-root": {
+                typography: "body2",
+                // borderRadius: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                width: "80%",
+                borderColor: "#E4D0B5",
+                borderWidth: 12,
+              },
+            },
+          }}
+        >
+          <Scrollbar>
+            <Box
+              component="form"
+              sx={{
+                width: "100%",
+                borderWidth: 4,
+                backgroundColor: "black",
+                borderRadius: 4,
+              }}
+              autoComplete="on"
+            >
+              <Stack alignItems={"flex-end"} justifyItems={"right"}>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  onClick={() => {
+                    setaddClubPopUp(!true);
                   }}
                 >
                   <Iconify color={palette.primary.gold} icon={"maki:cross"} />
@@ -757,6 +799,7 @@ export default function DashboardAppPage() {
                         }}
                       />
                     </Stack>
+                    <Stack flexDirection={"row"}></Stack>
                   </Box>
                 </Stack>
                 <Stack flexDirection={"row"}>
@@ -949,15 +992,15 @@ export default function DashboardAppPage() {
                 <Box
                   sx={{
                     width: "100%",
-                    paddingTop: 2,
+                    padding: 2,
                   }}
                 >
                   <Button
                     onClick={() => {
                       addClub();
-                      //setpopOverOpen(true);
+                      //setaddClubPopUp(true);
                     }}
-                    variant="contained"
+                    // variant="contained"
                     sx={{
                       backgroundColor: palette.primary.gold,
                       textAlign: "center",
@@ -978,83 +1021,8 @@ export default function DashboardAppPage() {
         </Popover>
         <DeleteClubDialog />
         <AddImageDialog />
+        <ViewClubInforamtionDialog />
       </Container>
     </>
   );
-}
-
-{
-  /* <Scrollbar>
-<TableContainer sx={{ minWidth: 800, backgroundColor: 'black', borderWidth: 1, borderColor: palette.primary.gold }}>
-  <Table>
-    <UserListHead headLabel={TABLE_HEAD} rowCount={clubsData.length} numSelected={selected.length} />
-    <TableBody>
-      {ClubsData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-        const { id, name, Address, Website, Region } = row;
-        // const selectedUser = selected.indexOf(name) !== -1;
-
-        return (
-          <TableRow bgcolor={'black'} hover key={id} tabIndex={-1} selected={selectedUser}>
-            <TableCell bgcolor={'black'} component="th" scope="row" padding="none">
-              <Stack direction="row" alignItems="center" spacing={2}>
-                <Typography sx={{ color: palette.primary.gold }} variant="subtitle2" noWrap>
-                  {name}
-                </Typography>
-              </Stack>
-            </TableCell>
-
-            <TableCell align="left">
-              <Typography sx={{ color: palette.primary.gold }}>{Address}</Typography>
-            </TableCell>
-            <TableCell align="left">
-              <Typography sx={{ color: palette.primary.gold }}>{Website}</Typography>
-            </TableCell>
-            <TableCell align="left">
-              <Typography sx={{ color: palette.primary.gold }}>{Region}</Typography>
-            </TableCell>
-
-            <TableCell align="right">
-              <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                <Iconify icon={'eva:more-vertical-fill'} />
-              </IconButton>
-              <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                <Iconify icon={'eva:more-vertical-fill'} />
-              </IconButton>
-            </TableCell>
-          </TableRow>
-        );
-      })}
-      {emptyRows > 0 && (
-        <TableRow style={{ height: 53 * emptyRows }}>
-          <TableCell colSpan={6} />
-        </TableRow>
-      )}
-    </TableBody>
-
-    {isNotFound && (
-      <TableBody>
-        <TableRow>
-          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-            <Paper
-              sx={{
-                textAlign: 'center',
-              }}
-            >
-              <Typography variant="h6" paragraph>
-                Not found
-              </Typography>
-
-              <Typography variant="body2">
-                No results found for &nbsp;
-                <strong>&quot;{filterName}&quot;</strong>.
-                <br /> Try checking for typos or using complete words.
-              </Typography>
-            </Paper>
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    )}
-  </Table>
-</TableContainer>
-</Scrollbar> */
 }
