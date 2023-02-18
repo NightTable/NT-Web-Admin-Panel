@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
@@ -31,20 +31,23 @@ import {
   Alert,
   withStyles,
 } from "@mui/material";
+import Switch from "@material-ui/core/Switch";
+
 // components
 import Label from "../components/label";
 import Iconify from "../components/iconify";
 import InfoIcon from "@mui/icons-material/Info";
 import Scrollbar from "../components/scrollbar";
-//dialog 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { TransitionProps } from '@mui/material/transitions';
-
+//dialog
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { TransitionProps } from "@mui/material/transitions";
+// import {REACT_APP_API_ENDPOINT } from '@env'
 //dropdown
+import AddHouseImage from "./Club/AddClubImage";
 
 import Dropdown from "../components/Dropdown";
 // sections
@@ -59,20 +62,10 @@ import { ClubsData } from "src/_mock/club";
 import { Palette } from "@mui/icons-material";
 //jsons
 import { countries } from "src/_mock/countries";
-
 //servie files
 import { getClubs, addClubtoServer } from "src/services/club";
+import { DASHBOARD_TABLE_HEAD } from "../Table_Head/index";
 
-const TABLE_HEAD = [
-  { id: "name", label: "Name", alignRight: false },
-
-  { id: "phone Number", label: "Phone Number", alignRight: false },
-
-  { id: "Address", label: "Address", alignRight: false },
-  { id: "website", label: "Website", alignRight: false },
-  { id: "edit", label: "Edit", alignRight: false },
-  { id: "delete", label: "Delete", alignRight: false },
-];
 export default function DashboardAppPage() {
   const theme = useTheme();
   //States
@@ -84,9 +77,9 @@ export default function DashboardAppPage() {
   const [stripeAccountNo, setstripeAccountNo] = useState("");
   const [WebsiteUrl, setWebsiteUrl] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
-  const [longitude, setlongitude] = useState('')
-  const [latitude, setlatitude] = useState('')
-  
+  const [longitude, setlongitude] = useState("");
+  const [latitude, setlatitude] = useState("");
+
   //add entities
   const [keyValuePairs, setKeyValuePairs] = useState({});
   const [key, setKey] = useState("");
@@ -106,6 +99,19 @@ export default function DashboardAppPage() {
     const newKeyValuePairs = { ...keyValuePairs };
     delete newKeyValuePairs[deleteKey];
     setKeyValuePairs(newKeyValuePairs);
+  };
+
+  const [switchToggle, setswitchToggle] = React.useState(false);
+
+  const handleToggleSwitch = async (_id) => {
+    // setswitchToggle(!switchToggle);
+
+    let obj = {
+      isPublished: false,
+    };
+
+    const updateClubtoActive = await clubUpdate(obj, _id);
+    console.log("updateClubtoActive==>", updateClubtoActive);
   };
 
   const [open, setOpen] = useState(null);
@@ -143,8 +149,8 @@ export default function DashboardAppPage() {
 
   const getGeolocation = async () => {
     navigator.geolocation.getCurrentPosition(function (position) {
-      setlongitude(position.coords.latitude)
-      setlatitude(position.coords.longitude)
+      setlongitude(position.coords.latitude);
+      setlatitude(position.coords.longitude);
       console.log("Latitude is :", position.coords.latitude);
       console.log("Longitude is :", position.coords.longitude);
     });
@@ -159,30 +165,35 @@ export default function DashboardAppPage() {
 
   //add the clubs
   const addClub = async () => {
+    let keys = Object.keys(keyValuePairs);
+    let arr = [];
+    for (let i = 0; i < keys.length; i++) {
+      arr.push({
+        name: keys[i],
+        percentage: keyValuePairs[keys[i]],
+      });
+    }
     var obj = {
       name: clubName,
-      location: [longitude,latitude],
+      location: [longitude, latitude],
       instaHandle: instaHandle,
       phoneNumber: phoneNumber,
-      address: {
-        line1: addressLine,
+      Address: {
+        Address: addressLine,
         City: "Moscow",
-        state: "",
-        country: country,
+        State: "Kashkashi",
+        Country: country,
       },
       website: WebsiteUrl,
-      photos: ["", "", ""],
+      photos: [],
       stripeAccountNumber: stripeAccountNo,
       ownedBy: "god",
-      lineItems: keyValuePairs,
+      lineItems: arr,
     };
-console.log("keyValuePairs====>",keyValuePairs);
-       //const data = await addClubtoServer(obj);
-    console.log("Add Club :data", obj);
+    const data = await addClubtoServer(obj);
   };
 
-
-  //dialog 
+  //dialog
   const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -190,13 +201,10 @@ console.log("keyValuePairs====>",keyValuePairs);
   };
 
   const handleClose = (id) => {
-    if(id == '1'){
-
-    }
-    else(id == '2')
+    if (id == "1") {
+    } else id == "2";
     setdeleteDialogOpen(false);
   };
-
 
   // const handleOpenMenu = (event) => {
   //   setOpen(event.currentTarget);
@@ -268,31 +276,88 @@ console.log("keyValuePairs====>",keyValuePairs);
     }
     return stabilizedThis.map((el) => el[0]);
   }
-
-
-  const DeleteClubDialog = () =>{
-    return(
+  const [ImageDialogPopUp, setImageDialogPopUp] = useState(false);
+  const AddImageDialog = () => {
+    return (
       <>
-       <Dialog
-        open={deleteDialogOpen}
-        keepMounted
-        onClose={handleClose('1')}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            Are you sure want to delete the club, as you won't be able to recover it !
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose(`1`)}>Delete</Button>
-          <Button onClick={handleClose(`2`)}>Close</Button>
-        </DialogActions>
-      </Dialog>
+        <Popover
+          open={ImageDialogPopUp}
+          anchorEl={open}
+          onClose={() => {
+            setImageDialogPopUp(!true);
+          }}
+          anchorOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          PaperProps={{
+            sx: {
+              p: 1,
+              width: "80%",
+              hieght: "100%",
+              borderColor: "#E4D0B5",
+              // backgroundColor: '#E4D0B5',
+              borderWidth: 1,
+
+              "& .MuiMenuItem-root": {
+                typography: "body2",
+                // borderRadius: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                width: "80%",
+                borderColor: "#E4D0B5",
+                borderWidth: 12,
+              },
+            },
+          }}
+        >
+          <Scrollbar>
+            <Box
+              component="form"
+              sx={{
+                width: "100%",
+                borderWidth: 4,
+                backgroundColor: "black",
+                borderRadius: 4,
+              }}
+              autoComplete="on"
+            >
+              <AddHouseImage />
+            </Box>
+          </Scrollbar>
+        </Popover>
       </>
-    )
-  }
+    );
+  };
+
+  const DeleteClubDialog = () => {
+    return (
+      <>
+        <Dialog
+          open={deleteDialogOpen}
+          keepMounted
+          onClose={handleClose("1")}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Are you sure want to delete the club, as you won't be able to
+              recover it !
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose(`1`)}>Delete</Button>
+            <Button onClick={handleClose(`2`)}>Close</Button>
+          </DialogActions>
+        </Dialog>
+      </>
+    );
+  };
 
   const filteredData = applySortFilter(ClubsData, filterName);
   const isNotFound = !!filterName;
@@ -313,7 +378,7 @@ console.log("keyValuePairs====>",keyValuePairs);
         maxWidth="xl"
       >
         <Typography variant="h4" sx={{ mb: 5, color: "#E4D0B5" }}>
-          Hi, Welcome back
+          Hi, Welcome back {process.env.REACT_APP_BASE_URL}
         </Typography>
         <Container>
           <Stack
@@ -355,13 +420,21 @@ console.log("keyValuePairs====>",keyValuePairs);
               >
                 <Table>
                   <UserListHead
-                    headLabel={TABLE_HEAD}
+                    headLabel={DASHBOARD_TABLE_HEAD}
                     rowCount={clubs_data.length}
                     numSelected={selected.length}
                   />
                   <TableBody>
                     {clubs_data?.map((item, index) => {
-                      const { id, name, address, website, phoneNumber } = item;
+                      console.log("item==>", item);
+                      const {
+                        _id,
+                        name,
+                        address,
+                        website,
+                        isPublished,
+                        phoneNumber,
+                      } = item;
                       return (
                         <>
                           <TableRow
@@ -370,9 +443,22 @@ console.log("keyValuePairs====>",keyValuePairs);
                             }}
                             bgcolor={"#E4D0B5"}
                             // hover
-                            key={id}
+                            key={_id}
                             tabIndex={-1}
                           >
+                             <TableCell align="right">
+                              <Stack flexDirection={"row"}>
+                                <IconButton
+                                  size="large"
+                                  color="inherit"
+                                  onClick={() => {
+                                    alert("EDIT ALERT");
+                                  }}
+                                >
+                                  <Iconify icon={"ic:sharp-remove-red-eye"} />
+                                </IconButton>
+                              </Stack>
+                            </TableCell>
                             <TableCell
                               bgcolor={"#E4D0B5"}
                               component="th"
@@ -403,7 +489,18 @@ console.log("keyValuePairs====>",keyValuePairs);
                                 {website}
                               </Typography>
                             </TableCell>
-
+                            <TableCell align="left">
+                              <IconButton
+                                size="large"
+                                color="inherit"
+                                onClick={() => {
+                                  //  handleClickOpen();
+                                  setImageDialogPopUp(true);
+                                }}
+                              >
+                                <Iconify icon={"material-symbols:image"} />
+                              </IconButton>
+                            </TableCell>
                             <TableCell align="right">
                               <Stack flexDirection={"row"}>
                                 <IconButton
@@ -427,6 +524,20 @@ console.log("keyValuePairs====>",keyValuePairs);
                               >
                                 <Iconify icon={"ic:baseline-delete"} />
                               </IconButton>
+                            </TableCell>
+                            <TableCell align="left">
+                              <Switch
+                                checked={isPublished === true ? true : false}
+                                onChange={() => {
+                                  if (photos >= 3) {
+                                    handleToggleSwitch(_id);
+                                  } else {
+                                    Alert(
+                                      "Please Add at least 3 Images to Make club Active!"
+                                    );
+                                  }
+                                }}
+                              />
                             </TableCell>
                           </TableRow>
                         </>
@@ -865,7 +976,8 @@ console.log("keyValuePairs====>",keyValuePairs);
             </Box>
           </Scrollbar>
         </Popover>
-        <DeleteClubDialog/>
+        <DeleteClubDialog />
+        <AddImageDialog />
       </Container>
     </>
   );

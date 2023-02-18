@@ -7,7 +7,7 @@ export const getClubs = async () => {
   return new Promise((resolve, reject) => {
     var config = {
       method: "get",
-      url: `${REACT_APP_BASE_URL}clubs/clubs`,
+      url: `${process.env.REACT_APP_BASE_URL}clubs/clubs`,
       headers: {},
     };
 
