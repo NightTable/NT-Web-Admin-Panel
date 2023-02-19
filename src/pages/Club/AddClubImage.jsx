@@ -133,7 +133,7 @@ const AddClubPosterImage = (data) => {
             margin: 40,
           }}
         >
-          Add House Image
+          Add Club Image
         </Typography>
         <div
           style={{
