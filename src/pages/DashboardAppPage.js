@@ -270,7 +270,7 @@ export default function DashboardAppPage() {
                   size="large"
                   color="inherit"
                   onClick={() => {
-                    setViewClubInfoPopUp(!true);
+                    setImageDialogPopUp(!true);
                   }}
                 >
                   <Iconify color={palette.primary.gold} icon={"maki:cross"} />
