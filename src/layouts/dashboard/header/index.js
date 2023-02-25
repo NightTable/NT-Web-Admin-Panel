@@ -46,7 +46,7 @@ export default function Header({ onOpenNav }) {
       <StyledToolbar>
         <IconButton
           onClick={onOpenNav}
-          sx={{
+          style={{
             mr: 1,
             color: 'white',
             display: { lg: 'none' },
