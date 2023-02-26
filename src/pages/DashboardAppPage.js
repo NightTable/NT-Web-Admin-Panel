@@ -92,11 +92,17 @@ export default function DashboardAppPage() {
   const [state, setstate] = useState("");
 
   const resetStates = async () => {
+    setcountryCode("");
     setcity("");
     setstate("");
     setcountryCode("");
     setcitiesData("");
     setstateData("");
+    setinstaHandle("");
+    setstripeAccountNo("");
+    setphoneNumber("");
+    setWebsiteUrl("");
+    setKeyValuePairs({});
   };
   //instagram
   const [instaHandle, setinstaHandle] = useState("");

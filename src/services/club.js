@@ -108,7 +108,7 @@ export const AddClubImage = (obj) =>{
       url: `${process.env.REACT_APP_BASE_URL}fileUpload/file`,
       
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
       },
       data: obj,
     };
@@ -117,7 +117,7 @@ export const AddClubImage = (obj) =>{
     axios(config)
       .then(function (response) {
 
-        console.log("response",response)
+        console.log("response",response.data)
         return response;
       })
       .catch(function (error) {

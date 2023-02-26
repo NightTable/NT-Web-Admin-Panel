@@ -59,15 +59,16 @@ const AddClubPosterImage = (data) => {
         }
       }
 
-      console.log("imageFiles===>", imageFiles);
+      // console.log("imageFiles===>", imageFiles);
       setImageFiles(imageFiles);
       // setImageFileLength(count);
       // setImageFiles(imageFiles);
     }
   };
+  var Data = new FormData();
 
-  const handleSubmit = () => {
-    console.log("ImageFiles====>", ImageFiles.length);
+  const handleSubmit = async() => {
+    // console.log("ImageFiles====>", ImageFiles.length);
     if (ImageFiles.length === 0) {
       setMessage("Please select at least one image!");
       setVisible(true);
@@ -76,12 +77,27 @@ const AddClubPosterImage = (data) => {
       setVisible(true);
     } else {
       //  SaveImagetoDb();
-      console.log("=======>");
+      // console.log("=======>", ImageFiles);
+      // console.log("DATA", Data);
+      // console.log("data,_id", data.data._id);
+      Data.append("_id", data.data._id);
+      for (let i=0; i<ImageFiles.length; i++) {
+        console.log(ImageFiles[i], "=====file");
+        Data.append("files", ImageFiles[i]);
+      }
+      for (var pair of Data.entries()) {
+        console.log("entered");
+        console.log(pair[0] + ", " + pair[1]);
+      }
 
-      const Response = ImageFiles.forEach((file, index) => {
-        // console.log("element====>", file, index);
-        SaveImagetoDb(file, index);
-      });
+      const clubImg = await AddClubImage(Data);
+      console.log("imspath", clubImg);
+
+
+      // const Response = ImageFiles.map((file, index) => {
+      //   // console.log("element====>", file, index);
+      //   SaveImagetoDb(file, index);
+      // });
       // console.log("=======>", Response);
     }
 
@@ -90,18 +106,9 @@ const AddClubPosterImage = (data) => {
 
   //Save Images in Database
   const SaveImagetoDb = async (file, index) => {
-    var Data = new FormData();
-    console.log("data,_id", data.data._id);
-    // Data.append("_id", data.data._id);
-    Data.append("_id", 'vusheshesh');
-
-    Data.append("files", [file]);y
-    console.log("=========",Data);
-
-    const clubimg = await AddClubImage(Data);
-
+    // Data.append("files", file);
+    // const clubimg = await AddClubImage(Data);
     // console.log("SaveImagetoDb==>", index, UserID, AddFormHouse_id ,`File:`,file);
-
     // // console.log(index === 9 ? "NextScreen" : "") ;
     //   console.log("index === ImageFiles.length", index, ImageFiles.length);
     //   if (index + 1 === ImageFiles.length) {
