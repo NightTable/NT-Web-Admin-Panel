@@ -7,7 +7,7 @@ import useResponsive from '../../hooks/useResponsive';
 // components
 import Logo from '../../components/logo';
 // sections
-import { LoginForm } from '../../sections/auth/login';
+import  LoginForm from '../../components/Auth/LoginForm';
 
 // ----------------------------------------------------------------------
 export const getGreetingMsg = () => {
@@ -54,6 +54,8 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 export default function LoginPage() {
   const mdUp = useResponsive('up', 'md');
+
+
 
   return (
     <>

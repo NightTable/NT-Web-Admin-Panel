@@ -3,7 +3,7 @@ import { NavLink as RouterLink } from 'react-router-dom';
 // @mui
 import { Box, List, ListItemText } from '@mui/material';
 //
-import { StyledNavItem, StyledNavItemIcon } from './styles';
+import { StyledNavItem } from './styles';
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +14,7 @@ NavSection.propTypes = {
 export default function NavSection({ data = [], ...other }) {
   return (
     <Box  sx={{ backgroundColor:'black'}} {...other}>
-      <List disablePadding sx={{ p: 1,color:'#E4D0B5' }}>
+      <List  sx={{ p: 1,color:'#E4D0B5' }}>
         {data.map((item) => (
           <NavItem key={item.title} item={item} />
         ))}
@@ -36,19 +36,19 @@ function NavItem({ item }) {
     <StyledNavItem
       component={RouterLink}
       to={path}
-      sx={{
+      style={{
         '&.active': {
           color: '#E4D0B5',
-          bgcolor: 'action.selected',
           fontWeight: 'fontWeightBold',
-          margin:2,
+          margin:8,
         },
         color:'#E4D0B5',
-        margin:2,
+        margin:8,
+        paddingLeft:20
       }}
     >
 
-      <ListItemText disableTypography primary={title} />
+      <ListItemText  primary={title} />
 
       {info && info}
     </StyledNavItem>

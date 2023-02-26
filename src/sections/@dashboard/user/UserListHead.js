@@ -46,14 +46,18 @@ export default function UserListHead({
   };
 
   return (
-    <TableHead sx={{ backgroundColor: "black" }}>
-      <TableRow sx={{ backgroundColor: "black" }}>
+    <TableHead >
+      <TableRow >
         {headLabel.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.alignRight ? "right" : "left"}
-            //  sortDirection={orderBy === headCell.id ? order : false}
-          >
+           <TableCell
+           sx={{
+             bgcolor: 'black',
+             color:'#E4D0B5',borderColor:'red'
+           }}
+             key={headCell.id}
+             align={headCell.alignRight ? "right" : "left"}
+             //  sortDirection={orderBy === headCell.id ? order : false}
+           >
             <TableSortLabel>{headCell.label}</TableSortLabel>
           </TableCell>
         ))}

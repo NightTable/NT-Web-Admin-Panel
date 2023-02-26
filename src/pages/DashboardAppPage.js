@@ -28,7 +28,6 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
-  
   withStyles,
 } from "@mui/material";
 import Switch from "@material-ui/core/Switch";
@@ -44,8 +43,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { TransitionProps } from "@mui/material/transitions";
-// import {REACT_APP_API_ENDPOINT } from '@env'
 //dropdown
 import AddClubPosterImage from "./Club/AddClubImage";
 
@@ -67,6 +64,11 @@ import {
   clubUpdate,
   deleteClub,
 } from "src/services/club";
+import {
+  getCountries,
+  getStatesOfCountry,
+  citiesOfStates,
+} from "../services/countries";
 import { DASHBOARD_TABLE_HEAD } from "../Table_Head/index";
 import ViewClubInfo from "./Club/ViewClubInfo";
 
@@ -76,7 +78,27 @@ export default function DashboardAppPage() {
 
   const [clubName, setclubName] = useState("");
   const [addressLine, setaddressLine] = useState("");
-  const [country, setcountry] = useState();
+  //country data
+  const [country, setcountry] = useState("");
+  const [countryData, setcountryData] = useState([]);
+  const [countryCode, setcountryCode] = useState("");
+  //cities data
+  const [citiesData, setcitiesData] = useState("");
+  const [citiesCodeData, setcitiesCodeData] = useState("");
+  const [city, setcity] = useState("");
+  //states data
+  const [stateData, setstateData] = useState([]);
+  const [stateCode, setstateCode] = useState("");
+  const [state, setstate] = useState("");
+
+  const resetStates = async () => {
+    setcity("");
+    setstate("");
+    setcountryCode("");
+    setcitiesData("");
+    setstateData("");
+  };
+  //instagram
   const [instaHandle, setinstaHandle] = useState("");
   const [stripeAccountNo, setstripeAccountNo] = useState("");
   const [WebsiteUrl, setWebsiteUrl] = useState("");
@@ -128,9 +150,61 @@ export default function DashboardAppPage() {
     loadData();
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      if (countryCode != "") {
+        let obj = {
+          countryCode: countryCode,
+        };
+        console.log("obj===>", obj);
+
+        const statesData = await getStatesOfCountry(obj);
+        let arr = [];
+        statesData.forEach((element) => {
+          arr.push({
+            label: element.name,
+            value: element.isoCode,
+            phoneNumberCode: element.phoneNumberCode,
+          });
+        });
+        setstateData(arr);
+        console.log("statesData===>", statesData);
+      }
+    }
+
+    fetchData();
+  }, [countryCode]);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (stateCode != "") {
+        let obj = {
+          stateCode: stateCode,
+          countryCode: countryCode,
+        };
+        console.log("obj===>", obj);
+
+        const citiesData = await citiesOfStates(obj);
+        let arr = [];
+        citiesData.forEach((element) => {
+          arr.push({
+            label: element.name,
+            value: element.isoCode,
+            phoneNumberCode: element.phoneNumberCode,
+          });
+        });
+        setcitiesData(arr);
+        console.log("citiesData===>", citiesData);
+      }
+    }
+
+    fetchData();
+  }, [stateCode]);
+  //getcountries
+
   const checkLocationPermission = async () => {
     if ("geolocation" in navigator) {
-      console.log("Available");
+      // console.log("Available");
       getGeolocation();
     } else {
       console.log("Not Available");
@@ -141,21 +215,33 @@ export default function DashboardAppPage() {
     navigator.geolocation.getCurrentPosition(function (position) {
       setlongitude(position.coords.latitude);
       setlatitude(position.coords.longitude);
-      console.log("Latitude is :", position.coords.latitude);
-      console.log("Longitude is :", position.coords.longitude);
     });
   };
 
   // get the clubs
   const loadData = async () => {
     checkLocationPermission();
-    getClubData();
+    const clubData = await getClubData();
+
+    const countriesData = await getCountries();
+    let arr = [];
+    countriesData.forEach((element) => {
+      arr.push({
+        label: element.name,
+        value: element.isoCode,
+        phoneNumberCode: element.phoneNumberCode,
+      });
+    });
+
+    //   console.log("arr====>", arr);
+    setcountryData(arr);
   };
 
   const getClubData = async () => {
     const data = await getClubs();
     setclubs_data(data);
   };
+
   //API CALL : ADD CLUB
   const addClub = async () => {
     let keys = Object.keys(keyValuePairs);
@@ -173,8 +259,8 @@ export default function DashboardAppPage() {
       phoneNumber: phoneNumber,
       Address: {
         Address: addressLine,
-        City: "Moscow",
-        State: "Kashkashi",
+        City: city,
+        State: state,
         Country: country,
       },
       website: WebsiteUrl,
@@ -183,10 +269,16 @@ export default function DashboardAppPage() {
       ownedBy: "god",
       lineItems: arr,
     };
+
     const data = await addClubtoServer(obj);
-    console.log("data===>", data);
     if (data?.status === true) {
       alert("Club Added");
+
+      //update the club array
+      const updateClubArr = [...clubs_data, data.data];
+      setclubs_data(updateClubArr);
+      //resetting the states to inital
+      resetStates();
       setaddClubPopUp(false);
     } else {
       alert("ERROR IN ADDING CLUB ");
@@ -211,7 +303,7 @@ export default function DashboardAppPage() {
         selectedClubData,
         selectedClubData._id
       );
-      console.log("clubtoDelete",clubtoDelete)
+      console.log("clubtoDelete", clubtoDelete);
     } else id == "2";
     setdeleteDialogOpen(false);
   };
@@ -265,7 +357,7 @@ export default function DashboardAppPage() {
               }}
               autoComplete="on"
             >
-                <Stack alignItems={"flex-end"} justifyItems={"right"}>
+              <Stack alignItems={"flex-end"} justifyItems={"right"}>
                 <IconButton
                   size="large"
                   color="inherit"
@@ -290,8 +382,8 @@ export default function DashboardAppPage() {
         <Dialog
           open={deleteDialogOpen}
           keepMounted
-          onClose={()=>{
-            setdeleteDialogOpen(!deleteDialogOpen)
+          onClose={() => {
+            setdeleteDialogOpen(!deleteDialogOpen);
           }}
           aria-describedby="alert-dialog-slide-description"
         >
@@ -303,12 +395,20 @@ export default function DashboardAppPage() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={()=>{
-              handleClose(`1`)
-            }}>Delete</Button>
-            <Button onClick={()=>{
-              handleClose(`2`)
-            }}>Close</Button>
+            <Button
+              onClick={() => {
+                handleClose(`1`);
+              }}
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={() => {
+                handleClose(`2`);
+              }}
+            >
+              Close
+            </Button>
           </DialogActions>
         </Dialog>
       </>
@@ -451,7 +551,7 @@ export default function DashboardAppPage() {
         }}
         maxWidth="xl"
       >
-        <Typography variant="h4" sx={{ mb: 5, color: "#E4D0B5" }}>
+        <Typography variant="h4" sx={{ margin: 3, color: "#E4D0B5" }}>
           Hi, Welcome back {process.env.REACT_APP_BASE_URL}
         </Typography>
         <Container>
@@ -468,8 +568,14 @@ export default function DashboardAppPage() {
               onClick={() => {
                 setaddClubPopUp(true);
               }}
-              variant="contained"
-              sx={{ backgroundColor: "#E4D0B5", color: "black" }}
+              style={{
+                backgroundColor: "#E4D0B5",
+                color: "black",
+                padding: 8,
+                borderRadius: 10,
+              }}
+              variant="Outlined"
+              // sx={{ backgroundColor: "#E4D0B5", color: "black" }}
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
               Add CLub
@@ -557,7 +663,7 @@ export default function DashboardAppPage() {
                                 size="large"
                                 color="inherit"
                                 onClick={() => {
-                                  setselectedClubData(item)
+                                  setselectedClubData(item);
                                   setImageDialogPopUp(true);
                                 }}
                               >
@@ -593,11 +699,11 @@ export default function DashboardAppPage() {
                               <Switch
                                 checked={isPublished === true ? true : false}
                                 onChange={() => {
-                                 // if (item?.photos >= 3) {
-                                    handleToggleSwitch(
-                                      item._id,
-                                      isPublished === true ? true : false
-                                    );
+                                  // if (item?.photos >= 3) {
+                                  handleToggleSwitch(
+                                    item._id,
+                                    isPublished === true ? true : false
+                                  );
                                   // } else {
                                   //   alert(
                                   //     "Please Add at least 3 Images to make club Active!"
@@ -649,7 +755,7 @@ export default function DashboardAppPage() {
           PaperProps={{
             sx: {
               p: 1,
-              width: "80%",
+              width: "90%",
               hieght: "100%",
               borderColor: "#E4D0B5",
               // backgroundColor: '#E4D0B5',
@@ -672,7 +778,7 @@ export default function DashboardAppPage() {
               component="form"
               sx={{
                 width: "100%",
-                borderWidth: 4,
+                borderWidth: 2,
                 backgroundColor: "black",
                 borderRadius: 4,
               }}
@@ -779,27 +885,34 @@ export default function DashboardAppPage() {
                     <Stack flexDirection={"row"}>
                       <Dropdown
                         textinputLabel={"Select Country"}
-                        data={countries}
+                        data={countryData}
                         changedValue={(item) => {
-                          setcountry(item.label);
-                        }}
-                      />
-                      <Dropdown
-                        textinputLabel={"Select State"}
-                        data={countries}
-                        changedValue={(item) => {
-                          setcountry(item.label);
-                        }}
-                      />
-                      <Dropdown
-                        textinputLabel={"Select City"}
-                        data={countries}
-                        changedValue={(item) => {
+                          console.log("item======>", item);
+                          setcountryCode(item.value);
                           setcountry(item.label);
                         }}
                       />
                     </Stack>
-                    <Stack flexDirection={"row"}></Stack>
+                    <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
+                      <Dropdown
+                        textinputLabel={"Select State"}
+                        data={stateData}
+                        changedValue={(item) => {
+                          setstateCode(item.value);
+                          setstate(item.label);
+                        }}
+                      />
+                    </Stack>
+                    <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
+                      <Dropdown
+                        textinputLabel={"Select City"}
+                        data={citiesData}
+                        changedValue={(item) => {
+                          setcitiesCodeData(item.value);
+                          setcity(item.label);
+                        }}
+                      />
+                    </Stack>
                   </Box>
                 </Stack>
                 <Stack flexDirection={"row"}>
@@ -903,14 +1016,16 @@ export default function DashboardAppPage() {
 
                     <Box sx={{ width: "30%" }}>
                       <Button
-                        sx={{
+                        style={{
                           backgroundColor: "#E4D0B5",
                           color: "black",
                           fontSize: 14,
                           fontWeight: "600",
                         }}
                         variant="contained"
-                        onClick={handleAddKeyValue}
+                        onClick={() => {
+                          handleAddKeyValue();
+                        }}
                       >
                         Add
                       </Button>
@@ -930,7 +1045,7 @@ export default function DashboardAppPage() {
                         inputProps={{ style: { color: palette.primary.gold } }}
                       />
                     </Box>
-                    <Box sx={{ width: "50%" }}>
+                    <Box sx={{ width: "50%", paddingLeft: 1 }}>
                       <TextField
                         variant="outlined"
                         label="Value"
@@ -947,12 +1062,13 @@ export default function DashboardAppPage() {
                   {Object.entries(keyValuePairs).map(([key, value], index) => (
                     <>
                       <Stack flexDirection={"row"}>
-                        <Box sx={{ width: "50%" }}>
+                        <Box sx={{ width: "40%" }}>
                           <Typography
                             sx={{
                               color: palette.primary.gold,
-                              fontSize: 16,
+                              fontSize: 14,
                               fontWeight: "600",
+                              padding: 2,
                             }}
                             key={key}
                           >
@@ -964,17 +1080,17 @@ export default function DashboardAppPage() {
                             <Typography
                               sx={{
                                 color: palette.primary.gold,
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: "600",
-                                paddingRight: 2,
+                                padding: 2,
                               }}
                               key={key}
                             >
                               Value: {value} %
                             </Typography>
                             <Button
-                              sx={{
-                                color: palette.primary.gold,
+                              style={{
+                                color: "red",
                                 fontSize: 14,
                                 fontWeight: "600",
                               }}
@@ -1001,7 +1117,7 @@ export default function DashboardAppPage() {
                       //setaddClubPopUp(true);
                     }}
                     // variant="contained"
-                    sx={{
+                    style={{
                       backgroundColor: palette.primary.gold,
                       textAlign: "center",
                       fontSize: 16,

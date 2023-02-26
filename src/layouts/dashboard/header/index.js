@@ -48,11 +48,11 @@ export default function Header({ onOpenNav }) {
           onClick={onOpenNav}
           style={{
             mr: 1,
-            color: 'white',
+            color: '#E4D0B5',
             display: { lg: 'none' },
           }}
         >
-          <Iconify icon="eva:menu-2-fill" />
+          <Iconify width={30} icon="eva:menu-2-fill" />
         </IconButton>
 
         <Box sx={{ flexGrow: 1 }} />

@@ -1,8 +1,5 @@
 import axios, * as others from "axios";
 
-// const REACT_APP_BASE_URL = "http://192.168.1.3:3000/api/";
-// const REACT_APP_BASE_URL = "http://192.168.1.4:3000/api/";
-
 export const getClubs = async () => {
   return new Promise((resolve, reject) => {
     var config = {
@@ -23,30 +20,33 @@ export const getClubs = async () => {
 };
 
 export const addClubtoServer = async (obj) => {
-  try {
-    var config = {
-      method: "post",
-      url: `${process.env.REACT_APP_BASE_URL}clubs/createClub`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: obj,
-    };
-    // console.log("config====>", config);
-
-    axios(config)
-      .then(function (response) {
-        // console.log(JSON.stringify(response.data));
-        return response.data;
-      })
-      .catch(function (error) {
-        console.log("error",error);
-        return error
-
-      });
-  } catch (error) {
-    return error
-  }
+  return new Promise(async (resolve, reject) => {
+    try {
+      var config = {
+        method: "post",
+        url: `${process.env.REACT_APP_BASE_URL}clubs/createClub`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: obj,
+      };
+      // console.log("config====>", config);
+  
+      axios(config)
+        .then(function (response) {
+          // console.log(JSON.stringify(response.data));
+          resolve( response.data)
+        })
+        .catch(function (error) {
+          console.log("error",error);
+          return error
+  
+        });
+    } catch (error) {
+      return error
+    }
+  })
+  
 };
 
 export const clubUpdate = async (obj, clubId) => {

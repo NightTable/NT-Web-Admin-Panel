@@ -92,8 +92,11 @@ const AddClubPosterImage = (data) => {
   const SaveImagetoDb = async (file, index) => {
     var Data = new FormData();
     console.log("data,_id", data.data._id);
-    Data.append("_id", data.data._id);
-    Data.append("files", file);
+    // Data.append("_id", data.data._id);
+    Data.append("_id", 'vusheshesh');
+
+    Data.append("files", [file]);y
+    console.log("=========",Data);
 
     const clubimg = await AddClubImage(Data);
 

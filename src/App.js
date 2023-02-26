@@ -12,7 +12,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <ScrollToTop />
-      <StyledChart />
+      {/* <StyledChart /> */}
       <Router />
     </ThemeProvider>
   );
