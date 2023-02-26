@@ -1,41 +1,44 @@
 import axios, * as others from "axios";
 
-export const loginApi = async (no) => {
-  try {
-    var data = JSON.stringify({
-      phoneNumberParam: no,
-    });
-
-    var config = {
-      method: "post",
-      url: `${process.env.REACT_APP_BASE_URL}auth/generateOTP`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-
-    console.log("config===>", config);
-
-    axios(config)
-      .then((response) => {
-        console.log(JSON.stringify(response));
-        return response.data;
-      })
-      .catch(function (error) {
-        console.log(error);
+export const loginApi =  (no) => {
+  return new Promise(async(resolve, reject) => {
+    try {
+      var data = JSON.stringify({
+        phoneNumberParam: no,
       });
-  } catch (error) {
-    return error;
-  }
+  
+      var config = {
+        method: "post",
+        url: `${process.env.REACT_APP_BASE_URL}auth/generateOTP`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+  
+      console.log("config===>", config);
+  
+      axios(config)
+        .then((response) => {
+          resolve(response.data)
+        })
+        .catch(function (error) {
+          console.log(error);
+          reject(error.message)
+        });
+    } catch (error) {
+      reject(error.message)
+    }
+  })
+  
 };
 
-export const otpVerify = async (no) => {
+export const otpVerify = async (no , reqOtp) => {
   console.log("no =====>", no);
   try {
     var data = JSON.stringify({
       reqPhoneNumber: no,
-      reqOtp: "989402",
+      reqOtp: reqOtp,
       isrepresentative: true,
     });
 
