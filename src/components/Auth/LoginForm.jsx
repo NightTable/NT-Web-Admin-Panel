@@ -19,7 +19,7 @@ export default function LoginForm() {
   const [phoneNumber, setphoneNumber] = useState("");
   const [countryCode, setcountryCode] = useState("");
   const [otp, setotp] = useState("");
-  const [otpField, setotpField] = useState(false);
+  const [otpField, setotpField] = useState(true);
 
   useEffect(() => {
     getCountryCode();
@@ -129,29 +129,57 @@ export default function LoginForm() {
         color="info"
         type="submit"
         variant="outlined"
-        loadingPosition={"center"}
         onClick={() => (otpField === false ? handleClick() : verifyOtp())}
       >
         {otpField === true ? "Login" : "Verify Otp"}
       </LoadingButton>
-
-      <Box
-        style={{
-          paddingTop: 14,
-          alignItems: "flex-end",
-        }}
-      >
-        <Button
-        style={{
-          color:"#E4D0B5"
-        }}
-          type="submit"
-          variant='text'
-          onClick={() => setotp(true)}
-        >
-          Change Number
-        </Button>
-      </Box>
+      {otpField === true ? (
+        <></>
+      ) : (
+        <>
+          <Box
+            style={{
+              paddingTop: 14,
+              alignItems: "flex-end",
+            }}
+          >
+            <Button
+              style={{
+                color: "#E4D0B5",
+              }}
+              type="submit"
+              variant="text"
+              onClick={() => setotpField(true)}
+            >
+              Change Number
+            </Button>
+          </Box>
+        </>
+      )}
     </>
   );
 }
+
+const styles = {
+  root: {
+    // - The TextField-root
+    border: "solid 3px #0ff", // - For demonstration: set the TextField-root border
+    padding: "3px", // - Make the border more distinguishable
+
+    // (Note: space or no space after `&` matters. See SASS "parent selector".)
+    "& .MuiOutlinedInput-root": {
+      // - The Input-root, inside the TextField-root
+      "& fieldset": {
+        // - The <fieldset> inside the Input-root
+        borderColor: "pink", // - Set the Input border
+      },
+      "&:hover fieldset": {
+        borderColor: "yellow", // - Set the Input border when parent has :hover
+      },
+      "&.Mui-focused fieldset": {
+        // - Set the Input border when parent is focused
+        borderColor: "green",
+      },
+    },
+  },
+};
