@@ -305,11 +305,20 @@ export default function DashboardAppPage() {
   //close pop-up
   const handleClose = async (id) => {
     if (id == "1") {
+      const a = clubs_data.filter((item) => {
+        return item._id !== selectedClubData._id;
+      });
+      console.log("clubs_data======>", a);
+
+  //    console.log("selectedClubData==>", selectedClubData);
+
       const clubtoDelete = await deleteClub(
         selectedClubData,
         selectedClubData._id
       );
-      console.log("clubtoDelete", clubtoDelete);
+
+      setclubs_data(a)
+      // console.log("clubtoDelete", clubtoDelete);
     } else id == "2";
     setdeleteDialogOpen(false);
   };

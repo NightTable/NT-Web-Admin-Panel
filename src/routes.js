@@ -17,7 +17,7 @@ export default function Router() {
     {
       path: "/",
       element: <LoginPage />,
-       index: true,
+      // index: true,
     },
     {
       path: "/dashboard",
