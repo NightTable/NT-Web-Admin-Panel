@@ -17,7 +17,7 @@ export default function Router() {
     {
       path: "/",
       element: <LoginPage />,
-      index: true,
+       index: true,
     },
     {
       path: "/dashboard",
@@ -29,6 +29,7 @@ export default function Router() {
         { path: "products", element: <ProductsPage /> },
         { path: "blog", element: <BlogPage /> },
       ],
+
     },
 
     {

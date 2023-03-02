@@ -50,7 +50,7 @@ export default function LoginForm() {
       if (triggerOtp?.status === undefined) {
         alert("Something went wrong ");
       } else if (triggerOtp?.status === true) {
-        setotpField(true);
+        setotpField(false);
       }
     }
 
@@ -80,7 +80,7 @@ export default function LoginForm() {
           />
           <TextField
             className={styles.textField}
-            name="phone"
+            // name="phone"
             label="Phone Number"
             inputProps={{
               style: { color: palette.primary.gold, backgroundColor: "black" },
@@ -111,7 +111,7 @@ export default function LoginForm() {
               onChange={(text) => {
                 setotp(text);
               }}
-              numInputs={4}
+              numInputs={6}
               separator={<span>-</span>}
             />
           </Stack>
@@ -129,7 +129,7 @@ export default function LoginForm() {
         color="info"
         type="submit"
         variant="outlined"
-        onClick={() => (otpField === false ? handleClick() : verifyOtp())}
+        onClick={() => (otpField === true ? handleClick() : verifyOtp())}
       >
         {otpField === true ? "Login" : "Verify Otp"}
       </LoadingButton>

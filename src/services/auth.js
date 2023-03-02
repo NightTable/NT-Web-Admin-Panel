@@ -44,7 +44,7 @@ export const otpVerify = async (no , reqOtp) => {
 
     var config = {
       method: "post",
-      url: `${process.env.REACT_APP_BASE_URL}api/auth/verifyOTP`,
+      url: `${process.env.REACT_APP_BASE_URL}auth/verifyOTP`,
       headers: {
         "Content-Type": "application/json",
       },
