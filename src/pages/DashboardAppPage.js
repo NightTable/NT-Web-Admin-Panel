@@ -310,14 +310,14 @@ export default function DashboardAppPage() {
       });
       console.log("clubs_data======>", a);
 
-  //    console.log("selectedClubData==>", selectedClubData);
+      //    console.log("selectedClubData==>", selectedClubData);
 
       const clubtoDelete = await deleteClub(
         selectedClubData,
         selectedClubData._id
       );
 
-      setclubs_data(a)
+      setclubs_data(a);
       // console.log("clubtoDelete", clubtoDelete);
     } else id == "2";
     setdeleteDialogOpen(false);
@@ -507,21 +507,24 @@ export default function DashboardAppPage() {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const handleToggleSwitch = async (_id, toggleBtn) => {
+  const handleToggleSwitch = async (item, toggleBtn) => {
     // setswitchToggle(!switchToggle);
-
+    // console.log("item===>", item);
     let obj = {
       isPublished: !toggleBtn,
     };
 
-    const updateClubtoActive = await clubUpdate(obj, _id);
+    const updateClubtoActive = await clubUpdate(obj, item._id);
     console.log("updateClubtoActive==>", updateClubtoActive);
-    getClubData();
-    // if(updateClubtoActive === true){
-    //   setswitchToggle(!switchToggle);
-    // }else {
-    //   alert("TECHNICAL ERROR ! CONTACT ADMIN ")
-    // }
+    let index = clubs_data.findIndex((e) => e._id == item._id);
+    clubs_data[index].isPublished = !toggleBtn;
+
+    if (updateClubtoActive.data.status === true) {
+      setswitchToggle(!switchToggle);
+      getClubData()
+    } else {
+      alert("TECHNICAL ERROR ! CONTACT ADMIN ");
+    }
     setswitchToggle(!switchToggle);
   };
 
@@ -530,16 +533,22 @@ export default function DashboardAppPage() {
     setFilterName(event.target.value);
   };
 
+  function getComparator(order, orderBy) {
+    return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ClubsData.length) : 0;
 
-  function applySortFilter(array, query) {
+  function applySortFilter(array, comparator, query) {
     const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      // const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
-    });
+    // stabilizedThis.sort((a, b) => {
+    //   // const order = comparator(a[0], b[0]);
+    //   if (order !== 0) return order;
+    //   return a[1] - b[1];
+    // });
     if (query) {
       return filter(
         array,
@@ -548,8 +557,13 @@ export default function DashboardAppPage() {
     }
     return stabilizedThis.map((el) => el[0]);
   }
+  const filteredData = applySortFilter(
+    clubs_data,
+    getComparator(order, orderBy),
+    filterName
+  );
 
-  const isNotFound = !!filterName;
+  const isNotFound = !filteredData.length && !!filterName;
 
   return (
     <>
@@ -557,15 +571,7 @@ export default function DashboardAppPage() {
         <title> Night Table : Admin Dashboard </title>
       </Helmet>
 
-      <Container
-        sx={{
-          bgcolor: "black",
-          width: "100%",
-          height: "100%",
-          borderTopColor: "red",
-        }}
-        maxWidth="xl"
-      >
+      <Container maxWidth="xl">
         <Typography variant="h4" sx={{ margin: 3, color: "#E4D0B5" }}>
           Hi, Welcome back {process.env.REACT_APP_BASE_URL}
         </Typography>
@@ -593,25 +599,32 @@ export default function DashboardAppPage() {
               // sx={{ backgroundColor: "#E4D0B5", color: "black" }}
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
-              Add CLub
+              Add Club
             </Button>
           </Stack>
 
-          <Card>
-            {/* <UserListToolbar
+          <Container
+            style={{
+              borderWidth: 1,
+              backgroundColor: "#E4D0B5",
+              padding: 1,
+              borderRadius: 4,
+            }}
+          >
+            <UserListToolbar
               numSelected={selected.length}
               filterName={filterName}
               onFilterName={handleFilterByName}
-            /> */}
+            />
 
             <Scrollbar>
               <TableContainer
-                sx={{
-                  minWidth: 800,
-                  backgroundColor: "black",
-                  borderWidth: 1,
-                  borderColor: palette.primary.gold,
-                }}
+              // style={{
+              //   minWidth: 800,
+              //   backgroundColor: "red",
+              //   borderWidth: 1,
+              //   borderColor: palette.primary.gold,
+              // }}
               >
                 <Table>
                   <UserListHead
@@ -620,128 +633,168 @@ export default function DashboardAppPage() {
                     numSelected={selected.length}
                   />
                   <TableBody>
-                    {clubs_data?.map((item, index) => {
-                      const { _id, name, website, isPublished, phoneNumber } =
-                        item;
-                      return (
-                        <>
-                          <TableRow
-                            style={{
-                              margin: 20,
-                            }}
-                            bgcolor={"#E4D0B5"}
-                            // hover
-                            key={_id}
-                            tabIndex={-1}
-                          >
-                            <TableCell align="right">
-                              <Stack flexDirection={"row"}>
+                    {filteredData
+                      ?.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((item, index) => {
+                        const { _id, name, website, isPublished, phoneNumber } =
+                          item;
+                        return (
+                          <>
+                            <TableRow
+                              style={{
+                                margin: 20,
+                              }}
+                              bgcolor={"#E4D0B5"}
+                              // hover
+                              key={_id}
+                              tabIndex={-1}
+                            >
+                              <TableCell align="right">
+                                <Stack flexDirection={"row"}>
+                                  <IconButton
+                                    size="large"
+                                    color="inherit"
+                                    onClick={() => {
+                                      setselectedClubData(item);
+                                      setViewClubInfoPopUp(true);
+                                    }}
+                                  >
+                                    <Iconify icon={"ic:sharp-remove-red-eye"} />
+                                  </IconButton>
+                                </Stack>
+                              </TableCell>
+                              <TableCell
+                                bgcolor={"#E4D0B5"}
+                                component="th"
+                                scope="row"
+                                padding="none"
+                              >
+                                <Typography
+                                  sx={{ color: "black", px: 2 }}
+                                  variant="subtitle2"
+                                  noWrap
+                                >
+                                  {index + 1}) {name}
+                                </Typography>
+                              </TableCell>
+                              <TableCell align="left">
+                                <Typography sx={{ color: "black" }}>
+                                  {phoneNumber}
+                                </Typography>
+                              </TableCell>
+
+                              <TableCell align="left">
+                                <Typography sx={{ color: "black" }}>
+                                  {website}
+                                </Typography>
+                              </TableCell>
+                              <TableCell align="left">
                                 <IconButton
                                   size="large"
                                   color="inherit"
                                   onClick={() => {
                                     setselectedClubData(item);
-                                    setViewClubInfoPopUp(true);
+                                    setImageDialogPopUp(true);
                                   }}
                                 >
-                                  <Iconify icon={"ic:sharp-remove-red-eye"} />
+                                  <Iconify icon={"material-symbols:image"} />
                                 </IconButton>
-                              </Stack>
-                            </TableCell>
-                            <TableCell
-                              bgcolor={"#E4D0B5"}
-                              component="th"
-                              scope="row"
-                              padding="none"
-                            >
-                              <Typography
-                                sx={{ color: "black", px: 2 }}
-                                variant="subtitle2"
-                                noWrap
-                              >
-                                {index + 1}) {name}
-                              </Typography>
-                            </TableCell>
-                            <TableCell align="left">
-                              <Typography sx={{ color: "black" }}>
-                                {phoneNumber}
-                              </Typography>
-                            </TableCell>
-
-                            <TableCell align="left">
-                              <Typography sx={{ color: "black" }}>
-                                {website}
-                              </Typography>
-                            </TableCell>
-                            <TableCell align="left">
-                              <IconButton
-                                size="large"
-                                color="inherit"
-                                onClick={() => {
-                                  setselectedClubData(item);
-                                  setImageDialogPopUp(true);
-                                }}
-                              >
-                                <Iconify icon={"material-symbols:image"} />
-                              </IconButton>
-                            </TableCell>
-                            <TableCell align="right">
-                              <Stack flexDirection={"row"}>
+                              </TableCell>
+                              <TableCell align="right">
+                                <Stack flexDirection={"row"}>
+                                  <IconButton
+                                    size="large"
+                                    color="inherit"
+                                    onClick={() => {
+                                      alert("EDIT alert");
+                                    }}
+                                  >
+                                    <Iconify icon={"material-symbols:edit"} />
+                                  </IconButton>
+                                </Stack>
+                              </TableCell>
+                              <TableCell align="left">
                                 <IconButton
                                   size="large"
                                   color="inherit"
                                   onClick={() => {
-                                    alert("EDIT alert");
+                                    setselectedClubData(item);
+                                    setdeleteDialogOpen(true);
                                   }}
                                 >
-                                  <Iconify icon={"material-symbols:edit"} />
+                                  <Iconify icon={"ic:baseline-delete"} />
                                 </IconButton>
-                              </Stack>
-                            </TableCell>
-                            <TableCell align="left">
-                              <IconButton
-                                size="large"
-                                color="inherit"
-                                onClick={() => {
-                                  setselectedClubData(item);
-                                  setdeleteDialogOpen(true);
-                                }}
-                              >
-                                <Iconify icon={"ic:baseline-delete"} />
-                              </IconButton>
-                            </TableCell>
-                            <TableCell align="left">
-                              <Switch
-                                checked={isPublished === true ? true : false}
-                                onChange={() => {
-                                  // if (item?.photos >= 3) {
-                                  handleToggleSwitch(
-                                    item._id,
-                                    isPublished === true ? true : false
-                                  );
-                                  // } else {
-                                  //   alert(
-                                  //     "Please Add at least 3 Images to make club Active!"
-                                  //   );
-                                  // }
-                                }}
-                              />
-                            </TableCell>
-                          </TableRow>
-                        </>
-                      );
-                    })}
+                              </TableCell>
+                              <TableCell align="left">
+                                <Switch
+                                  checked={isPublished === true ? true : false}
+                                  onChange={() => {
+                                    // if (item?.photos >= 3) {
+                                    handleToggleSwitch(
+                                      item,
+                                      isPublished === true ? true : false
+                                    );
+                                    // } else {
+                                    //   alert(
+                                    //     "Please Add at least 3 Images to make club Active!"
+                                    //   );
+                                    // }
+                                  }}
+                                />
+                              </TableCell>
+                            </TableRow>
+                          </>
+                        );
+                      })}
                     {emptyRows > 0 && (
                       <TableRow style={{ height: 53 * emptyRows }}>
                         <TableCell colSpan={6} />
                       </TableRow>
                     )}
                   </TableBody>
+                  {isNotFound && (
+                    <TableBody
+                      style={{
+                        backgroundColor: "#E4D0B5",
+                      }}
+                    >
+                      <TableRow>
+                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          <Paper
+                            sx={{
+                              textAlign: "center",
+                            }}
+                            style={{
+                              backgroundColor: "#E4D0B5",
+                            }}
+                          >
+                            <Typography variant="h6" paragraph>
+                              Not found
+                            </Typography>
+
+                            <Typography variant="body2">
+                              No results found for &nbsp;
+                              <strong>&quot;{filterName}&quot;</strong>.
+                              <br /> Try checking for typos or using complete
+                              words.
+                            </Typography>
+                          </Paper>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
                 </Table>
               </TableContainer>
             </Scrollbar>
 
             <TablePagination
+              style={{
+                backgroundColor: "black",
+                color: "white",
+              }}
               rowsPerPageOptions={[5, 10, 25]}
               component="div"
               count={clubs_data.length}
@@ -750,7 +803,7 @@ export default function DashboardAppPage() {
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
-          </Card>
+          </Container>
         </Container>
 
         <Popover

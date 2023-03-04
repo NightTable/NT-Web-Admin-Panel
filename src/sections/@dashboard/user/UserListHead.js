@@ -52,7 +52,8 @@ export default function UserListHead({
            <TableCell
            sx={{
              bgcolor: 'black',
-             color:'#E4D0B5',borderColor:'red'
+             color:'#E4D0B5',
+             borderColor:'red'
            }}
              key={headCell.id}
              align={headCell.alignRight ? "right" : "left"}

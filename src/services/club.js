@@ -31,47 +31,48 @@ export const addClubtoServer = async (obj) => {
         data: obj,
       };
       // console.log("config====>", config);
-  
+
       axios(config)
         .then(function (response) {
           // console.log(JSON.stringify(response.data));
-          resolve( response.data)
+          resolve(response.data);
         })
         .catch(function (error) {
-          console.log("error",error);
-          return error
-  
+          console.log("error", error);
+          return error;
         });
     } catch (error) {
-      return error
+      return error;
     }
-  })
-  
+  });
 };
 
 export const clubUpdate = async (obj, clubId) => {
-  try {
-    var config = {
-      method: "put",
-      url: `${process.env.REACT_APP_BASE_URL}clubs/club/${clubId}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: obj,
-    };
+  return new Promise((resolve, reject) => {
+    try {
+      var config = {
+        method: "put",
+        url: `${process.env.REACT_APP_BASE_URL}clubs/club/${clubId}`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: obj,
+      };
 
-    axios(config)
-      .then(function (response) {
-        console.log("response",response)
+      axios(config)
+        .then(function (response) {
+          console.log("response", response);
 
-        return response;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  } catch (error) {}
+          resolve(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
-
 
 export const deleteClub = async (obj, clubId) => {
   try {
@@ -84,46 +85,42 @@ export const deleteClub = async (obj, clubId) => {
       data: obj,
     };
 
-    console.log("config===>",config)
+    console.log("config===>", config);
     axios(config)
       .then(function (response) {
-
-        console.log("response",response)
+        console.log("response", response);
         return response;
       })
       .catch(function (error) {
         console.log(error);
       });
   } catch (error) {
-    return error
+    return error;
   }
 };
 
-
-
-export const AddClubImage = (obj) =>{
+export const AddClubImage = (obj) => {
   try {
     var config = {
       method: "post",
       url: `${process.env.REACT_APP_BASE_URL}fileUpload/file`,
-      
+
       headers: {
         "Content-Type": "multipart/form-data",
       },
       data: obj,
     };
 
-    console.log("config===>",config)
+    console.log("config===>", config);
     axios(config)
       .then(function (response) {
-
-        console.log("response",response.data)
+        console.log("response", response.data);
         return response;
       })
       .catch(function (error) {
         console.log(error);
       });
   } catch (error) {
-    return error
+    return error;
   }
-}
+};
