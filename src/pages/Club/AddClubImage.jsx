@@ -11,11 +11,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { DropzoneArea } from "material-ui-dropzone";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import { AddClubImage } from "../../services/club";
+import { AddClubImage, getClubs } from "../../services/club";
+import { CircularProgress } from "@mui/material";
 //Main Function
-
+import { clubUpdate } from "../../services/club";
 const AddClubPosterImage = (data) => {
-  console.log(data, "IN THE ADD HOUSE IMAGE --->");
+  console.log(data.imageLoader, "IN THE ADD HOUSE IMAGE --->");
   const [alert, setAlert] = useState({
     open: false,
     vertical: "top",
@@ -36,6 +37,8 @@ const AddClubPosterImage = (data) => {
 
   const [ImageFiles, setImageFiles] = useState([]);
   const [Visible, setVisible] = useState(false);
+
+  const [imageUploadLoader, setimageUploadLoader] = useState(data.imageLoader);
 
   const selectDropzoneFiles = (files) => {
     // setDisable(false);
@@ -67,7 +70,7 @@ const AddClubPosterImage = (data) => {
   };
   var Data = new FormData();
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     // console.log("ImageFiles====>", ImageFiles.length);
     if (ImageFiles.length === 0) {
       setMessage("Please select at least one image!");
@@ -76,44 +79,37 @@ const AddClubPosterImage = (data) => {
       setMessage("You can upload upto 10 Images maximum !");
       setVisible(true);
     } else {
-      //  SaveImagetoDb();
-      // console.log("=======>", ImageFiles);
-      // console.log("DATA", Data);
-      // console.log("data,_id", data.data._id);
+      // setimageUploadLoader(true);
       Data.append("_id", data.data._id);
-      for (let i=0; i<ImageFiles.length; i++) {
-        console.log(ImageFiles[i], "=====file");
+      for (let i = 0; i < ImageFiles.length; i++) {
         Data.append("files", ImageFiles[i]);
       }
-      for (var pair of Data.entries()) {
-        console.log("entered");
-        console.log(pair[0] + ", " + pair[1]);
-      }
+      console.log("Data----Data", Data);
+      setimageUploadLoader(true);
+      data.onSubmit(Data);
 
-      const clubImg = await AddClubImage(Data);
-      console.log("imspath", clubImg);
+      // const clubImg = await AddClubImage(Data);
+      // console.log("imspath", clubImg);
+      // if (clubImg.status === true) {
+      //   let newArr = [];
+      //   //UPDATE PATCH THE IMAGES
 
+      //   // console.log("newArr====>", data?.data.photos);
+      //   // console.log("newArr====>", clubImg?.data);
 
-      // const Response = ImageFiles.map((file, index) => {
-      //   // console.log("element====>", file, index);
-      //   SaveImagetoDb(file, index);
-      // });
-      // console.log("=======>", Response);
+      //   newArr = [...data?.data?.photos, ...clubImg?.data];
+      //   let obj = {
+      //     photos: newArr,
+      //   };
+      //   console.log("obj====>", obj, data?.data?._id);
+      //   const updateClubtoActive = await clubUpdate(obj, data?.data?._id);
+      //   if (updateClubtoActive.data.status === true) {
+      //     getClubs();
+      //     //CLOSE THE LOADER
+      //     setimageUploadLoader(false);
+      //   }
+      // }
     }
-
-    //   navigate("/");
-  };
-
-  //Save Images in Database
-  const SaveImagetoDb = async (file, index) => {
-    // Data.append("files", file);
-    // const clubimg = await AddClubImage(Data);
-    // console.log("SaveImagetoDb==>", index, UserID, AddFormHouse_id ,`File:`,file);
-    // // console.log(index === 9 ? "NextScreen" : "") ;
-    //   console.log("index === ImageFiles.length", index, ImageFiles.length);
-    //   if (index + 1 === ImageFiles.length) {
-    //     navigate("/dashboard");
-    //   }
   };
 
   return (
@@ -141,6 +137,7 @@ const AddClubPosterImage = (data) => {
           style={{
             fontWeight: "600",
             margin: 40,
+            color: "white",
           }}
         >
           Add Club Image
@@ -161,49 +158,71 @@ const AddClubPosterImage = (data) => {
               margin: 20,
             }}
           >
-            <DropzoneArea
-              //     Icon={CloudUploadIcon}
-              fileObjects={files}
-              showFileNames
-              id="file-upload"
-              dropzoneText="Drag 'n' Drop File Here Or"
-              // eslint-disable-next-line react/jsx-no-duplicate-props
-              showAlerts={["error"]}
-              filesLimit={10}
-              alertSnackbarProps={{
-                anchorOrigin: {
-                  vertical: "top",
-                  horizontal: "center",
-                },
-              }}
-              maxFileSize={9000000}
-              showPreviews={true}
-              showPreviewsInDropzone={false}
-              useChipsForPreview
-              previewGridProps={{
-                container: { spacing: 1, direction: "row" },
-              }}
-              previewChipProps={{ classes: { root: classes.previewChip } }}
-              previewText="Selected files"
-              className={classes.Dropzone}
-              onChange={selectDropzoneFiles}
-              acceptedFiles={[".png", ".jpg", ".jpeg"]}
-            />
+            {imageUploadLoader === true ? (
+              <>
+                <div
+                  style={{
+                    width: "100%",
+                    maxheight: 500,
+                    justifyItems: "center",
+                    padding: 100,
+                  }}
+                >
+                  <CircularProgress
+                    style={{
+                      justifyItems: "center",
+                      alignItems: "center",
+                    }}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <DropzoneArea
+                  //     Icon={CloudUploadIcon}
+                  fileObjects={files}
+                  showFileNames
+                  id="file-upload"
+                  dropzoneText="Drag 'n' Drop File Here Or"
+                  // eslint-disable-next-line react/jsx-no-duplicate-props
+                  showAlerts={["error"]}
+                  filesLimit={10}
+                  alertSnackbarProps={{
+                    anchorOrigin: {
+                      vertical: "top",
+                      horizontal: "center",
+                    },
+                  }}
+                  maxFileSize={9000000}
+                  showPreviews={true}
+                  showPreviewsInDropzone={false}
+                  useChipsForPreview
+                  previewGridProps={{
+                    container: { spacing: 1, direction: "row" },
+                  }}
+                  previewChipProps={{ classes: { root: classes.previewChip } }}
+                  previewText="Selected files"
+                  className={classes.Dropzone}
+                  onChange={selectDropzoneFiles}
+                  acceptedFiles={[".png", ".jpg", ".jpeg"]}
+                />
+
+                <Button
+                  disabled={false}
+                  variant="contained"
+                  style={{
+                    backgroundColor: "orange",
+                    //float: "right",
+                    margin: 20,
+                  }}
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </Button>
+              </>
+            )}
           </div>
         </div>
-
-        <Button
-          disabled={false}
-          variant="contained"
-          style={{
-            backgroundColor: "orange",
-            //float: "right",
-            margin: 20,
-          }}
-          onClick={handleSubmit}
-        >
-          Submit
-        </Button>
       </Box>
     </div>
   );

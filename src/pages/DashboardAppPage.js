@@ -63,6 +63,7 @@ import {
   addClubtoServer,
   clubUpdate,
   deleteClub,
+  AddClubImage,
 } from "src/services/club";
 import {
   getCountries,
@@ -74,6 +75,9 @@ import ViewClubInfo from "./Club/ViewClubInfo";
 
 export default function DashboardAppPage() {
   const theme = useTheme();
+
+  //IMAGE POP-UP LOADER
+  const [imageLoader, setimageLoader] = useState(false);
   //States
 
   const [clubName, setclubName] = useState("");
@@ -308,9 +312,6 @@ export default function DashboardAppPage() {
       const a = clubs_data.filter((item) => {
         return item._id !== selectedClubData._id;
       });
-      console.log("clubs_data======>", a);
-
-      //    console.log("selectedClubData==>", selectedClubData);
 
       const clubtoDelete = await deleteClub(
         selectedClubData,
@@ -383,7 +384,35 @@ export default function DashboardAppPage() {
                   <Iconify color={palette.primary.gold} icon={"maki:cross"} />
                 </IconButton>
               </Stack>
-              <AddClubPosterImage data={selectedClubData} />
+              <AddClubPosterImage
+                imageLoader={imageLoader}
+                data={selectedClubData}
+                onSubmit={async (Data) => {
+                  if (Data) {
+                    const clubImg = await AddClubImage(Data);
+                    setimageLoader(true);
+                    if (clubImg.status === true) {
+                      let newArr = [];
+                      //UPDATE PATCH THE IMAGES
+                      newArr = [...clubImg?.data];
+                      let obj = {
+                        photos: newArr,
+                      };
+                      const updateClubtoActive = await clubUpdate(
+                        obj,
+                        selectedClubData._id
+                      );
+                      if (updateClubtoActive.data.status === true) {
+                        getClubs();
+                        //CLOSE THE LOADER
+                        setimageLoader(false);
+                        setImageDialogPopUp(!true);
+                        alert("Image uploaded Successfully !");
+                      }
+                    }
+                  }
+                }}
+              />
             </Box>
           </Scrollbar>
         </Popover>
@@ -521,7 +550,7 @@ export default function DashboardAppPage() {
 
     if (updateClubtoActive.data.status === true) {
       setswitchToggle(!switchToggle);
-      getClubData()
+      getClubData();
     } else {
       alert("TECHNICAL ERROR ! CONTACT ADMIN ");
     }
@@ -732,16 +761,16 @@ export default function DashboardAppPage() {
                                 <Switch
                                   checked={isPublished === true ? true : false}
                                   onChange={() => {
-                                    // if (item?.photos >= 3) {
-                                    handleToggleSwitch(
-                                      item,
-                                      isPublished === true ? true : false
-                                    );
-                                    // } else {
-                                    //   alert(
-                                    //     "Please Add at least 3 Images to make club Active!"
-                                    //   );
-                                    // }
+                                    if (item?.photos >= 3) {
+                                      handleToggleSwitch(
+                                        item,
+                                        isPublished === true ? true : false
+                                      );
+                                    } else {
+                                      alert(
+                                        "Please Add at least 3 Images to make club Active!"
+                                      );
+                                    }
                                   }}
                                 />
                               </TableCell>
