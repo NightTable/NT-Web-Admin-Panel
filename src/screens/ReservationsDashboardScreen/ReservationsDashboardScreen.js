@@ -5,7 +5,7 @@
 // when its authorized use is terminated.
 
 import React from 'react';
-import ReservationsInnerInfoContainer from '../../components/ReservationsDashboardScreen/ReservationsInnerInfoContainer/ReservationsInnerInfoContainer';
+import ReservationsInnerInfoContainer from '../../features/ReservationsDashboardScreen/ReservationsInnerInfoContainer/ReservationsInnerInfoContainer';
 
 import styles from './ReservationsDashboardScreen.module.css';
 

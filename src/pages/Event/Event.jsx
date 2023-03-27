@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { filter } from "lodash";
 import Box from "@mui/material/Box";
 import { TextField } from "@material-ui/core";
-import "../../pages/DasboardCss.css";
+import "../../css/DasboardCss.css";
 // @mui
 import { useTheme } from "@mui/material/styles";
 // @mui
@@ -33,9 +33,9 @@ import {
 import Switch from "@material-ui/core/Switch";
 
 // components
-import Iconify from "../../components/iconify";
+import Iconify from "../../component/iconify";
 import InfoIcon from "@mui/icons-material/Info";
-import Scrollbar from "../../components/scrollbar";
+import Scrollbar from "../../component/scrollbar";
 //dialog
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -185,7 +185,7 @@ export default function EventDashboard() {
         return item._id !== selectedClubData._id;
       });
 
-      const clubtoDelete = await deleteEventa(
+      const clubtoDelete = await deleteEvent(
         selectedClubData,
         selectedClubData._id
       );

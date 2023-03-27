@@ -23,8 +23,8 @@ import {
 // utils
 import { fToNow } from '../../../utils/formatTime';
 // components
-import Iconify from '../../../components/iconify';
-import Scrollbar from '../../../components/scrollbar';
+import Iconify from '../../../component/iconify';
+import Scrollbar from '../../../component/scrollbar';
 
 // ----------------------------------------------------------------------
 

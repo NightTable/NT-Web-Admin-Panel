@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 // components
-import Iconify from "../../../components/iconify";
+import Iconify from "../../../component/iconify";
 //services
 import { getCountries } from "src/services/countries";
 import Dropdown from "../../../component/Dropdown";

@@ -1,5 +1,5 @@
 // component
-import SvgColor from '../../../components/svg-color';
+import SvgColor from '../../../features/svg-color';
 
 // ----------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ const navConfig = [
   // }, 
   {
     title: 'Clubs',
-    path: '/dashboard/clubs',
+    path: '/dashboard/Clubs',
     icon: icon('ic_lock'),
   },
   

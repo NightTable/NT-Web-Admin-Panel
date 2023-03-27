@@ -3,15 +3,13 @@ import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { filter } from "lodash";
-import { sentenceCase } from "change-case";
-import Box from "@mui/material/Box";
-import { TextField } from "@material-ui/core";
-import "../pages/DasboardCss.css";
+import { TextField ,Switch} from "@material-ui/core";
+import "../../css/DasboardCss.css";
 // @mui
 import { useTheme } from "@mui/material/styles";
 // @mui
 import {
-  Card,
+  Box,
   Table,
   Stack,
   Paper,
@@ -28,30 +26,28 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
-  withStyles,
+  withStyles,Dialog,DialogActions,DialogContent
 } from "@mui/material";
-import Switch from "@material-ui/core/Switch";
+import InfoIcon from "@mui/icons-material/Info";
 
 // components
-import Iconify from "../components/iconify";
-import InfoIcon from "@mui/icons-material/Info";
-import Scrollbar from "../components/scrollbar";
+import Iconify from "../../component/iconify";
+import Scrollbar from "../../component/scrollbar";
+import Dropdown from "../../component/Dropdown";
+
 //dialog
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
+
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 //dropdown
-import AddPosterImage from "./UploadImage/AddImage";
+import AddPosterImage from "../UploadImage/AddImage";
 
-import Dropdown from "../components/Dropdown";
 // sections
-import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
+import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 // mock
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 //theme
-import palette from "../theme/palette";
+import palette from "../../theme/palette";
 // ----------------------------------------------------------------------
 import { ClubsData } from "src/_mock/club";
 //servie files
@@ -66,11 +62,11 @@ import {
   getCountries,
   getStatesOfCountry,
   citiesOfStates,
-} from "../services/countries";
-import { DASHBOARD_TABLE_HEAD } from "../Table_Head/index";
-import ViewClubInfo from "./Club/ViewClubInfo";
+} from "../../services/countries";
+import { DASHBOARD_TABLE_HEAD } from "../../Table_Head/index";
+import ViewClubInfo from "./ViewClubInfo";
 
-export default function Clubs() {
+export default function ClubDashboard() {
   const theme = useTheme();
 
   //IMAGE POP-UP LOADER

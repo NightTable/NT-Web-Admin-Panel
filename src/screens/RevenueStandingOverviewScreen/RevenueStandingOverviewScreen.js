@@ -8,9 +8,9 @@ import React from 'react';
 
 import styles from './RevenueStandingOverviewScreen.module.css';
 
-import UpperBasicRevenueInfoSectionComp from '../../components/RevenueStandingOverviewScreen/UpperBasicRevenueInfoSectionComp/UpperBasicRevenueInfoSectionComp';
-import LowerRevenueDataSectionComp from '../../components/RevenueStandingOverviewScreen/LowerRevenueDataSectionComp/LowerRevenueDataSectionComp';
-import PaginationButtonSectionComp from '../../components/RevenueStandingOverviewScreen/PaginationButtonSectionComp/PaginationButtonSectionComp';
+import UpperBasicRevenueInfoSectionComp from '../../features/RevenueStandingOverviewScreen/UpperBasicRevenueInfoSectionComp/UpperBasicRevenueInfoSectionComp';
+import LowerRevenueDataSectionComp from '../../features/RevenueStandingOverviewScreen/LowerRevenueDataSectionComp/LowerRevenueDataSectionComp';
+import PaginationButtonSectionComp from '../../features/RevenueStandingOverviewScreen/PaginationButtonSectionComp/PaginationButtonSectionComp';
 
 const RevenueStandingOverviewScreen = (props) => {
 

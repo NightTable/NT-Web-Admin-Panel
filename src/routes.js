@@ -1,18 +1,14 @@
 import { Navigate, useRoutes } from "react-router-dom";
 // layouts
 import DashboardLayout from "./layouts/dashboard";
-import SimpleLayout from "./layouts/simple";
-//
-import BlogPage from "./pages/BlogPage";
-import UserPage from "./pages/UserPage";
-import LoginPage from "./pages/Auth/LoginPage";
-import Page404 from "./pages/Page404";
-import ProductsPage from "./pages/ProductsPage";
-import DashboardAppPage from "./pages/DashboardAppPage";
 
-//event 
+import LoginPage from "./pages/Auth/LoginPage";
+
+//CLubs
+import ClubDashboard from "./pages/Club/Clubs";
+//event
 import EventDashboard from "./pages/Event/Event";
-//Table COnfig 
+//Table COnfig
 import TableConfig from "./pages/Table/TableConfig";
 // ----------------------------------------------------------------------
 
@@ -28,13 +24,11 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/clubs" /> },
-        { path: "clubs", element: <DashboardAppPage /> },
+        { path: "clubs", element: <ClubDashboard /> },
         { path: "events", element: <EventDashboard /> },
         { path: "tableconfig", element: <TableConfig /> },
         { path: "reservations", element: <TableConfig /> },
-
       ],
-
     },
     // {
     //   path: "/eventdashboard",

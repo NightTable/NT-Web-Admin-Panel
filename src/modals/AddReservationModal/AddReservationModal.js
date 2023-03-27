@@ -8,9 +8,9 @@ import React from 'react';
 
 import styles from './AddReservationModal.module.css';
 
-import BasicReservationInfoSectionComp from '../../components/modals/AddReservationModal/BasicReservationInfoSectionComp/BasicReservationInfoSectionComp';
-import TableDateSelectionInfoComp from '../../components/modals/AddReservationModal/TableDateSelectionInfoComp/TableDateSelectionInfoComp';
-import LowerButtonContainerComp from '../../components/modals/AddReservationModal/LowerButtonContainerComp/LowerButtonContainerComp';
+import BasicReservationInfoSectionComp from '../../features/modals/AddReservationModal/BasicReservationInfoSectionComp/BasicReservationInfoSectionComp';
+import TableDateSelectionInfoComp from '../../features/modals/AddReservationModal/TableDateSelectionInfoComp/TableDateSelectionInfoComp';
+import LowerButtonContainerComp from '../../features/modals/AddReservationModal/LowerButtonContainerComp/LowerButtonContainerComp';
 
 const AddReservationModal = (props) => {
 

@@ -12,9 +12,9 @@ import {
 // hooks
 import useResponsive from "../../hooks/useResponsive";
 // components
-import Logo from "../../components/logo";
+import Logo from "../../features/logo";
 // sections
-import LoginForm from "../../components/Auth/LoginForm";
+import LoginForm from "../../features/Auth/LoginForm";
 
 // ----------------------------------------------------------------------
 export const getGreetingMsg = () => {

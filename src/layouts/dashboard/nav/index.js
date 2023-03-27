@@ -15,9 +15,9 @@ import {
 // hooks
 import useResponsive from "../../../hooks/useResponsive";
 // components
-import Logo from "../../../components/logo";
-import Scrollbar from "../../../components/scrollbar";
-import NavSection from "../../../components/nav-section";
+import Logo from "../../../features/logo";
+import Scrollbar from "../../../component/scrollbar";
+import NavSection from "../../../features/nav-section";
 //
 import navConfig from "./config";
 

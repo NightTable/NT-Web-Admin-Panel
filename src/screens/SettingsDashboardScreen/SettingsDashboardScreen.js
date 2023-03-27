@@ -5,7 +5,7 @@
 // when its authorized use is terminated.
 
 import React from 'react';
-import SettingsWhiteBubbleComp from '../../components/SettingsDashboardScreen/SettingsWhiteBubbleComp/SettingsWhiteBubbleComp';
+import SettingsWhiteBubbleComp from '../../features/SettingsDashboardScreen/SettingsWhiteBubbleComp/SettingsWhiteBubbleComp';
 
 import styles from './SettingsDashboardScreen.module.css';
 

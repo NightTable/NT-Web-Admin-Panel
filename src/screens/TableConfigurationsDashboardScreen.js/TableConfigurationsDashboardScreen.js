@@ -6,7 +6,7 @@
 
 import React from 'react';
 import styles from './TableConfigurationsDashboardScreen.module.css';
-import TableConfigRequestListComp from '../../components/TableConfigurationsDashboardScreen/TableConfigRequestListComp';
+import TableConfigRequestListComp from '../../features/TableConfigurationsDashboardScreen/TableConfigRequestListComp';
 const TableConfigurationsDashboardScreen = (props) => {
     let tableConfigRequests = [
         {

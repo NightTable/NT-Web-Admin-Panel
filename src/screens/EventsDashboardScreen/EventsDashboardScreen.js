@@ -8,7 +8,7 @@ import React from 'react';
 
 import styles from './EventsDashboardScreen.module.css';
 
-import EventBubbleHorizComp from '../../components/EventsDashboardScreen/EventBubbleHorizComp';
+import EventBubbleHorizComp from '../../features/EventsDashboardScreen/EventBubbleHorizComp';
 import sampleNightClubPic from '../../assets/randomnightclubpic.jpeg';
 
 const EventsDashboardScreen = (props) => {

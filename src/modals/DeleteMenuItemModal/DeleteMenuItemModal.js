@@ -5,7 +5,7 @@
 // when its authorized use is terminated.
 
 import React from 'react';
-import SizeSectionComp from '../../components/modals/DeleteMenuItemModal/SizeSectionComp/SizeSectionComp';
+import SizeSectionComp from '../../features/modals/DeleteMenuItemModal/SizeSectionComp/SizeSectionComp';
 
 import styles from './DeleteMenuItemModal.module.css';
 

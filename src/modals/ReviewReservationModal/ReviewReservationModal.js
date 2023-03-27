@@ -5,15 +5,15 @@
 // when its authorized use is terminated.
 
 import React from 'react';
-import BasicReservationInfoSectionComp from '../../components/modals/ReviewReservationModal/BasicReservationInfoSectionComp/BasicReservationInfoSectionComp';
+import BasicReservationInfoSectionComp from '../../features/modals/ReviewReservationModal/BasicReservationInfoSectionComp/BasicReservationInfoSectionComp';
 
 import styles from './ReviewReservationModal.module.css';
 
-import LeftArrowCircleDetailComp from '../../components/SharedUIElements/LeftArrowCircleDetailComp/LeftArrowCircleDetailComp';
-import TableInformationSectionComp from '../../components/modals/ReviewReservationModal/TableInformationSectionComp/TableInformationSectionComp';
-import PriceTaxSectionInfoComp from '../../components/modals/ReviewReservationModal/PriceTaxSectionInfoComp/PriceTaxSectionInfoComp';
-import StripePaymentSectionComp from '../../components/modals/ReviewReservationModal/StripePaymentSectionComp/StripePaymentSectionComp';
-import LowerButtonSectionComp from '../../components/modals/ReviewReservationModal/LowerButtonSectionComp/LowerButtonSectionComp';
+import LeftArrowCircleDetailComp from '../../features/SharedUIElements/LeftArrowCircleDetailComp/LeftArrowCircleDetailComp';
+import TableInformationSectionComp from '../../features/modals/ReviewReservationModal/TableInformationSectionComp/TableInformationSectionComp';
+import PriceTaxSectionInfoComp from '../../features/modals/ReviewReservationModal/PriceTaxSectionInfoComp/PriceTaxSectionInfoComp';
+import StripePaymentSectionComp from '../../features/modals/ReviewReservationModal/StripePaymentSectionComp/StripePaymentSectionComp';
+import LowerButtonSectionComp from '../../features/modals/ReviewReservationModal/LowerButtonSectionComp/LowerButtonSectionComp';
 
 const ReviewReservationModal = (props) => {
 

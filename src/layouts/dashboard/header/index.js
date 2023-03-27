@@ -5,7 +5,7 @@ import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
 // utils
 import { bgBlur } from '../../../utils/cssStyles';
 // components
-import Iconify from '../../../components/iconify';
+import Iconify from '../../../component/iconify';
 //
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';

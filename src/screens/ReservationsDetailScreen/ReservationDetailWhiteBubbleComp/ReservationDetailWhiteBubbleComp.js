@@ -5,7 +5,7 @@
 // when its authorized use is terminated.
 
 import React from 'react';
-import LeftArrowCircleDetailComp from '../../../components/SharedUIElements/LeftArrowCircleDetailComp/LeftArrowCircleDetailComp';
+import LeftArrowCircleDetailComp from '../../../features/SharedUIElements/LeftArrowCircleDetailComp/LeftArrowCircleDetailComp';
 
 import styles from './ReservationDetailWhiteBubbleComp.module.css';
 import ReservedTableItemComp from './ReservedTableItemComp/ReservedTableItemComp';
