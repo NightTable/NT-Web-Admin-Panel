@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Box, Typography, TextField, Autocomplete } from "@mui/material";
 
 //theme
@@ -6,14 +6,14 @@ import palette from "../theme/palette";
 
 // props : textinputLabel , label ,data,
 export default function Dropdown(props) {
+  const [valueOfDropdown, setvalueOfDropdown] = useState("");
   // console.log("props====>",props.data)
   return (
     <Autocomplete
-      id="country-select-demo"
+    autoComplete="no-autocomplete-random-string"
       fullWidth
       sx={{ minWidth: 100 }}
       options={props.data}
-      autoHighlight
       getOptionLabel={(option) => (option.label ? option.label : "")}
       renderOption={(props, option) => (
         <Box
@@ -30,11 +30,15 @@ export default function Dropdown(props) {
       )}
       // inputValue={}
       onChange={(e, values) => {
-        // console.log(values);
+        console.log(values.label);
+        setvalueOfDropdown(values.label);
         props.changedValue(values);
       }}
       renderInput={(params) => (
         <TextField
+        value={valueOfDropdown}
+
+          autoComplete="no-autocomplete-random-string"
           onChange={(item) => {
             // console.log("item--==>", item,);
           }}

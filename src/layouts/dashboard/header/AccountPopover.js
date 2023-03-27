@@ -1,22 +1,38 @@
-import { useState } from 'react';
+import { React, useState, useEffect } from "react";
 // @mui
-import { alpha } from '@mui/material/styles';
-import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
+import { alpha } from "@mui/material/styles";
+import {
+  Box,
+  Divider,
+  Typography,
+  Stack,
+  MenuItem,
+  Avatar,
+  IconButton,
+  Popover,
+} from "@mui/material";
 // mocks_
-import account from '../../../_mock/account';
+import account from "../../../_mock/account";
+import { useNavigate } from "react-router-dom";
+import { LocalStorageKey } from "src/utils/localStorage/keys";
 
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
-    label: 'Profile',
-    icon: 'eva:person-fill',
+    label: "Profile",
+    icon: "eva:person-fill",
   },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const [email, setemail] = useState("");
+
+  const [name, setname] = useState();
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -24,7 +40,31 @@ export default function AccountPopover() {
   };
 
   const handleClose = () => {
+    resetLocalStorage();
     setOpen(null);
+    navigate("/");
+  };
+
+  useEffect(() => {
+    async function loadData() {
+      const representativeData = localStorage.getItem(
+        LocalStorageKey.USER_DATA
+      );
+      if (email != "") {
+        if (representativeData.length != undefined) {
+          const parseData = JSON.parse(representativeData);
+          setname(`${parseData.firstName} ${parseData.lastName}`);
+          setemail(parseData.email);
+        } else {
+          handleClose();
+        }
+      }
+    }
+    loadData();
+  }, []);
+
+  const resetLocalStorage = async () => {
+    const d1 = localStorage.clear();
   };
 
   return (
@@ -34,13 +74,13 @@ export default function AccountPopover() {
         sx={{
           p: 0,
           ...(open && {
-            '&:before': {
+            "&:before": {
               zIndex: 1,
               content: "''",
-              width: '100%',
-              height: '100%',
-              borderRadius: '50%',
-              position: 'absolute',
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              position: "absolute",
               bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
             },
           }),
@@ -53,46 +93,47 @@ export default function AccountPopover() {
         open={Boolean(open)}
         anchorEl={open}
         onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{ vertical: "top", horizontal: "right" }}
         PaperProps={{
           sx: {
             p: 0,
             mt: 1.5,
             ml: 0.75,
-            backgroundColor: 'black',
+            backgroundColor: "black",
             width: 180,
-            '& .MuiMenuItem-root': {
-              typography: 'body2',
+            "& .MuiMenuItem-root": {
+              typography: "body2",
               borderRadius: 0.75,
             },
           },
         }}
       >
-        <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography sx={{ color: '#E4D0B5' }} variant="subtitle2" noWrap>
-            {account.displayName}
+        <Box
+          style={{
+            padding: 12,
+          }}
+        >
+          <Typography
+            sx={{ color: "#E4D0B5", my: 1.5 }}
+            variant="subtitle2"
+            noWrap
+          >
+            {name}{" "}
           </Typography>
-          <Typography variant="body2" sx={{ color: '#E4D0B5' }} noWrap>
-            {account.email}
+          <Divider sx={{ borderStyle: "dashed" }} />
+
+          <Typography variant="body2" sx={{ color: "#E4D0B5" }} noWrap>
+            {email}
           </Typography>
+          <Divider sx={{ borderStyle: "dashed" }} />
+
+          <Divider sx={{ borderStyle: "dashed" }} />
+
+          <MenuItem onClick={handleClose} style={{ my: 1.5, color: "#E4D0B5" }}>
+            Logout
+          </MenuItem>
         </Box>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem sx={{ color: '#E4D0B5' }} key={option.label} onClick={handleClose}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Stack>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <MenuItem onClick={handleClose} sx={{ m: 1, color: '#E4D0B5' }}>
-          Logout
-        </MenuItem>
       </Popover>
     </>
   );

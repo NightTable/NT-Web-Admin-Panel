@@ -14,8 +14,9 @@ import axios from "axios";
 import { AddClubImage, getClubs } from "../../services/club";
 import { CircularProgress } from "@mui/material";
 //Main Function
-import { clubUpdate } from "../../services/club";
-const AddClubPosterImage = (data) => {
+
+
+const AddPosterImage = (data) => {
   console.log(data.imageLoader, "IN THE ADD HOUSE IMAGE --->");
   const [alert, setAlert] = useState({
     open: false,
@@ -88,27 +89,7 @@ const AddClubPosterImage = (data) => {
       setimageUploadLoader(true);
       data.onSubmit(Data);
 
-      // const clubImg = await AddClubImage(Data);
-      // console.log("imspath", clubImg);
-      // if (clubImg.status === true) {
-      //   let newArr = [];
-      //   //UPDATE PATCH THE IMAGES
-
-      //   // console.log("newArr====>", data?.data.photos);
-      //   // console.log("newArr====>", clubImg?.data);
-
-      //   newArr = [...data?.data?.photos, ...clubImg?.data];
-      //   let obj = {
-      //     photos: newArr,
-      //   };
-      //   console.log("obj====>", obj, data?.data?._id);
-      //   const updateClubtoActive = await clubUpdate(obj, data?.data?._id);
-      //   if (updateClubtoActive.data.status === true) {
-      //     getClubs();
-      //     //CLOSE THE LOADER
-      //     setimageUploadLoader(false);
-      //   }
-      // }
+      
     }
   };
 
@@ -140,7 +121,7 @@ const AddClubPosterImage = (data) => {
             color: "white",
           }}
         >
-          Add Club Image
+         {data.heading} 
         </Typography>
         <div
           style={{
@@ -186,7 +167,7 @@ const AddClubPosterImage = (data) => {
                   dropzoneText="Drag 'n' Drop File Here Or"
                   // eslint-disable-next-line react/jsx-no-duplicate-props
                   showAlerts={["error"]}
-                  filesLimit={10}
+                  filesLimit={data.filesLimit}
                   alertSnackbarProps={{
                     anchorOrigin: {
                       vertical: "top",
@@ -228,7 +209,7 @@ const AddClubPosterImage = (data) => {
   );
 };
 
-export default AddClubPosterImage;
+export default AddPosterImage;
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "660px",

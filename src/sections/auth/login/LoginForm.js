@@ -14,7 +14,7 @@ import { LoadingButton } from "@mui/lab";
 import Iconify from "../../../components/iconify";
 //services
 import { getCountries } from "src/services/countries";
-import Dropdown from "../../../components/Dropdown";
+import Dropdown from "../../../component/Dropdown";
 // ----------------------------------------------------------------------
 import palette from "../../../theme/palette";
 export default function LoginForm() {

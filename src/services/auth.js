@@ -1,12 +1,12 @@
 import axios, * as others from "axios";
 
-export const loginApi =  (no) => {
-  return new Promise(async(resolve, reject) => {
+export const loginApi = (no) => {
+  return new Promise(async (resolve, reject) => {
     try {
       var data = JSON.stringify({
         phoneNumberParam: no,
       });
-  
+
       var config = {
         method: "post",
         url: `${process.env.REACT_APP_BASE_URL}auth/generateOTP`,
@@ -15,51 +15,49 @@ export const loginApi =  (no) => {
         },
         data: data,
       };
-  
-      console.log("config===>", config);
-  
+
       axios(config)
         .then((response) => {
-          resolve(response.data)
+          resolve(response.data);
         })
         .catch(function (error) {
           console.log(error);
-          reject(error.message)
+          reject(error.message);
         });
     } catch (error) {
-      reject(error.message)
+      reject(error.message);
     }
-  })
-  
+  });
 };
 
-export const otpVerify = async (no , reqOtp) => {
-  console.log("no =====>", no);
-  try {
-    var data = JSON.stringify({
-      reqPhoneNumber: no,
-      reqOtp: reqOtp,
-      isrepresentative: true,
-    });
-
-    var config = {
-      method: "post",
-      url: `${process.env.REACT_APP_BASE_URL}auth/verifyOTP`,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-
-    console.log("config", config);
-
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        return response.data;
-      })
-      .catch(function (error) {
-        console.log(error);
+export const otpVerify = async (no, reqOtp) => {
+  return new Promise((resolve, reject) => {
+    try {
+      var data = JSON.stringify({
+        reqPhoneNumber: no,
+        reqOtp: reqOtp,
+        isrepresentative: true,
       });
-  } catch (error) {}
+
+      var config = {
+        method: "post",
+        url: `${process.env.REACT_APP_BASE_URL}auth/verifyOTP`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+
+      axios(config)
+        .then((response) => {
+          resolve(response.data);
+        })
+        .catch(function (error) {
+          // console.log("error==>", error.response.data.message);
+          resolve(error.response.data.message);
+        });
+    } catch (error) {
+      reject("Network Error");
+    }
+  });
 };

@@ -10,6 +10,10 @@ import Page404 from "./pages/Page404";
 import ProductsPage from "./pages/ProductsPage";
 import DashboardAppPage from "./pages/DashboardAppPage";
 
+//event 
+import EventDashboard from "./pages/Event/Event";
+//Table COnfig 
+import TableConfig from "./pages/Table/TableConfig";
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -23,23 +27,36 @@ export default function Router() {
       path: "/dashboard",
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" /> },
-        { path: "app", element: <DashboardAppPage /> },
-        { path: "user", element: <UserPage /> },
-        { path: "products", element: <ProductsPage /> },
-        { path: "blog", element: <BlogPage /> },
+        { element: <Navigate to="/dashboard/clubs" /> },
+        { path: "clubs", element: <DashboardAppPage /> },
+        { path: "events", element: <EventDashboard /> },
+        { path: "tableconfig", element: <TableConfig /> },
+        { path: "reservations", element: <TableConfig /> },
+
       ],
 
     },
+    // {
+    //   path: "/eventdashboard",
+    //   element: <DashboardLayout />,
+    //   children: [
+    //     { element: <Navigate to="/dashboard/app" /> },
+    //     { path: "app", element: <DashboardAppPage /> },
+    //     { path: "user", element: <UserPage /> },
+    //     { path: "products", element: <ProductsPage /> },
+    //     { path: "blog", element: <BlogPage /> },
+    //   ],
 
-    {
-      element: <SimpleLayout />,
-      children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: "404", element: <Page404 /> },
-        { path: "*", element: <Navigate to="/404" /> },
-      ],
-    },
+    // },
+
+    // {
+    //   element: <SimpleLayout />,
+    //   children: [
+    //     { element: <Navigate to="/dashboard/app" />, index: true },
+    //     { path: "404", element: <Page404 /> },
+    //     { path: "*", element: <Navigate to="/404" /> },
+    //   ],
+    // },
     {
       path: "*",
       element: <Navigate to="/404" replace />,

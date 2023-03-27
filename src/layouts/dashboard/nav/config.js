@@ -9,39 +9,41 @@ const navConfig = [
 
   {
     title: 'Table Configurations',
-    path: '/dashboard/user',
+    path: '/dashboard/tableconfig',
     icon: icon('ic_user'),
   },
-  {
-    title: 'Reservations',
-    path: '/dashboard/products',
-    icon: icon('ic_cart'),
-  },
+  // {
+  //   title: 'Reservations',
+  //   path: '/dashboard/reservations',
+  //   icon: icon('ic_cart'),
+  // },
   {
     title: 'Events',
-    path: '/dashboard/blog',
+    path: '/dashboard/events',
     icon: icon('ic_blog'),
   },
+  // {
+  //   title: 'Polling Requests',
+  //   path: '/login',
+  //   icon: icon('ic_lock'),
+  // },
+  // {
+  //   title: 'Menu Items',
+  //   path: '/login',
+  //   icon: icon('ic_lock'),
+  // }, 
+  // {
+  //   title: 'Representative',
+  //   path: '/login',
+  //   icon: icon('ic_lock'),
+  // }, {
+  //   title: 'Settings',
+  //   path: '/login',
+  //   icon: icon('ic_lock'),
+  // }, 
   {
-    title: 'Polling Requests',
-    path: '/login',
-    icon: icon('ic_lock'),
-  },
-  {
-    title: 'Menu Items',
-    path: '/login',
-    icon: icon('ic_lock'),
-  }, {
-    title: 'Representative',
-    path: '/login',
-    icon: icon('ic_lock'),
-  }, {
-    title: 'Settings',
-    path: '/login',
-    icon: icon('ic_lock'),
-  }, {
     title: 'Clubs',
-    path: '/dashboard/app',
+    path: '/dashboard/clubs',
     icon: icon('ic_lock'),
   },
   

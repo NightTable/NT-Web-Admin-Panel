@@ -33,7 +33,6 @@ import {
 import Switch from "@material-ui/core/Switch";
 
 // components
-import Label from "../components/label";
 import Iconify from "../components/iconify";
 import InfoIcon from "@mui/icons-material/Info";
 import Scrollbar from "../components/scrollbar";
@@ -44,9 +43,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 //dropdown
-import AddClubPosterImage from "./Club/AddClubImage";
+import AddPosterImage from "./UploadImage/AddImage";
 
-import Dropdown from "../components/Dropdown";
+import Dropdown from "../component/Dropdown";
 // sections
 import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
@@ -55,8 +54,6 @@ import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 import palette from "../theme/palette";
 // ----------------------------------------------------------------------
 import { ClubsData } from "src/_mock/club";
-//jsons
-import { countries } from "src/_mock/countries";
 //servie files
 import {
   getClubs,
@@ -254,45 +251,46 @@ export default function DashboardAppPage() {
 
   //API CALL : ADD CLUB
   const addClub = async () => {
-    let keys = Object.keys(keyValuePairs);
-    let arr = [];
-    for (let i = 0; i < keys.length; i++) {
-      arr.push({
-        name: keys[i],
-        percentage: keyValuePairs[keys[i]],
-      });
-    }
-    var obj = {
-      name: clubName,
-      location: [longitude, latitude],
-      instaHandle: instaHandle,
-      phoneNumber: phoneNumber,
-      Address: {
-        Address: addressLine,
-        City: city,
-        State: state,
-        Country: country,
-      },
-      website: WebsiteUrl,
-      photos: [],
-      stripeAccountNumber: stripeAccountNo,
-      ownedBy: "god",
-      lineItems: arr,
-    };
+    console.log("keyValuePairs===>", keyValuePairs);
+    // let keys = Object.keys(keyValuePairs);
+    // let arr = [];
+    // for (let i = 0; i < keys.length; i++) {
+    //   arr.push({
+    //     name: keys[i],
+    //     percentage: keyValuePairs[keys[i]],
+    //   });
+    // }
+    // var obj = {
+    //   name: clubName,
+    //   location: [longitude, latitude],
+    //   instaHandle: instaHandle,
+    //   phoneNumber: phoneNumber,
+    //   Address: {
+    //     Address: addressLine,
+    //     City: city,
+    //     State: state,
+    //     Country: country,
+    //   },
+    //   website: WebsiteUrl,
+    //   photos: [],
+    //   stripeAccountNumber: stripeAccountNo,
+    //   ownedBy: "god",
+    //   lineItems: arr,
+    // };
 
-    const data = await addClubtoServer(obj);
-    if (data?.status === true) {
-      alert("Club Added");
+    // const data = await addClubtoServer(obj);
+    // if (data?.status === true) {
+    //   alert("Club Added");
 
-      //update the club array
-      const updateClubArr = [...clubs_data, data.data];
-      setclubs_data(updateClubArr);
-      //resetting the states to inital
-      resetStates();
-      setaddClubPopUp(false);
-    } else {
-      alert("ERROR IN ADDING CLUB ");
-    }
+    //   //update the club array
+    //   const updateClubArr = [...clubs_data, data.data];
+    //   setclubs_data(updateClubArr);
+    //   //resetting the states to inital
+    //   resetStates();
+    //   setaddClubPopUp(false);
+    // } else {
+    //   alert("ERROR IN ADDING CLUB ");
+    // }
   };
 
   //dialog
@@ -384,7 +382,9 @@ export default function DashboardAppPage() {
                   <Iconify color={palette.primary.gold} icon={"maki:cross"} />
                 </IconButton>
               </Stack>
-              <AddClubPosterImage
+              <AddPosterImage
+                heading={"Add Club Image"}
+                filesLimit={10}
                 imageLoader={imageLoader}
                 data={selectedClubData}
                 onSubmit={async (Data) => {
@@ -647,14 +647,7 @@ export default function DashboardAppPage() {
             />
 
             <Scrollbar>
-              <TableContainer
-              // style={{
-              //   minWidth: 800,
-              //   backgroundColor: "red",
-              //   borderWidth: 1,
-              //   borderColor: palette.primary.gold,
-              // }}
-              >
+              <TableContainer>
                 <Table>
                   <UserListHead
                     headLabel={DASHBOARD_TABLE_HEAD}
@@ -668,6 +661,7 @@ export default function DashboardAppPage() {
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((item, index) => {
+                        //   console.log("item===>", item);
                         const { _id, name, website, isPublished, phoneNumber } =
                           item;
                         return (
@@ -738,7 +732,26 @@ export default function DashboardAppPage() {
                                     size="large"
                                     color="inherit"
                                     onClick={() => {
-                                      alert("EDIT alert");
+                                      setaddClubPopUp(true);
+                                      let new_obj = item.lineItems.reduce(
+                                        (obj, item) => {
+                                          obj[item.name] = item.percentage;
+                                          return obj;
+                                        },
+                                        {}
+                                      );
+                                      setKeyValuePairs(new_obj);
+                                      setclubName(item.name);
+                                      setphoneNumber(item.phoneNumber);
+                                      setWebsiteUrl(item.website);
+                                      setaddressLine(item.Address.Address);
+                                      setstripeAccountNo(
+                                        item.stripeAccountNumber
+                                      );
+                                      setinstaHandle(item.instaHandle);
+
+                                      //LEFT WITH LINE ITEMS & ADDRESS TO UPDATE
+                                      // alert("EDIT alert");
                                     }}
                                   >
                                     <Iconify icon={"material-symbols:edit"} />
@@ -759,6 +772,9 @@ export default function DashboardAppPage() {
                               </TableCell>
                               <TableCell align="left">
                                 <Switch
+                                  style={{
+                                    color: "black",
+                                  }}
                                   checked={isPublished === true ? true : false}
                                   onChange={() => {
                                     if (item?.photos >= 3) {
@@ -914,7 +930,7 @@ export default function DashboardAppPage() {
                   <Box sx={{ width: "70%", paddingBottom: 2 }}>
                     <TextField
                       fullWidth
-                      id="outlined-basic"
+                      autoComplete="off"
                       label="Club Name"
                       variant="outlined"
                       value={clubName}
@@ -937,10 +953,9 @@ export default function DashboardAppPage() {
                   <Box sx={{ width: "70%", paddingBottom: 2 }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
+                        label={"Phone Number"}
+                        autoComplete="no-autocomplete-random-string"
                         fullWidth
-                        sx={{ width: "100%", paddingBottom: 2 }}
-                        id="outlined-basic"
-                        label="Phone Number"
                         variant="outlined"
                         value={phoneNumber}
                         onChange={(text) => {
@@ -964,8 +979,8 @@ export default function DashboardAppPage() {
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
                         fullWidth
+                        autoComplete="no-autocomplete-random-string"
                         sx={{ width: "100%", paddingBottom: 2 }}
-                        id="outlined-basic"
                         label="Address Line"
                         variant="outlined"
                         value={addressLine}
@@ -983,32 +998,45 @@ export default function DashboardAppPage() {
                       <Dropdown
                         textinputLabel={"Select Country"}
                         data={countryData}
+                        value={country}
                         changedValue={(item) => {
-                          console.log("item======>", item);
+                          // console.log("item======>", item);
                           setcountryCode(item.value);
                           setcountry(item.label);
                         }}
                       />
                     </Stack>
                     <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
-                      <Dropdown
-                        textinputLabel={"Select State"}
-                        data={stateData}
-                        changedValue={(item) => {
-                          setstateCode(item.value);
-                          setstate(item.label);
-                        }}
-                      />
+                      {countryCode != "" ? (
+                        <>
+                          <Dropdown
+                            textinputLabel={"Select State"}
+                            data={stateData}
+                            changedValue={(item) => {
+                              setstateCode(item.value);
+                              setstate(item.label);
+                            }}
+                          />
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </Stack>
                     <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
-                      <Dropdown
-                        textinputLabel={"Select City"}
-                        data={citiesData}
-                        changedValue={(item) => {
-                          setcitiesCodeData(item.value);
-                          setcity(item.label);
-                        }}
-                      />
+                      {stateCode != "" ? (
+                        <>
+                          <Dropdown
+                            textinputLabel={"Select City"}
+                            data={citiesData}
+                            changedValue={(item) => {
+                              setcitiesCodeData(item.value);
+                              setcity(item.label);
+                            }}
+                          />
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </Stack>
                   </Box>
                 </Stack>
@@ -1022,7 +1050,7 @@ export default function DashboardAppPage() {
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
                         fullWidth
-                        id="outlined-basic"
+                        autoComplete="off"
                         label="Website Url"
                         variant="outlined"
                         value={WebsiteUrl}
@@ -1047,7 +1075,6 @@ export default function DashboardAppPage() {
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
                         fullWidth
-                        id="outlined-basic"
                         label="Instagram"
                         variant="outlined"
                         value={instaHandle}
@@ -1072,8 +1099,6 @@ export default function DashboardAppPage() {
                   <Box sx={{ width: "70%" }}>
                     <TextField
                       fullWidth
-                      sx={{ width: "100%" }}
-                      id="outlined-basic"
                       label="Stripe Account No."
                       variant="outlined"
                       value={stripeAccountNo}

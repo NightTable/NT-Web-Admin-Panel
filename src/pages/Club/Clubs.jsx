@@ -3,9 +3,10 @@ import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { filter } from "lodash";
+import { sentenceCase } from "change-case";
 import Box from "@mui/material/Box";
 import { TextField } from "@material-ui/core";
-import "../../pages/DasboardCss.css";
+import "../pages/DasboardCss.css";
 // @mui
 import { useTheme } from "@mui/material/styles";
 // @mui
@@ -28,14 +29,13 @@ import {
   TableContainer,
   TablePagination,
   withStyles,
-  Grid,
 } from "@mui/material";
 import Switch from "@material-ui/core/Switch";
 
 // components
-import Iconify from "../../components/iconify";
+import Iconify from "../components/iconify";
 import InfoIcon from "@mui/icons-material/Info";
-import Scrollbar from "../../components/scrollbar";
+import Scrollbar from "../components/scrollbar";
 //dialog
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -43,25 +43,36 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 //dropdown
-import AddPosterImage from "../UploadImage/AddImage";
+import AddPosterImage from "./UploadImage/AddImage";
 
-import Dropdown from "../../component/Dropdown";
+import Dropdown from "../components/Dropdown";
 // sections
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import { UserListHead, UserListToolbar } from "../sections/@dashboard/user";
 // mock
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 //theme
-import palette from "../../theme/palette";
+import palette from "../theme/palette";
 // ----------------------------------------------------------------------
+import { ClubsData } from "src/_mock/club";
+//servie files
+import {
+  getClubs,
+  addClubtoServer,
+  clubUpdate,
+  deleteClub,
+  AddClubImage,
+} from "../../services/club";
+import {
+  getCountries,
+  getStatesOfCountry,
+  citiesOfStates,
+} from "../services/countries";
+import { DASHBOARD_TABLE_HEAD } from "../Table_Head/index";
+import ViewClubInfo from "./Club/ViewClubInfo";
 
-import { TABLE_CONFIG_TABLE_HEAD } from "../../Table_Head/index";
-import { LocalStorageKey } from "src/utils/localStorage/keys";
-// import ViewEventInfo from "./ViewEventInfo";
-
-export default function TableConfig() {
+export default function Clubs() {
   const theme = useTheme();
-  //CLicked Button
-  const [selected_club_btn, setselected_club_btn] = useState("0");
+
   //IMAGE POP-UP LOADER
   const [imageLoader, setimageLoader] = useState(false);
   //States
@@ -81,6 +92,19 @@ export default function TableConfig() {
   const [stateCode, setstateCode] = useState("");
   const [state, setstate] = useState("");
 
+  const resetStates = async () => {
+    setcountryCode("");
+    setcity("");
+    setstate("");
+    setcountryCode("");
+    setcitiesData("");
+    setstateData("");
+    setinstaHandle("");
+    setstripeAccountNo("");
+    setphoneNumber("");
+    setWebsiteUrl("");
+    setKeyValuePairs({});
+  };
   //instagram
   const [instaHandle, setinstaHandle] = useState("");
   const [stripeAccountNo, setstripeAccountNo] = useState("");
@@ -133,29 +157,141 @@ export default function TableConfig() {
     loadData();
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      if (countryCode != "") {
+        let obj = {
+          countryCode: countryCode,
+        };
+        console.log("obj===>", obj);
+
+        const statesData = await getStatesOfCountry(obj);
+        let arr = [];
+        statesData.forEach((element) => {
+          arr.push({
+            label: element.name,
+            value: element.isoCode,
+            phoneNumberCode: element.phoneNumberCode,
+          });
+        });
+        setstateData(arr);
+        console.log("statesData===>", statesData);
+      }
+    }
+
+    fetchData();
+  }, [countryCode]);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (stateCode != "") {
+        let obj = {
+          stateCode: stateCode,
+          countryCode: countryCode,
+        };
+        console.log("obj===>", obj);
+
+        const citiesData = await citiesOfStates(obj);
+        let arr = [];
+        citiesData.forEach((element) => {
+          arr.push({
+            label: element.name,
+            value: element.isoCode,
+            phoneNumberCode: element.phoneNumberCode,
+          });
+        });
+        setcitiesData(arr);
+        console.log("citiesData===>", citiesData);
+      }
+    }
+
+    fetchData();
+  }, [stateCode]);
+  //getcountries
+
+  const checkLocationPermission = async () => {
+    if ("geolocation" in navigator) {
+      // console.log("Available");
+      getGeolocation();
+    } else {
+      console.log("Not Available");
+    }
+  };
+
+  const getGeolocation = async () => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      setlongitude(position.coords.latitude);
+      setlatitude(position.coords.longitude);
+    });
+  };
+
   // get the clubs
   const loadData = async () => {
-    getClubData();
+    checkLocationPermission();
+    const clubData = await getClubData();
+
+    const countriesData = await getCountries();
+    let arr = [];
+    countriesData.forEach((element) => {
+      arr.push({
+        label: element.name,
+        value: element.isoCode,
+        phoneNumberCode: element.phoneNumberCode,
+      });
+    });
+
+    //   console.log("arr====>", arr);
+    setcountryData(arr);
   };
+
   const getClubData = async () => {
-    // const data = localStorage.getItem(LocalStorageKey.USER_DATA);
-    const data = [
-      {
-        name: "The Grand",
-      },
-      {
-        name: "Memorie",
-      },
-      {
-        name: "Shrine",
-      },
-    ];
-    console.log("data======>", data);
+    const data = await getClubs();
     setclubs_data(data);
   };
 
   //API CALL : ADD CLUB
-  const addClub = async () => {};
+  const addClub = async () => {
+    console.log("keyValuePairs===>", keyValuePairs);
+    // let keys = Object.keys(keyValuePairs);
+    // let arr = [];
+    // for (let i = 0; i < keys.length; i++) {
+    //   arr.push({
+    //     name: keys[i],
+    //     percentage: keyValuePairs[keys[i]],
+    //   });
+    // }
+    // var obj = {
+    //   name: clubName,
+    //   location: [longitude, latitude],
+    //   instaHandle: instaHandle,
+    //   phoneNumber: phoneNumber,
+    //   Address: {
+    //     Address: addressLine,
+    //     City: city,
+    //     State: state,
+    //     Country: country,
+    //   },
+    //   website: WebsiteUrl,
+    //   photos: [],
+    //   stripeAccountNumber: stripeAccountNo,
+    //   ownedBy: "god",
+    //   lineItems: arr,
+    // };
+
+    // const data = await addClubtoServer(obj);
+    // if (data?.status === true) {
+    //   alert("Club Added");
+
+    //   //update the club array
+    //   const updateClubArr = [...clubs_data, data.data];
+    //   setclubs_data(updateClubArr);
+    //   //resetting the states to inital
+    //   resetStates();
+    //   setaddClubPopUp(false);
+    // } else {
+    //   alert("ERROR IN ADDING CLUB ");
+    // }
+  };
 
   //dialog
 
@@ -247,6 +383,8 @@ export default function TableConfig() {
                 </IconButton>
               </Stack>
               <AddPosterImage
+                heading={"Add Club Image"}
+                filesLimit={10}
                 imageLoader={imageLoader}
                 data={selectedClubData}
                 onSubmit={async (Data) => {
@@ -381,7 +519,7 @@ export default function TableConfig() {
                   <Iconify color={palette.primary.gold} icon={"maki:cross"} />
                 </IconButton>
               </Stack>
-              <ViewEventInfo data={selectedClubData} />
+              <ViewClubInfo data={selectedClubData} />
             </Box>
           </Scrollbar>
         </Popover>
@@ -431,7 +569,7 @@ export default function TableConfig() {
   }
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - clubs_data.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ClubsData.length) : 0;
 
   function applySortFilter(array, comparator, query) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -459,7 +597,7 @@ export default function TableConfig() {
   return (
     <>
       <Helmet>
-        <title> Night Table : Table Configurations </title>
+        <title> Night Table : Admin Dashboard </title>
       </Helmet>
 
       <Container maxWidth="xl">
@@ -471,13 +609,12 @@ export default function TableConfig() {
             direction="row"
             alignItems="center"
             justifyContent="space-between"
-            mb={2}
+            mb={5}
           >
             <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
-              Table Configurations
+              Clubs
             </Typography>
-
-            {/* <Button
+            <Button
               onClick={() => {
                 setaddClubPopUp(true);
               }}
@@ -491,51 +628,9 @@ export default function TableConfig() {
               // sx={{ backgroundColor: "#E4D0B5", color: "black" }}
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
-              Add Event
-            </Button> */}
+              Add Club
+            </Button>
           </Stack>
-          <Scrollbar>
-            <Stack direction="row" mb={2}>
-              {clubs_data.map((item, index) => {
-                return (
-                  <>
-                    <Box
-                    onClick={()=>{
-                      setselected_club_btn(index)
-                    }}
-                      border={2}
-                      borderRadius={2}
-                      marginRight={2}
-                      borderColor={
-                        index == selected_club_btn ? "black" : "#E4D0B5"
-                      }
-                      flexDirection={"row"}
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      backgroundColor={
-                        index == selected_club_btn ? "#E4D0B5" : "black"
-                      }
-                    >
-                      <Typography
-                        variant="body1"
-                        style={{
-                          color:
-                            index == selected_club_btn ? "black" : "#E4D0B5",
-                          fontWeight:
-                            index == selected_club_btn ? "bold" : "500",
-
-                          padding: 10,
-                          textAlign: "center",
-                        }}
-                      >
-                        {item?.name}
-                      </Typography>
-                    </Box>
-                  </>
-                );
-              })}
-            </Stack>
-          </Scrollbar>
 
           <Container
             style={{
@@ -545,15 +640,21 @@ export default function TableConfig() {
               borderRadius: 4,
             }}
           >
+            <UserListToolbar
+              numSelected={selected.length}
+              filterName={filterName}
+              onFilterName={handleFilterByName}
+            />
+
             <Scrollbar>
               <TableContainer>
                 <Table>
                   <UserListHead
-                    headLabel={TABLE_CONFIG_TABLE_HEAD}
+                    headLabel={DASHBOARD_TABLE_HEAD}
                     rowCount={clubs_data.length}
                     numSelected={selected.length}
                   />
-                  {/* <TableBody>
+                  <TableBody>
                     {filteredData
                       ?.slice(
                         page * rowsPerPage,
@@ -699,7 +800,37 @@ export default function TableConfig() {
                       </TableRow>
                     )}
                   </TableBody>
-                  */}
+                  {isNotFound && (
+                    <TableBody
+                      style={{
+                        backgroundColor: "#E4D0B5",
+                      }}
+                    >
+                      <TableRow>
+                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          <Paper
+                            sx={{
+                              textAlign: "center",
+                            }}
+                            style={{
+                              backgroundColor: "#E4D0B5",
+                            }}
+                          >
+                            <Typography variant="h6" paragraph>
+                              Not found
+                            </Typography>
+
+                            <Typography variant="body2">
+                              No results found for &nbsp;
+                              <strong>&quot;{filterName}&quot;</strong>.
+                              <br /> Try checking for typos or using complete
+                              words.
+                            </Typography>
+                          </Paper>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
                 </Table>
               </TableContainer>
             </Scrollbar>
@@ -1126,9 +1257,9 @@ export default function TableConfig() {
             </Box>
           </Scrollbar>
         </Popover>
-        {/* <DeleteClubDialog />
+        <DeleteClubDialog />
         <AddImageDialog />
-        <ViewClubInforamtionDialog /> */}
+        <ViewClubInforamtionDialog />
       </Container>
     </>
   );
