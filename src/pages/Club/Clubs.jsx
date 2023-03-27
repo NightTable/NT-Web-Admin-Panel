@@ -3,7 +3,7 @@ import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { filter } from "lodash";
-import { TextField ,Switch} from "@material-ui/core";
+import { TextField, Switch } from "@material-ui/core";
 import "../../css/DasboardCss.css";
 // @mui
 import { useTheme } from "@mui/material/styles";
@@ -26,7 +26,12 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
-  withStyles,Dialog,DialogActions,DialogContent
+  withStyles,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 
@@ -34,11 +39,9 @@ import InfoIcon from "@mui/icons-material/Info";
 import Iconify from "../../component/iconify";
 import Scrollbar from "../../component/scrollbar";
 import Dropdown from "../../component/Dropdown";
-
+import { DeleteDialog } from "../../features/DeleteDialog";
 //dialog
 
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 //dropdown
 import AddPosterImage from "../UploadImage/AddImage";
 
@@ -56,8 +59,8 @@ import {
   addClubtoServer,
   clubUpdate,
   deleteClub,
-  AddClubImage,
 } from "../../services/club";
+import { AddImage } from "../../services/upload";
 import {
   getCountries,
   getStatesOfCountry,
@@ -66,6 +69,10 @@ import {
 import { DASHBOARD_TABLE_HEAD } from "../../Table_Head/index";
 import ViewClubInfo from "./ViewClubInfo";
 
+//LOCAL STORAGE
+import { LocalStorageKey } from "src/utils/localStorage/keys";
+
+//MAIN FUNCTION
 export default function ClubDashboard() {
   const theme = useTheme();
 
@@ -159,7 +166,6 @@ export default function ClubDashboard() {
         let obj = {
           countryCode: countryCode,
         };
-        console.log("obj===>", obj);
 
         const statesData = await getStatesOfCountry(obj);
         let arr = [];
@@ -171,7 +177,6 @@ export default function ClubDashboard() {
           });
         });
         setstateData(arr);
-        console.log("statesData===>", statesData);
       }
     }
 
@@ -205,27 +210,20 @@ export default function ClubDashboard() {
   }, [stateCode]);
   //getcountries
 
-  const checkLocationPermission = async () => {
-    if ("geolocation" in navigator) {
-      // console.log("Available");
-      getGeolocation();
+  // get the clubs
+  const loadData = async () => {
+    const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
+
+    if (representativeId === null) {
+      navigate("/");
     } else {
-      console.log("Not Available");
+      getClubData(JSON.parse(representativeId));
     }
   };
 
-  const getGeolocation = async () => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      setlongitude(position.coords.latitude);
-      setlatitude(position.coords.longitude);
-    });
-  };
-
-  // get the clubs
-  const loadData = async () => {
-    checkLocationPermission();
-    const clubData = await getClubData();
-
+  const getClubData = async (representativeId) => {
+    const data = await getClubs();
+    setclubs_data(data);
     const countriesData = await getCountries();
     let arr = [];
     countriesData.forEach((element) => {
@@ -238,11 +236,6 @@ export default function ClubDashboard() {
 
     //   console.log("arr====>", arr);
     setcountryData(arr);
-  };
-
-  const getClubData = async () => {
-    const data = await getClubs();
-    setclubs_data(data);
   };
 
   //API CALL : ADD CLUB
@@ -385,7 +378,7 @@ export default function ClubDashboard() {
                 data={selectedClubData}
                 onSubmit={async (Data) => {
                   if (Data) {
-                    const clubImg = await AddClubImage(Data);
+                    const clubImg = await AddImage(Data);
                     setimageLoader(true);
                     if (clubImg.status === true) {
                       let newArr = [];
@@ -419,38 +412,21 @@ export default function ClubDashboard() {
   const DeleteClubDialog = () => {
     return (
       <>
-        <Dialog
-          open={deleteDialogOpen}
-          keepMounted
-          onClose={() => {
-            setdeleteDialogOpen(!deleteDialogOpen);
+        
+        <DeleteDialog
+          heading={"Delete the club?"}
+          paragraph={
+            " Are you sure want to delete the club, as you won't be able to recover it !"
+          }
+          deleteBtnPressed={(value) => {
+            handleClose(`1`);
           }}
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle>{"Delete the club?"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              Are you sure want to delete the club, as you won't be able to
-              recover it !
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                handleClose(`1`);
-              }}
-            >
-              Delete
-            </Button>
-            <Button
-              onClick={() => {
-                handleClose(`2`);
-              }}
-            >
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
+          closeBtnPressed={(value) => {
+            setdeleteDialogOpen(!value);
+          }}
+          deleteDialogOpen={deleteDialogOpen}
+        />
+        
       </>
     );
   };
@@ -569,11 +545,7 @@ export default function ClubDashboard() {
 
   function applySortFilter(array, comparator, query) {
     const stabilizedThis = array.map((el, index) => [el, index]);
-    // stabilizedThis.sort((a, b) => {
-    //   // const order = comparator(a[0], b[0]);
-    //   if (order !== 0) return order;
-    //   return a[1] - b[1];
-    // });
+
     if (query) {
       return filter(
         array,
@@ -1254,6 +1226,7 @@ export default function ClubDashboard() {
           </Scrollbar>
         </Popover>
         <DeleteClubDialog />
+
         <AddImageDialog />
         <ViewClubInforamtionDialog />
       </Container>

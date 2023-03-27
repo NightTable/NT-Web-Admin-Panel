@@ -29,23 +29,21 @@ import {
   TableContainer,
   TablePagination,
   withStyles,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import Switch from "@material-ui/core/Switch";
 
 // components
-import Iconify from "../../component/iconify";
-import InfoIcon from "@mui/icons-material/Info";
 import Scrollbar from "../../component/scrollbar";
-//dialog
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import ResponsiveDateTimePickers from "src/component/ResponsiveDateTimePIcker";
+
 //dropdown
 import AddPosterImage from "../UploadImage/AddImage";
 
-import Dropdown from "../../component/Dropdown";
 // sections
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 // mock
@@ -59,22 +57,14 @@ import { getCurrentDate, convertToTimeStamp } from "../../utils/Day";
 import { EVENTS_TABLE_HEAD } from "../../Table_Head/index";
 import ViewEventInfo from "./ViewEventInfo";
 import { LocalStorageKey } from "src/utils/localStorage/keys";
+//services
 import { getProfileData } from "src/services/representative";
-import ResponsiveDateTimePickers from "src/component/ResponsiveDateTimePIcker";
-// import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import dayjs from "dayjs";
-import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-//MAIN FUNCTION
 
-//component
-import { ButtonTabs } from "src/component/Tabs";
-import { deleteClub } from "src/services/club";
+//MAIN FUNCTION
 
 export default function EventDashboard() {
   const currentDateinISO5601 = dayjs().format("YYYY-MM-DDTHH:MM");
-  console.log("currentDateinISO5601", currentDateinISO5601);
 
   const [selectedDate, setSelectedDate] = useState(dayjs("2022-04-17T15:30"));
   const handleDateChange = (newDate) => {
@@ -94,6 +84,7 @@ export default function EventDashboard() {
   const [imageLoader, setimageLoader] = useState(false);
   //States
 
+  //CREATE EVENT STATES==>
   const [EventName, setEventName] = useState("");
   const [ticketLink, setticketLink] = useState("");
   const [EventDate, setEventDate] = useState("");
@@ -648,7 +639,9 @@ export default function EventDashboard() {
                                   variant="subtitle2"
                                   noWrap
                                 >
-                                  {dayjs(Number(eventTime)).format("DD-MM-YYYY HH:MM")}
+                                  {dayjs(Number(eventTime)).format(
+                                    "DD-MM-YYYY HH:MM"
+                                  )}
                                 </Typography>
                               </TableCell>
                               <TableCell align="left">
@@ -657,7 +650,6 @@ export default function EventDashboard() {
                                 </Typography>
                               </TableCell>
 
-                              
                               <TableCell align="right">
                                 <Stack flexDirection={"row"}>
                                   <IconButton
@@ -665,7 +657,7 @@ export default function EventDashboard() {
                                     color="inherit"
                                     onClick={() => {
                                       setEventClubPopUp(true);
-                                      
+
                                       //LEFT WITH LINE ITEMS & ADDRESS TO UPDATE
                                       // alert("EDIT alert");
                                     }}
