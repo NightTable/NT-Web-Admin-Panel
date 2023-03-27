@@ -57,6 +57,7 @@ export default function LoginForm() {
     } else if (phoneNumber.length <= 0) {
       alert("Please enter the valid number ");
     } else {
+      seterrorMsg('')
       setloader(true);
       const no = `+${countryCode}${phoneNumber}`;
       const triggerOtp = await loginApi(no);
@@ -66,6 +67,9 @@ export default function LoginForm() {
         setloader(false);
       } else if (triggerOtp?.status === true) {
         setotpField(false);
+        setloader(false);
+      } else {
+        alert("Something went wrong ");
         setloader(false);
       }
     }
@@ -82,25 +86,30 @@ export default function LoginForm() {
 
       const verifyNumber = await otpVerify(no, otp);
       console.log("verifyNumber---->", verifyNumber);
-     if(verifyNumber != undefined){
-      if (verifyNumber === "Otp expired") {
+      if (verifyNumber != undefined) {
+        if (
+          verifyNumber === "Otp expired"
+        ) {
+          setloader(false);
+          setotp("");
+          seterrorMsg("Otp Expired !");
+        } else if(verifyNumber === "verification failed"){
+          setloader(false);
+          setotp("");
+          seterrorMsg("Wrong Otp!");
+        }else {
+          localStorage.setItem(
+            LocalStorageKey.USER_DATA,
+            JSON.stringify(verifyNumber.data)
+          );
+          getRepresentativeData(verifyNumber.data._id);
+          seterrorMsg("");
+        }
+      } else {
         setloader(false);
         setotp("");
-        seterrorMsg("Otp Expired");
-      } else {
-        localStorage.setItem(
-          LocalStorageKey.USER_DATA,
-          JSON.stringify(verifyNumber.data)
-        );
-        getRepresentativeData(verifyNumber.data._id);
-        seterrorMsg("");
+        seterrorMsg("Technical Error ,Contact Support ! ");
       }
-     }
-     else{
-      setloader(false);
-      setotp("");
-      seterrorMsg("Technical Error ,Contact Support ! ");
-     }
     } else {
       seterrorMsg("Please enter the 6 digit valid otp");
     }
@@ -200,7 +209,7 @@ export default function LoginForm() {
               ) : (
                 ""
               )}
-              {errorMsg === "Otp Expired" ? (
+              {errorMsg === "Otp Expired !" ? (
                 <>
                   {" "}
                   <Button
