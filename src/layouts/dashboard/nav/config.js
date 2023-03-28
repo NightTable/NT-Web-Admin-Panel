@@ -12,6 +12,11 @@ const navConfig = [
     path: '/dashboard/tableconfig',
     icon: icon('ic_user'),
   },
+  {
+    title: 'Menu',
+    path: '/dashboard/menu',
+    icon: icon('ic_user'),
+  },
   // {
   //   title: 'Reservations',
   //   path: '/dashboard/reservations',

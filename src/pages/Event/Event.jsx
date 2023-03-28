@@ -36,6 +36,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import Switch from "@material-ui/core/Switch";
+import Iconify from "../../component/iconify";
 
 // components
 import Scrollbar from "../../component/scrollbar";

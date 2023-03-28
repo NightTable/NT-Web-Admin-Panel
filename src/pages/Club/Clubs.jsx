@@ -52,7 +52,6 @@ import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 //theme
 import palette from "../../theme/palette";
 // ----------------------------------------------------------------------
-import { ClubsData } from "src/_mock/club";
 //servie files
 import {
   getClubs,
@@ -541,7 +540,7 @@ export default function ClubDashboard() {
   }
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - ClubsData.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - clubs_data.length) : 0;
 
   function applySortFilter(array, comparator, query) {
     const stabilizedThis = array.map((el, index) => [el, index]);

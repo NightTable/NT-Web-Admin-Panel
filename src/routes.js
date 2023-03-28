@@ -11,7 +11,7 @@ import EventDashboard from "./pages/Event/Event";
 //Table COnfig
 import TableConfig from "./pages/Table/TableConfig";
 // ----------------------------------------------------------------------
-
+import MDashboard from "./pages/Menu/MDashboard";
 export default function Router() {
   const routes = useRoutes([
     {
@@ -28,6 +28,8 @@ export default function Router() {
         { path: "events", element: <EventDashboard /> },
         { path: "tableconfig", element: <TableConfig /> },
         { path: "reservations", element: <TableConfig /> },
+        { path: "menu", element: <MDashboard /> },
+
       ],
     },
     // {

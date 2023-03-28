@@ -12,7 +12,7 @@ import {
   Popover,
 } from "@mui/material";
 // mocks_
-import account from "../../../_mock/account";
+// import account from "../../../_mock/account";
 import { useNavigate } from "react-router-dom";
 import { LocalStorageKey } from "src/utils/localStorage/keys";
 
@@ -86,7 +86,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        {/* <Avatar src={account.photoURL} alt="photoURL" /> */}
       </IconButton>
 
       <Popover
