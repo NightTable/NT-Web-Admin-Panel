@@ -134,16 +134,23 @@ export default function MDashboard() {
     setclubs_data(tempArr);
   };
 
-
-  //ADD ITEMS INTO CATEGORY MENU 
-  const addMenuItems = () =>{
-    let obj = {
-      name: menuItem,
-      quantity: stock,
-      price: price,
-    };
-    setKeyValuePairs([...keyValuePairs, obj]);
-  }
+  //ADD ITEMS INTO CATEGORY MENU
+  const addMenuItems = () => {
+    console.log("menuItem=====>", menuItem);
+    if (menuItem.trim() != "" && stock.trim() != "" && price.trim() != "") {
+      let obj = {
+        name: menuItem,
+        quantity: stock,
+        price: price,
+      };
+      setKeyValuePairs([...keyValuePairs, obj]);
+      setMenuItem("");
+      setstock("");
+      setprice("");
+    } else {
+      alert("Please add the items !");
+    }
+  };
 
   //DELETE ITEMS FROM CATEGORY MENU
   const handleDeleteKeyValue = (name) => {
@@ -156,16 +163,16 @@ export default function MDashboard() {
   //API CALL : ADD MENU
   const addMenutoServer = async () => {
     let obj = {
-      "clubId": selectedClubData._id,
-      "menu": [{
-        "category": CategoryName,
-        "items": keyValuePairs
-      }]
-    }
+      clubId: selectedClubData._id,
+      menu: [
+        {
+          category: CategoryName,
+          items: keyValuePairs,
+        },
+      ],
+    };
 
-    console.log("obj========>",obj)
-
-
+    console.log("obj========>", obj);
   };
 
   return (
@@ -372,9 +379,7 @@ export default function MDashboard() {
               <Stack flexDirection={"row"} sx={{ paddingTop: 1 }}>
                 <Button
                   onClick={() => {
-
-                   addMenuItems()
-
+                    addMenuItems();
                   }}
                   // variant="contained"
                   style={{
@@ -452,6 +457,9 @@ export default function MDashboard() {
                     </Typography>
                     <Typography style={{ color: palette.primary.gold }}>
                       Price
+                    </Typography>
+                    <Typography style={{ color: palette.primary.gold }}>
+                      Delete
                     </Typography>
                   </Stack>
                   <Box
