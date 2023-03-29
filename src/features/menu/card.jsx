@@ -22,8 +22,7 @@ import palette from "../../theme/palette";
 import Iconify from "../../component/iconify";
 import Scrollbar from "../../component/scrollbar";
 
-
-export const  MenuItemCard = ({ data }) => {
+export const MenuItemCard = ({ data, SelectedMenuData }) => {
   return (
     <>
       <Box>
@@ -49,6 +48,8 @@ export const  MenuItemCard = ({ data }) => {
               size="large"
               onClick={() => {
                 // setEventClubPopUp(!true);
+                console.log("SelectedMenuData", data);
+                SelectedMenuData(data);
               }}
             >
               <Iconify
@@ -78,35 +79,26 @@ export const  MenuItemCard = ({ data }) => {
             <Stack flexDirection={"row"}>
               <Box
                 style={{
-                  width: "30%",
+                  width: "33%",
                 }}
               >
                 <Typography style={{ color: "#E4D0B5" }}>Item</Typography>
               </Box>
               <Box
                 style={{
-                  width: "20%",
+                  width: "33%",
                 }}
               >
                 <Typography style={{ color: "#E4D0B5" }}>Stock</Typography>
               </Box>
               <Box
                 style={{
-                  width: "20%",
+                  width: "33%",
                 }}
               >
                 <Typography style={{ color: "#E4D0B5" }}>Price</Typography>
               </Box>
-              <Box
-                style={{
-                  width: "20%",
-                }}
-              >
-                <Stack justifyContent={"space-between"} flexDirection={"row"}>
-                  <Typography style={{ color: "#E4D0B5" }}>Edit</Typography>
-                  <Typography style={{ color: "#E4D0B5" }}>Delete</Typography>
-                </Stack>
-              </Box>
+              
             </Stack>
           </Scrollbar>
         </Container>
@@ -128,7 +120,7 @@ export const  MenuItemCard = ({ data }) => {
                     <Stack flexDirection={"row"}>
                       <Box
                         style={{
-                          width: "30%",
+                          width: "33%",
                           flexDirection: "row",
                         }}
                       >
@@ -142,51 +134,17 @@ export const  MenuItemCard = ({ data }) => {
                       </Box>
                       <Box
                         style={{
-                          width: "20%",
+                          width: "33%",
                         }}
                       >
                         <Typography>{item?.stock}</Typography>
                       </Box>
                       <Box
                         style={{
-                          width: "20%",
+                          width: "33%",
                         }}
                       >
                         <Typography>{item?.price}</Typography>
-                      </Box>
-                      <Box
-                        style={{
-                          width: "20%",
-                        }}
-                      >
-                        <Stack
-                          style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <IconButton
-                            size="large"
-                            color="inherit"
-                            onClick={() => {
-                              // setEventClubPopUp(!true);
-                            }}
-                          >
-                            <Iconify
-                              color={"black"}
-                              icon={"material-symbols:edit"}
-                            />
-                          </IconButton>
-                          <IconButton
-                            size="large"
-                            color="inherit"
-                            onClick={() => {
-                              // setEventClubPopUp(!true);
-                            }}
-                          >
-                            <Iconify color={"black"} icon={"maki:cross"} />
-                          </IconButton>
-                        </Stack>
                       </Box>
                     </Stack>
                   </Box>

@@ -85,14 +85,15 @@ export default function MDashboard() {
   const [selected_club_btn, setselected_club_btn] = useState("0");
 
   //POP-UP
-  const [popup_open, setpopup_open] = useState(true);
+  const [popup_open, setpopup_open] = useState(false);
 
   //CREATE EVENT STATES==>
   const [CategoryName, setCategoryName] = useState("");
 
   //selected club data
   const [selectedClubData, setselectedClubData] = useState([]);
-
+  //Menu obj
+  const [selectedMenu_Data, setselectedMenu_Data] = useState([]);
   //add entities
   const [keyValuePairs, setKeyValuePairs] = useState([]);
   const [menuItem, setMenuItem] = useState("");
@@ -269,7 +270,12 @@ export default function MDashboard() {
             return (
               <>
                 <Scrollbar>
-                  <MenuItemCard data={item} />
+                  <MenuItemCard
+                    data={item}
+                    SelectedMenuData={(data) => {
+                      console.log("data[====>",data);
+                    }}
+                  />
                 </Scrollbar>
               </>
             );
