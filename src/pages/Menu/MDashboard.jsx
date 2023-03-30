@@ -26,6 +26,7 @@ import palette from "../../theme/palette";
 import { LocalStorageKey } from "src/utils/localStorage/keys";
 //services
 import { getProfileData } from "src/services/representative";
+import { getMenuforClub } from "src/services/menu";
 
 //MAIN FUNCTION
 
@@ -101,6 +102,8 @@ export default function MDashboard() {
   const [price, setprice] = useState("");
   const [showLineItemError, setshowError] = useState(false);
 
+  //MENU ITEMS DATA FOR
+  const [menuItemsData, setmenuItemsData] = useState([]);
   useEffect(() => {
     loadData();
   }, []);
@@ -133,6 +136,13 @@ export default function MDashboard() {
       clubId: tempArr[0]._id,
     };
     setclubs_data(tempArr);
+    getMenuDataClub(tempArr[0]._id);
+  };
+
+  const getMenuDataClub = async (club_id) => {
+    const data = await getMenuforClub(club_id);
+    console.log("data======>", data);
+    setmenuItemsData(data);
   };
 
   //ADD ITEMS INTO CATEGORY MENU
@@ -266,14 +276,20 @@ export default function MDashboard() {
               marginTop: 10,
             }}
           ></Box>
-          {MenuItems.map((item) => {
+          {/* {menuItemsData?.length === undefined ||
+            (menuItemsData?.length === 0 && (
+              <>
+                <Typography>NO MENU ITEM IS FOUND</Typography>
+              </>
+            ))} */}
+          {menuItemsData?.map((item) => {
             return (
               <>
                 <Scrollbar>
                   <MenuItemCard
                     data={item}
                     SelectedMenuData={(data) => {
-                      console.log("data[====>",data);
+                      console.log("data[====>", data);
                     }}
                   />
                 </Scrollbar>

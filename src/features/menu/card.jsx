@@ -23,6 +23,8 @@ import Iconify from "../../component/iconify";
 import Scrollbar from "../../component/scrollbar";
 
 export const MenuItemCard = ({ data, SelectedMenuData }) => {
+
+  console.log('data',data)
   return (
     <>
       <Box>
@@ -102,7 +104,7 @@ export const MenuItemCard = ({ data, SelectedMenuData }) => {
             </Stack>
           </Scrollbar>
         </Container>
-        {data.Items.map((item, index) => {
+        {data.items.map((item, index) => {
           return (
             <>
               <Container
