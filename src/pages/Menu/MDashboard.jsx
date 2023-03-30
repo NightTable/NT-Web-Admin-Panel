@@ -26,7 +26,7 @@ import palette from "../../theme/palette";
 import { LocalStorageKey } from "src/utils/localStorage/keys";
 //services
 import { getProfileData } from "src/services/representative";
-import { getMenuforClub } from "src/services/menu";
+import { createMenuforClub, getMenuforClub } from "src/services/menu";
 
 //MAIN FUNCTION
 
@@ -175,15 +175,30 @@ export default function MDashboard() {
   const addMenutoServer = async () => {
     let obj = {
       clubId: selectedClubData._id,
-      menu: [
-        {
-          category: CategoryName,
-          items: keyValuePairs,
-        },
-      ],
+      menuCatgeory: {
+        category: CategoryName,
+        items: keyValuePairs,
+      },
     };
 
-    console.log("obj========>", obj);
+    const data = await createMenuforClub(obj);
+    if (data.clubId === undefined) {
+      alert("Something went wrong");
+    } else if (data.clubId?.length > 0) {
+      alert("Menu Added Successfully !");
+      setKeyValuePairs([]);
+      setCategoryName("");
+      let obj = {
+        category: CategoryName,
+        items: keyValuePairs,
+      };
+      const updateMenuItemData = [...menuItemsData, obj];
+      setmenuItemsData(updateMenuItemData);
+      console.log(`aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=====>`);
+      setpopup_open(false);
+
+      // setmenuItemsData(...menuItemsData, obj);
+    }
   };
 
   return (
@@ -230,6 +245,7 @@ export default function MDashboard() {
                         setselected_club_btn(index);
                         console.log("item===club-Data---====>", item);
                         setselectedClubData(item);
+                        getMenuDataClub(item._id);
                       }}
                       border={2}
                       borderRadius={2}

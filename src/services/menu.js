@@ -46,7 +46,7 @@ export const getMenuforClub = async (club_id) => {
           console.log(JSON.stringify(response.data));
         })
         .catch(function (error) {
-          console.log(error);
+          console.log("error in catch",error);
           reject(error);
         });
     });
