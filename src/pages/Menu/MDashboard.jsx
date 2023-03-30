@@ -30,51 +30,6 @@ import { createMenuforClub, getMenuforClub } from "src/services/menu";
 
 //MAIN FUNCTION
 
-const MenuItems = [
-  {
-    id: "1",
-    category: "Champange",
-    Items: [
-      {
-        name: "Dom Perignon Rose",
-        stock: 50,
-        price: "$1000",
-      },
-      {
-        name: "Veuve Cliquot",
-        stock: 30,
-        price: "$300",
-      },
-    ],
-  },
-  {
-    id: "2",
-    category: "Vodka",
-    Items: [
-      {
-        name: "Lemon Vodka",
-        stock: 50,
-        price: "$1000",
-      },
-      {
-        name: "Sex on Beach",
-        stock: 20,
-        price: "$3400",
-      },
-      {
-        name: "Lemon Vodka",
-        stock: 50,
-        price: "$1000",
-      },
-      {
-        name: "Sex on Beach",
-        stock: 20,
-        price: "$3400",
-      },
-    ],
-  },
-];
-
 export default function MDashboard() {
   const theme = useTheme();
   //NAVIGATION
@@ -94,7 +49,7 @@ export default function MDashboard() {
   //selected club data
   const [selectedClubData, setselectedClubData] = useState([]);
   //Menu obj
-  const [selectedMenu_Data, setselectedMenu_Data] = useState([]);
+  const [editMenuEnabled, seteditMenuEnabled] = useState(false);
   //add entities
   const [keyValuePairs, setKeyValuePairs] = useState([]);
   const [menuItem, setMenuItem] = useState("");
@@ -104,6 +59,7 @@ export default function MDashboard() {
 
   //MENU ITEMS DATA FOR
   const [menuItemsData, setmenuItemsData] = useState([]);
+  const [SelectedMenuData, setSelectedMenuData] = useState([]);
   useEffect(() => {
     loadData();
   }, []);
@@ -139,15 +95,14 @@ export default function MDashboard() {
     getMenuDataClub(tempArr[0]._id);
   };
 
+  //GET MENU ITEMS
   const getMenuDataClub = async (club_id) => {
     const data = await getMenuforClub(club_id);
-    console.log("data======>", data);
     setmenuItemsData(data);
   };
 
   //ADD ITEMS INTO CATEGORY MENU
   const addMenuItems = () => {
-    console.log("menuItem=====>", menuItem);
     if (menuItem.trim() != "" && stock.trim() != "" && price.trim() != "") {
       let obj = {
         name: menuItem,
@@ -163,6 +118,15 @@ export default function MDashboard() {
     }
   };
 
+
+  const editMenuItems = async () =>{
+
+  }
+
+
+  const deleteMenu = async () =>{
+
+  }
   //DELETE ITEMS FROM CATEGORY MENU
   const handleDeleteKeyValue = (name) => {
     const newKeyValuePairs = [...keyValuePairs];
@@ -194,17 +158,14 @@ export default function MDashboard() {
       };
       const updateMenuItemData = [...menuItemsData, obj];
       setmenuItemsData(updateMenuItemData);
-      console.log(`aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=====>`);
       setpopup_open(false);
-
-      // setmenuItemsData(...menuItemsData, obj);
     }
   };
 
   return (
     <>
       <Helmet>
-        <title> Night Table : Events </title>
+        <title> Night Table : Menu </title>
       </Helmet>
 
       <Container maxWidth="xl">
@@ -243,7 +204,7 @@ export default function MDashboard() {
                     <Box
                       onClick={() => {
                         setselected_club_btn(index);
-                        console.log("item===club-Data---====>", item);
+
                         setselectedClubData(item);
                         getMenuDataClub(item._id);
                       }}
@@ -305,7 +266,11 @@ export default function MDashboard() {
                   <MenuItemCard
                     data={item}
                     SelectedMenuData={(data) => {
-                      console.log("data[====>", data);
+                      console.log(data);
+                      seteditMenuEnabled(true);
+                      setCategoryName(data.category);
+                      setKeyValuePairs(data.items);
+                      setpopup_open(true);
                     }}
                   />
                 </Scrollbar>
@@ -381,7 +346,7 @@ export default function MDashboard() {
                 fontWeight: "bold",
               }}
             >
-              Add Menu
+              {editMenuEnabled === true ? 'Update Menu of club ' : 'Add Menu to club'}
             </Typography>
             <Container sx={{ width: "100%" }}>
               <Stack flexDirection={"row"}>
@@ -417,7 +382,7 @@ export default function MDashboard() {
               <Stack flexDirection={"row"} sx={{ paddingTop: 1 }}>
                 <Button
                   onClick={() => {
-                    addMenuItems();
+                      addMenuItems();
                   }}
                   // variant="contained"
                   style={{
@@ -431,7 +396,7 @@ export default function MDashboard() {
                     width: "100%",
                   }}
                 >
-                  Add
+                  Add 
                 </Button>
                 <Box>
                   <TextField
@@ -558,7 +523,7 @@ export default function MDashboard() {
               >
                 <Button
                   onClick={() => {
-                    addMenutoServer();
+                    editMenuEnabled === true ? editMenuItems() : addMenutoServer();
                   }}
                   // variant="contained"
                   style={{
@@ -572,7 +537,7 @@ export default function MDashboard() {
                     width: "100%",
                   }}
                 >
-                  Add
+                  {editMenuEnabled === true ? 'Update' : ' Add'}
                 </Button>
               </Box>
             </Container>
