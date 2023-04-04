@@ -100,7 +100,7 @@ export const editEvent = async (obj, clubId, EventId) => {
 export const deleteEvent = async ( clubId, EventId) => {
     return new Promise((resolve, reject) => {
       var config = {
-        method: "put",
+        method: "delete",
         url: `${process.env.REACT_APP_BASE_URL}events/club/${clubId}/${EventId}`,
         headers: {
           "Content-Type": "application/json",

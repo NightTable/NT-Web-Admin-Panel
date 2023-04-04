@@ -20,13 +20,20 @@ import { useTheme } from "@mui/material/styles";
 import Iconify from "../../component/iconify";
 import Scrollbar from "../../component/scrollbar";
 import { MenuItemCard } from "../../features/menu/card";
+import { DeleteDialog } from "src/features/DeleteDialog";
 //THEME
 import palette from "../../theme/palette";
 // LOCAL-STORAGE
 import { LocalStorageKey } from "src/utils/localStorage/keys";
 //services
 import { getProfileData } from "src/services/representative";
-import { createMenuforClub, getMenuforClub } from "src/services/menu";
+import {
+  createMenuforClub,
+  deleteMenuforClub,
+  getMenuforClub,
+  updateMenuforClub,
+} from "src/services/menu";
+import { deleteEvent } from "src/services/Event";
 
 //MAIN FUNCTION
 
@@ -60,6 +67,9 @@ export default function MDashboard() {
   //MENU ITEMS DATA FOR
   const [menuItemsData, setmenuItemsData] = useState([]);
   const [SelectedMenuData, setSelectedMenuData] = useState([]);
+  //delete dialog box open
+  const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
+
   useEffect(() => {
     loadData();
   }, []);
@@ -118,15 +128,34 @@ export default function MDashboard() {
     }
   };
 
+  const editMenuItems = async () => {
+    let obj = {
+      clubId: selectedClubData._id,
+      menuCatgeory: {
+        category: CategoryName,
+        items: keyValuePairs,
+      },
+    };
+    const data = await updateMenuforClub(obj, SelectedMenuData._id);
+    console.log("data====>", data?.status, data?.status === true);
+    if (data?.status != undefined) {
+      if (data?.status == true) {
+        console.log(data?.message)
+        setpopup_open(false);
+  
+        alert("Menu Updated");
+      } else if (data?.status === false) {
+        setpopup_open(false);
+  
+        alert(data?.message);
+      }
+    } else {
+      alert("Something Went Wrong !");
 
-  const editMenuItems = async () =>{
+    }
+  };
 
-  }
-
-
-  const deleteMenu = async () =>{
-
-  }
+  const deleteMenu = async () => {};
   //DELETE ITEMS FROM CATEGORY MENU
   const handleDeleteKeyValue = (name) => {
     const newKeyValuePairs = [...keyValuePairs];
@@ -162,6 +191,37 @@ export default function MDashboard() {
     }
   };
 
+  const DeleteClubDialog = () => {
+    return (
+      <>
+        <DeleteDialog
+          heading={"Delete the Menu?"}
+          paragraph={
+            " Are you sure want to delete the Menu category , as you won't be able to recover it !"
+          }
+          deleteBtnPressed={(value) => {
+            deleteMenuFn(SelectedMenuData);
+          }}
+          closeBtnPressed={(value) => {
+            setdeleteDialogOpen(!value);
+          }}
+          deleteDialogOpen={deleteDialogOpen}
+        />
+      </>
+    );
+  };
+
+  const deleteMenuFn = async (menu) => {
+    // const data = await deleteMenuforClub(menu_id)
+    console.log(menu, "menu ====>");
+    let menuData = [...menuItemsData];
+    const index = menuData.findIndex((item) => {
+      console.log(item.category === menu.category);
+      item.category === menu.category;
+    });
+
+    console.log("index -=====>", index);
+  };
   return (
     <>
       <Helmet>
@@ -265,12 +325,19 @@ export default function MDashboard() {
                 <Scrollbar>
                   <MenuItemCard
                     data={item}
-                    SelectedMenuData={(data) => {
-                      console.log(data);
-                      seteditMenuEnabled(true);
-                      setCategoryName(data.category);
-                      setKeyValuePairs(data.items);
-                      setpopup_open(true);
+                    SelectedMenuData={(data, index) => {
+                      //       if index === 1 means edit else delete
+                      if (index === 1) {
+                        seteditMenuEnabled(true);
+                        setCategoryName(data.category);
+                        setKeyValuePairs(data.items);
+                        setSelectedMenuData(data);
+                        setpopup_open(true);
+                      } else {
+                        //delete
+                        setSelectedMenuData(data);
+                        setdeleteDialogOpen(true);
+                      }
                     }}
                   />
                 </Scrollbar>
@@ -346,7 +413,9 @@ export default function MDashboard() {
                 fontWeight: "bold",
               }}
             >
-              {editMenuEnabled === true ? 'Update Menu of club ' : 'Add Menu to club'}
+              {editMenuEnabled === true
+                ? "Update Menu of club "
+                : "Add Menu to club"}
             </Typography>
             <Container sx={{ width: "100%" }}>
               <Stack flexDirection={"row"}>
@@ -382,7 +451,7 @@ export default function MDashboard() {
               <Stack flexDirection={"row"} sx={{ paddingTop: 1 }}>
                 <Button
                   onClick={() => {
-                      addMenuItems();
+                    addMenuItems();
                   }}
                   // variant="contained"
                   style={{
@@ -396,7 +465,7 @@ export default function MDashboard() {
                     width: "100%",
                   }}
                 >
-                  Add 
+                  Add
                 </Button>
                 <Box>
                   <TextField
@@ -476,7 +545,7 @@ export default function MDashboard() {
               ) : (
                 <></>
               )}
-              {keyValuePairs.map((item, index) => {
+              {keyValuePairs?.map((item, index) => {
                 return (
                   <>
                     <Box style={{ paddingTop: 10 }}>
@@ -523,7 +592,9 @@ export default function MDashboard() {
               >
                 <Button
                   onClick={() => {
-                    editMenuEnabled === true ? editMenuItems() : addMenutoServer();
+                    editMenuEnabled === true
+                      ? editMenuItems()
+                      : addMenutoServer();
                   }}
                   // variant="contained"
                   style={{
@@ -537,13 +608,14 @@ export default function MDashboard() {
                     width: "100%",
                   }}
                 >
-                  {editMenuEnabled === true ? 'Update' : ' Add'}
+                  {editMenuEnabled === true ? "Update" : " Add"}
                 </Button>
               </Box>
             </Container>
           </Box>
         </Scrollbar>
       </Popover>
+      <DeleteClubDialog />
     </>
   );
 }

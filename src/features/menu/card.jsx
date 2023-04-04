@@ -23,8 +23,6 @@ import Iconify from "../../component/iconify";
 import Scrollbar from "../../component/scrollbar";
 
 export const MenuItemCard = ({ data, SelectedMenuData }) => {
-
-  console.log('data',data)
   return (
     <>
       <Box>
@@ -51,7 +49,7 @@ export const MenuItemCard = ({ data, SelectedMenuData }) => {
               onClick={() => {
                 // setEventClubPopUp(!true);
                 console.log("SelectedMenuData", data);
-                SelectedMenuData(data);
+                SelectedMenuData(data , 1);
               }}
             >
               <Iconify
@@ -64,6 +62,8 @@ export const MenuItemCard = ({ data, SelectedMenuData }) => {
               color={"success"}
               onClick={() => {
                 // setEventClubPopUp(!true);
+                SelectedMenuData(data , 2);
+
               }}
             >
               <Iconify color={palette.primary.gold} icon={"maki:cross"} />
