@@ -20,4 +20,24 @@ export const getProfileData = async (id) => {
 };
 
 
+export const addRepresentativetoClub = async (obj) => {
+  return new Promise((resolve, reject) => {
+    var config = {
+      method: "post",
+      url: `${process.env.REACT_APP_BASE_URL}representatives/createRepresentative`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: obj,
+    };
 
+    axios(config)
+      .then(function (response) {
+        resolve(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+        reject(error);
+      });
+  });
+};

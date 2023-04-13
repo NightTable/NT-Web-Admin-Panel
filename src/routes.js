@@ -12,6 +12,8 @@ import EventDashboard from "./pages/Event/Event";
 import TableConfig from "./pages/Table/TableConfig";
 // ----------------------------------------------------------------------
 import MDashboard from "./pages/Menu/MDashboard";
+import RepresentativeDashboard from "./pages/Representative/RepresentativeDashboard";
+
 export default function Router() {
   const routes = useRoutes([
     {
@@ -27,32 +29,12 @@ export default function Router() {
         { path: "clubs", element: <ClubDashboard /> },
         { path: "events", element: <EventDashboard /> },
         { path: "tableconfig", element: <TableConfig /> },
-        { path: "reservations", element: <TableConfig /> },
+        { path: "representative", element: <RepresentativeDashboard /> },
         { path: "menu", element: <MDashboard /> },
 
       ],
     },
-    // {
-    //   path: "/eventdashboard",
-    //   element: <DashboardLayout />,
-    //   children: [
-    //     { element: <Navigate to="/dashboard/app" /> },
-    //     { path: "app", element: <DashboardAppPage /> },
-    //     { path: "user", element: <UserPage /> },
-    //     { path: "products", element: <ProductsPage /> },
-    //     { path: "blog", element: <BlogPage /> },
-    //   ],
-
-    // },
-
-    // {
-    //   element: <SimpleLayout />,
-    //   children: [
-    //     { element: <Navigate to="/dashboard/app" />, index: true },
-    //     { path: "404", element: <Page404 /> },
-    //     { path: "*", element: <Navigate to="/404" /> },
-    //   ],
-    // },
+  
     {
       path: "*",
       element: <Navigate to="/404" replace />,

@@ -141,6 +141,7 @@ export default function MDashboard() {
     if (data?.status != undefined) {
       if (data?.status == true) {
         console.log(data?.message)
+        getMenuDataClub
         setpopup_open(false);
   
         alert("Menu Updated");
@@ -215,12 +216,13 @@ export default function MDashboard() {
     // const data = await deleteMenuforClub(menu_id)
     console.log(menu, "menu ====>");
     let menuData = [...menuItemsData];
-    const index = menuData.findIndex((item) => {
-      console.log(item.category === menu.category);
-      item.category === menu.category;
+    const updatedData = menuData.filter((item) => {
+return       item.category === menu.category;
     });
 
-    console.log("index -=====>", index);
+    console.log("index -=====>", updatedData);
+ //   setmenuItemsData(updatedData)
+    
   };
   return (
     <>

@@ -17,11 +17,11 @@ const navConfig = [
     path: '/dashboard/menu',
     icon: icon('ic_user'),
   },
-  // {
-  //   title: 'Reservations',
-  //   path: '/dashboard/reservations',
-  //   icon: icon('ic_cart'),
-  // },
+  {
+    title: 'Representative',
+    path: '/dashboard/representative',
+    icon: icon('ic_cart'),
+  },
   {
     title: 'Events',
     path: '/dashboard/events',
