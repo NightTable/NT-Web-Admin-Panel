@@ -68,23 +68,20 @@ export default function RepresentativeDashboard() {
   //CLicked Button
   const [selected_club_btn, setselected_club_btn] = useState("0");
 
-
-  // ADD REPRESENTATIVE 
-  const [fullName, setfullName] = useState('');
-  const [phoneNumber, setphoneNumber] = useState('');
-  const [email, setemail] = useState('');
-  const [representativeRole, setrepresentativeRole] = useState('');
-
+  // ADD REPRESENTATIVE
+  const [fullName, setfullName] = useState("");
+  const [phoneNumber, setphoneNumber] = useState("");
+  const [email, setemail] = useState("");
+  const [representativeRole, setrepresentativeRole] = useState("");
+const [switchToggle, setswitchToggle] = useState(false)
   //add Representative pop-over open
   const [addRepresentativePopUp, setaddRepresentativePopUp] = useState(false);
-
 
   //country data
   const [country, setcountry] = useState("");
   const [countryData, setcountryData] = useState([]);
   const [countryCode, setcountryCode] = useState("");
 
-  
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState("asc");
@@ -141,53 +138,10 @@ export default function RepresentativeDashboard() {
     setcountryData(arr);
   };
 
-  //API CALL : ADD CLUB
-  const addClub = async () => {
-    console.log("keyValuePairs===>", keyValuePairs);
-    // let keys = Object.keys(keyValuePairs);
-    // let arr = [];
-    // for (let i = 0; i < keys.length; i++) {
-    //   arr.push({
-    //     name: keys[i],
-    //     percentage: keyValuePairs[keys[i]],
-    //   });
-    // }
-    // var obj = {
-    //   name: clubName,
-    //   location: [longitude, latitude],
-    //   instaHandle: instaHandle,
-    //   phoneNumber: phoneNumber,
-    //   Address: {
-    //     Address: addressLine,
-    //     City: city,
-    //     State: state,
-    //     Country: country,
-    //   },
-    //   website: WebsiteUrl,
-    //   photos: [],
-    //   stripeAccountNumber: stripeAccountNo,
-    //   ownedBy: "god",
-    //   lineItems: arr,
-    // };
-
-    // const data = await addClubtoServer(obj);
-    // if (data?.status === true) {
-    //   alert("Club Added");
-
-    //   //update the club array
-    //   const updateClubArr = [...clubs_data, data.data];
-    //   setclubs_data(updateClubArr);
-    //   //resetting the states to inital
-    //   resetStates();
-    // } else {
-    //   alert("ERROR IN ADDING CLUB ");
-    // }
-  };
-
   //dialog
 
   const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
-  
+
   //selected club data
   const [selectedClubData, setselectedClubData] = useState([]);
 
@@ -211,6 +165,7 @@ export default function RepresentativeDashboard() {
     );
   };
 
+  // TABLE PAGINATION
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -366,8 +321,7 @@ export default function RepresentativeDashboard() {
                       )
                       .map((item, index) => {
                         //   console.log("item===>", item);
-                        const { _id, name, website, isPublished, phoneNumber } =
-                          item;
+                        const { _id, name, phoneNumber } = item;
                         return (
                           <>
                             <TableRow
@@ -409,13 +363,7 @@ export default function RepresentativeDashboard() {
                               </TableCell>
                               <TableCell align="left">
                                 <Typography sx={{ color: "black" }}>
-                                  {phoneNumber}
-                                </Typography>
-                              </TableCell>
-
-                              <TableCell align="left">
-                                <Typography sx={{ color: "black" }}>
-                                  {website}
+                                  Roles{" "}
                                 </Typography>
                               </TableCell>
 
@@ -425,8 +373,6 @@ export default function RepresentativeDashboard() {
                                     size="large"
                                     color="inherit"
                                     onClick={() => {
-                                     
-
                                       //LEFT WITH LINE ITEMS & ADDRESS TO UPDATE
                                       // alert("EDIT alert");
                                     }}
@@ -588,7 +534,7 @@ export default function RepresentativeDashboard() {
                     <TextField
                       fullWidth
                       autoComplete="off"
-                      label="Club Name"
+                      label="name"
                       variant="outlined"
                       value={fullName}
                       onChange={(text) => {
@@ -610,7 +556,7 @@ export default function RepresentativeDashboard() {
                   <Box sx={{ width: "70%", paddingBottom: 2 }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
-                        label={"Phone Number"}
+                        label={"+XXXXXXXXX"}
                         autoComplete="no-autocomplete-random-string"
                         fullWidth
                         variant="outlined"
@@ -629,19 +575,19 @@ export default function RepresentativeDashboard() {
                 <Stack flexDirection={"row"}>
                   <Box sx={{ width: "30%" }}>
                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
-                      Email 
+                      Email
                     </Typography>
                   </Box>
                   <Box sx={{ width: "70%", paddingBottom: 2 }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
-                        label={"Phone Number"}
+                        label={"email"}
                         autoComplete="no-autocomplete-random-string"
                         fullWidth
                         variant="outlined"
-                        value={phoneNumber}
+                        value={email}
                         onChange={(text) => {
-                          setphoneNumber(text.target.value);
+                          setemail(text.target.value);
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                         InputLabelProps={{
@@ -651,8 +597,61 @@ export default function RepresentativeDashboard() {
                     </Box>
                   </Box>
                 </Stack>
-               
-             
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
+                    <Typography fullWidth sx={{ color: palette.primary.gold }}>
+                      Role
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                    <Box sx={{ paddingBottom: 2 }}>
+                      <TextField
+                        label={"role"}
+                        autoComplete="no-autocomplete-random-string"
+                        fullWidth
+                        variant="outlined"
+                        value={representativeRole}
+                        onChange={(text) => {
+                          setrepresentativeRole(text.target.value);
+                        }}
+                        inputProps={{ style: { color: palette.primary.gold } }}
+                        InputLabelProps={{
+                          style: { color: palette.primary.gold },
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </Stack>
+                <Typography
+                  fullWidth
+                  sx={{ color: palette.primary.gold, paddingBottom: 4 }}
+                >
+                  Privileges
+                </Typography>
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "70%" }}>
+                    <Typography fullWidth sx={{ color: palette.primary.gold }}>
+                      Add, edit or delete table configgurations ?
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "30%", paddingBottom: 2 }}>
+                    <Box sx={{ paddingBottom: 2 }}>
+                      <Switch
+                        style={{
+                          color: "primary",
+                          
+                        }}
+                        inputProps={{ 'aria-label': 'controlled' }}
+
+                        checked={switchToggle}
+                        onChange={() => {
+                          setswitchToggle(!switchToggle)
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </Stack>
+
                 <Box
                   sx={{
                     width: "100%",
@@ -661,7 +660,7 @@ export default function RepresentativeDashboard() {
                 >
                   <Button
                     onClick={() => {
-                  //    addClub();
+                      //    addClub();
                       //setaddClubPopUp(true);
                     }}
                     // variant="contained"
@@ -676,7 +675,7 @@ export default function RepresentativeDashboard() {
                       width: "100%",
                     }}
                   >
-                    Add Representative
+                    Add
                   </Button>
                 </Box>
               </Container>
