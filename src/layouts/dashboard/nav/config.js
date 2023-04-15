@@ -7,11 +7,11 @@ const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ 
 
 const navConfig = [
 
-  {
-    title: 'Table Configurations',
-    path: '/dashboard/tableconfig',
-    icon: icon('ic_user'),
-  },
+  // {
+  //   title: 'Table Configurations',
+  //   path: '/dashboard/tableconfig',
+  //   icon: icon('ic_user'),
+  // },
   {
     title: 'Menu',
     path: '/dashboard/menu',

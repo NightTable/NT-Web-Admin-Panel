@@ -53,7 +53,10 @@ import palette from "../../theme/palette";
 // ----------------------------------------------------------------------
 
 import { getCountries } from "../../services/countries";
-import { getProfileData } from "../../services/representative";
+import {
+  getProfileData,
+  getRepresentativebyClub,
+} from "../../services/representative";
 import { REPRESENTATIVE_CONFIG_TABLE_HEAD } from "../../Table_Head/index";
 
 //LOCAL STORAGE
@@ -62,21 +65,44 @@ import { LocalStorageKey } from "src/utils/localStorage/keys";
 //MAIN FUNCTION
 export default function RepresentativeDashboard() {
   const theme = useTheme();
+
+  const Privilegesarr = [
+    {
+      id: 1,
+      text: "Add,  table configurations ?",
+      privilege: false,
+    },
+    {
+      id: 2,
+      text: " Edit  table configurations ?",
+      privilege: false,
+    },
+    {
+      id: 3,
+      text: "Delete table configurations ?",
+      privilege: false,
+    },
+  ];
+
   //clubs
   const [clubs_data, setclubs_data] = useState([]);
 
   //CLicked Button
   const [selected_club_btn, setselected_club_btn] = useState("0");
-
+  //SHOW REPRESENTATIVE DATA
+  const [representativeData, setrepresentativeData] = useState([]);
   // ADD REPRESENTATIVE
   const [fullName, setfullName] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
   const [email, setemail] = useState("");
+  const [userName, setuserName] = useState("");
   const [representativeRole, setrepresentativeRole] = useState("");
-const [switchToggle, setswitchToggle] = useState(false)
+  const [switchToggle, setswitchToggle] = useState(false);
+
   //add Representative pop-over open
   const [addRepresentativePopUp, setaddRepresentativePopUp] = useState(false);
-
+  //PRIVILIGES ARRAY
+  const [PrivilegesData, setPrivilegesData] = useState(Privilegesarr);
   //country data
   const [country, setcountry] = useState("");
   const [countryData, setcountryData] = useState([]);
@@ -120,22 +146,22 @@ const [switchToggle, setswitchToggle] = useState(false)
       });
     });
 
+    //GET FIRST CLUB REPRESENTATIVE
+    getClubRepData(tempArr[0]._id);
+    //SELECTED CLUB DATA
     setselectedClubData(tempArr[0]);
-    let obj = {
-      clubId: tempArr[0]._id,
-    };
     setclubs_data(tempArr);
-
-    const countriesData = await getCountries();
-    let arr = [];
-    countriesData.forEach((element) => {
-      arr.push({
-        label: element.name,
-        value: element.isoCode,
-        phoneNumberCode: element.phoneNumberCode,
-      });
-    });
-    setcountryData(arr);
+    //GET COUNTRIES
+    // const countriesData = await getCountries();
+    // let arr = [];
+    // countriesData.forEach((element) => {
+    //   arr.push({
+    //     label: element.name,
+    //     value: element.isoCode,
+    //     phoneNumberCode: element.phoneNumberCode,
+    //   });
+    // });
+    // setcountryData(arr);
   };
 
   //dialog
@@ -165,6 +191,12 @@ const [switchToggle, setswitchToggle] = useState(false)
     );
   };
 
+  //CLUB REPRESENTATIVE DATA
+  const getClubRepData = async (club_id) => {
+    const data = await getRepresentativebyClub(club_id);
+    setrepresentativeData(data);
+  };
+
   // TABLE PAGINATION
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -187,7 +219,9 @@ const [switchToggle, setswitchToggle] = useState(false)
   }
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - clubs_data.length) : 0;
+    page > 0
+      ? Math.max(0, (1 + page) * rowsPerPage - representativeData.length)
+      : 0;
 
   function applySortFilter(array, comparator, query) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -201,7 +235,7 @@ const [switchToggle, setswitchToggle] = useState(false)
     return stabilizedThis.map((el) => el[0]);
   }
   const filteredData = applySortFilter(
-    clubs_data,
+    representativeData,
     getComparator(order, orderBy),
     filterName
   );
@@ -256,7 +290,7 @@ const [switchToggle, setswitchToggle] = useState(false)
                         setselected_club_btn(index);
 
                         setselectedClubData(item);
-                        getMenuDataClub(item._id);
+                        getClubRepData(item._id);
                       }}
                       border={2}
                       borderRadius={2}
@@ -310,7 +344,7 @@ const [switchToggle, setswitchToggle] = useState(false)
                 <Table>
                   <UserListHead
                     headLabel={REPRESENTATIVE_CONFIG_TABLE_HEAD}
-                    rowCount={clubs_data.length}
+                    rowCount={representativeData.length}
                     numSelected={selected.length}
                   />
                   <TableBody>
@@ -320,8 +354,7 @@ const [switchToggle, setswitchToggle] = useState(false)
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((item, index) => {
-                        //   console.log("item===>", item);
-                        const { _id, name, phoneNumber } = item;
+                        const { _id, firstName, role, phoneNumber } = item;
                         return (
                           <>
                             <TableRow
@@ -347,6 +380,7 @@ const [switchToggle, setswitchToggle] = useState(false)
                                   </IconButton>
                                 </Stack>
                               </TableCell>
+
                               <TableCell
                                 bgcolor={"#E4D0B5"}
                                 component="th"
@@ -358,12 +392,17 @@ const [switchToggle, setswitchToggle] = useState(false)
                                   variant="subtitle2"
                                   noWrap
                                 >
-                                  {index + 1}) {name}
+                                  {index + 1}) {firstName}
                                 </Typography>
                               </TableCell>
                               <TableCell align="left">
                                 <Typography sx={{ color: "black" }}>
-                                  Roles{" "}
+                                  {phoneNumber}{" "}
+                                </Typography>
+                              </TableCell>
+                              <TableCell align="left">
+                                <Typography sx={{ color: "black" }}>
+                                  {role}{" "}
                                 </Typography>
                               </TableCell>
 
@@ -403,6 +442,40 @@ const [switchToggle, setswitchToggle] = useState(false)
                       </TableRow>
                     )}
                   </TableBody>
+                  {filteredData?.length <= 0 ? (
+                    <>
+                      <TableBody
+                        style={{
+                          backgroundColor: "#E4D0B5",
+                        }}
+                      >
+                        <TableRow>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <Paper
+                              sx={{
+                                textAlign: "center",
+                              }}
+                              style={{
+                                backgroundColor: "#E4D0B5",
+                                paddingTop: 20,
+                              }}
+                            >
+                              <Typography variant="h6" paragraph>
+                                No Representative found
+                              </Typography>
+
+                              <Typography variant="body2">
+                                <br />
+                                Please add representative to see here
+                              </Typography>
+                            </Paper>
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                   {isNotFound && (
                     <TableBody
                       style={{
@@ -549,6 +622,29 @@ const [switchToggle, setswitchToggle] = useState(false)
                 </Stack>
                 <Stack flexDirection={"row"}>
                   <Box sx={{ width: "30%" }}>
+                    <Typography sx={{ color: palette.primary.gold }}>
+                      User Name
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                    <TextField
+                      fullWidth
+                      autoComplete="off"
+                      label="user name"
+                      variant="outlined"
+                      value={userName}
+                      onChange={(text) => {
+                        setuserName(text.target.value);
+                      }}
+                      inputProps={{ style: { color: palette.primary.gold } }}
+                      InputLabelProps={{
+                        style: { color: palette.primary.gold },
+                      }}
+                    />
+                  </Box>
+                </Stack>
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
                       Phone Number
                     </Typography>
@@ -628,29 +724,40 @@ const [switchToggle, setswitchToggle] = useState(false)
                 >
                   Privileges
                 </Typography>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "70%" }}>
-                    <Typography fullWidth sx={{ color: palette.primary.gold }}>
-                      Add, edit or delete table configgurations ?
-                    </Typography>
-                  </Box>
-                  <Box sx={{ width: "30%", paddingBottom: 2 }}>
-                    <Box sx={{ paddingBottom: 2 }}>
-                      <Switch
-                        style={{
-                          color: "primary",
-                          
-                        }}
-                        inputProps={{ 'aria-label': 'controlled' }}
-
-                        checked={switchToggle}
-                        onChange={() => {
-                          setswitchToggle(!switchToggle)
-                        }}
-                      />
-                    </Box>
-                  </Box>
-                </Stack>
+                {PrivilegesData.map((item, index) => {
+                  return (
+                    <>
+                      <Stack flexDirection={"row"}>
+                        <Box sx={{ width: "70%" }}>
+                          <Typography
+                            fullWidth
+                            sx={{ color: palette.primary.gold }}
+                          >
+                            {item.text}{" "}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ width: "30%", paddingBottom: 2 }}>
+                          <Box sx={{ paddingBottom: 2 }}>
+                            <Switch
+                              style={{
+                                color: "primary",
+                              }}
+                              inputProps={{ "aria-label": "controlled" }}
+                              checked={item.privilege === true ? true : false}
+                              onChange={() => {
+                                console.log(index, "index");
+                                PrivilegesData[index].privilege =
+                                  !item.privilege;
+                                setPrivilegesData(PrivilegesData);
+                                //   setswitchToggle(!switchToggle);
+                              }}
+                            />
+                          </Box>
+                        </Box>
+                      </Stack>
+                    </>
+                  );
+                })}
 
                 <Box
                   sx={{

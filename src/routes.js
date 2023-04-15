@@ -28,7 +28,7 @@ export default function Router() {
         { element: <Navigate to="/dashboard/clubs" /> },
         { path: "clubs", element: <ClubDashboard /> },
         { path: "events", element: <EventDashboard /> },
-        { path: "tableconfig", element: <TableConfig /> },
+        // { path: "tableconfig", element: <TableConfig /> },
         { path: "representative", element: <RepresentativeDashboard /> },
         { path: "menu", element: <MDashboard /> },
 
