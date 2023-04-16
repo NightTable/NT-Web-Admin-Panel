@@ -33,7 +33,7 @@ export const addRepresentativetoClub = async (obj) => {
 
     axios(config)
       .then(function (response) {
-        resolve(response.data.data);
+        resolve(response.data);
       })
       .catch(function (error) {
         console.log(error);

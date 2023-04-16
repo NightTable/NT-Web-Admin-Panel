@@ -54,6 +54,7 @@ import palette from "../../theme/palette";
 
 import { getCountries } from "../../services/countries";
 import {
+  addRepresentativetoClub,
   getProfileData,
   getRepresentativebyClub,
 } from "../../services/representative";
@@ -62,25 +63,110 @@ import { REPRESENTATIVE_CONFIG_TABLE_HEAD } from "../../Table_Head/index";
 //LOCAL STORAGE
 import { LocalStorageKey } from "src/utils/localStorage/keys";
 
+//RESET PRIVILEGE DATA FIELDS
+
+const resetPrivilege = [
+  {
+    id: 0,
+    text: "Add, edit or delete table configurations?",
+    privilege: false,
+    name: "tableConfigPrivilege",
+  },
+  {
+    id: 1,
+    text: "Add, edit or delete events ?",
+    privilege: false,
+    name: "eventPrivileges",
+  },
+  {
+    id: 2,
+    text: "Delete reservations, place orders during reservation ?",
+    privilege: false,
+    name: "reservationManagementPrivileges",
+  },
+  // {
+  //   id: 3,
+  //   text: "Confirm arrival of table groups ?",
+  //   privilege: false,
+  //   name: "mobileAppTableMinimumPrivileges",
+  // },
+  {
+    id: 4,
+    text: "Set custom table minimums on NightTable App ?",
+    privilege: false,
+    name: "mobileAppTableMinimumPrivileges",
+  },
+  {
+    id: 5,
+    text: "Add, edit or delete menu items ?",
+    privilege: false,
+    name: "menuItemPrivileges",
+  },
+  {
+    id: 6,
+    text: "Add, edit or delete clubs ?",
+    privilege: false,
+    name: "clubPrivileges",
+  },
+  {
+    id: 7,
+    text: "Add, edit or delete representatives ?",
+    privilege: false,
+    name: "representativePrivileges",
+  },
+];
 //MAIN FUNCTION
 export default function RepresentativeDashboard() {
   const theme = useTheme();
 
   const Privilegesarr = [
     {
-      id: 1,
-      text: "Add,  table configurations ?",
+      id: 0,
+      text: "Add, edit or delete table configurations?",
       privilege: false,
+      name: "tableConfigPrivilege",
+    },
+    {
+      id: 1,
+      text: "Add, edit or delete events ?",
+      privilege: false,
+      name: "eventPrivileges",
     },
     {
       id: 2,
-      text: " Edit  table configurations ?",
+      text: "Delete reservations, place orders during reservation ?",
       privilege: false,
+      name: "reservationManagementPrivileges",
+    },
+    // {
+    //   id: 3,
+    //   text: "Confirm arrival of table groups ?",
+    //   privilege: false,
+    //   name: "mobileAppTableMinimumPrivileges",
+    // },
+    {
+      id: 4,
+      text: "Set custom table minimums on NightTable App ?",
+      privilege: false,
+      name: "mobileAppTableMinimumPrivileges",
     },
     {
-      id: 3,
-      text: "Delete table configurations ?",
+      id: 5,
+      text: "Add, edit or delete menu items ?",
       privilege: false,
+      name: "menuItemPrivileges",
+    },
+    {
+      id: 6,
+      text: "Add, edit or delete clubs ?",
+      privilege: false,
+      name: "clubPrivileges",
+    },
+    {
+      id: 7,
+      text: "Add, edit or delete representatives ?",
+      privilege: false,
+      name: "representativePrivileges",
     },
   ];
 
@@ -92,7 +178,8 @@ export default function RepresentativeDashboard() {
   //SHOW REPRESENTATIVE DATA
   const [representativeData, setrepresentativeData] = useState([]);
   // ADD REPRESENTATIVE
-  const [fullName, setfullName] = useState("");
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setlastName] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
   const [email, setemail] = useState("");
   const [userName, setuserName] = useState("");
@@ -103,6 +190,12 @@ export default function RepresentativeDashboard() {
   const [addRepresentativePopUp, setaddRepresentativePopUp] = useState(false);
   //PRIVILIGES ARRAY
   const [PrivilegesData, setPrivilegesData] = useState(Privilegesarr);
+  //dialog
+
+  const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
+
+  //selected club data
+  const [selectedClubData, setselectedClubData] = useState([]);
   //country data
   const [country, setcountry] = useState("");
   const [countryData, setcountryData] = useState([]);
@@ -126,6 +219,8 @@ export default function RepresentativeDashboard() {
 
   // get the clubs
   const loadData = async () => {
+    console.log("load data=====>");
+
     const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
 
     if (representativeId === null) {
@@ -137,7 +232,7 @@ export default function RepresentativeDashboard() {
 
   const getClubData = async (representativeId) => {
     const data = await getProfileData(representativeId);
-
+    console.log(data, "data====>");
     let tempArr = [];
     data.clubPrivileges.map((item) => {
       tempArr.push({
@@ -164,13 +259,6 @@ export default function RepresentativeDashboard() {
     // setcountryData(arr);
   };
 
-  //dialog
-
-  const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
-
-  //selected club data
-  const [selectedClubData, setselectedClubData] = useState([]);
-
   const DeleteClubDialog = () => {
     return (
       <>
@@ -195,6 +283,63 @@ export default function RepresentativeDashboard() {
   const getClubRepData = async (club_id) => {
     const data = await getRepresentativebyClub(club_id);
     setrepresentativeData(data);
+  };
+
+  //ADD REPRESENTATIVE DATA TO DB
+  const addRepresentativetoDB = async () => {
+    let tempObj = {};
+    PrivilegesData.forEach((item) => {
+      tempObj[item.name] = item.privilege;
+    });
+
+    let obj = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phoneNumber: phoneNumber,
+      username: userName,
+      role: representativeRole,
+      clubPrivileges: [
+        {
+          club: selectedClubData._id,
+          privileges: tempObj,
+        },
+      ],
+    };
+    const addRepresentative = await addRepresentativetoClub(obj);
+    if (addRepresentative.status === true) {
+      alert("Club Representative Added !");
+      resetRepresentataiveData();
+      setaddRepresentativePopUp(false);
+      setrepresentativeData([...representativeData, obj]);
+      getClubRepData(selectedClubData._id);
+    } else {
+      alert("Something Went Wrong!");
+      resetRepresentataiveData();
+      setaddRepresentativePopUp(false);
+    }
+  };
+
+  //HANDLE SWITCH PRIVILEGE DATA
+  const handleSwitchChange = (id) => {
+    const updatedPrivileges = PrivilegesData.map((privilege) => {
+      if (privilege.id === id) {
+        return { ...privilege, privilege: !privilege.privilege };
+      }
+      return privilege;
+    });
+    setPrivilegesData(updatedPrivileges);
+  };
+
+  //RESET ADD CLUB REPRESENTATIVE DATA
+  const resetRepresentataiveData = () => {
+    setPrivilegesData(resetPrivilege);
+    setfirstName("");
+    setlastName("");
+    setuserName("");
+    setphoneNumber("");
+    setemail("");
+    setrepresentativeRole("");
   };
 
   // TABLE PAGINATION
@@ -257,7 +402,7 @@ export default function RepresentativeDashboard() {
             direction="row"
             alignItems="center"
             justifyContent="space-between"
-            mb={5}
+            mb={1}
           >
             <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
               Representatives
@@ -532,6 +677,7 @@ export default function RepresentativeDashboard() {
           anchorEl={null}
           onClose={() => {
             setaddRepresentativePopUp(!true);
+            resetRepresentataiveData();
           }}
           anchorOrigin={{
             vertical: "center",
@@ -578,6 +724,7 @@ export default function RepresentativeDashboard() {
                   size="large"
                   color="inherit"
                   onClick={() => {
+                    resetRepresentataiveData();
                     setaddRepresentativePopUp(!true);
                   }}
                 >
@@ -600,7 +747,7 @@ export default function RepresentativeDashboard() {
                 <Stack flexDirection={"row"}>
                   <Box sx={{ width: "30%" }}>
                     <Typography sx={{ color: palette.primary.gold }}>
-                      Full Name
+                      First Name
                     </Typography>
                   </Box>
                   <Box sx={{ width: "70%", paddingBottom: 2 }}>
@@ -609,9 +756,32 @@ export default function RepresentativeDashboard() {
                       autoComplete="off"
                       label="name"
                       variant="outlined"
-                      value={fullName}
+                      value={firstName}
                       onChange={(text) => {
-                        setfullName(text.target.value);
+                        setfirstName(text.target.value);
+                      }}
+                      inputProps={{ style: { color: palette.primary.gold } }}
+                      InputLabelProps={{
+                        style: { color: palette.primary.gold },
+                      }}
+                    />
+                  </Box>
+                </Stack>
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
+                    <Typography sx={{ color: palette.primary.gold }}>
+                      Last Name
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                    <TextField
+                      fullWidth
+                      autoComplete="off"
+                      label="name"
+                      variant="outlined"
+                      value={lastName}
+                      onChange={(text) => {
+                        setlastName(text.target.value);
                       }}
                       inputProps={{ style: { color: palette.primary.gold } }}
                       InputLabelProps={{
@@ -743,14 +913,8 @@ export default function RepresentativeDashboard() {
                                 color: "primary",
                               }}
                               inputProps={{ "aria-label": "controlled" }}
-                              checked={item.privilege === true ? true : false}
-                              onChange={() => {
-                                console.log(index, "index");
-                                PrivilegesData[index].privilege =
-                                  !item.privilege;
-                                setPrivilegesData(PrivilegesData);
-                                //   setswitchToggle(!switchToggle);
-                              }}
+                              checked={item.privilege}
+                              onChange={() => handleSwitchChange(item.id)}
                             />
                           </Box>
                         </Box>
@@ -766,9 +930,8 @@ export default function RepresentativeDashboard() {
                   }}
                 >
                   <Button
-                    onClick={() => {
-                      //    addClub();
-                      //setaddClubPopUp(true);
+                    onClick={async () => {
+                      addRepresentativetoDB();
                     }}
                     // variant="contained"
                     style={{
