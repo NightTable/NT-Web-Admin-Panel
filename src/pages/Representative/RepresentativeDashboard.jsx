@@ -219,10 +219,7 @@ export default function RepresentativeDashboard() {
 
   // get the clubs
   const loadData = async () => {
-    console.log("load data=====>");
-
     const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
-
     if (representativeId === null) {
       navigate("/");
     } else {
@@ -232,7 +229,7 @@ export default function RepresentativeDashboard() {
 
   const getClubData = async (representativeId) => {
     const data = await getProfileData(representativeId);
-    console.log(data, "data====>");
+    // console.log(data, "data====>");
     let tempArr = [];
     data.clubPrivileges.map((item) => {
       tempArr.push({
@@ -268,7 +265,7 @@ export default function RepresentativeDashboard() {
             " Are you sure want to delete the club, as you won't be able to recover it !"
           }
           deleteBtnPressed={(value) => {
-            handleClose(`1`);
+            deleteRepresentative();
           }}
           closeBtnPressed={(value) => {
             setdeleteDialogOpen(!value);
@@ -320,6 +317,15 @@ export default function RepresentativeDashboard() {
     }
   };
 
+  //DELETE REPRESENTATIVE DATA
+  const deleteRepresentative = async () => {
+    const filteredData = representativeData.filter((data) => {
+      return data._id != item._id;
+    });
+    //API NEED TO BE CALLED HERE
+
+    setrepresentativeData(filteredData);
+  };
   //HANDLE SWITCH PRIVILEGE DATA
   const handleSwitchChange = (id) => {
     const updatedPrivileges = PrivilegesData.map((privilege) => {
