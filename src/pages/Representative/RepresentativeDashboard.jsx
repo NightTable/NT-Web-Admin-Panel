@@ -23,7 +23,6 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
- 
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import ViewRepresentativeInfo from "./ViewRepresentativeInfo";
@@ -370,7 +369,7 @@ export default function RepresentativeDashboard() {
               width: "90%",
               hieght: "100%",
               borderColor: "#E4D0B5",
-               backgroundColor: '#E4D0B5',
+              backgroundColor: "#E4D0B5",
               borderWidth: 1,
 
               "& .MuiMenuItem-root": {
@@ -385,27 +384,43 @@ export default function RepresentativeDashboard() {
             },
           }}
         >
-         <Box>
-         <Stack style={{marginBottom:10}} alignItems={"flex-end"} justifyItems={"right"}>
-            <IconButton
-              size="large"
-              color="inherit"
-              onClick={() => {
-                setviewPopupEnabled(false);
-              }}
+          <Box>
+            <Stack
+              style={{ marginBottom: 10 }}
+              alignItems={"flex-end"}
+              justifyItems={"right"}
             >
-              <Iconify color={'black'} icon={"maki:cross"} />
-            </IconButton>
-          </Stack>
-         </Box>
-         <Box>
-         <ViewRepresentativeInfo data={selectedrepresentativeData} />
-        
-         </Box>
-          </Popover>
+              <IconButton
+                size="large"
+                color="inherit"
+                onClick={() => {
+                  setviewPopupEnabled(false);
+                }}
+              >
+                <Iconify color={"black"} icon={"maki:cross"} />
+              </IconButton>
+            </Stack>
+          </Box>
+          <Box>
+            <ViewRepresentativeInfo data={selectedrepresentativeData} />
+          </Box>
+        </Popover>
       </>
     );
   };
+
+  function updatePrivilegeValues(privileges, Privilegesarr) {
+    // Loop through the Privilegesarr array
+    for (let i = 0; i < Privilegesarr.length; i++) {
+      const privilegeName = Privilegesarr[i].name;
+      // Find the corresponding privilege value in the privileges object
+      const privilegeValue = privileges[0][privilegeName];
+      // Update the privilege value in the Privilegesarr array
+      Privilegesarr[i].privilege = privilegeValue;
+    }
+
+    return Privilegesarr;
+  }
 
   // TABLE PAGINATION
   const handleChangePage = (event, newPage) => {
@@ -564,7 +579,7 @@ export default function RepresentativeDashboard() {
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((item, index) => {
-                        const { _id, firstName, role, phoneNumber } = item;
+                        const { _id, firstName,lastName,email,userName, role, phoneNumber } = item;
                         return (
                           <>
                             <TableRow
@@ -624,7 +639,26 @@ export default function RepresentativeDashboard() {
                                     onClick={() => {
                                       setselectedrepresentativeData(item);
 
-                                      //LEFT WITH LINE ITEMS & ADDRESS TO UPDATE
+                                      const privileges = [
+                                        item.clubPrivileges[0].privileges,
+                                      ];
+
+                                      const duplicatePrivilegeData =
+                                        PrivilegesData;
+                                      const updatedPrivilegeArr =
+                                        updatePrivilegeValues(
+                                          privileges,
+                                          duplicatePrivilegeData
+                                        );
+                                      setPrivilegesData(updatedPrivilegeArr);
+                                      setfirstName(firstName)
+                                      setlastName(lastName)
+                                      setuserName(userName)
+                                      setphoneNumber(phoneNumber)
+                                      setemail(email)
+                                      setrepresentativeRole(role)
+                                      setaddRepresentativePopUp(true);
+
                                       // alert("EDIT alert");
                                     }}
                                   >
