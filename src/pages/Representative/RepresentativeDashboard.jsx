@@ -13,12 +13,9 @@ import {
   Table,
   Stack,
   Paper,
-  Avatar,
   Button,
   Popover,
-  Checkbox,
   TableRow,
-  MenuItem,
   TableBody,
   TableCell,
   Container,
@@ -26,15 +23,10 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
-  withStyles,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
+ 
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
-
+import ViewRepresentativeInfo from "./ViewRepresentativeInfo";
 // components
 import Iconify from "../../component/iconify";
 import Scrollbar from "../../component/scrollbar";
@@ -177,6 +169,11 @@ export default function RepresentativeDashboard() {
   const [selected_club_btn, setselected_club_btn] = useState("0");
   //SHOW REPRESENTATIVE DATA
   const [representativeData, setrepresentativeData] = useState([]);
+  //SELECTED REPRESENTATIVE DATA
+  const [selectedrepresentativeData, setselectedrepresentativeData] =
+    useState();
+  //VIew pop-up enabled
+  const [viewPopupEnabled, setviewPopupEnabled] = useState(false);
   // ADD REPRESENTATIVE
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
@@ -319,6 +316,7 @@ export default function RepresentativeDashboard() {
 
   //DELETE REPRESENTATIVE DATA
   const deleteRepresentative = async () => {
+    const item = selectedrepresentativeData;
     const filteredData = representativeData.filter((data) => {
       return data._id != item._id;
     });
@@ -326,6 +324,7 @@ export default function RepresentativeDashboard() {
 
     setrepresentativeData(filteredData);
   };
+
   //HANDLE SWITCH PRIVILEGE DATA
   const handleSwitchChange = (id) => {
     const updatedPrivileges = PrivilegesData.map((privilege) => {
@@ -346,6 +345,66 @@ export default function RepresentativeDashboard() {
     setphoneNumber("");
     setemail("");
     setrepresentativeRole("");
+  };
+
+  const ViewRepresentativePopup = () => {
+    return (
+      <>
+        <Popover
+          open={viewPopupEnabled}
+          anchorEl={null}
+          onClose={() => {
+            setviewPopupEnabled(false);
+          }}
+          anchorOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          PaperProps={{
+            sx: {
+              p: 1,
+              width: "90%",
+              hieght: "100%",
+              borderColor: "#E4D0B5",
+               backgroundColor: '#E4D0B5',
+              borderWidth: 1,
+
+              "& .MuiMenuItem-root": {
+                typography: "body2",
+                // borderRadius: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                width: "80%",
+                borderColor: "#E4D0B5",
+                borderWidth: 12,
+              },
+            },
+          }}
+        >
+         <Box>
+         <Stack style={{marginBottom:10}} alignItems={"flex-end"} justifyItems={"right"}>
+            <IconButton
+              size="large"
+              color="inherit"
+              onClick={() => {
+                setviewPopupEnabled(false);
+              }}
+            >
+              <Iconify color={'black'} icon={"maki:cross"} />
+            </IconButton>
+          </Stack>
+         </Box>
+         <Box>
+         <ViewRepresentativeInfo data={selectedrepresentativeData} />
+        
+         </Box>
+          </Popover>
+      </>
+    );
   };
 
   // TABLE PAGINATION
@@ -484,11 +543,11 @@ export default function RepresentativeDashboard() {
               borderRadius: 4,
             }}
           >
-            <UserListToolbar
+            {/* <UserListToolbar
               numSelected={selected.length}
               filterName={filterName}
               onFilterName={handleFilterByName}
-            />
+            /> */}
 
             <Scrollbar>
               <TableContainer>
@@ -523,8 +582,8 @@ export default function RepresentativeDashboard() {
                                     size="large"
                                     color="inherit"
                                     onClick={() => {
-                                      setselectedClubData(item);
-                                      setViewClubInfoPopUp(true);
+                                      setselectedrepresentativeData(item);
+                                      setviewPopupEnabled(true);
                                     }}
                                   >
                                     <Iconify icon={"ic:sharp-remove-red-eye"} />
@@ -563,6 +622,8 @@ export default function RepresentativeDashboard() {
                                     size="large"
                                     color="inherit"
                                     onClick={() => {
+                                      setselectedrepresentativeData(item);
+
                                       //LEFT WITH LINE ITEMS & ADDRESS TO UPDATE
                                       // alert("EDIT alert");
                                     }}
@@ -576,7 +637,7 @@ export default function RepresentativeDashboard() {
                                   size="large"
                                   color="inherit"
                                   onClick={() => {
-                                    setselectedClubData(item);
+                                    setselectedrepresentativeData(item);
                                     setdeleteDialogOpen(true);
                                   }}
                                 >
@@ -958,6 +1019,7 @@ export default function RepresentativeDashboard() {
             </Box>
           </Scrollbar>
         </Popover>
+        <ViewRepresentativePopup />
         <DeleteClubDialog />
       </Container>
     </>
