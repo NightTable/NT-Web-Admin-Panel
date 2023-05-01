@@ -50,8 +50,7 @@ export const deleteMenuforClub = async (menu_id) => {
   return new Promise(async (resolve, reject) => {
     var config = {
       method: "delete",
-      // url: `${process.env.REACT_APP_BASE_URL}menu/club/${club_id}`,
-
+      url: `${process.env.REACT_APP_BASE_URL}menu/${menu_id}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -59,7 +58,7 @@ export const deleteMenuforClub = async (menu_id) => {
 
     axios(config)
       .then(function (response) {
-        resolve(response.data.data);
+        resolve(response.data);
         console.log(JSON.stringify(response.data));
       })
       .catch(function (error) {
@@ -80,7 +79,6 @@ export const updateMenuforClub = async (obj, menu_id) => {
         "Content-Type": "application/json",
       },
       data: obj,
-
     };
 
     axios(config)
@@ -88,7 +86,7 @@ export const updateMenuforClub = async (obj, menu_id) => {
         resolve(response.data);
       })
       .catch(function (error) {
-        console.log("error in catch",error);
+        console.log("error in catch", error);
         reject(error);
       });
   });

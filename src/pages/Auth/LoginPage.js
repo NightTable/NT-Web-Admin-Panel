@@ -15,7 +15,7 @@ import useResponsive from "../../hooks/useResponsive";
 import Logo from "../../features/logo";
 // sections
 import LoginForm from "../../features/Auth/LoginForm";
-
+import logoImg from "../../assets/logo-bg.png";
 // ----------------------------------------------------------------------
 export const getGreetingMsg = () => {
   var today = new Date();
@@ -62,6 +62,7 @@ const StyledContent = styled("div")(({ theme }) => ({
 export default function LoginPage() {
   const mdUp = useResponsive("up", "md");
 
+  console.log("md-up=====>", mdUp);
   return (
     <>
       <Helmet>
@@ -71,16 +72,22 @@ export default function LoginPage() {
       <StyledRoot style={{ backgroundColor: "black" }}>
         {mdUp && (
           <StyledSection>
-            <img
-              style={{ height: 300 }}
-              src="../../assets/logo.png"
-              alt="login"
-            />
+            <img style={{ height: 300 }} src={logoImg} alt="login" />
           </StyledSection>
         )}
 
         <Container sx={{ backgroundColor: "black" }} maxWidth="sm">
+            {/* {mdUp === false ? (
+              <>
+                
+                <StyledSection>
+                  <img style={{ height: 100 }} src={logoImg} alt="login" />
+                </StyledSection>
+                
+              </>
+            ) : null} */}
           <StyledContent>
+          
             <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
               {getGreetingMsg()} Admin
             </Typography>

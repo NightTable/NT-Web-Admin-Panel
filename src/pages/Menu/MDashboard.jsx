@@ -136,23 +136,24 @@ export default function MDashboard() {
         items: keyValuePairs,
       },
     };
+
+    const editItemIndex = menuItemsData.findIndex((item) => {
+      return item._id === SelectedMenuData._id;
+    });
+    menuItemsData[editItemIndex] = obj.menuCatgeory;
+    setSelectedMenuData(menuItemsData);
     const data = await updateMenuforClub(obj, SelectedMenuData._id);
-    console.log("data====>", data?.status, data?.status === true);
     if (data?.status != undefined) {
       if (data?.status == true) {
-        console.log(data?.message)
-        getMenuDataClub
         setpopup_open(false);
-  
         alert("Menu Updated");
       } else if (data?.status === false) {
         setpopup_open(false);
-  
+
         alert(data?.message);
       }
     } else {
       alert("Something Went Wrong !");
-
     }
   };
 
@@ -217,13 +218,15 @@ export default function MDashboard() {
     console.log(menu, "menu ====>");
     let menuData = [...menuItemsData];
     const updatedData = menuData.filter((item) => {
-return       item.category === menu.category;
+      return item.category != menu.category;
     });
+    setmenuItemsData(updatedData);
+    const callApi = await deleteMenuforClub(menu._id);
+    alert("Menu Deleted Successfully !");
+    setdeleteDialogOpen(false);
 
-    console.log("index -=====>", updatedData);
- //   setmenuItemsData(updatedData)
-    
   };
+
   return (
     <>
       <Helmet>
@@ -266,7 +269,6 @@ return       item.category === menu.category;
                     <Box
                       onClick={() => {
                         setselected_club_btn(index);
-
                         setselectedClubData(item);
                         getMenuDataClub(item._id);
                       }}
