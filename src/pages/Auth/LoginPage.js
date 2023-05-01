@@ -73,7 +73,7 @@ export default function LoginPage() {
           <StyledSection>
             <img
               style={{ height: 300 }}
-              src="/assets/logo/logo.png"
+              src="../../assets/logo.png"
               alt="login"
             />
           </StyledSection>

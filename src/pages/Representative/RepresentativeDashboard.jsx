@@ -48,6 +48,8 @@ import {
   addRepresentativetoClub,
   getProfileData,
   getRepresentativebyClub,
+  editRepresentativetoClub,
+  deleteRepresentativebyClub,
 } from "../../services/representative";
 import { REPRESENTATIVE_CONFIG_TABLE_HEAD } from "../../Table_Head/index";
 
@@ -75,12 +77,12 @@ const resetPrivilege = [
     privilege: false,
     name: "reservationManagementPrivileges",
   },
-  // {
-  //   id: 3,
-  //   text: "Confirm arrival of table groups ?",
-  //   privilege: false,
-  //   name: "mobileAppTableMinimumPrivileges",
-  // },
+  {
+    id: 3,
+    text: "Confirm arrival of table groups ?",
+    privilege: false,
+    name: "arrivalConfirmationPrivileges",
+  },
   {
     id: 4,
     text: "Set custom table minimums on NightTable App ?",
@@ -129,12 +131,12 @@ export default function RepresentativeDashboard() {
       privilege: false,
       name: "reservationManagementPrivileges",
     },
-    // {
-    //   id: 3,
-    //   text: "Confirm arrival of table groups ?",
-    //   privilege: false,
-    //   name: "mobileAppTableMinimumPrivileges",
-    // },
+    {
+      id: 3,
+      text: "Confirm arrival of table groups ?",
+      privilege: false,
+      name: "arrivalConfirmationPrivileges",
+    },
     {
       id: 4,
       text: "Set custom table minimums on NightTable App ?",
@@ -182,6 +184,8 @@ export default function RepresentativeDashboard() {
   const [representativeRole, setrepresentativeRole] = useState("");
   const [switchToggle, setswitchToggle] = useState(false);
 
+  const [editRepresentativeBoolean, seteditRepresentativeBoolean] =
+    useState(false);
   //add Representative pop-over open
   const [addRepresentativePopUp, setaddRepresentativePopUp] = useState(false);
   //PRIVILIGES ARRAY
@@ -256,9 +260,9 @@ export default function RepresentativeDashboard() {
     return (
       <>
         <DeleteDialog
-          heading={"Delete the club?"}
+          heading={"Delete the Representative?"}
           paragraph={
-            " Are you sure want to delete the club, as you won't be able to recover it !"
+            " Are you sure want to delete the representative, as you won't be able to recover it !"
           }
           deleteBtnPressed={(value) => {
             deleteRepresentative();
@@ -313,6 +317,41 @@ export default function RepresentativeDashboard() {
     }
   };
 
+  //EDIT REPRESENTATIVE
+  const editRepresentativetoDB = async () => {
+    let tempObj = {};
+    PrivilegesData.forEach((item) => {
+      tempObj[item.name] = item.privilege;
+    });
+
+    let obj = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      phoneNumber: phoneNumber,
+      username: userName,
+      role: representativeRole,
+      clubPrivileges: [
+        {
+          club: selectedClubData._id,
+          privileges: tempObj,
+        },
+      ],
+    };
+    const addRepresentative = await editRepresentativetoClub(obj);
+    if (addRepresentative.status === true) {
+      alert("Club Representative Updated Successfully !");
+      resetRepresentataiveData();
+      setaddRepresentativePopUp(false);
+      setrepresentativeData([...representativeData, obj]);
+      getClubRepData(selectedClubData._id);
+    } else {
+      alert("Something Went Wrong!");
+      resetRepresentataiveData();
+      setaddRepresentativePopUp(false);
+    }
+  };
+
   //DELETE REPRESENTATIVE DATA
   const deleteRepresentative = async () => {
     const item = selectedrepresentativeData;
@@ -321,6 +360,10 @@ export default function RepresentativeDashboard() {
     });
     //API NEED TO BE CALLED HERE
 
+    console.log(item._id,'JSON.parse(item._id)');
+    const data = await deleteRepresentativebyClub(item._id);
+    alert("Representative Deleted Successfully!");
+    setdeleteDialogOpen(false)
     setrepresentativeData(filteredData);
   };
 
@@ -513,7 +556,6 @@ export default function RepresentativeDashboard() {
                     <Box
                       onClick={() => {
                         setselected_club_btn(index);
-
                         setselectedClubData(item);
                         getClubRepData(item._id);
                       }}
@@ -579,7 +621,15 @@ export default function RepresentativeDashboard() {
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((item, index) => {
-                        const { _id, firstName,lastName,email,userName, role, phoneNumber } = item;
+                        const {
+                          _id,
+                          firstName,
+                          lastName,
+                          email,
+                          userName,
+                          role,
+                          phoneNumber,
+                        } = item;
                         return (
                           <>
                             <TableRow
@@ -617,7 +667,8 @@ export default function RepresentativeDashboard() {
                                   variant="subtitle2"
                                   noWrap
                                 >
-                                  {index + 1}) {firstName}
+                                  {index + 1}
+                                  {")"} {firstName}
                                 </Typography>
                               </TableCell>
                               <TableCell align="left">
@@ -637,6 +688,9 @@ export default function RepresentativeDashboard() {
                                     size="large"
                                     color="inherit"
                                     onClick={() => {
+                                      seteditRepresentativeBoolean(
+                                        !editRepresentativeBoolean
+                                      );
                                       setselectedrepresentativeData(item);
 
                                       const privileges = [
@@ -651,12 +705,12 @@ export default function RepresentativeDashboard() {
                                           duplicatePrivilegeData
                                         );
                                       setPrivilegesData(updatedPrivilegeArr);
-                                      setfirstName(firstName)
-                                      setlastName(lastName)
-                                      setuserName(userName)
-                                      setphoneNumber(phoneNumber)
-                                      setemail(email)
-                                      setrepresentativeRole(role)
+                                      setfirstName(firstName);
+                                      setlastName(lastName);
+                                      setuserName(userName);
+                                      setphoneNumber(phoneNumber);
+                                      setemail(email);
+                                      setrepresentativeRole(role);
                                       setaddRepresentativePopUp(true);
 
                                       // alert("EDIT alert");
@@ -1032,7 +1086,9 @@ export default function RepresentativeDashboard() {
                 >
                   <Button
                     onClick={async () => {
-                      addRepresentativetoDB();
+                      editRepresentativeBoolean === true
+                        ? editRepresentativetoDB()
+                        : addRepresentativetoDB();
                     }}
                     // variant="contained"
                     style={{
@@ -1046,7 +1102,7 @@ export default function RepresentativeDashboard() {
                       width: "100%",
                     }}
                   >
-                    Add
+                    {editRepresentativeBoolean === true ? "Edit" : "Add"}
                   </Button>
                 </Box>
               </Container>
