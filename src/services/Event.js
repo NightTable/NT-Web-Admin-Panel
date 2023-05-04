@@ -1,17 +1,17 @@
 import axios, * as others from "axios";
 
 //GET ALL THE CLUBS EVENT
-export const getEventofClub = async (obj) => {
+export const getEventofClub = async (clubId, obj) => {
   return new Promise((resolve, reject) => {
     var config = {
       method: "get",
-      url: `${process.env.REACT_APP_BASE_URL}events/club/${obj.clubId}`,
+      url: `${process.env.REACT_APP_BASE_URL}events/club/${clubId}`,
       headers: {},
+      data: obj,
     };
-
     axios(config)
       .then(function (response) {
-        resolve(response.data.data);
+        resolve(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -96,24 +96,24 @@ export const editEvent = async (obj, clubId, EventId) => {
   });
 };
 
-//DELETE EVENT BY CLUB 
-export const deleteEvent = async ( clubId, EventId) => {
-    return new Promise((resolve, reject) => {
-      var config = {
-        method: "delete",
-        url: `${process.env.REACT_APP_BASE_URL}events/club/${clubId}/${EventId}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-  
-      axios(config)
-        .then(function (response) {
-          resolve(response.data.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-          reject(error);
-        });
-    });
-  };
+//DELETE EVENT BY CLUB
+export const deleteEvent = async (clubId, EventId) => {
+  return new Promise((resolve, reject) => {
+    var config = {
+      method: "delete",
+      url: `${process.env.REACT_APP_BASE_URL}events/club/${clubId}/${EventId}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        resolve(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+        reject(error);
+      });
+  });
+};

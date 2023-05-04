@@ -65,8 +65,11 @@ import dayjs from "dayjs";
 //MAIN FUNCTION
 
 export default function EventDashboard() {
+  //get the current date
   const currentDateinISO5601 = dayjs().format("YYYY-MM-DDTHH:MM");
-
+  const currentDateinTimeStamp = dayjs().valueOf();
+  console.log("currentDateinTimeStamp===>", currentDateinTimeStamp);
+  // console.log("currentDateinISO5601=====>", currentDateinISO5601);
   const [selectedDate, setSelectedDate] = useState(dayjs("2022-04-17T15:30"));
   const handleDateChange = (newDate) => {
     console.log("newDate--->", newDate);
@@ -110,20 +113,19 @@ export default function EventDashboard() {
   }, []);
 
   // get the clubs
+  //IF
   const loadData = async () => {
     const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
-
     if (representativeId === null) {
       navigate("/");
     } else {
       getClubData(JSON.parse(representativeId));
     }
-    console.log("representativeId===>", JSON.parse(representativeId));
   };
 
+  //GET CLUB DATA ====>
   const getClubData = async (representativeId) => {
     const data = await getProfileData(representativeId);
-
     let tempArr = [];
     data.clubPrivileges.map((item) => {
       tempArr.push({
@@ -134,20 +136,20 @@ export default function EventDashboard() {
 
     setselectedClubData(tempArr[0]._id);
     let obj = {
-      clubId: tempArr[0]._id,
+      date: currentDateinTimeStamp,
     };
-    console.log(`tempArr[0]._id`, tempArr[0]._id);
     setclubs_data(tempArr);
-    getClubsEvent(obj);
+    getClubsEvent(tempArr[0]._id, obj);
   };
 
-  const getClubsEvent = async (obj) => {
-    const data = await getEventofClub(obj);
-    console.log("data-====>", data);
-    setEventData(data);
+  //GET CLUBS OF EVENT
+  const getClubsEvent = async (club_id, obj) => {
+    const data = await getEventofClub(club_id, obj);
+    // console.log("getClubsEvent====>", data);
+    setEventData(data.data);
   };
 
-  //API CALL : ADD CLUB
+  //API CALL : ADD EVENT CLUB
   const addEvent = async () => {
     let obj = {
       name: EventName,
@@ -400,32 +402,6 @@ export default function EventDashboard() {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const handleToggleSwitch = async (item, toggleBtn) => {
-    // setswitchToggle(!switchToggle);
-    // console.log("item===>", item);
-    let obj = {
-      isPublished: !toggleBtn,
-    };
-
-    const updateClubtoActive = await clubUpdate(obj, item._id);
-    console.log("updateClubtoActive==>", updateClubtoActive);
-    let index = clubs_data.findIndex((e) => e._id == item._id);
-    clubs_data[index].isPublished = !toggleBtn;
-
-    if (updateClubtoActive.data.status === true) {
-      setswitchToggle(!switchToggle);
-      getClubData();
-    } else {
-      alert("TECHNICAL ERROR ! CONTACT ADMIN ");
-    }
-    setswitchToggle(!switchToggle);
-  };
-
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
-
   function getComparator(order, orderBy) {
     return order === "desc"
       ? (a, b) => descendingComparator(a, b, orderBy)
@@ -477,7 +453,7 @@ export default function EventDashboard() {
               <ResponsiveDateTimePickers
                 value={currentDateinISO5601}
                 onChange={(date) => {
-                  console.log("Selected - date ====>", date);
+                  //    console.log("Selected - date ====>", date);
                   setEventDate(date);
                 }}
               />
@@ -511,8 +487,11 @@ export default function EventDashboard() {
                     <Box
                       onClick={() => {
                         setselected_club_btn(index);
-                        console.log("item===club-Data---====>", item);
                         setselectedClubData(item);
+                        let obj = {
+                          clubId: item._id,
+                        };
+                        getClubsEvent(obj);
                       }}
                       border={2}
                       borderRadius={2}
@@ -580,16 +559,27 @@ export default function EventDashboard() {
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((item, index) => {
-                        //   console.log("item===>", item);
-                        const { _id, name, website, eventTime, ticketLink } =
-                          item;
+                        //  console.log("item===>", item);
+                        const {
+                          _id,
+                          name,
+                          isTableConfigAdded,
+                          website,
+                          eventTime,
+                          ticketLink,
+                        } = item;
+
+                        console.log(
+                          "isTableConfigAdded===>",
+                          isTableConfigAdded
+                        );
                         const timestamp = 1680265980000; // timestamp in milliseconds
                         const formattedDate =
                           dayjs(timestamp).format("YYYY-MM-DD");
                         const formattedTime =
                           dayjs(timestamp).format("HH:mm:ss");
-                        console.log(`Formatted Date: ${formattedDate}`);
-                        console.log(`Formatted Time: ${formattedTime}`);
+                        // console.log(`Formatted Date: ${formattedDate}`);
+                        // console.log(`Formatted Time: ${formattedTime}`);
                         return (
                           <>
                             <TableRow
@@ -604,16 +594,44 @@ export default function EventDashboard() {
                               <TableCell align="right">
                                 <Stack flexDirection={"row"}>
                                   <IconButton
+                                    style={{
+                                      background: "black",
+                                    }}
                                     size="large"
-                                    color="inherit"
                                     onClick={() => {
                                       setselectedClubData(item);
                                       setViewClubInfoPopUp(true);
                                     }}
                                   >
-                                    <Iconify icon={"ic:sharp-remove-red-eye"} />
+                                    <Iconify
+                                      color={"#E4D0B5"}
+                                      icon={"ic:sharp-remove-red-eye"}
+                                    />
                                   </IconButton>
                                 </Stack>
+                              </TableCell>
+                              <TableCell align="left">
+                                <Typography sx={{ color: "black" }}>
+                                  {isTableConfigAdded === false ? (
+                                    <>
+                                      <IconButton
+                                        style={{
+                                          background: "black",
+                                        }}
+                                        size="large"
+                                        color="inherit"
+                                        onClick={() => {}}
+                                      >
+                                        <Iconify
+                                          color={"#E4D0B5"}
+                                          icon="eva:plus-fill"
+                                        />
+                                      </IconButton>
+                                    </>
+                                  ) : (
+                                    "true"
+                                  )}
+                                </Typography>
                               </TableCell>
                               <TableCell
                                 bgcolor={"#E4D0B5"}
@@ -626,7 +644,7 @@ export default function EventDashboard() {
                                   variant="subtitle2"
                                   noWrap
                                 >
-                                  {index + 1}) {name}
+                                  {index + 1}{' )'} {name}
                                 </Typography>
                               </TableCell>
                               <TableCell
@@ -643,11 +661,6 @@ export default function EventDashboard() {
                                   {dayjs(Number(eventTime)).format(
                                     "DD-MM-YYYY HH:MM"
                                   )}
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="left">
-                                <Typography sx={{ color: "black" }}>
-                                  {ticketLink}
                                 </Typography>
                               </TableCell>
 

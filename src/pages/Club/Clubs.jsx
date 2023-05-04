@@ -232,45 +232,45 @@ export default function ClubDashboard() {
   //API CALL : ADD CLUB
   const addClub = async () => {
     console.log("keyValuePairs===>", keyValuePairs);
-    // let keys = Object.keys(keyValuePairs);
-    // let arr = [];
-    // for (let i = 0; i < keys.length; i++) {
-    //   arr.push({
-    //     name: keys[i],
-    //     percentage: keyValuePairs[keys[i]],
-    //   });
-    // }
-    // var obj = {
-    //   name: clubName,
-    //   location: [longitude, latitude],
-    //   instaHandle: instaHandle,
-    //   phoneNumber: phoneNumber,
-    //   Address: {
-    //     Address: addressLine,
-    //     City: city,
-    //     State: state,
-    //     Country: country,
-    //   },
-    //   website: WebsiteUrl,
-    //   photos: [],
-    //   stripeAccountNumber: stripeAccountNo,
-    //   ownedBy: "god",
-    //   lineItems: arr,
-    // };
+    let keys = Object.keys(keyValuePairs);
+    let arr = [];
+    for (let i = 0; i < keys.length; i++) {
+      arr.push({
+        name: keys[i],
+        percentage: keyValuePairs[keys[i]],
+      });
+    }
+    var obj = {
+      name: clubName,
+      location: [longitude, latitude],
+      instaHandle: instaHandle,
+      phoneNumber: phoneNumber,
+      Address: {
+        Address: addressLine,
+        City: city,
+        State: state,
+        Country: country,
+      },
+      website: WebsiteUrl,
+      photos: [],
+      stripeAccountNumber: stripeAccountNo,
+      ownedBy: "god",
+      lineItems: arr,
+    };
 
-    // const data = await addClubtoServer(obj);
-    // if (data?.status === true) {
-    //   alert("Club Added");
+    const data = await addClubtoServer(obj);
+    if (data?.status === true) {
+      alert("Club Added");
 
-    //   //update the club array
-    //   const updateClubArr = [...clubs_data, data.data];
-    //   setclubs_data(updateClubArr);
-    //   //resetting the states to inital
-    //   resetStates();
-    //   setaddClubPopUp(false);
-    // } else {
-    //   alert("ERROR IN ADDING CLUB ");
-    // }
+      //update the club array
+      const updateClubArr = [...clubs_data, data.data];
+      setclubs_data(updateClubArr);
+      //resetting the states to inital
+      resetStates();
+      setaddClubPopUp(false);
+    } else {
+      alert("ERROR IN ADDING CLUB ");
+    }
   };
 
   //dialog

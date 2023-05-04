@@ -129,7 +129,7 @@ export const MenuItemCard = ({ data, SelectedMenuData }) => {
                       >
                         <Stack flexDirection={"row"}>
                           <Typography>
-                            {index + 1}){"  "}
+                            {index + 1}{" ) "}
                           </Typography>
 
                           <Typography> {item?.name}</Typography>
