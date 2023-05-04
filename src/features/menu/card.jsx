@@ -105,6 +105,7 @@ export const MenuItemCard = ({ data, SelectedMenuData }) => {
           </Scrollbar>
         </Container>
         {data.items.map((item, index) => {
+          console.log('item====>',item)
           return (
             <>
               <Container
@@ -128,7 +129,7 @@ export const MenuItemCard = ({ data, SelectedMenuData }) => {
                       >
                         <Stack flexDirection={"row"}>
                           <Typography>
-                            {index + 1}){"  "}
+                            {index + 1}{" ) "}
                           </Typography>
 
                           <Typography> {item?.name}</Typography>
@@ -139,7 +140,7 @@ export const MenuItemCard = ({ data, SelectedMenuData }) => {
                           width: "33%",
                         }}
                       >
-                        <Typography>{item?.stock}</Typography>
+                        <Typography>{item?.quantity}</Typography>
                       </Box>
                       <Box
                         style={{

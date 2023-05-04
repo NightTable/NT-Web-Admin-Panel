@@ -57,7 +57,7 @@ export default function LoginForm() {
     } else if (phoneNumber.length <= 0) {
       alert("Please enter the valid number ");
     } else {
-      seterrorMsg('')
+      seterrorMsg("");
       setloader(true);
       const no = `+${countryCode}${phoneNumber}`;
       const triggerOtp = await loginApi(no);
@@ -87,22 +87,28 @@ export default function LoginForm() {
       const verifyNumber = await otpVerify(no, otp);
       console.log("verifyNumber---->", verifyNumber);
       if (verifyNumber != undefined) {
-        if (
-          verifyNumber === "Otp expired"
-        ) {
+        if (verifyNumber === "Otp expired") {
           setloader(false);
           setotp("");
           seterrorMsg("Otp Expired !");
-        } else if(verifyNumber === "verification failed"){
+        } else if (verifyNumber === "verification failed") {
           setloader(false);
           setotp("");
           seterrorMsg("Wrong Otp!");
-        }else {
+        } else {
           localStorage.setItem(
             LocalStorageKey.USER_DATA,
             JSON.stringify(verifyNumber.data)
           );
           getRepresentativeData(verifyNumber.data._id);
+          //6401d17b49bfe3eb406e6b8b
+
+          // localStorage.setItem(
+          //   LocalStorageKey.USER_DATA,
+          //   JSON.stringify(verifyNumber.data)
+          // );
+          getRepresentativeData(verifyNumber.data._id);
+
           seterrorMsg("");
         }
       } else {
@@ -118,7 +124,128 @@ export default function LoginForm() {
   //get representative Data
 
   const getRepresentativeData = async (id) => {
-    const data = await getProfileData(id);
+   // const data = await getProfileData(id);
+    const data = {
+      _id: "644e3395288422bb2329a07c",
+      firstName: "vishesh",
+      lastName: "gupta",
+      email: "guptavishesh143@gmail.com",
+      phoneNumber: "+918770203998",
+      username: "vishes_manager",
+      role: "Manager",
+      clubPrivileges: [
+        {
+          club: {
+            Address: {
+              Address: "32 Populate User Club",
+              City: "Moscow",
+              State: "",
+              Country: "Russia",
+            },
+            floorPlan: [],
+            _id: "63ec556200046de1daa3eee9",
+            name: "User Club",
+            location: [38.454, -74.443],
+            instaHandle: "@xyz",
+            phoneNumber: "393843334",
+            website: "cvw.com",
+            photos: [
+              "https://testdevphotos.s3.amazonaws.com/63ec556200046de1daa3eee9/Simulator%20Screen%20Shot%20-%20iPhone%2014%20Pro%20Max%20-%202022-12-30%20at%2013.36.25.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA3VH5X5YSX3KUF4DS%20%2F20230310%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230310T205955Z&X-Amz-Expires=900&X-Amz-Signature=ec51e05758ae663ea0f668c6bb03046fda1d38a871ab21415d62d3877e7206e5&X-Amz-SignedHeaders=host",
+            ],
+            stripeAccountNumber: "1234567890",
+            ownedBy: "god",
+            lineItems: [
+              {
+                name: "tips",
+                percentage: 5,
+                _id: "63ec556200046de1daa3eeea",
+              },
+              {
+                name: "service charge",
+                percentage: 20,
+                _id: "63ec556200046de1daa3eeeb",
+              },
+            ],
+            isDeleted: true,
+            isPublished: true,
+            createdAt: "2023-02-15T03:45:38.869Z",
+            updatedAt: "2023-03-27T18:59:12.620Z",
+            __v: 0,
+          },
+          privileges: {
+            _id: "63ec755314031ecb894277a3",
+            tableConfigPrivilege: true,
+            eventPrivileges: true,
+            reservationManagementPrivileges: true,
+            mobileAppTableMinimumPrivileges: true,
+            menuItemPrivileges: true,
+            clubPrivileges: true,
+            representativePrivileges: true,
+            isDeleted: false,
+            createdAt: "2023-02-15T06:01:55.824Z",
+            updatedAt: "2023-02-15T06:01:55.824Z",
+            __v: 0,
+          },
+          _id: "63ec755414031ecb894277a7",
+        },
+        {
+          club: {
+            Address: {
+              Address: "32 Populate User Club",
+              City: "New York",
+              State: "",
+              Country: "USA",
+            },
+            floorPlan: [],
+            _id: "63ec5693fa4162f8ba60273a",
+            name: "User Club4",
+            location: [38.414, -74.424],
+            instaHandle: "@abcef",
+            phoneNumber: "393843339",
+            website: "cvw1.com",
+            photos: ["vbvcgxdxcgfzxdhfx"],
+            stripeAccountNumber: "1234565881",
+            ownedBy: "god3",
+            lineItems: [
+              {
+                name: "tips",
+                percentage: 50,
+                _id: "63ec5693fa4162f8ba60273b",
+              },
+              {
+                name: "service charge",
+                percentage: 50,
+                _id: "63ec5693fa4162f8ba60273c",
+              },
+            ],
+            isDeleted: true,
+            isPublished: false,
+            createdAt: "2023-02-15T03:50:43.654Z",
+            updatedAt: "2023-03-04T17:26:04.101Z",
+            __v: 0,
+          },
+          privileges: {
+            _id: "63ec755414031ecb894277a5",
+            tableConfigPrivilege: true,
+            eventPrivileges: true,
+            reservationManagementPrivileges: true,
+            mobileAppTableMinimumPrivileges: true,
+            menuItemPrivileges: true,
+            clubPrivileges: true,
+            representativePrivileges: true,
+            isDeleted: false,
+            createdAt: "2023-02-15T06:01:56.069Z",
+            updatedAt: "2023-02-15T06:01:56.069Z",
+            __v: 0,
+          },
+          _id: "63ec755414031ecb894277a8",
+        },
+      ],
+      isDeleted: false,
+      createdAt: "2023-02-15T04:39:06.019Z",
+      updatedAt: "2023-02-15T06:01:56.335Z",
+      __v: 0,
+    };
     localStorage.setItem(LocalStorageKey.USER_DATA, JSON.stringify(data));
     localStorage.setItem(LocalStorageKey.USER_ID, JSON.stringify(data._id));
 
@@ -252,10 +379,11 @@ export default function LoginForm() {
         variant="outlined"
         onClick={() => {
           loader === false
-            ? otpField === true
-              ? handleClick()
-              : verifyOtp()
-            : null;
+            // ? otpField === true
+            //   ? handleClick()
+            //   : verifyOtp()
+            // : null;
+          getRepresentativeData();
         }}
       >
         {otpField === true ? "Login" : "Verify Otp"}

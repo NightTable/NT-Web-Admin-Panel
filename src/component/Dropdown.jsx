@@ -22,7 +22,10 @@ export default function Dropdown(props) {
           {...props}
         >
           <Typography
-            sx={{ color: "#E4D0B5", fontSize: 16, fontWeight: "600" }}
+            sx={{
+              color: "#E4D0B5", 
+            fontSize: 16,
+             fontWeight: "600" }}
           >
             {option?.label}
           </Typography>
