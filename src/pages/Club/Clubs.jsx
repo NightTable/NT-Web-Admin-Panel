@@ -23,7 +23,6 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
-
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 
@@ -403,7 +402,6 @@ export default function ClubDashboard() {
   const DeleteClubDialog = () => {
     return (
       <>
-        
         <DeleteDialog
           heading={"Delete the club?"}
           paragraph={
@@ -417,7 +415,6 @@ export default function ClubDashboard() {
           }}
           deleteDialogOpen={deleteDialogOpen}
         />
-        
       </>
     );
   };
@@ -659,7 +656,11 @@ export default function ClubDashboard() {
                                   variant="subtitle2"
                                   noWrap
                                 >
-                                  {index + 1}) {name}
+                                  {index + 1}
+                                  {" )"}{" "}
+                                  <a href={website} rel="noreferrer noopener">
+                                    {name}
+                                  </a>
                                 </Typography>
                               </TableCell>
                               <TableCell align="left">
@@ -668,11 +669,11 @@ export default function ClubDashboard() {
                                 </Typography>
                               </TableCell>
 
-                              <TableCell align="left">
+                              {/* <TableCell align="left">
                                 <Typography sx={{ color: "black" }}>
-                                  {website}
+                                  
                                 </Typography>
-                              </TableCell>
+                              </TableCell> */}
                               <TableCell align="left">
                                 <IconButton
                                   size="large"

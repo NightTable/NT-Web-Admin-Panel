@@ -2,6 +2,7 @@ import axios, * as others from "axios";
 
 //GET ALL THE CLUBS EVENT
 export const getEventofClub = async (clubId, obj) => {
+  console.log(clubId, obj, "clubId, obj");
   return new Promise((resolve, reject) => {
     var config = {
       method: "get",
@@ -14,8 +15,11 @@ export const getEventofClub = async (clubId, obj) => {
         resolve(response.data);
       })
       .catch(function (error) {
-        console.log(error);
-        reject(error);
+        if (error.message === "Request failed with status code 404") {
+          resolve([]);
+        } else {
+          reject(error);
+        }
       });
   });
 };
@@ -52,7 +56,7 @@ export const ViewEvent = async (obj) => {
 //       ticketLink: "",
 //       clubId: "",
 //     }
-export const addEvent = async (obj, clubId) => {
+export const addEventtoDb = async (obj, clubId) => {
   return new Promise((resolve, reject) => {
     var config = {
       method: "post",
@@ -106,9 +110,10 @@ export const deleteEvent = async (clubId, EventId) => {
         "Content-Type": "application/json",
       },
     };
-
+    console.log("config======>", config);
     axios(config)
       .then(function (response) {
+        console.log("response.data==>", response.data);
         resolve(response.data.data);
       })
       .catch(function (error) {

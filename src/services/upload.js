@@ -19,11 +19,13 @@ export const AddImage = (obj) => {
         console.log("config===>", config);
         axios(config)
           .then((response) => {
-            // console.log("response", response.data);
+            console.log("response", response.data);
             resolve(response.data);
           })
           .catch(function (error) {
             console.log(error);
+            resolve(error);
+
           });
       } catch (error) {
         return error;

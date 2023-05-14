@@ -52,7 +52,7 @@ import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 //theme
 import palette from "../../theme/palette";
 // ----------------------------------------------------------------------
-import { deleteEvent, getEventofClub } from "src/services/Event";
+import { addEventtoDb, deleteEvent, getEventofClub } from "src/services/Event";
 import { getCurrentDate, convertToTimeStamp } from "../../utils/Day";
 
 import { EVENTS_TABLE_HEAD } from "../../Table_Head/index";
@@ -61,6 +61,8 @@ import { LocalStorageKey } from "src/utils/localStorage/keys";
 //services
 import { getProfileData } from "src/services/representative";
 import dayjs from "dayjs";
+import UploadSingleImage from "../UploadImage/UploadSingleImage";
+import { AddImage } from "src/services/upload";
 
 //MAIN FUNCTION
 
@@ -68,11 +70,11 @@ export default function EventDashboard() {
   //get the current date
   const currentDateinISO5601 = dayjs().format("YYYY-MM-DDTHH:MM");
   const currentDateinTimeStamp = dayjs().valueOf();
-  console.log("currentDateinTimeStamp===>", currentDateinTimeStamp);
+  // console.log("currentDateinTimeStamp===>", currentDateinTimeStamp);
   // console.log("currentDateinISO5601=====>", currentDateinISO5601);
   const [selectedDate, setSelectedDate] = useState(dayjs("2022-04-17T15:30"));
   const handleDateChange = (newDate) => {
-    console.log("newDate--->", newDate);
+    //   console.log("newDate--->", newDate);
     // setSelectedDate(newDate);
   };
 
@@ -85,7 +87,8 @@ export default function EventDashboard() {
   //CLicked Button
   const [selected_club_btn, setselected_club_btn] = useState("0");
   //IMAGE POP-UP LOADER
-  const [imageLoader, setimageLoader] = useState(false);
+  const [eventImageLoader, seteventImageLoader] = useState(false);
+  const [eventImage, seteventImage] = useState();
   //States
 
   //CREATE EVENT STATES==>
@@ -93,20 +96,28 @@ export default function EventDashboard() {
   const [ticketLink, setticketLink] = useState("");
   const [EventDate, setEventDate] = useState("");
   //SHOW CLUB
-  const [EventData, setEventData] = useState([]);
   const [open, setOpen] = useState(null);
-
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState("asc");
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState("name");
-
   const [filterName, setFilterName] = useState("");
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  //EVENT
+  const [EventData, setEventData] = useState([]);
+  const [selectedEventData, setselectedEventData] = useState([]);
+
+  //TABLE CONFIGURATION
+  const [addTableConfigPopup, setaddTableConfigPopup] = useState(false);
+  //minimun price
+  const [minPriceTC, setminPriceTC] = useState("");
+  //type
+  const [typeTC, settypeTC] = useState("");
+  //recommendedCapacity
+  const [recomCapacityTC, setrecomCapacityTC] = useState("");
+  //table mapId
+  const [tmapleIDTC, settmapleIDTC] = useState("");
 
   useEffect(() => {
     loadData();
@@ -134,7 +145,7 @@ export default function EventDashboard() {
       });
     });
 
-    setselectedClubData(tempArr[0]._id);
+    setselectedClubData(tempArr[0]);
     let obj = {
       date: currentDateinTimeStamp,
     };
@@ -145,20 +156,43 @@ export default function EventDashboard() {
   //GET CLUBS OF EVENT
   const getClubsEvent = async (club_id, obj) => {
     const data = await getEventofClub(club_id, obj);
-    // console.log("getClubsEvent====>", data);
-    setEventData(data.data);
+    const events = data?.length <= 0 ? [] : data.data;
+    setEventData(events);
   };
+  
+  var Data = new FormData();
 
   //API CALL : ADD EVENT CLUB
   const addEvent = async () => {
-    let obj = {
-      name: EventName,
-      picture: "jdkaHSFKASFIKANVAJ",
-      eventDate: "",
-      eventTime: "",
-      ticketLink: ticketLink,
-      clubId: "",
-    };
+    if (eventImage.length != undefined) {
+      //   console.log("eventImage[0]._id===>", eventImage[0], selectedClubData._id);
+      // Data.append("_id", selectedClubData._id);
+      //  Data.append("files", eventImage[0]);
+      // console.log("Data=====>", Data);
+      // const clubImg = await AddImage(Data);
+      // console.log("clubImg====>", clubImg);
+      let obj = {
+        name: EventName,
+        picture:
+          "https://images.unsplash.com/photo-1546171753-97d7676e4602?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGRyaW5rc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
+        eventDate: EventDate,
+        eventTime: EventDate,
+        ticketLink: ticketLink,
+        clubId: selectedClubData?._id,
+      };
+      console.log("obj====>", obj);
+
+      const storeEvent = await addEventtoDb(obj, selectedClubData?._id);
+      console.log("storeEvent====>", storeEvent);
+      if (storeEvent.status === true) {
+        setEventDate("");
+        setEventName("");
+        setticketLink("");
+        setEventClubPopUp(false);
+      }
+    } else {
+      alert("Please select a Event Image!");
+    }
   };
 
   //dialog
@@ -172,121 +206,8 @@ export default function EventDashboard() {
   //selected club data
   const [selectedClubData, setselectedClubData] = useState([]);
 
-  //close pop-up
-  const handleClose = async (id) => {
-    if (id == "1") {
-      const a = EventData.filter((item) => {
-        return item._id !== selectedClubData._id;
-      });
-
-      const clubtoDelete = await deleteEvent(
-        selectedClubData,
-        selectedClubData._id
-      );
-
-      setclubs_data(a);
-      // console.log("clubtoDelete", clubtoDelete);
-    } else id == "2";
-    setdeleteDialogOpen(false);
-  };
-
-  const AddImageDialog = () => {
-    return (
-      <>
-        <Popover
-          open={ImageDialogPopUp}
-          anchorEl={open}
-          onClose={() => {
-            setImageDialogPopUp(!true);
-          }}
-          anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
-          }}
-          PaperProps={{
-            sx: {
-              p: 1,
-              width: "80%",
-              hieght: "100%",
-              borderColor: "#E4D0B5",
-              // backgroundColor: '#E4D0B5',
-              borderWidth: 1,
-
-              "& .MuiMenuItem-root": {
-                typography: "body2",
-                // borderRadius: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                width: "80%",
-                borderColor: "#E4D0B5",
-                borderWidth: 12,
-              },
-            },
-          }}
-        >
-          <Scrollbar>
-            <Box
-              component="form"
-              sx={{
-                width: "100%",
-                borderWidth: 4,
-                backgroundColor: "black",
-                borderRadius: 4,
-              }}
-              autoComplete="on"
-            >
-              <Stack alignItems={"flex-end"} justifyItems={"right"}>
-                <IconButton
-                  size="large"
-                  color="inherit"
-                  onClick={() => {
-                    setImageDialogPopUp(!true);
-                  }}
-                >
-                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
-                </IconButton>
-              </Stack>
-              {/* <AddPosterImage
-                imageLoader={imageLoader}
-                data={selectedClubData}
-                onSubmit={async (Data) => {
-                  if (Data) {
-                    // const clubImg = await AddClubImage(Data);
-                    // setimageLoader(true);
-                    // if (clubImg.status === true) {
-                    //   let newArr = [];
-                    //   //UPDATE PATCH THE IMAGES
-                    //   newArr = [...clubImg?.data];
-                    //   let obj = {
-                    //     photos: newArr,
-                    //   };
-                    //   const updateClubtoActive = await clubUpdate(
-                    //     obj,
-                    //     selectedClubData._id
-                    //   );
-                    //   if (updateClubtoActive.data.status === true) {
-                    //     getClubs();
-                    //     //CLOSE THE LOADER
-                    //     setimageLoader(false);
-                    //     setImageDialogPopUp(!true);
-                    //     alert("Image uploaded Successfully !");
-                    //   }
-                    // }
-                  }
-                }}
-              /> */}
-            </Box>
-          </Scrollbar>
-        </Popover>
-      </>
-    );
-  };
-
-  const DeleteClubDialog = () => {
+  // DELETE EVENT UI
+  const DeleteEventDialog = () => {
     return (
       <>
         <Dialog
@@ -300,7 +221,7 @@ export default function EventDashboard() {
           <DialogTitle>{"Delete the club?"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              Are you sure want to delete the club, as you won't be able to
+              Are you sure want to delete the Event, as you won't be able to
               recover it !
             </DialogContentText>
           </DialogContent>
@@ -323,6 +244,25 @@ export default function EventDashboard() {
         </Dialog>
       </>
     );
+  };
+
+  //delete event pop-up
+  const handleClose = async (id) => {
+    if (id == "1") {
+      const a = EventData.filter((item) => {
+        return item._id !== selectedEventData._id;
+      });
+      //API CALL
+      const eventtoDelete = await deleteEvent(
+        selectedClubData._id,
+        selectedEventData._id
+      );
+      // UPDATE THE DATA
+      setEventData(a);
+      setdeleteDialogOpen(false);
+      // console.log("clubtoDelete", clubtoDelete);
+    } else id == "2";
+    setdeleteDialogOpen(false);
   };
 
   const ViewClubInforamtionDialog = () => {
@@ -385,7 +325,6 @@ export default function EventDashboard() {
                   <Iconify color={palette.primary.gold} icon={"maki:cross"} />
                 </IconButton>
               </Stack>
-              <ViewEventInfo data={selectedClubData} />
             </Box>
           </Scrollbar>
         </Popover>
@@ -393,6 +332,24 @@ export default function EventDashboard() {
     );
   };
 
+  //TABLE CONFIGURATION
+  const addTableConfiguration = () => {
+    console.log("selectedClubData===>", selectedClubData._id);
+    console.log("selectedEventData====>", selectedEventData._id);
+    let obj = {
+      type: typeTC,
+      minPrice: minPriceTC,
+      recommendedCapacity: recomCapacityTC,
+      clubId: selectedClubData._id,
+      eventId: selectedEventData._id,
+      tableMapId: tmapleIDTC,
+    };
+    // ADD TABLE CONFIGURATION
+    // PATCH EVENT ADD
+    // GET EVENT NEW DETAILS
+
+    console.log("obj===>", obj);
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -412,12 +369,8 @@ export default function EventDashboard() {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - EventData.length) : 0;
 
   function applySortFilter(array, comparator, query) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    // stabilizedThis.sort((a, b) => {
-    //   // const order = comparator(a[0], b[0]);
-    //   if (order !== 0) return order;
-    //   return a[1] - b[1];
-    // });
+    const stabilizedThis = array?.map((el, index) => [el, index]);
+
     if (query) {
       return filter(
         array,
@@ -426,14 +379,16 @@ export default function EventDashboard() {
     }
     return stabilizedThis.map((el) => el[0]);
   }
+
+  // console.log("EventData.length===>", EventData.length);
   const filteredData = applySortFilter(
     EventData,
     getComparator(order, orderBy),
     filterName
   );
 
-  const isNotFound = !filteredData.length && !!filterName;
-
+  const isNotFound = !filteredData?.length && !!filterName;
+  //  console.log("isNotFound===>", isNotFound, !filteredData?.length);
   return (
     <>
       <Helmet>
@@ -489,9 +444,9 @@ export default function EventDashboard() {
                         setselected_club_btn(index);
                         setselectedClubData(item);
                         let obj = {
-                          clubId: item._id,
+                          date: currentDateinTimeStamp,
                         };
-                        getClubsEvent(obj);
+                        getClubsEvent(item._id, obj);
                       }}
                       border={2}
                       borderRadius={2}
@@ -553,149 +508,151 @@ export default function EventDashboard() {
               <TableContainer>
                 <Table>
                   <TableBody>
-                    {filteredData
-                      ?.slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((item, index) => {
-                        //  console.log("item===>", item);
-                        const {
-                          _id,
-                          name,
-                          isTableConfigAdded,
-                          website,
-                          eventTime,
-                          ticketLink,
-                        } = item;
+                    {filteredData &&
+                      filteredData
+                        ?.slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        )
+                        ?.map((item, index) => {
+                          //  console.log("item===>", item);
+                          const {
+                            _id,
+                            name,
+                            isTableConfigAdded,
+                            website,
+                            eventTime,
+                            ticketLink,
+                          } = item;
 
-                        console.log(
-                          "isTableConfigAdded===>",
-                          isTableConfigAdded
-                        );
-                        const timestamp = 1680265980000; // timestamp in milliseconds
-                        const formattedDate =
-                          dayjs(timestamp).format("YYYY-MM-DD");
-                        const formattedTime =
-                          dayjs(timestamp).format("HH:mm:ss");
-                        // console.log(`Formatted Date: ${formattedDate}`);
-                        // console.log(`Formatted Time: ${formattedTime}`);
-                        return (
-                          <>
-                            <TableRow
-                              style={{
-                                margin: 20,
-                              }}
-                              bgcolor={"#E4D0B5"}
-                              // hover
-                              key={_id}
-                              tabIndex={-1}
-                            >
-                              <TableCell align="right">
-                                <Stack flexDirection={"row"}>
-                                  <IconButton
-                                    style={{
-                                      background: "black",
-                                    }}
-                                    size="large"
-                                    onClick={() => {
-                                      setselectedClubData(item);
-                                      setViewClubInfoPopUp(true);
-                                    }}
+                          // const timestamp = 1680265980000; // timestamp in milliseconds
+                          // const formattedDate =
+                          //   dayjs(timestamp).format("YYYY-MM-DD");
+                          // const formattedTime =
+                          //   dayjs(timestamp).format("HH:mm:ss");
+                          // console.log(`Formatted Date: ${formattedDate}`);
+                          // console.log(`Formatted Time: ${formattedTime}`);
+                          return (
+                            <>
+                              <TableRow
+                                style={{
+                                  margin: 20,
+                                }}
+                                bgcolor={"#E4D0B5"}
+                                // hover
+                                key={_id}
+                                tabIndex={-1}
+                              >
+                                <TableCell align="right">
+                                  <Stack flexDirection={"row"}>
+                                    <IconButton
+                                      style={{
+                                        background: "black",
+                                      }}
+                                      size="large"
+                                      onClick={() => {
+                                        setselectedClubData(item);
+                                        setViewClubInfoPopUp(true);
+                                      }}
+                                    >
+                                      <Iconify
+                                        color={"#E4D0B5"}
+                                        icon={"ic:sharp-remove-red-eye"}
+                                      />
+                                    </IconButton>
+                                  </Stack>
+                                </TableCell>
+                                <TableCell align="left">
+                                  <Typography sx={{ color: "black" }}>
+                                    {isTableConfigAdded === false ? (
+                                      <>
+                                        <IconButton
+                                          style={{
+                                            background: "black",
+                                          }}
+                                          size="large"
+                                          color="inherit"
+                                          onClick={() => {
+                                            console.log("icons pressed ===?>");
+                                            setselectedEventData(item);
+                                            setaddTableConfigPopup(true);
+                                          }}
+                                        >
+                                          <Iconify
+                                            color={"#E4D0B5"}
+                                            icon="eva:plus-fill"
+                                          />
+                                        </IconButton>
+                                      </>
+                                    ) : (
+                                      "true"
+                                    )}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell
+                                  bgcolor={"#E4D0B5"}
+                                  component="th"
+                                  scope="row"
+                                  padding="none"
+                                >
+                                  <Typography
+                                    sx={{ color: "black", px: 2 }}
+                                    variant="subtitle2"
+                                    noWrap
                                   >
-                                    <Iconify
-                                      color={"#E4D0B5"}
-                                      icon={"ic:sharp-remove-red-eye"}
-                                    />
-                                  </IconButton>
-                                </Stack>
-                              </TableCell>
-                              <TableCell align="left">
-                                <Typography sx={{ color: "black" }}>
-                                  {isTableConfigAdded === false ? (
-                                    <>
-                                      <IconButton
-                                        style={{
-                                          background: "black",
-                                        }}
-                                        size="large"
-                                        color="inherit"
-                                        onClick={() => {}}
-                                      >
-                                        <Iconify
-                                          color={"#E4D0B5"}
-                                          icon="eva:plus-fill"
-                                        />
-                                      </IconButton>
-                                    </>
-                                  ) : (
-                                    "true"
-                                  )}
-                                </Typography>
-                              </TableCell>
-                              <TableCell
-                                bgcolor={"#E4D0B5"}
-                                component="th"
-                                scope="row"
-                                padding="none"
-                              >
-                                <Typography
-                                  sx={{ color: "black", px: 2 }}
-                                  variant="subtitle2"
-                                  noWrap
+                                    {index + 1}
+                                    {" )"} {name}
+                                  </Typography>
+                                </TableCell>
+                                <TableCell
+                                  bgcolor={"#E4D0B5"}
+                                  component="th"
+                                  scope="row"
+                                  padding="none"
                                 >
-                                  {index + 1}{' )'} {name}
-                                </Typography>
-                              </TableCell>
-                              <TableCell
-                                bgcolor={"#E4D0B5"}
-                                component="th"
-                                scope="row"
-                                padding="none"
-                              >
-                                <Typography
-                                  sx={{ color: "black", px: 2 }}
-                                  variant="subtitle2"
-                                  noWrap
-                                >
-                                  {dayjs(Number(eventTime)).format(
-                                    "DD-MM-YYYY HH:MM"
-                                  )}
-                                </Typography>
-                              </TableCell>
+                                  <Typography
+                                    sx={{ color: "black", px: 2 }}
+                                    variant="subtitle2"
+                                    noWrap
+                                  >
+                                    {dayjs(Number(eventTime)).format(
+                                      "DD-MM-YYYY HH:MM"
+                                    )}
+                                  </Typography>
+                                </TableCell>
 
-                              <TableCell align="right">
-                                <Stack flexDirection={"row"}>
+                                <TableCell align="right">
+                                  <Stack flexDirection={"row"}>
+                                    <IconButton
+                                      size="large"
+                                      color="inherit"
+                                      onClick={() => {
+                                        setEventClubPopUp(true);
+
+                                        //LEFT WITH LINE ITEMS & ADDRESS TO UPDATE
+                                        // alert("EDIT alert");
+                                      }}
+                                    >
+                                      <Iconify icon={"material-symbols:edit"} />
+                                    </IconButton>
+                                  </Stack>
+                                </TableCell>
+                                <TableCell align="left">
                                   <IconButton
                                     size="large"
                                     color="inherit"
                                     onClick={() => {
-                                      setEventClubPopUp(true);
-
-                                      //LEFT WITH LINE ITEMS & ADDRESS TO UPDATE
-                                      // alert("EDIT alert");
+                                      setselectedEventData(item);
+                                      setdeleteDialogOpen(true);
                                     }}
                                   >
-                                    <Iconify icon={"material-symbols:edit"} />
+                                    <Iconify icon={"ic:baseline-delete"} />
                                   </IconButton>
-                                </Stack>
-                              </TableCell>
-                              <TableCell align="left">
-                                <IconButton
-                                  size="large"
-                                  color="inherit"
-                                  onClick={() => {
-                                    setselectedClubData(item);
-                                    setdeleteDialogOpen(true);
-                                  }}
-                                >
-                                  <Iconify icon={"ic:baseline-delete"} />
-                                </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          </>
-                        );
-                      })}
+                                </TableCell>
+                              </TableRow>
+                            </>
+                          );
+                        })}
                     {emptyRows > 0 && (
                       <TableRow style={{ height: 53 * emptyRows }}>
                         <TableCell colSpan={6} />
@@ -881,7 +838,7 @@ export default function EventDashboard() {
                       <ResponsiveDateTimePickers
                         value={currentDateinISO5601}
                         onChange={(date) => {
-                          console.log("Selected - date ====>", date);
+                          //       console.log("Selected - date ====>", date);
                           setEventDate(date);
                         }}
                       />
@@ -890,35 +847,15 @@ export default function EventDashboard() {
                 </Stack>
                 <Stack justifyItem={"center"}>
                   <Box sx={{ paddingBottom: 2 }}>
-                    <AddPosterImage
+                    <UploadSingleImage
                       heading={""}
                       filesLimit={1}
-                      imageLoader={imageLoader}
-                      data={selectedClubData}
-                      onSubmit={async (Data) => {
+                      eventImageLoader={eventImageLoader}
+                      btnDisabled={true}
+                      handleSubmit={async (Data) => {
                         if (Data) {
+                          seteventImage(Data);
                           console.log(Data, "Data====>");
-                          // const clubImg = await AddClubImage(Data);
-                          // setimageLoader(true);
-                          // if (clubImg.status === true) {
-                          //   let newArr = [];
-                          //   //UPDATE PATCH THE IMAGES
-                          //   newArr = [...clubImg?.data];
-                          //   let obj = {
-                          //     photos: newArr,
-                          //   };
-                          //   const updateClubtoActive = await clubUpdate(
-                          //     obj,
-                          //     selectedClubData._id
-                          //   );
-                          //   if (updateClubtoActive.data.status === true) {
-                          //     getClubs();
-                          //     //CLOSE THE LOADER
-                          //     setimageLoader(false);
-                          //     setImageDialogPopUp(!true);
-                          //     alert("Image uploaded Successfully !");
-                          //   }
-                          // }
                         }
                       }}
                     />{" "}
@@ -954,417 +891,207 @@ export default function EventDashboard() {
             </Box>
           </Scrollbar>
         </Popover>
+        <Popover
+          open={addTableConfigPopup}
+          anchorEl={open}
+          onClose={() => {
+            setaddTableConfigPopup(!true);
+          }}
+          anchorOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          PaperProps={{
+            sx: {
+              p: 1,
+              width: "90%",
+              hieght: "100%",
+              borderColor: "#E4D0B5",
+              // backgroundColor: '#E4D0B5',
+              borderWidth: 1,
+
+              "& .MuiMenuItem-root": {
+                typography: "body2",
+                // borderRadius: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                width: "80%",
+                borderColor: "#E4D0B5",
+                borderWidth: 12,
+              },
+            },
+          }}
+        >
+          <Scrollbar>
+            <Box
+              component="form"
+              sx={{
+                width: "100%",
+                borderWidth: 2,
+                backgroundColor: "black",
+                borderRadius: 4,
+              }}
+              autoComplete="on"
+            >
+              <Stack alignItems={"flex-end"} justifyItems={"right"}>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  onClick={() => {
+                    setaddTableConfigPopup(!true);
+                  }}
+                >
+                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                </IconButton>
+              </Stack>
+              <Typography
+                sx={{
+                  color: palette.primary.gold,
+                  textAlign: "center",
+                  paddingTop: 4,
+                  paddingBottom: 4,
+                  fontSize: 20,
+                  fontWeight: "bold",
+                }}
+              >
+                Add Table Configuration
+              </Typography>
+              <Container sx={{ width: "100%" }}>
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
+                    <Typography sx={{ color: palette.primary.gold }}>
+                      Table Type
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                    <TextField
+                      fullWidth
+                      autoComplete="off"
+                      label="configuration"
+                      variant="outlined"
+                      value={typeTC}
+                      onChange={(text) => {
+                        settypeTC(text.target.value);
+                      }}
+                      inputProps={{ style: { color: palette.primary.gold } }}
+                      InputLabelProps={{
+                        style: { color: palette.primary.gold },
+                      }}
+                    />
+                  </Box>
+                </Stack>
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
+                    <Typography fullWidth sx={{ color: palette.primary.gold }}>
+                      Minimum Price
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                    <Box sx={{ paddingBottom: 2 }}>
+                      <TextField
+                        label={"price "}
+                        autoComplete="no-autocomplete-random-string"
+                        fullWidth
+                        variant="outlined"
+                        value={minPriceTC}
+                        onChange={(text) => {
+                          setminPriceTC(text.target.value);
+                        }}
+                        inputProps={{ style: { color: palette.primary.gold } }}
+                        InputLabelProps={{
+                          style: { color: palette.primary.gold },
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </Stack>
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
+                    <Typography fullWidth sx={{ color: palette.primary.gold }}>
+                      Seating Capacity
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                    <Box sx={{ paddingBottom: 2 }}>
+                      <TextField
+                        label={"capacity"}
+                        autoComplete="no-autocomplete-random-string"
+                        fullWidth
+                        variant="outlined"
+                        value={recomCapacityTC}
+                        onChange={(text) => {
+                          setrecomCapacityTC(text.target.value);
+                        }}
+                        inputProps={{ style: { color: palette.primary.gold } }}
+                        InputLabelProps={{
+                          style: { color: palette.primary.gold },
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </Stack>
+                <Stack flexDirection={"row"}>
+                  <Box sx={{ width: "30%" }}>
+                    <Typography fullWidth sx={{ color: palette.primary.gold }}>
+                      Table Map ID
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                    <Box sx={{ paddingBottom: 2 }}>
+                      <TextField
+                        label={"Map id "}
+                        autoComplete="no-autocomplete-random-string"
+                        fullWidth
+                        variant="outlined"
+                        value={tmapleIDTC}
+                        onChange={(text) => {
+                          settmapleIDTC(text.target.value);
+                        }}
+                        inputProps={{ style: { color: palette.primary.gold } }}
+                        InputLabelProps={{
+                          style: { color: palette.primary.gold },
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                </Stack>
+
+                <Box
+                  sx={{
+                    width: "100%",
+                    padding: 2,
+                  }}
+                >
+                  <Button
+                    onClick={() => {
+                      addTableConfiguration();
+                      //setEventClubPopUp(true);
+                    }}
+                    // variant="contained"
+                    style={{
+                      backgroundColor: palette.primary.gold,
+                      textAlign: "center",
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      color: "black",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    Add Event
+                  </Button>
+                </Box>
+              </Container>
+            </Box>
+          </Scrollbar>
+        </Popover>
+        <DeleteEventDialog />
       </Container>
     </>
   );
 }
-
-// <Popover
-//           open={addEventPopUp}
-//           anchorEl={open}
-//           onClose={() => {
-//             setEventClubPopUp(!true);
-//           }}
-//           anchorOrigin={{
-//             vertical: "center",
-//             horizontal: "center",
-//           }}
-//           transformOrigin={{
-//             vertical: "center",
-//             horizontal: "center",
-//           }}
-//           PaperProps={{
-//             sx: {
-//               p: 1,
-//               width: "90%",
-//               hieght: "100%",
-//               borderColor: "#E4D0B5",
-//               // backgroundColor: '#E4D0B5',
-//               borderWidth: 1,
-
-//               "& .MuiMenuItem-root": {
-//                 typography: "body2",
-//                 // borderRadius: 1,
-//                 alignItems: "center",
-//                 justifyContent: "center",
-//                 width: "80%",
-//                 borderColor: "#E4D0B5",
-//                 borderWidth: 12,
-//               },
-//             },
-//           }}
-//         >
-//           <Scrollbar>
-//             <Box
-//               component="form"
-//               sx={{
-//                 width: "100%",
-//                 borderWidth: 2,
-//                 backgroundColor: "black",
-//                 borderRadius: 4,
-//               }}
-//               autoComplete="on"
-//             >
-//               <Stack alignItems={"flex-end"} justifyItems={"right"}>
-//                 <IconButton
-//                   size="large"
-//                   color="inherit"
-//                   onClick={() => {
-//                     setEventClubPopUp(!true);
-//                   }}
-//                 >
-//                   <Iconify color={palette.primary.gold} icon={"maki:cross"} />
-//                 </IconButton>
-//               </Stack>
-//               <Typography
-//                 sx={{
-//                   color: palette.primary.gold,
-//                   textAlign: "center",
-//                   paddingTop: 4,
-//                   paddingBottom: 4,
-//                   fontSize: 20,
-//                   fontWeight: "bold",
-//                 }}
-//               >
-//                 Add New Club
-//               </Typography>
-//               <Container sx={{ width: "100%" }}>
-//                 <Stack flexDirection={"row"}>
-//                   <Box sx={{ width: "30%" }}>
-//                     <Typography sx={{ color: palette.primary.gold }}>
-//                       Club Name
-//                     </Typography>
-//                   </Box>
-//                   <Box sx={{ width: "70%", paddingBottom: 2 }}>
-//                     <TextField
-//                       fullWidth
-//                       autoComplete="off"
-//                       label="Club Name"
-//                       variant="outlined"
-//                       value={EventName}
-//                       onChange={(text) => {
-//                         setEventName(text.target.value);
-//                       }}
-//                       inputProps={{ style: { color: palette.primary.gold } }}
-//                       InputLabelProps={{
-//                         style: { color: palette.primary.gold },
-//                       }}
-//                     />
-//                   </Box>
-//                 </Stack>
-//                 <Stack flexDirection={"row"}>
-//                   <Box sx={{ width: "30%" }}>
-//                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
-//                       Phone Number
-//                     </Typography>
-//                   </Box>
-//                   <Box sx={{ width: "70%", paddingBottom: 2 }}>
-//                     <Box sx={{ paddingBottom: 2 }}>
-//                       <TextField
-//                         label={"Phone Number"}
-//                         autoComplete="no-autocomplete-random-string"
-//                         fullWidth
-//                         variant="outlined"
-//                         value={ticketLink}
-//                         onChange={(text) => {
-//                           setticketLink(text.target.value);
-//                         }}
-//                         inputProps={{ style: { color: palette.primary.gold } }}
-//                         InputLabelProps={{
-//                           style: { color: palette.primary.gold },
-//                         }}
-//                       />
-//                     </Box>
-//                   </Box>
-//                 </Stack>
-//                 <Stack flexDirection={"row"}>
-//                   <Box sx={{ width: "30%" }}>
-//                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
-//                       Address
-//                     </Typography>
-//                   </Box>
-//                   <Box sx={{ width: "70%", paddingBottom: 2 }}>
-//                     <Box sx={{ paddingBottom: 2 }}>
-//                       <TextField
-//                         fullWidth
-//                         autoComplete="no-autocomplete-random-string"
-//                         sx={{ width: "100%", paddingBottom: 2 }}
-//                         label="Address Line"
-//                         variant="outlined"
-//                         value={addressLine}
-//                         onChange={(text) => {
-//                           setaddressLine(text.target.value);
-//                         }}
-//                         inputProps={{ style: { color: palette.primary.gold } }}
-//                         InputLabelProps={{
-//                           style: { color: palette.primary.gold },
-//                         }}
-//                       />
-//                     </Box>
-
-//                     <Stack flexDirection={"row"}>
-//                       <Dropdown
-//                         textinputLabel={"Select Country"}
-//                         data={countryData}
-//                         value={country}
-//                         changedValue={(item) => {
-//                           // console.log("item======>", item);
-//                           setcountryCode(item.value);
-//                           setcountry(item.label);
-//                         }}
-//                       />
-//                     </Stack>
-//                     <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
-//                       {countryCode != "" ? (
-//                         <>
-//                           <Dropdown
-//                             textinputLabel={"Select State"}
-//                             data={stateData}
-//                             changedValue={(item) => {
-//                               setstateCode(item.value);
-//                               setstate(item.label);
-//                             }}
-//                           />
-//                         </>
-//                       ) : (
-//                         <></>
-//                       )}
-//                     </Stack>
-//                     <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
-//                       {stateCode != "" ? (
-//                         <>
-//                           <Dropdown
-//                             textinputLabel={"Select City"}
-//                             data={citiesData}
-//                             changedValue={(item) => {
-//                               setcitiesCodeData(item.value);
-//                               setcity(item.label);
-//                             }}
-//                           />
-//                         </>
-//                       ) : (
-//                         <></>
-//                       )}
-//                     </Stack>
-//                   </Box>
-//                 </Stack>
-//                 <Stack flexDirection={"row"}>
-//                   <Box sx={{ width: "30%" }}>
-//                     <Typography sx={{ color: palette.primary.gold }}>
-//                       Website
-//                     </Typography>
-//                   </Box>
-//                   <Box sx={{ width: "70%" }}>
-//                     <Box sx={{ paddingBottom: 2 }}>
-//                       <TextField
-//                         fullWidth
-//                         autoComplete="off"
-//                         label="Website Url"
-//                         variant="outlined"
-//                         value={WebsiteUrl}
-//                         onChange={(text) => {
-//                           setWebsiteUrl(text.target.value);
-//                         }}
-//                         inputProps={{ style: { color: palette.primary.gold } }}
-//                         InputLabelProps={{
-//                           style: { color: palette.primary.gold },
-//                         }}
-//                       />
-//                     </Box>
-//                   </Box>
-//                 </Stack>
-//                 <Stack flexDirection={"row"}>
-//                   <Box sx={{ width: "30%" }}>
-//                     <Typography sx={{ color: palette.primary.gold }}>
-//                       Insta Handle
-//                     </Typography>
-//                   </Box>
-//                   <Box sx={{ width: "70%" }}>
-//                     <Box sx={{ paddingBottom: 2 }}>
-//                       <TextField
-//                         fullWidth
-//                         label="Instagram"
-//                         variant="outlined"
-//                         value={instaHandle}
-//                         onChange={(text) => {
-//                           setinstaHandle(text.target.value);
-//                         }}
-//                         inputProps={{ style: { color: palette.primary.gold } }}
-//                         InputLabelProps={{
-//                           style: { color: palette.primary.gold },
-//                         }}
-//                       />
-//                     </Box>
-//                   </Box>
-//                 </Stack>
-
-//                 <Stack flexDirection={"row"}>
-//                   <Box sx={{ width: "30%" }}>
-//                     <Typography sx={{ color: palette.primary.gold }}>
-//                       Stripe Ac Number
-//                     </Typography>
-//                   </Box>
-//                   <Box sx={{ width: "70%" }}>
-//                     <TextField
-//                       fullWidth
-//                       label="Stripe Account No."
-//                       variant="outlined"
-//                       value={stripeAccountNo}
-//                       onChange={(text) => {
-//                         setstripeAccountNo(text.target.value);
-//                       }}
-//                       inputProps={{ style: { color: palette.primary.gold } }}
-//                       InputLabelProps={{
-//                         style: { color: palette.primary.gold },
-//                       }}
-//                     />
-//                   </Box>
-//                 </Stack>
-//                 <Stack>
-//                   <Stack sx={{ paddingTop: 2 }} flexDirection={"row"}>
-//                     <Box sx={{ width: "70%" }}>
-//                       <Stack flexDirection={"row"}>
-//                         <Typography
-//                           sx={{
-//                             color: palette.primary.gold,
-//                             fontWeight: "bold",
-//                             fontSize: 14,
-//                             paddingRight: 2,
-//                           }}
-//                         >
-//                           Line Items{" "}
-//                         </Typography>
-//                         <Tooltip
-//                           title={
-//                             "Table fee, Service Charges,tips, tax etc (All Items value will be consider as a percentage)"
-//                           }
-//                         >
-//                           <InfoIcon sx={{ color: "red" }} />
-//                         </Tooltip>
-//                       </Stack>
-//                     </Box>
-
-//                     <Box sx={{ width: "30%" }}>
-//                       <Button
-//                         style={{
-//                           backgroundColor: "#E4D0B5",
-//                           color: "black",
-//                           fontSize: 14,
-//                           fontWeight: "600",
-//                         }}
-//                         variant="contained"
-//                         onClick={() => {
-//                           handleAddKeyValue();
-//                         }}
-//                       >
-//                         Add
-//                       </Button>
-//                     </Box>
-//                   </Stack>
-//                   <Typography>{showLineItemError}</Typography>
-//                   <Stack flexDirection={"row"} sx={{ paddingTop: 1 }}>
-//                     <Box sx={{ width: "50%" }}>
-//                       <TextField
-//                         variant="outlined"
-//                         label="Line Item "
-//                         value={key}
-//                         onChange={(event) => setKey(event.target.value)}
-//                         InputLabelProps={{
-//                           style: { color: palette.primary.gold },
-//                         }}
-//                         inputProps={{ style: { color: palette.primary.gold } }}
-//                       />
-//                     </Box>
-//                     <Box sx={{ width: "50%", paddingLeft: 1 }}>
-//                       <TextField
-//                         variant="outlined"
-//                         label="Value"
-//                         value={value}
-//                         onChange={(event) => setValue(event.target.value)}
-//                         InputLabelProps={{
-//                           style: { color: palette.primary.gold },
-//                         }}
-//                         inputProps={{ style: { color: palette.primary.gold } }}
-//                       />
-//                     </Box>
-//                   </Stack>
-
-//                   {Object.entries(keyValuePairs).map(([key, value], index) => (
-//                     <>
-//                       <Stack flexDirection={"row"}>
-//                         <Box sx={{ width: "40%" }}>
-//                           <Typography
-//                             sx={{
-//                               color: palette.primary.gold,
-//                               fontSize: 14,
-//                               fontWeight: "600",
-//                               padding: 2,
-//                             }}
-//                             key={key}
-//                           >
-//                             {index + 1}) {key}:
-//                           </Typography>
-//                         </Box>
-//                         <Box sx={{ width: "50%" }}>
-//                           <Stack flexDirection={"row"}>
-//                             <Typography
-//                               sx={{
-//                                 color: palette.primary.gold,
-//                                 fontSize: 14,
-//                                 fontWeight: "600",
-//                                 padding: 2,
-//                               }}
-//                               key={key}
-//                             >
-//                               Value: {value} %
-//                             </Typography>
-//                             <Button
-//                               style={{
-//                                 color: "red",
-//                                 fontSize: 14,
-//                                 fontWeight: "600",
-//                               }}
-//                               variant="contained"
-//                               onClick={() => handleDeleteKeyValue(key)}
-//                             >
-//                               Delete
-//                             </Button>
-//                           </Stack>
-//                         </Box>
-//                       </Stack>
-//                     </>
-//                   ))}
-//                 </Stack>
-//                 <Box
-//                   sx={{
-//                     width: "100%",
-//                     padding: 2,
-//                   }}
-//                 >
-//                   <Button
-//                     onClick={() => {
-//                       addClub();
-//                       //setEventClubPopUp(true);
-//                     }}
-//                     // variant="contained"
-//                     style={{
-//                       backgroundColor: palette.primary.gold,
-//                       textAlign: "center",
-//                       fontSize: 16,
-//                       fontWeight: "bold",
-//                       color: "black",
-//                       justifyContent: "center",
-//                       alignItems: "center",
-//                       width: "100%",
-//                     }}
-//                   >
-//                     Add CLub
-//                   </Button>
-//                 </Box>
-//               </Container>
-//             </Box>
-//           </Scrollbar>
-//         </Popover>
-//         <DeleteClubDialog />
-//         <AddImageDialog />
-//         <ViewClubInforamtionDialog />

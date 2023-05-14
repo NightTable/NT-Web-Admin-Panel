@@ -13,11 +13,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { AddClubImage, getClubs } from "../../services/club";
 import { CircularProgress } from "@mui/material";
+import { Upload } from "@mui/icons-material";
 //Main Function
 
-
-const AddPosterImage = (data) => {
-  console.log(data.imageLoader, "IN THE ADD HOUSE IMAGE --->");
+const UploadSingleImage = (data) => {
+  // console.log("UploadSingleImage====>");
   const [alert, setAlert] = useState({
     open: false,
     vertical: "top",
@@ -25,13 +25,9 @@ const AddPosterImage = (data) => {
   });
   const { vertical, horizontal, open } = alert;
 
-  //local storage
-  const location = useLocation();
-
   //Navigation Hooks
   const navigate = useNavigate();
 
-  const [message, setMessage] = useState("");
   const [files, setfiles] = useState([]);
   const classes = useStyles();
 
@@ -41,54 +37,12 @@ const AddPosterImage = (data) => {
   const [imageUploadLoader, setimageUploadLoader] = useState(data.imageLoader);
 
   const selectDropzoneFiles = (files) => {
-    // setDisable(false);
     if (files == 0) {
-      console.log("files[0].type");
+      console.log("PLEASE SELECT A EVENT PHOTO=====>");
     } else {
       console.log(files[0].name, "files[0].name");
-      let imageFiles = [];
-      let count = 0;
-      //   setFiles(files);
-
-      if (files.length === 1) {
-        const FileType = files[0].type;
-        //   setPdfTypeCheck(FileType);
-      }
-
-      for (let i = 0; i < files.length; i++) {
-        let tempFile = files[i];
-        if (tempFile.type.includes("image")) {
-          imageFiles.push(tempFile);
-        }
-      }
-
-      // console.log("imageFiles===>", imageFiles);
-      setImageFiles(imageFiles);
-      // setImageFileLength(count);
-      // setImageFiles(imageFiles);
-    }
-  };
-  var Data = new FormData();
-
-  const handleSubmit = async () => {
-    // console.log("ImageFiles====>", ImageFiles.length);
-    if (ImageFiles.length === 0) {
-      setMessage("Please select at least one image!");
-      setVisible(true);
-    } else if (ImageFiles.length > 10) {
-      setMessage("You can upload upto 10 Images maximum !");
-      setVisible(true);
-    } else {
-      // setimageUploadLoader(true);
-      Data.append("_id", data.data._id);
-      for (let i = 0; i < ImageFiles.length; i++) {
-        Data.append("files", ImageFiles[i]);
-      }
-      console.log("Data----Data", Data);
-      setimageUploadLoader(true);
-      data.onSubmit(Data);
-
-      
+      console.log("SELECTED A EVENT PHOTO=====>");
+      data.handleSubmit(files);
     }
   };
 
@@ -112,16 +66,6 @@ const AddPosterImage = (data) => {
           alignItems: "center",
         }}
       >
-        <Typography
-          variant="h5"
-          style={{
-            fontWeight: "600",
-            margin: 40,
-            color: "white",
-          }}
-        >
-         {data.heading} 
-        </Typography>
         <div
           style={{
             width: "40%",
@@ -159,14 +103,13 @@ const AddPosterImage = (data) => {
             ) : (
               <>
                 <DropzoneArea
-                  //     Icon={CloudUploadIcon}
                   fileObjects={files}
                   showFileNames
                   id="file-upload"
                   dropzoneText="Drag 'n' Drop File Here Or"
                   // eslint-disable-next-line react/jsx-no-duplicate-props
                   showAlerts={["error"]}
-                  filesLimit={data.filesLimit}
+                  filesLimit={1}
                   alertSnackbarProps={{
                     anchorOrigin: {
                       vertical: "top",
@@ -186,19 +129,6 @@ const AddPosterImage = (data) => {
                   onChange={selectDropzoneFiles}
                   acceptedFiles={[".png", ".jpg", ".jpeg"]}
                 />
-
-                <Button
-                  disabled={false}
-                  variant="contained"
-                  style={{
-                    backgroundColor: "orange",
-                    //float: "right",
-                    margin: 20,
-                  }}
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </Button>
               </>
             )}
           </div>
@@ -208,7 +138,7 @@ const AddPosterImage = (data) => {
   );
 };
 
-export default AddPosterImage;
+export default UploadSingleImage;
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "660px",
