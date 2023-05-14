@@ -344,6 +344,8 @@ export default function EventDashboard() {
       eventId: selectedEventData._id,
       tableMapId: tmapleIDTC,
     };
+
+    
     // ADD TABLE CONFIGURATION
     // PATCH EVENT ADD
     // GET EVENT NEW DETAILS
