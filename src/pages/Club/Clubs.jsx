@@ -103,8 +103,8 @@ export default function ClubDashboard() {
   const [stripeAccountNo, setstripeAccountNo] = useState("");
   const [WebsiteUrl, setWebsiteUrl] = useState("");
   const [phoneNumber, setphoneNumber] = useState("");
-  const [longitude, setlongitude] = useState("");
-  const [latitude, setlatitude] = useState("");
+  const [longitude, setlongitude] = useState(12.919806);
+  const [latitude, setlatitude] = useState(77.636505);
 
   //add entities
   const [keyValuePairs, setKeyValuePairs] = useState({});

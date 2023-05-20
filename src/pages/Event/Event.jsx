@@ -166,10 +166,10 @@ export default function EventDashboard() {
   const addEvent = async () => {
     if (eventImage.length != undefined) {
       //   console.log("eventImage[0]._id===>", eventImage[0], selectedClubData._id);
-      // Data.append("_id", selectedClubData._id);
-      //  Data.append("files", eventImage[0]);
-      // console.log("Data=====>", Data);
-      // const clubImg = await AddImage(Data);
+      Data.append("_id", selectedClubData._id);
+      Data.append("files", eventImage[0]);
+      console.log("Data=====>", Data);
+      const clubImg = await AddImage(Data);
       // console.log("clubImg====>", clubImg);
       let obj = {
         name: EventName,
@@ -345,7 +345,7 @@ export default function EventDashboard() {
       tableMapId: tmapleIDTC,
     };
 
-    
+
     // ADD TABLE CONFIGURATION
     // PATCH EVENT ADD
     // GET EVENT NEW DETAILS
