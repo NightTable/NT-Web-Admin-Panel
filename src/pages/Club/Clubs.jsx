@@ -145,6 +145,7 @@ export default function ClubDashboard() {
 
   //clubs
   const [clubs_data, setclubs_data] = useState([]);
+  const [EditClub, setEditClub] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -267,6 +268,53 @@ export default function ClubDashboard() {
       //resetting the states to inital
       resetStates();
       setaddClubPopUp(false);
+    } else {
+      alert("ERROR IN ADDING CLUB ");
+    }
+  };
+
+  //API CALL : UPDATE CLUB
+  const editClub = async () => {
+    let keys = Object.keys(keyValuePairs);
+    let arr = [];
+    for (let i = 0; i < keys.length; i++) {
+      arr.push({
+        name: keys[i],
+        percentage: keyValuePairs[keys[i]],
+      });
+    }
+
+    //OBJ 
+    var obj = {
+      name: clubName,
+      location: [longitude, latitude],
+      instaHandle: instaHandle,
+      phoneNumber: phoneNumber,
+      Address: {
+        Address: selectedClubData.Address.Addres,
+        City: selectedClubData.Address.city,
+        State: selectedClubData.Address.state,
+        Country: selectedClubData.Address.country,
+      },
+      website: WebsiteUrl,
+      photos: [],
+      stripeAccountNumber: stripeAccountNo,
+      ownedBy: "god",
+      lineItems: arr,
+    };
+
+    // UPDATE OBJ INTERNALLY
+    let index = clubs_data.findIndex((e) => e._id == selectedClubData._id);
+    clubs_data[index] = obj;
+    setclubs_data(clubs_data);
+
+
+    // API CALL FOR UPDATING DATA
+    const data = await clubUpdate(obj, selectedClubData._id);
+
+    console.log("data===>", data);
+    if (data?.status === true) {
+      alert("Club Updated Successfully !");
     } else {
       alert("ERROR IN ADDING CLUB ");
     }
@@ -692,6 +740,8 @@ export default function ClubDashboard() {
                                     size="large"
                                     color="inherit"
                                     onClick={() => {
+                                      setEditClub(true);
+                                      setselectedClubData(item);
                                       setaddClubPopUp(true);
                                       let new_obj = item.lineItems.reduce(
                                         (obj, item) => {
@@ -878,7 +928,7 @@ export default function ClubDashboard() {
                   fontWeight: "bold",
                 }}
               >
-                Add New Club
+                {EditClub != true ? "Add " : "Edit "} New Club
               </Typography>
               <Container sx={{ width: "100%" }}>
                 <Stack flexDirection={"row"}>
@@ -907,7 +957,7 @@ export default function ClubDashboard() {
                 <Stack flexDirection={"row"}>
                   <Box sx={{ width: "30%" }}>
                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
-                      Phone Number
+                      Phone Number's
                     </Typography>
                   </Box>
                   <Box sx={{ width: "70%", paddingBottom: 2 }}>
@@ -929,77 +979,88 @@ export default function ClubDashboard() {
                     </Box>
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
-                    <Typography fullWidth sx={{ color: palette.primary.gold }}>
-                      Address
-                    </Typography>
-                  </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
-                    <Box sx={{ paddingBottom: 2 }}>
-                      <TextField
-                        fullWidth
-                        autoComplete="no-autocomplete-random-string"
-                        sx={{ width: "100%", paddingBottom: 2 }}
-                        label="Address Line"
-                        variant="outlined"
-                        value={addressLine}
-                        onChange={(text) => {
-                          setaddressLine(text.target.value);
-                        }}
-                        inputProps={{ style: { color: palette.primary.gold } }}
-                        InputLabelProps={{
-                          style: { color: palette.primary.gold },
-                        }}
-                      />
-                    </Box>
-
+                {EditClub != true ? (
+                  <>
                     <Stack flexDirection={"row"}>
-                      <Dropdown
-                        textinputLabel={"Select Country"}
-                        data={countryData}
-                        value={country}
-                        changedValue={(item) => {
-                          // console.log("item======>", item);
-                          setcountryCode(item.value);
-                          setcountry(item.label);
-                        }}
-                      />
-                    </Stack>
-                    <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
-                      {countryCode != "" ? (
-                        <>
-                          <Dropdown
-                            textinputLabel={"Select State"}
-                            data={stateData}
-                            changedValue={(item) => {
-                              setstateCode(item.value);
-                              setstate(item.label);
+                      <Box sx={{ width: "30%" }}>
+                        <Typography
+                          fullWidth
+                          sx={{ color: palette.primary.gold }}
+                        >
+                          Address
+                        </Typography>
+                      </Box>
+                      <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                        <Box sx={{ paddingBottom: 2 }}>
+                          <TextField
+                            fullWidth
+                            autoComplete="no-autocomplete-random-string"
+                            sx={{ width: "100%", paddingBottom: 2 }}
+                            label="Address Line"
+                            variant="outlined"
+                            value={addressLine}
+                            onChange={(text) => {
+                              setaddressLine(text.target.value);
+                            }}
+                            inputProps={{
+                              style: { color: palette.primary.gold },
+                            }}
+                            InputLabelProps={{
+                              style: { color: palette.primary.gold },
                             }}
                           />
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </Stack>
-                    <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
-                      {stateCode != "" ? (
-                        <>
+                        </Box>
+
+                        <Stack flexDirection={"row"}>
                           <Dropdown
-                            textinputLabel={"Select City"}
-                            data={citiesData}
+                            textinputLabel={"Select Country"}
+                            data={countryData}
+                            value={country}
                             changedValue={(item) => {
-                              setcitiesCodeData(item.value);
-                              setcity(item.label);
+                              // console.log("item======>", item);
+                              setcountryCode(item.value);
+                              setcountry(item.label);
                             }}
                           />
-                        </>
-                      ) : (
-                        <></>
-                      )}
+                        </Stack>
+                        <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
+                          {countryCode != "" ? (
+                            <>
+                              <Dropdown
+                                textinputLabel={"Select State"}
+                                data={stateData}
+                                changedValue={(item) => {
+                                  setstateCode(item.value);
+                                  setstate(item.label);
+                                }}
+                              />
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </Stack>
+                        <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
+                          {stateCode != "" ? (
+                            <>
+                              <Dropdown
+                                textinputLabel={"Select City"}
+                                data={citiesData}
+                                changedValue={(item) => {
+                                  setcitiesCodeData(item.value);
+                                  setcity(item.label);
+                                }}
+                              />
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </Stack>
+                      </Box>
                     </Stack>
-                  </Box>
-                </Stack>
+                  </>
+                ) : (
+                  <></>
+                )}
                 <Stack flexDirection={"row"}>
                   <Box sx={{ width: "30%" }}>
                     <Typography sx={{ color: palette.primary.gold }}>
@@ -1154,7 +1215,8 @@ export default function ClubDashboard() {
                             }}
                             key={key}
                           >
-                            {index + 1}) {key}:
+                            {index + 1}
+                            {")"} {key}:
                           </Typography>
                         </Box>
                         <Box sx={{ width: "50%" }}>
@@ -1195,7 +1257,7 @@ export default function ClubDashboard() {
                 >
                   <Button
                     onClick={() => {
-                      addClub();
+                      EditClub != true ? addClub() : editClub();
                       //setaddClubPopUp(true);
                     }}
                     // variant="contained"
@@ -1210,7 +1272,7 @@ export default function ClubDashboard() {
                       width: "100%",
                     }}
                   >
-                    Add CLub
+                    {EditClub != true ? "Add" : "Edit"} Club
                   </Button>
                 </Box>
               </Container>
