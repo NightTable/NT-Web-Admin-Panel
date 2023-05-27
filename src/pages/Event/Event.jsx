@@ -552,6 +552,7 @@ export default function EventDashboard() {
                             website,
                             eventTime,
                             ticketLink,
+                            eventDate,
                           } = item;
 
                           return (
@@ -637,7 +638,7 @@ export default function EventDashboard() {
                                     variant="subtitle2"
                                     noWrap
                                   >
-                                    {dayjs(Number(eventTime)).format(
+                                    {dayjs(eventDate).format(
                                       "DD-MM-YYYY HH:MM"
                                     )}
                                   </Typography>
@@ -919,10 +920,12 @@ export default function EventDashboard() {
                   </>
                 ) : (
                   <>
-                    <Box style={{
-                      height:'100%',
-                      width:'80%'
-                    }}>
+                    <Box
+                      style={{
+                        height: "100%",
+                        width: "80%",
+                      }}
+                    >
                       <CircularProgress color="secondary" />
                     </Box>
                   </>
