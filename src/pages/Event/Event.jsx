@@ -37,13 +37,11 @@ import {
 } from "@mui/material";
 import Switch from "@material-ui/core/Switch";
 import Iconify from "../../component/iconify";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // components
 import Scrollbar from "../../component/scrollbar";
 import ResponsiveDateTimePickers from "src/component/ResponsiveDateTimePIcker";
-
-//dropdown
-import AddPosterImage from "../UploadImage/AddImage";
 
 // sections
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
@@ -70,7 +68,7 @@ export default function EventDashboard() {
   //get the current date
   const currentDateinISO5601 = dayjs().format("YYYY-MM-DDTHH:MM");
   const currentDateinTimeStamp = dayjs().valueOf();
-  // console.log("currentDateinTimeStamp===>", currentDateinTimeStamp);
+  console.log("currentDateinTimeStamp===>", currentDateinTimeStamp);
   // console.log("currentDateinISO5601=====>", currentDateinISO5601);
   const [selectedDate, setSelectedDate] = useState(dayjs("2022-04-17T15:30"));
   const handleDateChange = (newDate) => {
@@ -94,7 +92,8 @@ export default function EventDashboard() {
   //CREATE EVENT STATES==>
   const [EventName, setEventName] = useState("");
   const [ticketLink, setticketLink] = useState("");
-  const [EventDate, setEventDate] = useState("");
+  const [EventDate, setEventDate] = useState(currentDateinISO5601);
+  const [eventLoader, seteventLoader] = useState(false);
   //SHOW CLUB
   const [open, setOpen] = useState(null);
   const [page, setPage] = useState(0);
@@ -173,34 +172,52 @@ export default function EventDashboard() {
   //API CALL : ADD EVENT CLUB
   const addEvent = async () => {
     if (eventImage.length != undefined) {
-      //   console.log("eventImage[0]._id===>", eventImage[0], selectedClubData._id);
+      seteventLoader(true);
+      //ADD EVENT IMAGE DATA APPEND
       Data.append("_id", selectedClubData._id);
       Data.append("files", eventImage[0]);
-      console.log("Data=====>", Data);
-      const clubImg = await AddImage(Data);
-      // console.log("clubImg====>", clubImg);
-      let obj = {
-        name: EventName,
-        picture:
-          "https://images.unsplash.com/photo-1546171753-97d7676e4602?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGRyaW5rc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
-        eventDate: EventDate,
-        eventTime: EventDate,
-        ticketLink: ticketLink,
-        clubId: selectedClubData?._id,
-      };
-      console.log("obj====>", obj);
+      //ADD EVENT IMAGE API CALL
+      const ImgUpload = await AddImage(Data);
+      // console.log("clubImg====>", ImgUpload);
+      if (ImgUpload.message == "files uploaded") {
+        let obj = {
+          name: EventName,
+          picture: ImgUpload.data[0],
+          eventDate: EventDate,
+          eventTime: EventDate,
+          ticketLink: ticketLink,
+          clubId: selectedClubData?._id,
+        };
 
-      const storeEvent = await addEventtoDb(obj, selectedClubData?._id);
-      console.log("storeEvent====>", storeEvent);
-      if (storeEvent.status === true) {
-        setEventDate("");
-        setEventName("");
-        setticketLink("");
-        setEventClubPopUp(false);
+        const storeEvent = await addEventtoDb(obj, selectedClubData?._id);
+        console.log("storeEvent====>", storeEvent);
+        if (storeEvent.status === true) {
+          //UPDATE THE MAIN ARRAY
+          setEventData(storeEvent.data);
+          //CLEAR THE STATES
+          clearAddPopUpStates();
+          //CLOSE ADD EVENT POP-UP
+          setEventClubPopUp(false);
+          seteventLoader(false);
+        } else {
+          //WHEN EVENT ADD API NOT WORKING
+          alert("ERROR while creating Events!");
+        }
+      } else {
+        //WHEN IMAGE DOES N'T GET UPLOADED
+        alert("ERROR while creating Events!");
       }
+      alert("ERROR while creating Events!");
     } else {
       alert("Please select a Event Image!");
     }
+  };
+
+  // CLEAR ADD POP-UP STATES
+  const clearAddPopUpStates = () => {
+    setEventDate("");
+    setEventName("");
+    setticketLink("");
   };
 
   //dialog
@@ -230,7 +247,7 @@ export default function EventDashboard() {
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
               Are you sure want to delete the Event, as you won't be able to
-              recover it !
+              recover it ?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -257,18 +274,23 @@ export default function EventDashboard() {
   //delete event pop-up
   const handleClose = async (id) => {
     if (id == "1") {
-      const a = EventData.filter((item) => {
-        return item._id !== selectedEventData._id;
-      });
       //API CALL
       const eventtoDelete = await deleteEvent(
         selectedClubData._id,
         selectedEventData._id
       );
-      // UPDATE THE DATA
-      setEventData(a);
-      setdeleteDialogOpen(false);
-      // console.log("clubtoDelete", clubtoDelete);
+
+      if (eventtoDelete.status === true) {
+        const a = EventData.filter((item) => {
+          return item._id !== selectedEventData._id;
+        });
+        // UPDATE THE DATA
+        setEventData(a);
+        setdeleteDialogOpen(false);
+        Alert("EVENT DELETED SUCCESSFULLY !");
+      } else {
+        Alert("ERROR IN DELETING THE EVENT ");
+      }
     } else id == "2";
     setdeleteDialogOpen(false);
   };
@@ -523,7 +545,6 @@ export default function EventDashboard() {
                           page * rowsPerPage + rowsPerPage
                         )
                         ?.map((item, index) => {
-                          //  console.log("item===>", item);
                           const {
                             _id,
                             name,
@@ -533,13 +554,6 @@ export default function EventDashboard() {
                             ticketLink,
                           } = item;
 
-                          // const timestamp = 1680265980000; // timestamp in milliseconds
-                          // const formattedDate =
-                          //   dayjs(timestamp).format("YYYY-MM-DD");
-                          // const formattedTime =
-                          //   dayjs(timestamp).format("HH:mm:ss");
-                          // console.log(`Formatted Date: ${formattedDate}`);
-                          // console.log(`Formatted Time: ${formattedTime}`);
                           return (
                             <>
                               <TableRow
@@ -636,9 +650,6 @@ export default function EventDashboard() {
                                       color="inherit"
                                       onClick={() => {
                                         setEventClubPopUp(true);
-
-                                        //LEFT WITH LINE ITEMS & ADDRESS TO UPDATE
-                                        // alert("EDIT alert");
                                       }}
                                     >
                                       <Iconify icon={"material-symbols:edit"} />
@@ -787,114 +798,135 @@ export default function EventDashboard() {
                 Add Event
               </Typography>
               <Container sx={{ width: "100%" }}>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
-                    <Typography sx={{ color: palette.primary.gold }}>
-                      Name
-                    </Typography>
-                  </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
-                    <TextField
-                      fullWidth
-                      autoComplete="off"
-                      label="Event Name"
-                      variant="outlined"
-                      value={EventName}
-                      onChange={(text) => {
-                        setEventName(text.target.value);
+                {eventLoader != true ? (
+                  <>
+                    <Stack flexDirection={"row"}>
+                      <Box sx={{ width: "30%" }}>
+                        <Typography sx={{ color: palette.primary.gold }}>
+                          Name
+                        </Typography>
+                      </Box>
+                      <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                        <TextField
+                          fullWidth
+                          autoComplete="off"
+                          label="Event Name"
+                          variant="outlined"
+                          value={EventName}
+                          onChange={(text) => {
+                            setEventName(text.target.value);
+                          }}
+                          inputProps={{
+                            style: { color: palette.primary.gold },
+                          }}
+                          InputLabelProps={{
+                            style: { color: palette.primary.gold },
+                          }}
+                        />
+                      </Box>
+                    </Stack>
+                    <Stack flexDirection={"row"}>
+                      <Box sx={{ width: "30%" }}>
+                        <Typography
+                          fullWidth
+                          sx={{ color: palette.primary.gold }}
+                        >
+                          Ticket Url
+                        </Typography>
+                      </Box>
+                      <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                        <Box sx={{ paddingBottom: 2 }}>
+                          <TextField
+                            label={"Ticket Link "}
+                            autoComplete="no-autocomplete-random-string"
+                            fullWidth
+                            variant="outlined"
+                            value={ticketLink}
+                            onChange={(text) => {
+                              setticketLink(text.target.value);
+                            }}
+                            inputProps={{
+                              style: { color: palette.primary.gold },
+                            }}
+                            InputLabelProps={{
+                              style: { color: palette.primary.gold },
+                            }}
+                          />
+                        </Box>
+                      </Box>
+                    </Stack>
+                    <Stack flexDirection={"row"}>
+                      <Box sx={{ width: "30%" }}>
+                        <Typography
+                          fullWidth
+                          sx={{ color: palette.primary.gold }}
+                        >
+                          Event Date
+                        </Typography>
+                      </Box>
+                      <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                        <Box sx={{ paddingBottom: 2 }}>
+                          <ResponsiveDateTimePickers
+                            value={EventDate}
+                            onChange={(date) => {
+                              console.log("Selected - date ====>", date);
+                              setEventDate(date);
+                            }}
+                          />
+                        </Box>
+                      </Box>
+                    </Stack>
+                    <Stack justifyItem={"center"}>
+                      <Box sx={{ paddingBottom: 2 }}>
+                        <UploadSingleImage
+                          heading={""}
+                          filesLimit={1}
+                          eventImageLoader={eventImageLoader}
+                          btnDisabled={true}
+                          handleSubmit={async (Data) => {
+                            if (Data) {
+                              seteventImage(Data);
+                            }
+                          }}
+                        />
+                      </Box>
+                    </Stack>
+                    <Box
+                      sx={{
+                        width: "100%",
+                        padding: 2,
                       }}
-                      inputProps={{ style: { color: palette.primary.gold } }}
-                      InputLabelProps={{
-                        style: { color: palette.primary.gold },
-                      }}
-                    />
-                  </Box>
-                </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
-                    <Typography fullWidth sx={{ color: palette.primary.gold }}>
-                      Ticket Url
-                    </Typography>
-                  </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
-                    <Box sx={{ paddingBottom: 2 }}>
-                      <TextField
-                        label={"Ticket Link "}
-                        autoComplete="no-autocomplete-random-string"
-                        fullWidth
-                        variant="outlined"
-                        value={ticketLink}
-                        onChange={(text) => {
-                          setticketLink(text.target.value);
+                    >
+                      <Button
+                        onClick={() => {
+                          addEvent();
+                          //setEventClubPopUp(true);
                         }}
-                        inputProps={{ style: { color: palette.primary.gold } }}
-                        InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                        style={{
+                          backgroundColor: palette.primary.gold,
+                          textAlign: "center",
+                          fontSize: 16,
+                          fontWeight: "bold",
+                          color: "black",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          width: "100%",
                         }}
-                      />
+                      >
+                        Add Event
+                      </Button>
                     </Box>
-                  </Box>
-                </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
-                    <Typography fullWidth sx={{ color: palette.primary.gold }}>
-                      Event Date
-                    </Typography>
-                  </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
-                    <Box sx={{ paddingBottom: 2 }}>
-                      <ResponsiveDateTimePickers
-                        value={currentDateinISO5601}
-                        onChange={(date) => {
-                          //       console.log("Selected - date ====>", date);
-                          setEventDate(date);
-                        }}
-                      />
+                  </>
+                ) : (
+                  <>
+                    <Box style={{
+                      height:'100%',
+                      width:'80%'
+                    }}>
+                      <CircularProgress color="secondary" />
                     </Box>
-                  </Box>
-                </Stack>
-                <Stack justifyItem={"center"}>
-                  <Box sx={{ paddingBottom: 2 }}>
-                    <UploadSingleImage
-                      heading={""}
-                      filesLimit={1}
-                      eventImageLoader={eventImageLoader}
-                      btnDisabled={true}
-                      handleSubmit={async (Data) => {
-                        if (Data) {
-                          seteventImage(Data);
-                          console.log(Data, "Data====>");
-                        }
-                      }}
-                    />{" "}
-                  </Box>
-                </Stack>
-                <Box
-                  sx={{
-                    width: "100%",
-                    padding: 2,
-                  }}
-                >
-                  <Button
-                    onClick={() => {
-                      addEvent();
-                      //setEventClubPopUp(true);
-                    }}
-                    // variant="contained"
-                    style={{
-                      backgroundColor: palette.primary.gold,
-                      textAlign: "center",
-                      fontSize: 16,
-                      fontWeight: "bold",
-                      color: "black",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "100%",
-                    }}
-                  >
-                    Add Event
-                  </Button>
-                </Box>
+                  </>
+                )}
               </Container>
             </Box>
           </Scrollbar>

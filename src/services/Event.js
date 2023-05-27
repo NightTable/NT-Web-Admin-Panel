@@ -69,7 +69,7 @@ export const addEventtoDb = async (obj, clubId) => {
 
     axios(config)
       .then(function (response) {
-        resolve(response.data.data);
+        resolve(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -110,11 +110,9 @@ export const deleteEvent = async (clubId, EventId) => {
         "Content-Type": "application/json",
       },
     };
-    console.log("config======>", config);
     axios(config)
       .then(function (response) {
-        console.log("response.data==>", response.data);
-        resolve(response.data.data);
+        resolve(response.data);
       })
       .catch(function (error) {
         console.log(error);
