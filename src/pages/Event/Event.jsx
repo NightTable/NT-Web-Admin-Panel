@@ -156,10 +156,18 @@ export default function EventDashboard() {
   //GET CLUBS OF EVENT
   const getClubsEvent = async (club_id, obj) => {
     const data = await getEventofClub(club_id, obj);
-    const events = data?.length <= 0 ? [] : data.data;
-    setEventData(events);
+    if (data.status === true) {
+      setEventData(data.data);
+    } else if (data.status === false) {
+      if (data?.message === "No events found for the club") {
+        setEventData([]);
+      } else {
+        // NO EVENTS FOUND
+        setEventData([]);
+      }
+    }
   };
-  
+
   var Data = new FormData();
 
   //API CALL : ADD EVENT CLUB
@@ -345,7 +353,6 @@ export default function EventDashboard() {
       tableMapId: tmapleIDTC,
     };
 
-
     // ADD TABLE CONFIGURATION
     // PATCH EVENT ADD
     // GET EVENT NEW DETAILS
@@ -382,7 +389,6 @@ export default function EventDashboard() {
     return stabilizedThis.map((el) => el[0]);
   }
 
-  // console.log("EventData.length===>", EventData.length);
   const filteredData = applySortFilter(
     EventData,
     getComparator(order, orderBy),

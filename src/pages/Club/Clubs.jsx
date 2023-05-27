@@ -231,7 +231,6 @@ export default function ClubDashboard() {
 
   //API CALL : ADD CLUB
   const addClub = async () => {
-    console.log("keyValuePairs===>", keyValuePairs);
     let keys = Object.keys(keyValuePairs);
     let arr = [];
     for (let i = 0; i < keys.length; i++) {
@@ -284,7 +283,7 @@ export default function ClubDashboard() {
       });
     }
 
-    //OBJ 
+    //OBJ
     var obj = {
       name: clubName,
       location: [longitude, latitude],
@@ -308,15 +307,15 @@ export default function ClubDashboard() {
     clubs_data[index] = obj;
     setclubs_data(clubs_data);
 
-
     // API CALL FOR UPDATING DATA
     const data = await clubUpdate(obj, selectedClubData._id);
 
-    console.log("data===>", data);
-    if (data?.status === true) {
+    if (data?.data?.status === true) {
       alert("Club Updated Successfully !");
+      setaddClubPopUp(false);
     } else {
       alert("ERROR IN ADDING CLUB ");
+      setaddClubPopUp(false);
     }
   };
 
@@ -706,7 +705,7 @@ export default function ClubDashboard() {
                                 >
                                   {index + 1}
                                   {" )"}{" "}
-                                  <a href={website} rel="noreferrer noopener">
+                                  <a href={website} rel="noreferrer">
                                     {name}
                                   </a>
                                 </Typography>
