@@ -120,3 +120,26 @@ export const deleteEvent = async (clubId, EventId) => {
       });
   });
 };
+
+
+
+export const updateEventToDB = async (clubId, EventId, data) => {
+  return new Promise((resolve, reject) => {
+    var config = {
+      method: "put",
+      url: `${process.env.REACT_APP_BASE_URL}events/club/${clubId}/${EventId}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data:data
+    };
+    axios(config)
+      .then(function (response) {
+        resolve(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+        reject(error);
+      });
+  });
+};
