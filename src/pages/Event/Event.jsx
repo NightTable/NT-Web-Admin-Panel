@@ -68,13 +68,6 @@ export default function EventDashboard() {
   //get the current date
   const currentDateinISO5601 = dayjs().format("YYYY-MM-DDTHH:MM");
   const currentDateinTimeStamp = dayjs().valueOf();
-  console.log("currentDateinTimeStamp===>", currentDateinTimeStamp);
-  // console.log("currentDateinISO5601=====>", currentDateinISO5601);
-  const [selectedDate, setSelectedDate] = useState(dayjs("2022-04-17T15:30"));
-  const handleDateChange = (newDate) => {
-    //   console.log("newDate--->", newDate);
-    // setSelectedDate(newDate);
-  };
 
   const theme = useTheme();
   //NAVIGATION
@@ -193,7 +186,7 @@ export default function EventDashboard() {
         console.log("storeEvent====>", storeEvent);
         if (storeEvent.status === true) {
           //UPDATE THE MAIN ARRAY
-          setEventData(storeEvent.data);
+          setEventData(storeEvent?.data?.data);
           //CLEAR THE STATES
           clearAddPopUpStates();
           //CLOSE ADD EVENT POP-UP
@@ -780,6 +773,7 @@ export default function EventDashboard() {
                   size="large"
                   color="inherit"
                   onClick={() => {
+                    seteventLoader(false);
                     setEventClubPopUp(!true);
                   }}
                 >
@@ -922,11 +916,34 @@ export default function EventDashboard() {
                   <>
                     <Box
                       style={{
-                        height: "100%",
-                        width: "80%",
+                        height: 500,
+                        width: "100%",
                       }}
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
                     >
-                      <CircularProgress color="secondary" />
+                      <CircularProgress
+                        style={{
+                          justifyItems: "center",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          alignSelf: "center",
+                        }}
+                        color="success"
+                      />
+                      <Typography
+                        sx={{
+                          color: palette.primary.gold,
+                          textAlign: "center",
+                          paddingTop: 4,
+                          paddingBottom: 4,
+                          fontSize: 12,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        Please wait we adding your event !
+                      </Typography>
                     </Box>
                   </>
                 )}

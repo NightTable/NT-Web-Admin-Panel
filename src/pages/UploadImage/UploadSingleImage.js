@@ -38,7 +38,6 @@ const UploadSingleImage = (data) => {
 
   const selectDropzoneFiles = (files) => {
     if (files == 0) {
-      console.log("PLEASE SELECT A EVENT PHOTO=====>");
     } else {
       console.log(files[0].name, "files[0].name");
       console.log("SELECTED A EVENT PHOTO=====>");
