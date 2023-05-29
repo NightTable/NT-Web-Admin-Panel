@@ -69,7 +69,7 @@ export const addEventtoDb = async (obj, clubId) => {
 
     axios(config)
       .then(function (response) {
-        resolve(response.data);
+        resolve(response)
       })
       .catch(function (error) {
         console.log(error);

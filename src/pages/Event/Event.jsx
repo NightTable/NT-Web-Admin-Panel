@@ -66,6 +66,10 @@ import { getProfileData } from "src/services/representative";
 import dayjs from "dayjs";
 import UploadSingleImage from "../UploadImage/UploadSingleImage";
 import { AddImage } from "src/services/upload";
+import {
+  createTableConfig,
+  getEventConfigsData,
+} from "src/services/tableConfig";
 
 //MAIN FUNCTION
 
@@ -79,19 +83,28 @@ export default function EventDashboard() {
   const navigate = useNavigate();
   //clubs
   const [clubs_data, setclubs_data] = useState([]);
-
   //CLicked Button
   const [selected_club_btn, setselected_club_btn] = useState("0");
-  //IMAGE POP-UP LOADER
-  const [eventImageLoader, seteventImageLoader] = useState(false);
-  const [eventImage, seteventImage] = useState();
+  //selected club data
+  const [selectedClubData, setselectedClubData] = useState([]);
+
   //States
 
+  //EVENT
+  const [EventData, setEventData] = useState([]);
+  const [selectedEventData, setselectedEventData] = useState([]);
+
+  //CREATE EVENT pop-over open
+  const [addEventPopUp, setEventClubPopUp] = useState(false);
   //CREATE EVENT STATES==>
   const [EventName, setEventName] = useState("");
   const [ticketLink, setticketLink] = useState("");
+  const [eventImage, seteventImage] = useState();
   const [EventDate, setEventDate] = useState(currentDateinISO5601);
   const [eventLoader, seteventLoader] = useState(false);
+  //IMAGE POP-UP LOADER
+  const [eventImageLoader, seteventImageLoader] = useState(false);
+  //EDIT EVENT
   const [editEvent, seteditEvent] = useState(false);
   const [editEventImage, seteditEventImage] = useState(true);
   //SHOW CLUB
@@ -102,13 +115,17 @@ export default function EventDashboard() {
   const [orderBy, setOrderBy] = useState("name");
   const [filterName, setFilterName] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  //dialog
 
-  //EVENT
-  const [EventData, setEventData] = useState([]);
-  const [selectedEventData, setselectedEventData] = useState([]);
+  const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
 
   //TABLE CONFIGURATION
   const [addTableConfigPopup, setaddTableConfigPopup] = useState(false);
+  const [selectedTableConfigData, setselectedTableConfigData] = useState([]);
+  const [editTableConfigCheck, seteditTableConfigCheck] = useState(false);
+  const [tableConfigData, settableConfigData] = useState([]);
+
+  const [showAllConfigDataPopUp, setshowAllConfigDataPopUp] = useState(false);
   //minimun price
   const [minPriceTC, setminPriceTC] = useState("");
   //type
@@ -193,7 +210,8 @@ export default function EventDashboard() {
         console.log("storeEvent====>", storeEvent);
         if (storeEvent.status === true) {
           //UPDATE THE MAIN ARRAY
-          setEventData(storeEvent?.data?.data);
+          const updateArray = [storeEvent?.data.data, ...EventData];
+          setEventData(updateArray);
           //CLEAR THE STATES
           clearAddPopUpStates();
           //CLOSE ADD EVENT POP-UP
@@ -288,21 +306,10 @@ export default function EventDashboard() {
   };
   // CLEAR ADD POP-UP STATES
   const clearAddPopUpStates = () => {
-    setEventDate("");
+    // setEventDate("");
     setEventName("");
     setticketLink("");
   };
-
-  //dialog
-
-  const [ImageDialogPopUp, setImageDialogPopUp] = useState(false);
-  const [ViewClubInfoPopUp, setViewClubInfoPopUp] = useState(false);
-  const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
-  //add club pop-over open
-  const [addEventPopUp, setEventClubPopUp] = useState(false);
-
-  //selected club data
-  const [selectedClubData, setselectedClubData] = useState([]);
 
   // DELETE EVENT UI
   const DeleteEventDialog = () => {
@@ -368,75 +375,28 @@ export default function EventDashboard() {
     setdeleteDialogOpen(false);
   };
 
-  const ViewClubInforamtionDialog = () => {
-    return (
-      <>
-        <Popover
-          open={ViewClubInfoPopUp}
-          anchorEl={open}
-          onClose={() => {
-            setViewClubInfoPopUp(!true);
-          }}
-          anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
-          }}
-          transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
-          }}
-          PaperProps={{
-            sx: {
-              p: 1,
-              width: "80%",
-              hieght: "100%",
-              borderColor: "#E4D0B5",
-              // backgroundColor: '#E4D0B5',
-              borderWidth: 1,
+  //TABLE CONFIGURATIONS
+  //GET TABLE CONFIG
 
-              "& .MuiMenuItem-root": {
-                typography: "body2",
-                // borderRadius: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                width: "80%",
-                borderColor: "#E4D0B5",
-                borderWidth: 12,
-              },
-            },
-          }}
-        >
-          <Scrollbar>
-            <Box
-              component="form"
-              sx={{
-                width: "100%",
-                borderWidth: 4,
-                backgroundColor: "black",
-                borderRadius: 4,
-              }}
-              autoComplete="on"
-            >
-              <Stack alignItems={"flex-end"} justifyItems={"right"}>
-                <IconButton
-                  size="large"
-                  color="inherit"
-                  onClick={() => {
-                    setViewClubInfoPopUp(!true);
-                  }}
-                >
-                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
-                </IconButton>
-              </Stack>
-            </Box>
-          </Scrollbar>
-        </Popover>
-      </>
+  const getIndEventTableConfig = async (eventData) => {
+    console.log(
+      "selectedClubData[0]._id,EventData[0]._id====>",
+      selectedClubData?._id,
+      eventData?._id
     );
-  };
+    const eventAllConfigs = await getEventConfigsData(
+      selectedClubData?._id,
+      eventData?._id
+    );
 
+    console.log("eventAllConfigs===>", eventAllConfigs);
+    if (eventAllConfigs.status == true) {
+      settableConfigData(eventAllConfigs.eventData.tableConfigForEvent);
+      setshowAllConfigDataPopUp(true);
+    }
+  };
   //TABLE CONFIGURATION
-  const addTableConfiguration = () => {
+  const addTableConfiguration = async () => {
     console.log("selectedClubData===>", selectedClubData._id);
     console.log("selectedEventData====>", selectedEventData._id);
     let obj = {
@@ -447,13 +407,33 @@ export default function EventDashboard() {
       eventId: selectedEventData._id,
       tableMapId: tmapleIDTC,
     };
-
+    const tcAdd = await createTableConfig(obj);
+    console.log("tcAdd", tcAdd);
     // ADD TABLE CONFIGURATION
     // PATCH EVENT ADD
     // GET EVENT NEW DETAILS
 
     console.log("obj===>", obj);
   };
+
+  //UPDATE TABLE CONFIGURATION
+  const updateTableConfiguration = async () => {
+    let obj = {
+      type: typeTC,
+      minPrice: minPriceTC,
+      recommendedCapacity: recomCapacityTC,
+      clubId: selectedClubData._id,
+      eventId: selectedEventData._id,
+      tableMapId: tmapleIDTC,
+    };
+    // ADD TABLE CONFIGURATION
+    // PATCH EVENT ADD
+    // GET EVENT NEW DETAILS
+
+    console.log("obj===>", obj);
+  };
+
+  // PAGES HANDLE
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -518,6 +498,10 @@ export default function EventDashboard() {
             <Box width="50%" textAlign="right">
               <Button
                 onClick={() => {
+                  seteditEvent(false);
+                  clearAddPopUpStates();
+                  seteditEventImage(true);
+
                   setEventClubPopUp(true);
                 }}
                 style={{
@@ -635,28 +619,9 @@ export default function EventDashboard() {
                                 key={_id}
                                 tabIndex={-1}
                               >
-                                <TableCell align="right">
-                                  {/* <Stack flexDirection={"row"}>
-                                    <IconButton
-                                      style={{
-                                        background: "black",
-                                      }}
-                                      size="large"
-                                      onClick={() => {
-                                        setselectedClubData(item);
-                                        setViewClubInfoPopUp(true);
-                                      }}
-                                    >
-                                      <Iconify
-                                        color={"#E4D0B5"}
-                                        icon={"ic:sharp-remove-red-eye"}
-                                      />
-                                    </IconButton>
-                                  </Stack> */}
-                                </TableCell>
                                 <TableCell align="left">
                                   <Typography sx={{ color: "black" }}>
-                                    {isTableConfigAdded === false ? (
+                                    {
                                       <>
                                         <IconButton
                                           style={{
@@ -667,18 +632,31 @@ export default function EventDashboard() {
                                           onClick={() => {
                                             console.log("icons pressed ===?>");
                                             setselectedEventData(item);
-                                            setaddTableConfigPopup(true);
+                                            // IF TC = FALSE : DIRECT TC ADD
+                                            if (isTableConfigAdded === false) {
+                                              setaddTableConfigPopup(true);
+                                            }
+                                            // ELSE IF TRUE : TC.LENGTH === 1 - DIRECT TC UPDATE
+                                            else if (
+                                              isTableConfigAdded != false
+                                            ) {
+                                              getIndEventTableConfig(item);
+                                              //GET TC DATA
+                                            }
+                                            // ELSE IF : TC.LENGTH > 1 - MID POP-UP FOR TC : GET TC ARRAY : UPDATE & DELETE
                                           }}
                                         >
                                           <Iconify
                                             color={"#E4D0B5"}
-                                            icon="eva:plus-fill"
+                                            icon={
+                                              isTableConfigAdded === false
+                                                ? "eva:plus-fill"
+                                                : "material-symbols:edit"
+                                            }
                                           />
                                         </IconButton>
                                       </>
-                                    ) : (
-                                      "true"
-                                    )}
+                                    }
                                   </Typography>
                                 </TableCell>
                                 <TableCell
@@ -1146,7 +1124,8 @@ export default function EventDashboard() {
                   fontWeight: "bold",
                 }}
               >
-                Add Table Configuration
+                {editTableConfigCheck != false ? "Update" : "Add"} Table
+                Configuration
               </Typography>
               <Container sx={{ width: "100%" }}>
                 <Stack flexDirection={"row"}>
@@ -1256,8 +1235,11 @@ export default function EventDashboard() {
                 >
                   <Button
                     onClick={() => {
-                      addTableConfiguration();
-                      //setEventClubPopUp(true);
+                      {
+                        editTableConfigCheck != false
+                          ? updateTableConfiguration()
+                          : addTableConfiguration();
+                      }
                     }}
                     // variant="contained"
                     style={{
@@ -1271,10 +1253,111 @@ export default function EventDashboard() {
                       width: "100%",
                     }}
                   >
-                    Add Event
+                    {editTableConfigCheck != false ? "Update" : "Add"}{" "}
+                    Configuration
                   </Button>
                 </Box>
               </Container>
+            </Box>
+          </Scrollbar>
+        </Popover>
+
+        <Popover
+          open={showAllConfigDataPopUp}
+          anchorEl={open}
+          onClose={() => {
+            setshowAllConfigDataPopUp(!true);
+          }}
+          anchorOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          PaperProps={{
+            sx: {
+              p: 1,
+              width: "90%",
+              hieght: "100%",
+              borderColor: "#E4D0B5",
+              // backgroundColor: '#E4D0B5',
+              borderWidth: 1,
+
+              "& .MuiMenuItem-root": {
+                typography: "body2",
+                // borderRadius: 1,
+                alignItems: "center",
+                justifyContent: "center",
+                width: "80%",
+                borderColor: "#E4D0B5",
+                borderWidth: 12,
+              },
+            },
+          }}
+        >
+          <Scrollbar>
+            <Box
+              component="form"
+              sx={{
+                width: "100%",
+                borderWidth: 2,
+                backgroundColor: "black",
+                borderRadius: 4,
+                height: 500,
+              }}
+              autoComplete="on"
+            >
+              <Box
+                component="form"
+                sx={{
+                  width: "100%",
+                  borderWidth: 2,
+                  backgroundColor: "black",
+                  borderRadius: 4,
+                }}
+                autoComplete="on"
+              >
+                <Stack alignItems={"flex-end"} justifyItems={"right"}>
+                  <IconButton
+                    size="large"
+                    color="inherit"
+                    onClick={() => {
+                      setshowAllConfigDataPopUp(false);
+                    }}
+                  >
+                    <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                  </IconButton>
+                </Stack>
+                <Stack justifyContent={'center'}>
+                    <Typography
+                      sx={{
+                        color: palette.primary.gold,
+                        textAlign: "center",
+                        fontSize: 20,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      All Table Configuration
+                    </Typography>
+                
+                    <Button
+                      onClick={() => {
+                        setaddTableConfigPopup(true);
+                      }}
+                      style={{
+                        backgroundColor: "#E4D0B5",
+                        color: "black",
+                        borderRadius: 10,
+                      }}
+                      variant="Outlined"
+                      startIcon={<Iconify icon="eva:plus-fill" />}
+                    >
+                      Add Table Config
+                    </Button>
+                </Stack>
+              </Box>
             </Box>
           </Scrollbar>
         </Popover>
