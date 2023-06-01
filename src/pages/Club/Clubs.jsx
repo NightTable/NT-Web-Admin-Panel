@@ -61,6 +61,7 @@ import ViewClubInfo from "./ViewClubInfo";
 
 //LOCAL STORAGE
 import { LocalStorageKey } from "src/utils/localStorage/keys";
+import { getProfileData } from "src/services/representative";
 
 //MAIN FUNCTION
 export default function ClubDashboard() {
@@ -213,8 +214,13 @@ export default function ClubDashboard() {
   };
 
   const getClubData = async (representativeId) => {
-    const data = await getClubs();
-    setclubs_data(data);
+    // const data = await getClubs(representativeId);
+    // console.log("getClubs:data=====>",data);
+    // setclubs_data(data)
+    const clubsdata = await getProfileData(representativeId)
+    clubsdata.clubPrivileges != undefined ? clubsdata.clubPrivileges : []
+    console.log("data=====>",clubsdata.clubPrivileges);
+    setclubs_data(clubsdata.clubPrivileges);
     const countriesData = await getCountries();
     let arr = [];
     countriesData.forEach((element) => {
@@ -664,9 +670,9 @@ export default function ClubDashboard() {
                         page * rowsPerPage + rowsPerPage
                       )
                       .map((item, index) => {
-                        //   console.log("item===>", item);
-                        const { _id, name, website, isPublished, phoneNumber } =
-                          item;
+                         console.log("item===>", item);
+                        {/* const { _id, name, website, isPublished, phoneNumber } =
+                          item; */}
                         return (
                           <>
                             <TableRow
@@ -675,7 +681,7 @@ export default function ClubDashboard() {
                               }}
                               bgcolor={"#E4D0B5"}
                               // hover
-                              key={_id}
+                              key={item?.club?._id}
                               tabIndex={-1}
                             >
                               <TableCell align="right">
@@ -705,22 +711,17 @@ export default function ClubDashboard() {
                                 >
                                   {index + 1}
                                   {" )"}{" "}
-                                  <a href={website} rel="noreferrer">
-                                    {name}
+                                  <a href={item?.club?.website} rel="noreferrer">
+                                    {item?.club?.name}
                                   </a>
                                 </Typography>
                               </TableCell>
                               <TableCell align="left">
                                 <Typography sx={{ color: "black" }}>
-                                  {phoneNumber}
+                                  {item?.club?.phoneNumber}
                                 </Typography>
                               </TableCell>
 
-                              {/* <TableCell align="left">
-                                <Typography sx={{ color: "black" }}>
-                                  
-                                </Typography>
-                              </TableCell> */}
                               <TableCell align="left">
                                 <IconButton
                                   size="large"
@@ -784,12 +785,12 @@ export default function ClubDashboard() {
                                   style={{
                                     color: "black",
                                   }}
-                                  checked={isPublished === true ? true : false}
+                                  checked={item?.club?.isPublished === true ? true : false}
                                   onChange={() => {
                                     if (item?.photos >= 3) {
                                       handleToggleSwitch(
                                         item,
-                                        isPublished === true ? true : false
+                                        item?.club?.isPublished === true ? true : false
                                       );
                                     } else {
                                       alert(
