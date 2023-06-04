@@ -205,13 +205,16 @@ export default function ClubDashboard() {
   const loadData = async () => {
     const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
     const UserName = localStorage.getItem(LocalStorageKey.USER_DATA);
-    let fullName =
-      UserName != undefined ? UserName.firstName + UserName.lastName : "USER";
-    setuserName(fullName);
-    if (representativeId === null) {
+
+    if (representativeId === null && UserName === null) {
       navigate("/");
     } else {
       getClubData(JSON.parse(representativeId));
+
+      let UName = JSON.parse(UserName);
+      let fullName =
+        UName?.firstName?.toUpperCase() + " " + UName?.lastName?.toUpperCase();
+      setuserName(fullName);
     }
   };
 
@@ -623,8 +626,14 @@ export default function ClubDashboard() {
       </Helmet>
 
       <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ margin: 3, color: "#E4D0B5" }}>
-          Hi, Welcome back {userName}
+        <Typography variant="h6" sx={{ marginLeft: 2, color: "#E4D0B5" }}>
+          Hi, Welcome back
+        </Typography>
+        <Typography
+          variant="h4"
+          sx={{ marginLeft: 2, marginBottom: 3, color: "#E4D0B5" }}
+        >
+          {userName}
         </Typography>
         <Container>
           <Stack
