@@ -19,32 +19,28 @@ export const getClubs = async () => {
   });
 };
 
-export const addClubtoServer = async (obj) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      var config = {
-        method: "post",
-        url: `${process.env.REACT_APP_BASE_URL}clubs/createClub`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: obj,
-      };
-      // console.log("config====>", config);
+export const getClubDetails = async (club_id) => {
+  var config = {
+    method: "get",
+    url: `${process.env.REACT_APP_BASE_URL}clubs/club/${club_id}`,
+    headers: {},
+  };
 
-      axios(config)
-        .then(function (response) {
-          // console.log(JSON.stringify(response.data));
-          resolve(response.data);
-        })
-        .catch(function (error) {
-          console.log("error", error);
-          return error;
-        });
-    } catch (error) {
-      return error;
-    }
-  });
+  const data = await axios(config);
+  return data;
+};
+export const addClubtoServer = async (obj) => {
+  var config = {
+    method: "post",
+    url: `${process.env.REACT_APP_BASE_URL}clubs/createClub`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: obj,
+  };
+
+  const apiCall = await axios(config);
+  return apiCall?.data;
 };
 
 export const clubUpdate = async (obj, clubId) => {
@@ -62,7 +58,6 @@ export const clubUpdate = async (obj, clubId) => {
 
       axios(config)
         .then(function (response) {
-
           resolve(response);
         })
         .catch(function (error) {
@@ -98,5 +93,3 @@ export const deleteClub = async (obj, clubId) => {
     return error;
   }
 };
-
-

@@ -49,6 +49,7 @@ import {
   addClubtoServer,
   clubUpdate,
   deleteClub,
+  getClubDetails,
 } from "../../services/club";
 import { AddImage } from "../../services/upload";
 import {
@@ -181,8 +182,6 @@ export default function ClubDashboard() {
           stateCode: stateCode,
           countryCode: countryCode,
         };
-        console.log("obj===>", obj);
-
         const citiesData = await citiesOfStates(obj);
         let arr = [];
         citiesData.forEach((element) => {
@@ -201,10 +200,14 @@ export default function ClubDashboard() {
   }, [stateCode]);
   //getcountries
 
+  const [userName, setuserName] = useState("");
   // get the clubs
   const loadData = async () => {
     const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
-
+    const UserName = localStorage.getItem(LocalStorageKey.USER_DATA);
+    let fullName =
+      UserName != undefined ? UserName.firstName + UserName.lastName : "USER";
+    setuserName(fullName);
     if (representativeId === null) {
       navigate("/");
     } else {
@@ -257,10 +260,12 @@ export default function ClubDashboard() {
       lineItems: arr,
     };
 
+    console.log("obj=====>", obj);
+
     const data = await addClubtoServer(obj);
+    console.log("data?.status====>", data?.status);
     if (data?.status === true) {
       alert("Club Added");
-
       //update the club array
       const updateClubArr = [...clubs_data, data.data];
       setclubs_data(updateClubArr);
@@ -268,7 +273,7 @@ export default function ClubDashboard() {
       resetStates();
       setaddClubPopUp(false);
     } else {
-      alert("ERROR IN ADDING CLUB ");
+      alert(data?.message);
     }
   };
 
@@ -419,8 +424,12 @@ export default function ClubDashboard() {
                     setimageLoader(true);
                     if (clubImg.status === true) {
                       let newArr = [];
+
+                      console.log("selectedClubData====>", selectedClubData);
                       //UPDATE PATCH THE IMAGES
-                      newArr = [...clubImg?.data];
+                      newArr = [...clubImg?.data, ...selectedClubData.photos];
+
+                      console.log("UPDATE CLUB:NEW -IMAGE ARRAY :", newArr);
                       let obj = {
                         photos: newArr,
                       };
@@ -429,7 +438,15 @@ export default function ClubDashboard() {
                         selectedClubData._id
                       );
                       if (updateClubtoActive.data.status === true) {
-                        getClubs();
+                        //UPDATE THE CLUB DATA LOCALLY
+
+                        const filteredData = clubs_data.findIndex((item) => {
+                          return (item._id = selectedClubData._id);
+                        });
+
+                        clubs_data[filteredData].photos = newArr;
+                        setclubs_data(clubs_data);
+                        console.log("club:data ====>", clubs_data);
                         //CLOSE THE LOADER
                         setimageLoader(false);
                         setImageDialogPopUp(!true);
@@ -542,7 +559,7 @@ export default function ClubDashboard() {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
-
+  //TO MAKE CLUB ACTIVE AND NO-ACTIVE
   const handleToggleSwitch = async (item, toggleBtn) => {
     // setswitchToggle(!switchToggle);
     // console.log("item===>", item);
@@ -551,13 +568,14 @@ export default function ClubDashboard() {
     };
 
     const updateClubtoActive = await clubUpdate(obj, item._id);
-    console.log("updateClubtoActive==>", updateClubtoActive);
     let index = clubs_data.findIndex((e) => e._id == item._id);
     clubs_data[index].isPublished = !toggleBtn;
+    setclubs_data(clubs_data);
 
     if (updateClubtoActive.data.status === true) {
       setswitchToggle(!switchToggle);
-      getClubData();
+      alert("Club Status Updated!");
+      // getClubData();
     } else {
       alert("TECHNICAL ERROR ! CONTACT ADMIN ");
     }
@@ -597,6 +615,7 @@ export default function ClubDashboard() {
 
   const isNotFound = !filteredData.length && !!filterName;
 
+  console.log("filteredData===>", filteredData);
   return (
     <>
       <Helmet>
@@ -605,7 +624,7 @@ export default function ClubDashboard() {
 
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ margin: 3, color: "#E4D0B5" }}>
-          Hi, Welcome back {process.env.REACT_APP_BASE_URL}
+          Hi, Welcome back {userName}
         </Typography>
         <Container>
           <Stack
@@ -665,8 +684,14 @@ export default function ClubDashboard() {
                       )
                       .map((item, index) => {
                         //   console.log("item===>", item);
-                        const { _id, name, website, isPublished, phoneNumber } =
-                          item;
+                        const {
+                          _id,
+                          name,
+                          website,
+                          isPublished,
+                          phoneNumber,
+                          photos,
+                        } = item;
                         return (
                           <>
                             <TableRow
@@ -683,9 +708,16 @@ export default function ClubDashboard() {
                                   <IconButton
                                     size="large"
                                     color="inherit"
-                                    onClick={() => {
+                                    onClick={async () => {
+                                      //  const data = await getClubDetails(_id);
+                                      //   if (data.data) {
+                                      //  console.log("data===>", data.data);
+
+                                      // setselectedClubData(data.data.data);
+                                      console.log("item=>", item);
                                       setselectedClubData(item);
                                       setViewClubInfoPopUp(true);
+                                      //  }
                                     }}
                                   >
                                     <Iconify icon={"ic:sharp-remove-red-eye"} />
@@ -716,16 +748,12 @@ export default function ClubDashboard() {
                                 </Typography>
                               </TableCell>
 
-                              {/* <TableCell align="left">
-                                <Typography sx={{ color: "black" }}>
-                                  
-                                </Typography>
-                              </TableCell> */}
                               <TableCell align="left">
                                 <IconButton
                                   size="large"
                                   color="inherit"
                                   onClick={() => {
+                                    setimageLoader(false);
                                     setselectedClubData(item);
                                     setImageDialogPopUp(true);
                                   }}
@@ -785,8 +813,10 @@ export default function ClubDashboard() {
                                     color: "black",
                                   }}
                                   checked={isPublished === true ? true : false}
-                                  onChange={() => {
-                                    if (item?.photos >= 3) {
+                                  onChange={async () => {
+                                    //CHECKING THE IMAGES
+                                    console.log("photos===>", photos?.length);
+                                    if (photos?.length >= 3) {
                                       handleToggleSwitch(
                                         item,
                                         isPublished === true ? true : false
@@ -834,6 +864,31 @@ export default function ClubDashboard() {
                               <strong>&quot;{filterName}&quot;</strong>.
                               <br /> Try checking for typos or using complete
                               words.
+                            </Typography>
+                          </Paper>
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
+
+                  {filteredData.length === 0 && (
+                    <TableBody
+                      style={{
+                        backgroundColor: "#E4D0B5",
+                      }}
+                    >
+                      <TableRow>
+                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          <Paper
+                            sx={{
+                              textAlign: "center",
+                            }}
+                            style={{
+                              backgroundColor: "#E4D0B5",
+                            }}
+                          >
+                            <Typography variant="h6" paragraph>
+                              Not Data found ! Please add club
                             </Typography>
                           </Paper>
                         </TableCell>

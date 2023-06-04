@@ -10,7 +10,7 @@ export default function Dropdown(props) {
   // console.log("props====>",props.data)
   return (
     <Autocomplete
-    autoComplete="no-autocomplete-random-string"
+    autoComplete={true}
       fullWidth
       sx={{ minWidth: 100 }}
       options={props.data}

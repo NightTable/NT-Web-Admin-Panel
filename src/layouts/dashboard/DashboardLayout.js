@@ -7,6 +7,7 @@ import Header from "./header";
 import Nav from "./nav";
 
 // ----------------------------------------------------------------------
+import { useNavigate } from "react-router-dom";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
@@ -34,14 +35,13 @@ const Main = styled("div")(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function DashboardLayout() {
+
   const [open, setOpen] = useState(false);
 
   return (
     <StyledRoot>
       <Header onOpenNav={() => setOpen(true)} />
-
       <Nav openNav={open} onCloseNav={() => setOpen(false)} />
-
       <Main>
         <Outlet />
       </Main>

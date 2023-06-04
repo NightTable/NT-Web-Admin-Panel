@@ -17,7 +17,6 @@ import {
   
   
   const AddPosterImage = (data) => {
-    console.log(data.imageLoader, "IN THE ADD HOUSE IMAGE --->");
     const [alert, setAlert] = useState({
       open: false,
       vertical: "top",
