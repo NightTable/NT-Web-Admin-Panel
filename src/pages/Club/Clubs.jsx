@@ -70,6 +70,8 @@ export default function ClubDashboard() {
   //IMAGE POP-UP LOADER
   const [imageLoader, setimageLoader] = useState(false);
   //States
+  //useername
+  const [userName, setuserName] = useState("");
 
   const [clubName, setclubName] = useState("");
   const [addressLine, setaddressLine] = useState("");
@@ -170,13 +172,6 @@ export default function ClubDashboard() {
         });
         setstateData(arr);
       }
-    }
-
-    fetchData();
-  }, [countryCode]);
-
-  useEffect(() => {
-    async function fetchData() {
       if (stateCode != "") {
         let obj = {
           stateCode: stateCode,
@@ -197,10 +192,17 @@ export default function ClubDashboard() {
     }
 
     fetchData();
-  }, [stateCode]);
+  }, [countryCode, stateCode]);
+
+  // useEffect(() => {
+  //   async function fetchData() {
+
+  //   }
+
+  //   fetchData();
+  // }, [stateCode]);
   //getcountries
 
-  const [userName, setuserName] = useState("");
   // get the clubs
   const loadData = async () => {
     const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
@@ -366,34 +368,46 @@ export default function ClubDashboard() {
             setImageDialogPopUp(!true);
           }}
           anchorOrigin={{
-            vertical: "center",
+            //  vertical: "center",
             horizontal: "center",
           }}
-          transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
-          }}
+          transformOrigin={
+            {
+              //  vertical: "center",
+              // horizontal: "center",
+            }
+          }
           PaperProps={{
             sx: {
               p: 1,
-              width: "80%",
-              hieght: "100%",
+              width: "100%",
+              height: "100%",
               borderColor: "#E4D0B5",
               // backgroundColor: '#E4D0B5',
-              borderWidth: 1,
 
               "& .MuiMenuItem-root": {
                 typography: "body2",
                 // borderRadius: 1,
                 alignItems: "center",
                 justifyContent: "center",
-                width: "80%",
+                width: "100%",
+                height: "100%",
                 borderColor: "#E4D0B5",
-                borderWidth: 12,
               },
             },
           }}
         >
+          <Stack alignItems={"flex-end"} justifyItems={"right"}>
+            <IconButton
+              size="large"
+              color="inherit"
+              onClick={() => {
+                setImageDialogPopUp(!true);
+              }}
+            >
+              <Iconify color={"black"} icon={"maki:cross"} />
+            </IconButton>
+          </Stack>
           <Scrollbar>
             <Box
               component="form"
@@ -403,62 +417,71 @@ export default function ClubDashboard() {
                 backgroundColor: "black",
                 borderRadius: 4,
               }}
-              autoComplete="on"
+              // autoComplete="on"
             >
-              <Stack alignItems={"flex-end"} justifyItems={"right"}>
-                <IconButton
-                  size="large"
-                  color="inherit"
-                  onClick={() => {
-                    setImageDialogPopUp(!true);
-                  }}
-                >
-                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
-                </IconButton>
-              </Stack>
-              <AddPosterImage
-                heading={"Add Club Image"}
-                filesLimit={10}
-                imageLoader={imageLoader}
-                data={selectedClubData}
-                onSubmit={async (Data) => {
-                  if (Data) {
-                    const clubImg = await AddImage(Data);
-                    setimageLoader(true);
-                    if (clubImg.status === true) {
-                      let newArr = [];
+              <Box
+                sx={{
+                  width: "100%",
+                  // backgroundColor: "yellow",
+                  height: "50%",
+                }}
+              >
+                <AddPosterImage
+                  heading={"Add Club Image"}
+                  filesLimit={10}
+                  imageLoader={imageLoader}
+                  data={selectedClubData}
+                  onSubmit={async (Data) => {
+                    if (Data) {
+                      const clubImg = await AddImage(Data);
+                      setimageLoader(true);
+                      if (clubImg.status === true) {
+                        let newArr = [];
 
-                      console.log("selectedClubData====>", selectedClubData);
-                      //UPDATE PATCH THE IMAGES
-                      newArr = [...clubImg?.data, ...selectedClubData.photos];
+                        console.log("selectedClubData====>", selectedClubData);
+                        //UPDATE PATCH THE IMAGES
+                        newArr = [...clubImg?.data, ...selectedClubData.photos];
 
-                      console.log("UPDATE CLUB:NEW -IMAGE ARRAY :", newArr);
-                      let obj = {
-                        photos: newArr,
-                      };
-                      const updateClubtoActive = await clubUpdate(
-                        obj,
-                        selectedClubData._id
-                      );
-                      if (updateClubtoActive.data.status === true) {
-                        //UPDATE THE CLUB DATA LOCALLY
+                        console.log("UPDATE CLUB:NEW -IMAGE ARRAY :", newArr);
+                        let obj = {
+                          photos: newArr,
+                        };
+                        const updateClubtoActive = await clubUpdate(
+                          obj,
+                          selectedClubData._id
+                        );
+                        if (updateClubtoActive.data.status === true) {
+                          //UPDATE THE CLUB DATA LOCALLY
 
-                        const filteredData = clubs_data.findIndex((item) => {
-                          return (item._id = selectedClubData._id);
-                        });
+                          const filteredData = clubs_data.findIndex((item) => {
+                            return item._id == selectedClubData._id
+                          });
 
-                        clubs_data[filteredData].photos = newArr;
-                        setclubs_data(clubs_data);
-                        console.log("club:data ====>", clubs_data);
-                        //CLOSE THE LOADER
-                        setimageLoader(false);
-                        setImageDialogPopUp(!true);
-                        alert("Image uploaded Successfully !");
+                          console.log("filteredData===>", filteredData);
+
+                          clubs_data[filteredData].photos = newArr;
+                          console.log(
+                            "clubs_data[filteredData].photos==>",
+                            clubs_data[filteredData].photos
+                          );
+                          setclubs_data(clubs_data);
+                          console.log("club:data ====>", clubs_data);
+                          //CLOSE THE LOADER
+                          setimageLoader(false);
+                          setImageDialogPopUp(!true);
+                          alert("Image uploaded Successfully !");
+                        }
                       }
                     }
-                  }
+                  }}
+                />
+              </Box>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "50%",
                 }}
-              />
+              ></Box>
             </Box>
           </Scrollbar>
         </Popover>
@@ -625,304 +648,297 @@ export default function ClubDashboard() {
         <title> Night Table : Admin Dashboard </title>
       </Helmet>
 
-      <Container maxWidth="xl">
-        <Typography variant="h6" sx={{ marginLeft: 2, color: "#E4D0B5" }}>
+      <Container sx={{ height: "100%" }}>
+        <Typography variant="h6" sx={{ color: "#E4D0B5" }}>
           Hi, Welcome back
         </Typography>
-        <Typography
-          variant="h4"
-          sx={{ marginLeft: 2, marginBottom: 3, color: "#E4D0B5" }}
-        >
+        <Typography variant="h4" sx={{ marginBottom: 2, color: "#E4D0B5" }}>
           {userName}
         </Typography>
-        <Container>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={5}
-          >
-            <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
-              Clubs
-            </Typography>
-            <Button
-              onClick={() => {
-                setaddClubPopUp(true);
-              }}
-              style={{
-                backgroundColor: "#E4D0B5",
-                color: "black",
-                padding: 8,
-                borderRadius: 10,
-              }}
-              variant="Outlined"
-              // sx={{ backgroundColor: "#E4D0B5", color: "black" }}
-              startIcon={<Iconify icon="eva:plus-fill" />}
-            >
-              Add Club
-            </Button>
-          </Stack>
-
-          <Container
-            style={{
-              borderWidth: 1,
-              backgroundColor: "#E4D0B5",
-              padding: 1,
-              borderRadius: 4,
+        <Stack
+          sx={{
+            justifyContent: "space-between",
+            flexDirection: "row",
+            marginBottom: 3,
+          }}
+          alignItems="center"
+        >
+          <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
+            Clubs
+          </Typography>
+          <Button
+            onClick={() => {
+              setaddClubPopUp(true);
             }}
+            style={{
+              backgroundColor: "#E4D0B5",
+              color: "black",
+              padding: 8,
+              borderRadius: 10,
+            }}
+            variant="Outlined"
+            startIcon={<Iconify icon="eva:plus-fill" />}
           >
-            <UserListToolbar
-              numSelected={selected.length}
-              filterName={filterName}
-              onFilterName={handleFilterByName}
-            />
+            Add Club
+          </Button>
+        </Stack>
+        <Stack>
+          <UserListToolbar
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+          />
 
-            <Scrollbar>
-              <TableContainer>
-                <Table>
-                  <UserListHead
-                    headLabel={DASHBOARD_TABLE_HEAD}
-                    rowCount={clubs_data.length}
-                    numSelected={selected.length}
-                  />
-                  <TableBody>
-                    {filteredData
-                      ?.slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((item, index) => {
-                        //   console.log("item===>", item);
-                        const {
-                          _id,
-                          name,
-                          website,
-                          isPublished,
-                          phoneNumber,
-                          photos,
-                        } = item;
-                        return (
-                          <>
-                            <TableRow
-                              style={{
-                                margin: 20,
-                              }}
-                              bgcolor={"#E4D0B5"}
-                              // hover
-                              key={_id}
-                              tabIndex={-1}
-                            >
-                              <TableCell align="right">
-                                <Stack flexDirection={"row"}>
-                                  <IconButton
-                                    size="large"
-                                    color="inherit"
-                                    onClick={async () => {
-                                      //  const data = await getClubDetails(_id);
-                                      //   if (data.data) {
-                                      //  console.log("data===>", data.data);
-
-                                      // setselectedClubData(data.data.data);
-                                      console.log("item=>", item);
-                                      setselectedClubData(item);
-                                      setViewClubInfoPopUp(true);
-                                      //  }
-                                    }}
-                                  >
-                                    <Iconify icon={"ic:sharp-remove-red-eye"} />
-                                  </IconButton>
-                                </Stack>
-                              </TableCell>
-                              <TableCell
-                                bgcolor={"#E4D0B5"}
-                                component="th"
-                                scope="row"
-                                padding="none"
-                              >
-                                <Typography
-                                  sx={{ color: "black", px: 2 }}
-                                  variant="subtitle2"
-                                  noWrap
-                                >
-                                  {index + 1}
-                                  {" )"}{" "}
-                                  <a href={website} rel="noreferrer">
-                                    {name}
-                                  </a>
-                                </Typography>
-                              </TableCell>
-                              <TableCell align="left">
-                                <Typography sx={{ color: "black" }}>
-                                  {phoneNumber}
-                                </Typography>
-                              </TableCell>
-
-                              <TableCell align="left">
-                                <IconButton
-                                  size="large"
-                                  color="inherit"
-                                  onClick={() => {
-                                    setimageLoader(false);
-                                    setselectedClubData(item);
-                                    setImageDialogPopUp(true);
-                                  }}
-                                >
-                                  <Iconify icon={"material-symbols:image"} />
-                                </IconButton>
-                              </TableCell>
-                              <TableCell align="right">
-                                <Stack flexDirection={"row"}>
-                                  <IconButton
-                                    size="large"
-                                    color="inherit"
-                                    onClick={() => {
-                                      setEditClub(true);
-                                      setselectedClubData(item);
-                                      setaddClubPopUp(true);
-                                      let new_obj = item.lineItems.reduce(
-                                        (obj, item) => {
-                                          obj[item.name] = item.percentage;
-                                          return obj;
-                                        },
-                                        {}
-                                      );
-                                      setKeyValuePairs(new_obj);
-                                      setclubName(item.name);
-                                      setphoneNumber(item.phoneNumber);
-                                      setWebsiteUrl(item.website);
-                                      setaddressLine(item.Address.Address);
-                                      setstripeAccountNo(
-                                        item.stripeAccountNumber
-                                      );
-                                      setinstaHandle(item.instaHandle);
-
-                                      //LEFT WITH LINE ITEMS & ADDRESS TO UPDATE
-                                      // alert("EDIT alert");
-                                    }}
-                                  >
-                                    <Iconify icon={"material-symbols:edit"} />
-                                  </IconButton>
-                                </Stack>
-                              </TableCell>
-                              <TableCell align="left">
-                                <IconButton
-                                  size="large"
-                                  color="inherit"
-                                  onClick={() => {
-                                    setselectedClubData(item);
-                                    setdeleteDialogOpen(true);
-                                  }}
-                                >
-                                  <Iconify icon={"ic:baseline-delete"} />
-                                </IconButton>
-                              </TableCell>
-                              <TableCell align="left">
-                                <Switch
-                                  style={{
-                                    color: "black",
-                                  }}
-                                  checked={isPublished === true ? true : false}
-                                  onChange={async () => {
-                                    //CHECKING THE IMAGES
-                                    console.log("photos===>", photos?.length);
-                                    if (photos?.length >= 3) {
-                                      handleToggleSwitch(
-                                        item,
-                                        isPublished === true ? true : false
-                                      );
-                                    } else {
-                                      alert(
-                                        "Please Add at least 3 Images to make club Active!"
-                                      );
-                                    }
-                                  }}
-                                />
-                              </TableCell>
-                            </TableRow>
-                          </>
-                        );
-                      })}
-                    {emptyRows > 0 && (
-                      <TableRow style={{ height: 53 * emptyRows }}>
-                        <TableCell colSpan={6} />
-                      </TableRow>
-                    )}
-                  </TableBody>
-                  {isNotFound && (
-                    <TableBody
-                      style={{
-                        backgroundColor: "#E4D0B5",
-                      }}
-                    >
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <Paper
-                            sx={{
-                              textAlign: "center",
-                            }}
-                            style={{
-                              backgroundColor: "#E4D0B5",
-                            }}
-                          >
-                            <Typography variant="h6" paragraph>
-                              Not found
-                            </Typography>
-
-                            <Typography variant="body2">
-                              No results found for &nbsp;
-                              <strong>&quot;{filterName}&quot;</strong>.
-                              <br /> Try checking for typos or using complete
-                              words.
-                            </Typography>
-                          </Paper>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
-
-                  {filteredData.length === 0 && (
-                    <TableBody
-                      style={{
-                        backgroundColor: "#E4D0B5",
-                      }}
-                    >
-                      <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                          <Paper
-                            sx={{
-                              textAlign: "center",
-                            }}
-                            style={{
-                              backgroundColor: "#E4D0B5",
-                            }}
-                          >
-                            <Typography variant="h6" paragraph>
-                              Not Data found ! Please add club
-                            </Typography>
-                          </Paper>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  )}
-                </Table>
-              </TableContainer>
-            </Scrollbar>
-
-            <TablePagination
+          <Scrollbar>
+            <TableContainer
               style={{
+                height: "100%",
                 backgroundColor: "black",
-                color: "white",
+                height: 400,
               }}
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={clubs_data.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Container>
-        </Container>
+            >
+              <Table>
+                <UserListHead
+                  headLabel={DASHBOARD_TABLE_HEAD}
+                  rowCount={clubs_data.length}
+                  numSelected={selected.length}
+                />
+                <TableBody>
+                  {filteredData
+                    ?.slice(
+                      page * rowsPerPage,
+                      page * rowsPerPage + rowsPerPage
+                    )
+                    .map((item, index) => {
+                      const {
+                        _id,
+                        name,
+                        website,
+                        isPublished,
+                        phoneNumber,
+                        photos,
+                      } = item;
+                      return (
+                        <>
+                          <TableRow
+                            style={{
+                              margin: 20,
+                            }}
+                            bgcolor={"#E4D0B5"}
+                            // hover
+                            key={_id}
+                            tabIndex={-1}
+                          >
+                            <TableCell align="right">
+                              <Stack flexDirection={"row"}>
+                                <IconButton
+                                  size="large"
+                                  color="inherit"
+                                  onClick={async () => {
+                                    //  const data = await getClubDetails(_id);
+                                    //   if (data.data) {
+                                    //  console.log("data===>", data.data);
+
+                                    // setselectedClubData(data.data.data);
+                                    console.log("item=>", item);
+                                    setselectedClubData(item);
+                                    setViewClubInfoPopUp(true);
+                                    //  }
+                                  }}
+                                >
+                                  <Iconify icon={"ic:sharp-remove-red-eye"} />
+                                </IconButton>
+                              </Stack>
+                            </TableCell>
+                            <TableCell
+                              bgcolor={"#E4D0B5"}
+                              component="th"
+                              scope="row"
+                              padding="none"
+                            >
+                              <Typography
+                                sx={{ color: "black", px: 2 }}
+                                variant="subtitle2"
+                                noWrap
+                              >
+                                {index + 1}
+                                {" )"}{" "}
+                                <a href={website} rel="noreferrer">
+                                  {name}
+                                </a>
+                              </Typography>
+                            </TableCell>
+                            <TableCell align="left">
+                              <Typography sx={{ color: "black" }}>
+                                {phoneNumber}
+                              </Typography>
+                            </TableCell>
+
+                            <TableCell align="left">
+                              <IconButton
+                                size="large"
+                                color="inherit"
+                                onClick={() => {
+                                  setimageLoader(false);
+                                  setselectedClubData(item);
+                                  setImageDialogPopUp(true);
+                                }}
+                              >
+                                <Iconify icon={"material-symbols:image"} />
+                              </IconButton>
+                            </TableCell>
+                            <TableCell align="right">
+                              <Stack flexDirection={"row"}>
+                                <IconButton
+                                  size="large"
+                                  color="inherit"
+                                  onClick={() => {
+                                    setEditClub(true);
+                                    setselectedClubData(item);
+                                    setaddClubPopUp(true);
+                                    let new_obj = item.lineItems.reduce(
+                                      (obj, item) => {
+                                        obj[item.name] = item.percentage;
+                                        return obj;
+                                      },
+                                      {}
+                                    );
+                                    setKeyValuePairs(new_obj);
+                                    setclubName(item.name);
+                                    setphoneNumber(item.phoneNumber);
+                                    setWebsiteUrl(item.website);
+                                    setaddressLine(item.Address.Address);
+                                    setstripeAccountNo(
+                                      item.stripeAccountNumber
+                                    );
+                                    setinstaHandle(item.instaHandle);
+
+                                    //LEFT WITH LINE ITEMS & ADDRESS TO UPDATE
+                                    // alert("EDIT alert");
+                                  }}
+                                >
+                                  <Iconify icon={"material-symbols:edit"} />
+                                </IconButton>
+                              </Stack>
+                            </TableCell>
+                            <TableCell align="left">
+                              <IconButton
+                                size="large"
+                                color="inherit"
+                                onClick={() => {
+                                  setselectedClubData(item);
+                                  setdeleteDialogOpen(true);
+                                }}
+                              >
+                                <Iconify icon={"ic:baseline-delete"} />
+                              </IconButton>
+                            </TableCell>
+                            <TableCell align="left">
+                              <Switch
+                                style={{
+                                  color: "black",
+                                }}
+                                checked={isPublished === true ? true : false}
+                                onChange={async () => {
+                                  //CHECKING THE IMAGES
+                                  console.log("photos===>", photos?.length);
+                                  if (photos?.length >= 3) {
+                                    handleToggleSwitch(
+                                      item,
+                                      isPublished === true ? true : false
+                                    );
+                                  } else {
+                                    alert(
+                                      "Please Add at least 3 Images to make club Active!"
+                                    );
+                                  }
+                                }}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        </>
+                      );
+                    })}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
+                  )}
+                </TableBody>
+                {isNotFound && (
+                  <TableBody
+                    style={{
+                      backgroundColor: "#E4D0B5",
+                    }}
+                  >
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <Paper
+                          sx={{
+                            textAlign: "center",
+                          }}
+                          style={{
+                            backgroundColor: "#E4D0B5",
+                          }}
+                        >
+                          <Typography variant="h6" paragraph>
+                            Not found
+                          </Typography>
+
+                          <Typography variant="body2">
+                            No results found for &nbsp;
+                            <strong>&quot;{filterName}&quot;</strong>.
+                            <br /> Try checking for typos or using complete
+                            words.
+                          </Typography>
+                        </Paper>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
+
+                {filteredData.length === 0 && (
+                  <TableBody
+                    style={{
+                      backgroundColor: "#E4D0B5",
+                    }}
+                  >
+                    <TableRow>
+                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <Paper
+                          sx={{
+                            textAlign: "center",
+                          }}
+                          style={{
+                            backgroundColor: "#E4D0B5",
+                          }}
+                        >
+                          <Typography variant="h6" paragraph>
+                            Not Data found ! Please add club
+                          </Typography>
+                        </Paper>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                )}
+              </Table>
+            </TableContainer>
+          </Scrollbar>
+
+          <TablePagination
+            style={{
+              backgroundColor: "black",
+              color: "white",
+            }}
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={clubs_data.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Stack>
 
         <Popover
           open={addClubPopUp}
