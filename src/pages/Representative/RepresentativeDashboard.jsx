@@ -3,7 +3,7 @@ import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import { useState, useEffect } from "react";
 import { filter } from "lodash";
-import { TextField, Switch } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import "../../css/DasboardCss.css";
 // @mui
 import { useTheme } from "@mui/material/styles";
@@ -32,6 +32,7 @@ import Scrollbar from "../../component/scrollbar";
 import Dropdown from "../../component/Dropdown";
 import { DeleteDialog } from "../../features/DeleteDialog";
 //dialog
+import Switch from "react-switch";
 
 //dropdown
 
@@ -108,6 +109,7 @@ const resetPrivilege = [
     name: "representativePrivileges",
   },
 ];
+
 //MAIN FUNCTION
 export default function RepresentativeDashboard() {
   const theme = useTheme();
@@ -360,10 +362,10 @@ export default function RepresentativeDashboard() {
     });
     //API NEED TO BE CALLED HERE
 
-    console.log(item._id,'JSON.parse(item._id)');
+    console.log(item._id, "JSON.parse(item._id)");
     const data = await deleteRepresentativebyClub(item._id);
     alert("Representative Deleted Successfully!");
-    setdeleteDialogOpen(false)
+    setdeleteDialogOpen(false);
     setrepresentativeData(filteredData);
   };
 
@@ -1063,13 +1065,36 @@ export default function RepresentativeDashboard() {
                         </Box>
                         <Box sx={{ width: "30%", paddingBottom: 2 }}>
                           <Box sx={{ paddingBottom: 2 }}>
-                            <Switch
+                            {/* <Switch
                               style={{
-                                color: "primary",
+                                color: "yellow",
+                                thumb:'red',track:'green',
+                                backgroundClip:'red'
                               }}
+
+                                   classes={{
+
+                                   }}             // style={switchStyle}
+
                               inputProps={{ "aria-label": "controlled" }}
                               checked={item.privilege}
                               onChange={() => handleSwitchChange(item.id)}
+                            />
+                          */}
+                            <Switch
+                              checked={item.privilege}
+                              onChange={() => handleSwitchChange(item.id)}
+                              onColor={'#AA6C39'}
+            onHandleColor={palette.primary.gold}
+            handleDiameter={30}
+            uncheckedIcon={false}
+            checkedIcon={false}
+            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+            height={20}
+            width={48}
+            className="react-switch"
+            id="material-switch"
                             />
                           </Box>
                         </Box>
