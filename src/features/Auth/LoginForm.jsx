@@ -62,8 +62,8 @@ export default function LoginForm() {
       const no = `+${countryCode}${phoneNumber}`;
       const triggerOtp = await loginApi(no);
       console.log("triggerOtp===>", triggerOtp);
-      if (triggerOtp?.status === undefined) {
-        alert("Something went wrong ");
+      if (triggerOtp?.status === false) {
+        alert(triggerOtp?.message);
         setloader(false);
       } else if (triggerOtp?.status === true) {
         setotpField(false);

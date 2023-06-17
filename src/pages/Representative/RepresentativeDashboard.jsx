@@ -631,7 +631,7 @@ export default function RepresentativeDashboard() {
                           firstName,
                           lastName,
                           email,
-                          userName,
+                          username,
                           role,
                           phoneNumber,
                         } = item;
@@ -694,7 +694,7 @@ export default function RepresentativeDashboard() {
                                     color="inherit"
                                     onClick={() => {
                                       seteditRepresentativeBoolean(
-                                        !editRepresentativeBoolean
+                                        true
                                       );
                                       setselectedrepresentativeData(item);
 
@@ -712,7 +712,7 @@ export default function RepresentativeDashboard() {
                                       setPrivilegesData(updatedPrivilegeArr);
                                       setfirstName(firstName);
                                       setlastName(lastName);
-                                      setuserName(userName);
+                                      setuserName(username);
                                       setphoneNumber(phoneNumber);
                                       setemail(email);
                                       setrepresentativeRole(role);
@@ -901,7 +901,7 @@ export default function RepresentativeDashboard() {
                   fontWeight: "bold",
                 }}
               >
-                Add New Representative
+                {editRepresentativeBoolean === true ? "Edit" : "Add"} New Representative
               </Typography>
               <Container sx={{ width: "100%" }}>
                 <Stack flexDirection={"row"}>

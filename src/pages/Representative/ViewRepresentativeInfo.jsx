@@ -2,25 +2,13 @@ import React from "react";
 // @mui
 import { FeildShow } from "src/features/FieldShow";
 // @mui
-import { useTheme } from "@mui/material/styles";
-// @mui
 import Scrollbar from "../../component/scrollbar";
 // @mui
 import {
   Box,
-  Table,
   Stack,
-  Paper,
-  Button,
-  Popover,
-  TableRow,
-  TableBody,
-  TableCell,
   Container,
   Typography,
-  IconButton,
-  TableContainer,
-  TablePagination,
 } from "@mui/material";
 import { TextField } from "@material-ui/core";
 import Switch from "react-switch";
