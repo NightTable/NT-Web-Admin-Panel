@@ -56,6 +56,8 @@ import { REPRESENTATIVE_CONFIG_TABLE_HEAD } from "../../Table_Head/index";
 
 //LOCAL STORAGE
 import { LocalStorageKey } from "src/utils/localStorage/keys";
+import ReactModal from "react-modal";
+import { DyanimcModal } from "src/component/Modal";
 
 //RESET PRIVILEGE DATA FIELDS
 
@@ -534,6 +536,7 @@ export default function RepresentativeDashboard() {
             </Typography>
             <Button
               onClick={() => {
+                resetRepresentataiveData();
                 setaddRepresentativePopUp(true);
               }}
               style={{
@@ -1084,17 +1087,17 @@ export default function RepresentativeDashboard() {
                             <Switch
                               checked={item.privilege}
                               onChange={() => handleSwitchChange(item.id)}
-                              onColor={'#AA6C39'}
-            onHandleColor={palette.primary.gold}
-            handleDiameter={30}
-            uncheckedIcon={false}
-            checkedIcon={false}
-            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-            height={20}
-            width={48}
-            className="react-switch"
-            id="material-switch"
+                              onColor={"#AA6C39"}
+                              onHandleColor={palette.primary.gold}
+                              handleDiameter={30}
+                              uncheckedIcon={false}
+                              checkedIcon={false}
+                              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                              height={20}
+                              width={48}
+                              className="react-switch"
+                              id="material-switch"
                             />
                           </Box>
                         </Box>

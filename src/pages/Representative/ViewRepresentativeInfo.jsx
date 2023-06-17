@@ -22,12 +22,13 @@ import {
   TableContainer,
   TablePagination,
 } from "@mui/material";
-import { TextField, Switch } from "@material-ui/core";
+import { TextField } from "@material-ui/core";
+import Switch from "react-switch";
 
 import palette from "src/theme/palette";
 //main function
 export default function ViewClubInfo(data) {
-  console.log("data", data.data.clubPrivileges[0].privileges);
+  console.log("data", data?.data);
 
   const privilegesCondition = data.data.clubPrivileges[0].privileges;
 
@@ -103,7 +104,8 @@ export default function ViewClubInfo(data) {
               keyName={"Name "}
               value={`${data?.data?.firstName} ${data?.data?.lastName}`}
             />
-
+            <FeildShow keyName={"User Name"} value={data?.data?.username} />
+            <FeildShow keyName={"Email"} value={data?.data?.email} />
             <FeildShow
               keyName={"Phone Number"}
               value={data?.data?.phoneNumber}
@@ -128,13 +130,28 @@ export default function ViewClubInfo(data) {
                     </Box>
                     <Box sx={{ width: "30%", paddingBottom: 2 }}>
                       <Box sx={{ paddingBottom: 2 }}>
-                        <Switch
+                        {/* <Switch
                           style={{
                             color: "primary",
                           }}
                           inputProps={{ "aria-label": "controlled" }}
                           checked={item.privilege}
-                        //  onChange={() => handleSwitchChange(item.id)}
+                          //  onChange={() => handleSwitchChange(item.id)}
+                        /> */}
+
+                        <Switch
+                          checked={item.privilege}
+                          onColor={"#AA6C39"}
+                          onHandleColor={palette.primary.gold}
+                          handleDiameter={30}
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                          activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                          height={20}
+                          width={48}
+                          className="react-switch"
+                          id="material-switch"
                         />
                       </Box>
                     </Box>
