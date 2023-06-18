@@ -195,8 +195,8 @@ export default function EventDashboard() {
       Data.append("files", eventImage[0]);
       //ADD EVENT IMAGE API CALL
       const ImgUpload = await AddImage(Data);
-      // console.log("clubImg====>", ImgUpload);
-      if (ImgUpload.message == "files uploaded") {
+       console.log("ImgUpload====>", ImgUpload);
+      if (ImgUpload?.status == true) {
         let obj = {
           name: EventName,
           picture: ImgUpload.data[0],
@@ -208,7 +208,7 @@ export default function EventDashboard() {
 
         const storeEvent = await addEventtoDb(obj, selectedClubData?._id);
         console.log("storeEvent====>", storeEvent);
-        if (storeEvent.status === true) {
+        if (storeEvent?.data?.status === true) {
           //UPDATE THE MAIN ARRAY
           const updateArray = [storeEvent?.data.data, ...EventData];
           setEventData(updateArray);
@@ -223,9 +223,8 @@ export default function EventDashboard() {
         }
       } else {
         //WHEN IMAGE DOES N'T GET UPLOADED
-        alert("ERROR while creating Events!");
+        alert("ERROR while uploading Event Image!");
       }
-      alert("ERROR while creating Events!");
     } else {
       alert("Please select a Event Image!");
     }
@@ -323,7 +322,7 @@ export default function EventDashboard() {
           }}
           aria-describedby="alert-dialog-slide-description"
         >
-          <DialogTitle>{"Delete the club?"}</DialogTitle>
+          <DialogTitle>{"Delete the Event?"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
               Are you sure want to delete the Event, as you won't be able to
@@ -379,11 +378,11 @@ export default function EventDashboard() {
   //GET TABLE CONFIG
 
   const getIndEventTableConfig = async (eventData) => {
-    console.log(
-      "selectedClubData[0]._id,EventData[0]._id====>",
-      selectedClubData?._id,
-      eventData?._id
-    );
+    // console.log(
+    //   "selectedClubData[0]._id,EventData[0]._id====>",
+    //   selectedClubData?._id,
+    //   eventData?._id
+    // );
     const eventAllConfigs = await getEventConfigsData(
       selectedClubData?._id,
       eventData?._id
