@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name": "NT-Web-admin",
+      "script": "npx",
+      "interpreter": "none",
+      "args": "serve -p 8443 -T"
+    }
+  ]
+}
