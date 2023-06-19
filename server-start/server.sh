@@ -1,0 +1,1 @@
+ssh -i "web-app.pem" ubuntu@ec2-44-201-179-127.compute-1.amazonaws.com

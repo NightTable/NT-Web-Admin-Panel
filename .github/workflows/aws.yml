@@ -4,7 +4,9 @@
 # To use this workflow, you will need to complete the following set-up steps:
 #
 # 1. Create an ECR repository to store your images.
-#    For example: `aws ecr create-repository --repository-name my-ecr-repo --region us-east-2`.
+#    install dockers in your environment system
+# aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 801543548453.dkr.ecr.us-east-1.amazonaws.com
+#    For example: `aws ecr create-repository --nt-web-admin my-ecr-repo --region us-east-1`.
 #    Replace the value of the `ECR_REPOSITORY` environment variable in the workflow below with your repository's name.
 #    Replace the value of the `AWS_REGION` environment variable in the workflow below with your repository's region.
 #
@@ -24,18 +26,22 @@
 #    See the documentation for each action used below for the recommended IAM policies for this IAM user,
 #    and best practices on handling the access key credentials.
 
+
+
+# docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 801543548453.dkr.ecr.us-east-1.amazonaws.com
+
 name: Deploy to Amazon ECS
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ 'main' ]
 
 env:
-  AWS_REGION: MY_AWS_REGION                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: MY_ECR_REPOSITORY           # set this to your Amazon ECR repository name
+  AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: nt-web-adminn           # set this to your Amazon ECR repository name
   ECS_SERVICE: MY_ECS_SERVICE                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: MY_ECS_CLUSTER                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
+  ECS_CLUSTER: arn:aws:ecs:us-east-1:801543548453:cluster/nt-web-adminn                 # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: arn:aws:ecs:us-east-1:801543548453:task-definition/NT-WEB-ADMIN:1 # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: MY_CONTAINER_NAME           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
