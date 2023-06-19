@@ -5,7 +5,7 @@
 // when its authorized use is terminated.
 
 import React from 'react';
-import MenuCategorySectionComp from '../../components/MenuItemsDashboardScreen/MenuCategorySectionComp/MenuCategorySectionComp';
+import MenuCategorySectionComp from '../../features/MenuItemsDashboardScreen/MenuCategorySectionComp/MenuCategorySectionComp';
 
 import styles from './MenuItemsDashboardScreen.module.css';
 

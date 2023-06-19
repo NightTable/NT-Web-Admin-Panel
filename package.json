@@ -1,32 +1,36 @@
 {
-  "name": "webadminpanel",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
-    "babel-jest": "^27.4.5",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-redux": "^7.2.6",
-    "react-router-dom": "^6.2.2",
-    "react-scripts": "5.0.0",
-    "redux": "^4.1.2",
-    "redux-thunk": "^2.4.1",
-    "ts-jest": "^27.1.1",
-    "web-vitals": "^2.1.2"
-  },
+  "name": "@minimal/material-kit-react",
+  "author": "minimals.cc",
+  "licence": "MIT",
+  "version": "1.6.0",
+  "private": false,
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "jest",
-    "eject": "react-scripts eject"
+    "start": "DISABLE_ESLINT_PLUGIN=true env-cmd -f .env.testing react-scripts start",
+    "start:office": "DISABLE_ESLINT_PLUGIN=true env-cmd -f .env.office react-scripts start",
+    "start:banglore_Home": "DISABLE_ESLINT_PLUGIN=true env-cmd -f .env.banglore_Home react-scripts start",
+    "start:amiya_Home": "DISABLE_ESLINT_PLUGIN=true env-cmd -f .env.amiya_Home react-scripts start",
+    "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
+    "build:testing": "env-cmd -f .env.testing react-scripts build",
+    "build:staging": "env-cmd -f .env.staging react-scripts build",
+    "build:production": "env-cmd -f .env.production react-scripts build",
+    "build:office": "env-cmd -f .env.office react-scripts build",
+    "build:banglore_Home": "env-cmd -f .env.banglore_Home react-scripts build",
+    "test": "DISABLE_ESLINT_PLUGIN=true env-cmd mocha -R spec react-scripts test",
+    "eject": "react-scripts eject",
+    "lint": "eslint --ext .js,.jsx ./src",
+    "lint:fix": "eslint --fix --ext .js,.jsx ./src",
+    "clear-all": "rm -rf build node_modules",
+    "re-start": "rm -rf build node_modules && yarn install && yarn start",
+    "re-build": "rm -rf build node_modules && yarn install && yarn build"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-react"
     ]
   },
   "browserslist": {
@@ -41,8 +45,56 @@
       "last 1 safari version"
     ]
   },
+  "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@faker-js/faker": "^7.6.0",
+    "@iconify/react": "^4.0.0",
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/lab": "^5.0.0-alpha.103",
+    "@mui/material": "^5.10.9",
+    "@mui/x-date-pickers": "^6.0.2",
+    "axios": "^1.3.2",
+    "change-case": "^4.1.2",
+    "date-fns": "^2.29.3",
+    "dayjs": "^1.11.7",
+    "env-cmd": "^10.1.0",
+    "history": "^5.3.0",
+    "lodash": "^4.17.21",
+    "material-ui-dropzone": "^3.5.0",
+    "numeral": "^2.0.6",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-detect-offline": "^2.4.5",
+    "react-dom": "^18.2.0",
+    "react-helmet-async": "^1.3.0",
+    "react-hook-form": "^7.37.0",
+    "react-modal": "^3.16.1",
+    "react-otp-input": "^2.4.0",
+    "react-router-dom": "^6.4.2",
+    "react-scripts": "^5.0.1",
+    "react-switch": "^7.0.0",
+    "simplebar-react": "^2.4.3",
+    "web-vitals": "^3.0.3"
+  },
   "devDependencies": {
-    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.6",
-    "enzyme": "^3.11.0"
+    "@babel/core": "^7.19.3",
+    "@babel/eslint-parser": "^7.19.1",
+    "@svgr/webpack": "^6.5.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-flowtype": "^8.0.3",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.10",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.7.1"
+  },
+  "overrides": {
+    "@svgr/webpack": "^6.5.0"
   }
 }

@@ -7,7 +7,7 @@
 import React from 'react';
 import styles from './TransactionHistoryOverviewScreen.module.css';
 
-import TransactionElementHorizBubbleComp from '../../components/TransactionHistoryOverviewScreen/TransactionElementHorizBubbleComp/TransactionElementHorizBubbleComp';
+import TransactionElementHorizBubbleComp from '../../features/TransactionHistoryOverviewScreen/TransactionElementHorizBubbleComp/TransactionElementHorizBubbleComp';
 
 const TransactionHistoryOverviewScreen = (props) => {
 

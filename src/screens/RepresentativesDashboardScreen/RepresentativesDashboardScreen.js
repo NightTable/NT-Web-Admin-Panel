@@ -5,7 +5,7 @@
 // when its authorized use is terminated.
 
 import React from 'react';
-import RepresentativeItemHorizComp from '../../components/RepresentativesDashboardScreen/RepresentativeItemHorizComp/RepresentativeItemHorizComp';
+import RepresentativeItemHorizComp from '../../features/RepresentativesDashboardScreen/RepresentativeItemHorizComp/RepresentativeItemHorizComp';
 
 import styles from './RepresentativesDashboardScreen.module.css';
 

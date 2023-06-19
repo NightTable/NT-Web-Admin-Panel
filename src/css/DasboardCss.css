@@ -1,0 +1,17 @@
+.MuiOutlinedInput-notchedOutline {
+  border-color: #e4d0b5 !important;
+  color: "#e4d0b5" !important;
+  background-color: "white" !important;
+}
+
+.MuiFilledInput-root {
+  border-bottom: 1px solid #e4d0b5 !important;
+  color: "#e4d0b5 " !important;
+  background-color: "white" !important;
+}
+
+.MuiInput-root {
+  border-bottom: 1px solid #e4d0b5 !important;
+  color: "#e4d0b5" !important;
+  background-color: "white" !important;
+}

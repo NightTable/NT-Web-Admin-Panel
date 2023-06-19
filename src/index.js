@@ -1,21 +1,23 @@
-/* All information, source code contained in this document 
-is the property of StrynDev Solutions, LLC. It must not 
-be transmitted to others without the written consent of 
-StrynDev Solutions. It must be returned to StrynDev Solutions 
-when its authorized use is terminated. */
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+//
 import App from './App';
+import * as serviceWorker from './serviceWorker';
 
-import { BrowserRouter } from "react-router-dom";
+// ----------------------------------------------------------------------
 
-ReactDOM.render(
-  <React.StrictMode>
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
+  <HelmetProvider>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </HelmetProvider>
 );
+
+// If you want to enable client cache, register instead.
+serviceWorker.unregister();
+

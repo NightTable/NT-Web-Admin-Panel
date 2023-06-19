@@ -8,7 +8,7 @@ import React from 'react';
 
 import styles from './PollingTablesDashboardScreen.module.css';
 
-import ActiveTableRequestListComp from '../../components/ActiveTablesDashboardScreen/ActiveTableRequestListComp';
+import ActiveTableRequestListComp from '../../features/ActiveTablesDashboardScreen/ActiveTableRequestListComp';
 
 const PollingTablesDashboardScreen = (props) => {
 

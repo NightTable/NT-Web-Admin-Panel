@@ -5,7 +5,7 @@
 // when its authorized use is terminated.
 
 import React from 'react';
-import BiddingTableConfigSectionComp from '../../components/BiddingsOverviewScreen/BiddingTableConfigSectionComp/BiddingTableConfigSectionComp';
+import BiddingTableConfigSectionComp from '../../features/BiddingsOverviewScreen/BiddingTableConfigSectionComp/BiddingTableConfigSectionComp';
 
 import styles from './BiddingsOverviewScreen.module.css';
 
