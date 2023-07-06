@@ -37,14 +37,10 @@ import Switch from "react-switch";
 //dropdown
 
 // sections
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
-// mock
-import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
-//theme
+import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user"; //theme
 import palette from "../../theme/palette";
 // ----------------------------------------------------------------------
-
-import { getCountries } from "../../services/countries";
+import { getClubs } from "../../services/club";
 import {
   addRepresentativetoClub,
   getProfileData,
@@ -56,8 +52,6 @@ import { REPRESENTATIVE_CONFIG_TABLE_HEAD } from "../../Table_Head/index";
 
 //LOCAL STORAGE
 import { LocalStorageKey } from "src/utils/localStorage/keys";
-import ReactModal from "react-modal";
-import { DyanimcModal } from "src/component/Modal";
 
 //RESET PRIVILEGE DATA FIELDS
 
@@ -111,61 +105,59 @@ const resetPrivilege = [
     name: "representativePrivileges",
   },
 ];
-
+const Privilegesarr = [
+  {
+    id: 0,
+    text: "Add, edit or delete table configurations?",
+    privilege: false,
+    name: "tableConfigPrivilege",
+  },
+  {
+    id: 1,
+    text: "Add, edit or delete events ?",
+    privilege: false,
+    name: "eventPrivileges",
+  },
+  {
+    id: 2,
+    text: "Delete reservations, place orders during reservation ?",
+    privilege: false,
+    name: "reservationManagementPrivileges",
+  },
+  {
+    id: 3,
+    text: "Confirm arrival of table groups ?",
+    privilege: false,
+    name: "arrivalConfirmationPrivileges",
+  },
+  {
+    id: 4,
+    text: "Set custom table minimums on NightTable App ?",
+    privilege: false,
+    name: "mobileAppTableMinimumPrivileges",
+  },
+  {
+    id: 5,
+    text: "Add, edit or delete menu items ?",
+    privilege: false,
+    name: "menuItemPrivileges",
+  },
+  {
+    id: 6,
+    text: "Add, edit or delete clubs ?",
+    privilege: false,
+    name: "clubPrivileges",
+  },
+  {
+    id: 7,
+    text: "Add, edit or delete representatives ?",
+    privilege: false,
+    name: "representativePrivileges",
+  },
+];
 //MAIN FUNCTION
 export default function RepresentativeDashboard() {
   const theme = useTheme();
-
-  const Privilegesarr = [
-    {
-      id: 0,
-      text: "Add, edit or delete table configurations?",
-      privilege: false,
-      name: "tableConfigPrivilege",
-    },
-    {
-      id: 1,
-      text: "Add, edit or delete events ?",
-      privilege: false,
-      name: "eventPrivileges",
-    },
-    {
-      id: 2,
-      text: "Delete reservations, place orders during reservation ?",
-      privilege: false,
-      name: "reservationManagementPrivileges",
-    },
-    {
-      id: 3,
-      text: "Confirm arrival of table groups ?",
-      privilege: false,
-      name: "arrivalConfirmationPrivileges",
-    },
-    {
-      id: 4,
-      text: "Set custom table minimums on NightTable App ?",
-      privilege: false,
-      name: "mobileAppTableMinimumPrivileges",
-    },
-    {
-      id: 5,
-      text: "Add, edit or delete menu items ?",
-      privilege: false,
-      name: "menuItemPrivileges",
-    },
-    {
-      id: 6,
-      text: "Add, edit or delete clubs ?",
-      privilege: false,
-      name: "clubPrivileges",
-    },
-    {
-      id: 7,
-      text: "Add, edit or delete representatives ?",
-      privilege: false,
-      name: "representativePrivileges",
-    },
-  ];
 
   //clubs
   const [clubs_data, setclubs_data] = useState([]);
@@ -200,10 +192,6 @@ export default function RepresentativeDashboard() {
 
   //selected club data
   const [selectedClubData, setselectedClubData] = useState([]);
-  //country data
-  const [country, setcountry] = useState("");
-  const [countryData, setcountryData] = useState([]);
-  const [countryCode, setcountryCode] = useState("");
 
   const [page, setPage] = useState(0);
 
@@ -223,41 +211,12 @@ export default function RepresentativeDashboard() {
 
   // get the clubs
   const loadData = async () => {
-    const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
-    if (representativeId === null) {
-      navigate("/");
-    } else {
-      getClubData(JSON.parse(representativeId));
-    }
-  };
-
-  const getClubData = async (representativeId) => {
-    const data = await getProfileData(representativeId);
-    // console.log(data, "data====>");
-    let tempArr = [];
-    data.clubPrivileges.map((item) => {
-      tempArr.push({
-        name: item.club.name,
-        _id: item._id,
-      });
-    });
-
+    const data = await getClubs();
     //GET FIRST CLUB REPRESENTATIVE
-    getClubRepData(tempArr[0]._id);
+    getClubRepData(data.data[0]._id);
     //SELECTED CLUB DATA
-    setselectedClubData(tempArr[0]);
-    setclubs_data(tempArr);
-    //GET COUNTRIES
-    // const countriesData = await getCountries();
-    // let arr = [];
-    // countriesData.forEach((element) => {
-    //   arr.push({
-    //     label: element.name,
-    //     value: element.isoCode,
-    //     phoneNumberCode: element.phoneNumberCode,
-    //   });
-    // });
-    // setcountryData(arr);
+    setselectedClubData(data.data[0]);
+    setclubs_data(data.data);
   };
 
   const DeleteClubDialog = () => {
@@ -300,6 +259,8 @@ export default function RepresentativeDashboard() {
       phoneNumber: phoneNumber,
       username: userName,
       role: representativeRole,
+      associatedClubs: [selectedClubData._id],
+
       clubPrivileges: [
         {
           club: selectedClubData._id,
@@ -335,6 +296,7 @@ export default function RepresentativeDashboard() {
       phoneNumber: phoneNumber,
       username: userName,
       role: representativeRole,
+      associatedClubs: [selectedClubData._id],
       clubPrivileges: [
         {
           club: selectedClubData._id,
@@ -693,9 +655,7 @@ export default function RepresentativeDashboard() {
                                     size="large"
                                     color="inherit"
                                     onClick={() => {
-                                      seteditRepresentativeBoolean(
-                                        true
-                                      );
+                                      seteditRepresentativeBoolean(true);
                                       setselectedrepresentativeData(item);
 
                                       const privileges = [
@@ -901,7 +861,8 @@ export default function RepresentativeDashboard() {
                   fontWeight: "bold",
                 }}
               >
-                {editRepresentativeBoolean === true ? "Edit" : "Add"} New Representative
+                {editRepresentativeBoolean === true ? "Edit" : "Add"} New
+                Representative
               </Typography>
               <Container sx={{ width: "100%" }}>
                 <Stack flexDirection={"row"}>

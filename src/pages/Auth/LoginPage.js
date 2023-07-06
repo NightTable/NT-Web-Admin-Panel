@@ -1,36 +1,14 @@
 import { Helmet } from "react-helmet-async";
 // @mui
 import { styled } from "@mui/material/styles";
-import {
-  Link,
-  Container,
-  Typography,
-  Divider,
-  Stack,
-  Button,
-} from "@mui/material";
+import { Container, Typography } from "@mui/material";
 // hooks
 import useResponsive from "../../hooks/useResponsive";
-// components
-import Logo from "../../features/logo";
 // sections
 import LoginForm from "../../features/Auth/LoginForm";
 import logoImg from "../../assets/logo-bg.png";
 // ----------------------------------------------------------------------
-export const getGreetingMsg = () => {
-  var today = new Date();
-  var curHr = today.getHours();
-
-  if (curHr >= 0 && curHr < 6) {
-    return "Good Morning!";
-  } else if (curHr >= 6 && curHr < 12) {
-    return "Good Morning!";
-  } else if (curHr >= 12 && curHr < 17) {
-    return "Good Afternoon! ";
-  } else {
-    return "Good Evening!";
-  }
-};
+import { getGreetingMsg } from "src/utils/Utils";
 const StyledRoot = styled("div")(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
     display: "flex",
@@ -61,8 +39,6 @@ const StyledContent = styled("div")(({ theme }) => ({
 
 export default function LoginPage() {
   const mdUp = useResponsive("up", "md");
-
-  console.log("md-up=====>", mdUp);
   return (
     <>
       <Helmet>
@@ -77,17 +53,7 @@ export default function LoginPage() {
         )}
 
         <Container sx={{ backgroundColor: "black" }} maxWidth="sm">
-            {/* {mdUp === false ? (
-              <>
-                
-                <StyledSection>
-                  <img style={{ height: 100 }} src={logoImg} alt="login" />
-                </StyledSection>
-                
-              </>
-            ) : null} */}
           <StyledContent>
-          
             <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
               {getGreetingMsg()} Admin
             </Typography>
@@ -95,7 +61,6 @@ export default function LoginPage() {
             <Typography sx={{ color: "#E4D0B5" }} variant="h3" gutterBottom>
               Sign in to Night Table
             </Typography>
-
             <LoginForm />
           </StyledContent>
         </Container>

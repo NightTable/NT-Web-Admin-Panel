@@ -222,19 +222,23 @@ export default function ClubDashboard() {
 
   const getClubData = async (representativeId) => {
     const data = await getClubs();
-    setclubs_data(data);
-    const countriesData = await getCountries();
-    let arr = [];
-    countriesData.forEach((element) => {
-      arr.push({
-        label: element.name,
-        value: element.isoCode,
-        phoneNumberCode: element.phoneNumberCode,
+    if(data.status === true){
+      setclubs_data(data.data);
+      const countriesData = await getCountries();
+      let arr = [];
+      countriesData.forEach((element) => {
+        arr.push({
+          label: element.name,
+          value: element.isoCode,
+          phoneNumberCode: element.phoneNumberCode,
+        });
       });
-    });
+      setcountryData(arr);
+
+    }
+   
 
     //   console.log("arr====>", arr);
-    setcountryData(arr);
   };
 
   //API CALL : ADD CLUB

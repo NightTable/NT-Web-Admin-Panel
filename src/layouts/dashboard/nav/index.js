@@ -2,15 +2,7 @@ import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 // @mui
-import {
-  Box,
-  Link,
-  Button,
-  Drawer,
-  Typography,
-  Avatar,
-  Stack,
-} from "@mui/material";
+import { Box, Drawer } from "@mui/material";
 // mock
 // hooks
 import useResponsive from "../../../hooks/useResponsive";
@@ -19,7 +11,8 @@ import Logo from "../../../features/logo";
 import Scrollbar from "../../../component/scrollbar";
 import NavSection from "../../../features/nav-section";
 //
-import navConfig from "./config";
+import { navConfig, navAdminConfig } from "./config";
+import { LocalStorageKey } from "src/utils/localStorage/keys";
 
 // ----------------------------------------------------------------------
 
@@ -34,14 +27,14 @@ Nav.propTypes = {
 
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
-
+  const userData = localStorage.getItem(LocalStorageKey.USER_DATA);
+  const userDataParsing = JSON.parse(userData);
   const isDesktop = useResponsive("up", "lg");
 
   useEffect(() => {
     if (openNav) {
       onCloseNav();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const renderContent = (
@@ -66,7 +59,9 @@ export default function Nav({ openNav, onCloseNav }) {
       >
         <Logo />
       </Box>
-      <NavSection data={navConfig} />
+      <NavSection
+        data={userDataParsing.role === "godFather" ? navAdminConfig : navConfig}
+      />
     </Scrollbar>
   );
 

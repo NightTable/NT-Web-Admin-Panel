@@ -1,22 +1,16 @@
 import axios, * as others from "axios";
+import { GetRequest, PostRequest } from "../utils/axios/Axios";
 
 export const getClubs = async () => {
-  return new Promise((resolve, reject) => {
-    var config = {
-      method: "get",
-      url: `${process.env.REACT_APP_BASE_URL}clubs/clubs`,
-      headers: {},
-    };
-
-    axios(config)
-      .then(function (response) {
-        resolve(response.data.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-        reject(error);
-      });
-  });
+  try {
+    const response = await GetRequest(
+      `${process.env.REACT_APP_BASE_URL}clubs/clubs`,
+      "",
+      ""
+    );
+    console.log('response.data',response.data)
+    return response.data;
+  } catch (error) {}
 };
 
 export const getClubDetails = async (club_id) => {
