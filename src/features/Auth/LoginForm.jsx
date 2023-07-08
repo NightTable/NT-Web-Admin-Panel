@@ -59,13 +59,14 @@ export default function LoginForm() {
     } else {
       seterrorMsg("");
       setloader(true);
-      const no = `+${countryCode}${phoneNumber}`;
-      const triggerOtp = await loginApi(no);
-      console.log("triggerOtp===>", triggerOtp);
-      if (triggerOtp?.status === false) {
-        alert(triggerOtp?.message);
+      let obj = {
+        phoneNumberParam: `+${countryCode}${phoneNumber}`,
+      };
+      const triggerOtp = await loginApi(obj);
+      if (triggerOtp?.data?.status === false) {
+        alert(triggerOtp?.data?.message);
         setloader(false);
-      } else if (triggerOtp?.status === true) {
+      } else if (triggerOtp?.data?.status === true) {
         setotpField(false);
         setloader(false);
       } else {
@@ -79,45 +80,49 @@ export default function LoginForm() {
 
   //verify otp
   const verifyOtp = async () => {
-    //navigate('dashboard/clubs')
-    const no = `+${countryCode}${phoneNumber}`;
     if (otp >= 6) {
       setloader(true);
-
-      const verifyNumber = await otpVerify(no, otp);
-      console.log("verifyNumber---->", verifyNumber);
-      if (verifyNumber != undefined) {
-        if (verifyNumber === "Otp expired") {
+      let obj = {
+        reqPhoneNumber: `+${countryCode}${phoneNumber}`,
+        reqOtp: otp,
+        isrepresentative: true,
+      };
+      const verifyNumber = await otpVerify(obj);
+      if (verifyNumber?.response?.data.status === false) {
+        //OTP EXPIRED || WRONG OTP || USER NOT FOUND == VALIDATION
+        if (verifyNumber?.response?.data.message === "Otp expired") {
           setloader(false);
           setotp("");
           seterrorMsg("Otp Expired !");
-        } else if (verifyNumber === "verification failed") {
+        } else if (
+          verifyNumber?.response?.data.message === "verification failed"
+        ) {
           setloader(false);
           setotp("");
           seterrorMsg("Wrong Otp!");
         } else {
-          localStorage.setItem(
-            LocalStorageKey.USER_DATA,
-            JSON.stringify(verifyNumber.data)
-          );
-          getRepresentativeData(verifyNumber.data._id);
-          //6401d17b49bfe3eb406e6b8b
-
-          // localStorage.setItem(
-          //   LocalStorageKey.USER_DATA,
-          //   JSON.stringify(verifyNumber.data)
-          // );
-          getRepresentativeData(verifyNumber.data._id);
-
-          seterrorMsg("");
+          setloader(false);
+          setotp("");
+          seterrorMsg(`${verifyNumber?.response?.data.message}`);
         }
       } else {
-        setloader(false);
-        setotp("");
-        seterrorMsg("Technical Error ,Contact Support ! ");
+        //SAVE TOKEN
+        localStorage.setItem(
+          LocalStorageKey.USER.TOKEN,
+          JSON.stringify(verifyNumber?.data?.token)
+        );
+        //SAVE USER DATA
+        localStorage.setItem(
+          LocalStorageKey.USER_DATA,
+          JSON.stringify(verifyNumber?.data?.data)
+        );
+        getRepresentativeData(verifyNumber?.data?.data?._id);
+        seterrorMsg("");
       }
     } else {
-      seterrorMsg("Please enter the 6 digit valid otp");
+      setloader(false);
+      setotp("");
+      seterrorMsg("Technical Error ,Contact Support ! ");
     }
   };
 
@@ -125,7 +130,7 @@ export default function LoginForm() {
 
   const getRepresentativeData = async (id) => {
     const data = await getProfileData(id);
-   
+
     localStorage.setItem(LocalStorageKey.USER_DATA, JSON.stringify(data));
     localStorage.setItem(LocalStorageKey.USER_ID, JSON.stringify(data._id));
 
