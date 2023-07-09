@@ -188,14 +188,14 @@ export default function EventDashboard() {
 
   //API CALL : ADD EVENT CLUB
   const addEvent = async () => {
-    if (eventImage.length != undefined) {
+    if (eventImage.length !== undefined) {
       seteventLoader(true);
       //ADD EVENT IMAGE DATA APPEND
       Data.append("_id", selectedClubData._id);
       Data.append("files", eventImage[0]);
       //ADD EVENT IMAGE API CALL
       const ImgUpload = await AddImage(Data);
-       console.log("ImgUpload====>", ImgUpload);
+      //  console.log("ImgUpload====>", ImgUpload);
       if (ImgUpload?.status == true) {
         let obj = {
           name: EventName,
@@ -378,26 +378,19 @@ export default function EventDashboard() {
   //GET TABLE CONFIG
 
   const getIndEventTableConfig = async (eventData) => {
-    // console.log(
-    //   "selectedClubData[0]._id,EventData[0]._id====>",
-    //   selectedClubData?._id,
-    //   eventData?._id
-    // );
     const eventAllConfigs = await getEventConfigsData(
       selectedClubData?._id,
       eventData?._id
     );
 
-    console.log("eventAllConfigs===>", eventAllConfigs);
-    if (eventAllConfigs.status == true) {
-      settableConfigData(eventAllConfigs.eventData.tableConfigForEvent);
+    console.log("eventAllConfigs===>", eventAllConfigs?.tableConfigForEvent);
+    if (eventAllConfigs.status === true) {
+      settableConfigData(eventAllConfigs.tableConfigForEvent);
       setshowAllConfigDataPopUp(true);
     }
   };
   //TABLE CONFIGURATION
   const addTableConfiguration = async () => {
-    console.log("selectedClubData===>", selectedClubData._id);
-    console.log("selectedEventData====>", selectedEventData._id);
     let obj = {
       type: typeTC,
       minPrice: minPriceTC,
@@ -407,12 +400,17 @@ export default function EventDashboard() {
       tableMapId: tmapleIDTC,
     };
     const tcAdd = await createTableConfig(obj);
-    console.log("tcAdd", tcAdd);
+    console.log("tcAdd", tcAdd?.data?.data);
+    console.log("status", tcAdd?.data.status);
+
     // ADD TABLE CONFIGURATION
     // PATCH EVENT ADD
     // GET EVENT NEW DETAILS
-
-    console.log("obj===>", obj);
+    if (tcAdd?.data.status === true) {
+      setaddTableConfigPopup(!true);
+      alert("Table Configuration Addded!");
+    }
+    // console.log("obj===>", obj);
   };
 
   //UPDATE TABLE CONFIGURATION
@@ -429,7 +427,7 @@ export default function EventDashboard() {
     // PATCH EVENT ADD
     // GET EVENT NEW DETAILS
 
-    console.log("obj===>", obj);
+    // console.log("obj===>", obj);
   };
 
   // PAGES HANDLE
@@ -535,23 +533,22 @@ export default function EventDashboard() {
                       borderRadius={2}
                       marginRight={2}
                       borderColor={
-                        index == selected_club_btn ? "black" : "#E4D0B5"
+                        index === selected_club_btn ? "black" : "#E4D0B5"
                       }
                       flexDirection={"row"}
                       justifyContent={"center"}
                       alignItems={"center"}
                       backgroundColor={
-                        index == selected_club_btn ? "#E4D0B5" : "black"
+                        index === selected_club_btn ? "#E4D0B5" : "black"
                       }
                     >
                       <Typography
                         variant="body1"
                         style={{
                           color:
-                            index == selected_club_btn ? "black" : "#E4D0B5",
+                            index === selected_club_btn ? "black" : "#E4D0B5",
                           fontWeight:
-                            index == selected_club_btn ? "bold" : "500",
-
+                            index === selected_club_btn ? "bold" : "500",
                           padding: 10,
                           textAlign: "center",
                         }}
@@ -629,7 +626,7 @@ export default function EventDashboard() {
                                           size="large"
                                           color="inherit"
                                           onClick={() => {
-                                            console.log("icons pressed ===?>");
+                                            // console.log("icons pressed ===?>");
                                             setselectedEventData(item);
                                             // IF TC = FALSE : DIRECT TC ADD
                                             if (isTableConfigAdded === false) {
@@ -637,7 +634,7 @@ export default function EventDashboard() {
                                             }
                                             // ELSE IF TRUE : TC.LENGTH === 1 - DIRECT TC UPDATE
                                             else if (
-                                              isTableConfigAdded != false
+                                              isTableConfigAdded !== false
                                             ) {
                                               getIndEventTableConfig(item);
                                               //GET TC DATA
@@ -855,10 +852,10 @@ export default function EventDashboard() {
                   fontWeight: "bold",
                 }}
               >
-                {editEvent != false ? "Update" : "Add"} Event
+                {editEvent !== false ? "Update" : "Add"} Event
               </Typography>
               <Container sx={{ width: "100%" }}>
-                {eventLoader != true ? (
+                {eventLoader !== true ? (
                   <>
                     <Stack flexDirection={"row"}>
                       <Box sx={{ width: "30%" }}>
@@ -937,7 +934,7 @@ export default function EventDashboard() {
                     </Stack>
                     <Stack justifyItem={"center"}>
                       <Box sx={{ paddingBottom: 2 }}>
-                        {editEventImage != true ? (
+                        {editEventImage !== true ? (
                           <>
                             <Box
                               style={{
@@ -1056,6 +1053,7 @@ export default function EventDashboard() {
             </Box>
           </Scrollbar>
         </Popover>
+        {/* {'ADD TABLE CONFIGURATION'} */}
         <Popover
           open={addTableConfigPopup}
           anchorEl={open}
@@ -1076,7 +1074,6 @@ export default function EventDashboard() {
               width: "90%",
               hieght: "100%",
               borderColor: "#E4D0B5",
-              // backgroundColor: '#E4D0B5',
               borderWidth: 1,
 
               "& .MuiMenuItem-root": {
@@ -1123,7 +1120,7 @@ export default function EventDashboard() {
                   fontWeight: "bold",
                 }}
               >
-                {editTableConfigCheck != false ? "Update" : "Add"} Table
+                {editTableConfigCheck !== false ? "Update" : "Add"} Table
                 Configuration
               </Typography>
               <Container sx={{ width: "100%" }}>
@@ -1234,8 +1231,9 @@ export default function EventDashboard() {
                 >
                   <Button
                     onClick={() => {
+                      // eslint-disable-next-line no-lone-blocks
                       {
-                        editTableConfigCheck != false
+                        editTableConfigCheck !== false
                           ? updateTableConfiguration()
                           : addTableConfiguration();
                       }
@@ -1260,6 +1258,8 @@ export default function EventDashboard() {
             </Box>
           </Scrollbar>
         </Popover>
+        {/* {'ADD TABLE  END CONFIGURATION'} */}
+        {/* {'SHOW TABLE  CONFIGURATION'} */}
 
         <Popover
           open={showAllConfigDataPopUp}
@@ -1329,18 +1329,21 @@ export default function EventDashboard() {
                     <Iconify color={palette.primary.gold} icon={"maki:cross"} />
                   </IconButton>
                 </Stack>
-                <Stack justifyContent={'center'}>
-                    <Typography
-                      sx={{
-                        color: palette.primary.gold,
-                        textAlign: "center",
-                        fontSize: 20,
-                        fontWeight: "bold",
-                      }}
-                    >
-                      All Table Configuration
-                    </Typography>
-                
+                <Stack justifyContent={"center"}>
+                  <Typography
+                    sx={{
+                      color: palette.primary.gold,
+                      textAlign: "center",
+                      fontSize: 20,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    All Table Configuration
+                  </Typography>
+                </Stack>
+                <Box display="flex">
+                  <Box width="50%" textAlign="left"></Box>{" "}
+                  <Box width="50%" textAlign="right">
                     <Button
                       onClick={() => {
                         setaddTableConfigPopup(true);
@@ -1353,9 +1356,99 @@ export default function EventDashboard() {
                       variant="Outlined"
                       startIcon={<Iconify icon="eva:plus-fill" />}
                     >
-                      Add Table Config
+                      Add Table Config {tableConfigData?.length}
                     </Button>
-                </Stack>
+                  </Box>
+                </Box>
+                <Container
+            style={{
+              borderWidth: 1,
+              backgroundColor: "#E4D0B5",
+              padding: 1,
+              borderRadius: 4,
+            }}
+            alignItems
+          >
+                <Scrollbar>
+                  <TableContainer>
+                    <Table>
+                      {tableConfigData?.map((item, index) => {
+                        return (
+                          <>
+                            <TableRow
+                              style={{
+                                margin: 20,
+                              }}
+                              bgcolor={"#E4D0B5"}
+                              // hover
+                            >
+                              <TableCell>
+                                <Typography
+                                  sx={{ color: "black", px: 2 }}
+                                  variant="subtitle2"
+                                  noWrap
+                                >
+                                  Sr No {index}
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ color: "black", px: 2 }}
+                                  variant="subtitle2"
+                                  noWrap
+                                >
+                                  Minimum Price {item.minPrice}
+                                </Typography>
+                              </TableCell>
+                              <TableCell>
+                                <Typography
+                                  sx={{ color: "black", px: 2 }}
+                                  variant="subtitle2"
+                                  noWrap
+                                >
+                                  Type {item.type}
+                                </Typography>
+                              </TableCell>
+
+                              <TableCell align="left">
+                                <Typography
+                                  sx={{ color: "black", px: 2 }}
+                                  variant="subtitle2"
+                                  noWrap
+                                >
+                                  Recommended Capacity{" "}
+                                  {item.recommendedCapacity}
+                                </Typography>
+                              </TableCell>
+
+                              <TableCell>
+                                <Stack flexDirection={"row"}>
+                                  <IconButton
+                                    size="large"
+                                    color="inherit"
+                                    onClick={() => {}}
+                                  >
+                                    <Iconify icon={"material-symbols:edit"} />
+                                  </IconButton>
+                                </Stack>
+                              </TableCell>
+                              <TableCell>
+                                <IconButton
+                                  size="large"
+                                  color="inherit"
+                                  onClick={() => {}}
+                                >
+                                  <Iconify icon={"ic:baseline-delete"} />
+                                </IconButton>
+                              </TableCell>
+                            </TableRow>
+                          </>
+                        );
+                      })}
+                    </Table>
+                  </TableContainer>
+                </Scrollbar>
+                </Container>
               </Box>
             </Box>
           </Scrollbar>
