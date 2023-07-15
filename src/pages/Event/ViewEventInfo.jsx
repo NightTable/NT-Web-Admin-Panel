@@ -49,7 +49,7 @@ export default function ViewEventInfo(data) {
         }}
         maxWidth="xl"
       >
-        <Typography variant="h4" sx={{ mb: 5, color: "#E4D0B5" }}>
+        <Typography variant="h4" sx={{ mb: 5, color: palette.primary.gold }}>
           Club Information
         </Typography>
         {data?.data?.photos.length > 0 ? (
@@ -73,7 +73,7 @@ export default function ViewEventInfo(data) {
           <></>
         )}
         <Box sx={{paddingBottom:60}}>
-          <Typography variant="h4" sx={{ mb: 2, color: "#E4D0B5" }}>
+          <Typography variant="h4" sx={{ mb: 2, color: palette.primary.gold }}>
             Details
           </Typography>
           <FeildShow keyName={"Name "} value={data?.data?.name} />
@@ -92,7 +92,7 @@ export default function ViewEventInfo(data) {
             keyName={"Line Items"}
             value={data?.data?.Address?.Address}
           />
-          {/* <Typography variant="h4" sx={{ mb: 2, mt: 2, color: "#E4D0B5" }}>
+          {/* <Typography variant="h4" sx={{ mb: 2, mt: 2, color: palette.primary.gold }}>
             Line Items
           </Typography> */}
         </Box>

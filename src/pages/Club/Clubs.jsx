@@ -39,7 +39,7 @@ import AddPosterImage from "../UploadImage/AddImage";
 // sections
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 // mock
-import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
+import Tooltip from "@mui/material/Tooltip";
 //theme
 import palette from "../../theme/palette";
 // ----------------------------------------------------------------------
@@ -49,7 +49,6 @@ import {
   addClubtoServer,
   clubUpdate,
   deleteClub,
-  getClubDetails,
 } from "../../services/club";
 import { AddImage } from "../../services/upload";
 import {
@@ -65,8 +64,6 @@ import { LocalStorageKey } from "src/utils/localStorage/keys";
 
 //MAIN FUNCTION
 export default function ClubDashboard() {
-  const theme = useTheme();
-
   //IMAGE POP-UP LOADER
   const [imageLoader, setimageLoader] = useState(false);
   //States
@@ -88,19 +85,6 @@ export default function ClubDashboard() {
   const [stateCode, setstateCode] = useState("");
   const [state, setstate] = useState("");
 
-  const resetStates = async () => {
-    setcountryCode("");
-    setcity("");
-    setstate("");
-    setcountryCode("");
-    setcitiesData("");
-    setstateData("");
-    setinstaHandle("");
-    setstripeAccountNo("");
-    setphoneNumber("");
-    setWebsiteUrl("");
-    setKeyValuePairs({});
-  };
   //instagram
   const [instaHandle, setinstaHandle] = useState("");
   const [stripeAccountNo, setstripeAccountNo] = useState("");
@@ -114,23 +98,18 @@ export default function ClubDashboard() {
   const [key, setKey] = useState("");
   const [value, setValue] = useState("");
   const [showLineItemError, setshowError] = useState(false);
-
-  const handleAddKeyValue = () => {
-    if (key === "" && value === "") {
-      setshowError("Please enter both Line items and value");
-    }
-    setKeyValuePairs({ ...keyValuePairs, [key]: value });
-    setKey("");
-    setValue("");
-  };
-
-  const handleDeleteKeyValue = (deleteKey) => {
-    const newKeyValuePairs = { ...keyValuePairs };
-    delete newKeyValuePairs[deleteKey];
-    setKeyValuePairs(newKeyValuePairs);
-  };
-
   const [switchToggle, setswitchToggle] = React.useState(false);
+
+  //dialog
+
+  const [ImageDialogPopUp, setImageDialogPopUp] = useState(false);
+  const [ViewClubInfoPopUp, setViewClubInfoPopUp] = useState(false);
+  const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
+  //add club pop-over open
+  const [addClubPopUp, setaddClubPopUp] = useState(false);
+
+  //selected club data
+  const [selectedClubData, setselectedClubData] = useState([]);
 
   const [open, setOpen] = useState(null);
 
@@ -194,14 +173,34 @@ export default function ClubDashboard() {
     fetchData();
   }, [countryCode, stateCode]);
 
-  // useEffect(() => {
-  //   async function fetchData() {
+  const resetStates = async () => {
+    setcountryCode("");
+    setcity("");
+    setstate("");
+    setcountryCode("");
+    setcitiesData("");
+    setstateData("");
+    setinstaHandle("");
+    setstripeAccountNo("");
+    setphoneNumber("");
+    setWebsiteUrl("");
+    setKeyValuePairs({});
+  };
 
-  //   }
+  const handleAddKeyValue = () => {
+    if (key === "" && value === "") {
+      setshowError("Please enter both Line items and value");
+    }
+    setKeyValuePairs({ ...keyValuePairs, [key]: value });
+    setKey("");
+    setValue("");
+  };
 
-  //   fetchData();
-  // }, [stateCode]);
-  //getcountries
+  const handleDeleteKeyValue = (deleteKey) => {
+    const newKeyValuePairs = { ...keyValuePairs };
+    delete newKeyValuePairs[deleteKey];
+    setKeyValuePairs(newKeyValuePairs);
+  };
 
   // get the clubs
   const loadData = async () => {
@@ -222,7 +221,7 @@ export default function ClubDashboard() {
 
   const getClubData = async (representativeId) => {
     const data = await getClubs();
-    if(data.status === true){
+    if (data.status === true) {
       setclubs_data(data.data);
       const countriesData = await getCountries();
       let arr = [];
@@ -234,11 +233,7 @@ export default function ClubDashboard() {
         });
       });
       setcountryData(arr);
-
     }
-   
-
-    //   console.log("arr====>", arr);
   };
 
   //API CALL : ADD CLUB
@@ -269,10 +264,7 @@ export default function ClubDashboard() {
       lineItems: arr,
     };
 
-    console.log("obj=====>", obj);
-
     const data = await addClubtoServer(obj);
-    console.log("data?.status====>", data?.status);
     if (data?.status === true) {
       alert("Club Added");
       //update the club array
@@ -333,20 +325,9 @@ export default function ClubDashboard() {
     }
   };
 
-  //dialog
-
-  const [ImageDialogPopUp, setImageDialogPopUp] = useState(false);
-  const [ViewClubInfoPopUp, setViewClubInfoPopUp] = useState(false);
-  const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
-  //add club pop-over open
-  const [addClubPopUp, setaddClubPopUp] = useState(false);
-
-  //selected club data
-  const [selectedClubData, setselectedClubData] = useState([]);
-
   //close pop-up
   const handleClose = async (id) => {
-    if (id == "1") {
+    if (id === "1") {
       const a = clubs_data.filter((item) => {
         return item._id !== selectedClubData._id;
       });
@@ -358,7 +339,7 @@ export default function ClubDashboard() {
 
       setclubs_data(a);
       // console.log("clubtoDelete", clubtoDelete);
-    } else id == "2";
+    } else id === "2";
     setdeleteDialogOpen(false);
   };
 
@@ -372,23 +353,14 @@ export default function ClubDashboard() {
             setImageDialogPopUp(!true);
           }}
           anchorOrigin={{
-            //  vertical: "center",
             horizontal: "center",
           }}
-          transformOrigin={
-            {
-              //  vertical: "center",
-              // horizontal: "center",
-            }
-          }
           PaperProps={{
             sx: {
               p: 1,
               width: "100%",
               height: "100%",
-              borderColor: "#E4D0B5",
-              // backgroundColor: '#E4D0B5',
-
+              borderColor: palette.primary.gold,
               "& .MuiMenuItem-root": {
                 typography: "body2",
                 // borderRadius: 1,
@@ -396,7 +368,7 @@ export default function ClubDashboard() {
                 justifyContent: "center",
                 width: "100%",
                 height: "100%",
-                borderColor: "#E4D0B5",
+                borderColor: palette.primary.gold,
               },
             },
           }}
@@ -426,7 +398,6 @@ export default function ClubDashboard() {
               <Box
                 sx={{
                   width: "100%",
-                  // backgroundColor: "yellow",
                   height: "50%",
                 }}
               >
@@ -442,11 +413,8 @@ export default function ClubDashboard() {
                       if (clubImg.status === true) {
                         let newArr = [];
 
-                        console.log("selectedClubData====>", selectedClubData);
                         //UPDATE PATCH THE IMAGES
                         newArr = [...clubImg?.data, ...selectedClubData.photos];
-
-                        console.log("UPDATE CLUB:NEW -IMAGE ARRAY :", newArr);
                         let obj = {
                           photos: newArr,
                         };
@@ -458,18 +426,12 @@ export default function ClubDashboard() {
                           //UPDATE THE CLUB DATA LOCALLY
 
                           const filteredData = clubs_data.findIndex((item) => {
-                            return item._id == selectedClubData._id
+                            return item._id === selectedClubData._id;
                           });
 
-                          console.log("filteredData===>", filteredData);
-
                           clubs_data[filteredData].photos = newArr;
-                          console.log(
-                            "clubs_data[filteredData].photos==>",
-                            clubs_data[filteredData].photos
-                          );
+
                           setclubs_data(clubs_data);
-                          console.log("club:data ====>", clubs_data);
                           //CLOSE THE LOADER
                           setimageLoader(false);
                           setImageDialogPopUp(!true);
@@ -535,8 +497,7 @@ export default function ClubDashboard() {
               p: 1,
               width: "80%",
               hieght: "100%",
-              borderColor: "#E4D0B5",
-              // backgroundColor: '#E4D0B5',
+              borderColor: palette.primary.gold,
               borderWidth: 1,
 
               "& .MuiMenuItem-root": {
@@ -545,7 +506,7 @@ export default function ClubDashboard() {
                 alignItems: "center",
                 justifyContent: "center",
                 width: "80%",
-                borderColor: "#E4D0B5",
+                borderColor: palette.primary.gold,
                 borderWidth: 12,
               },
             },
@@ -591,8 +552,6 @@ export default function ClubDashboard() {
   };
   //TO MAKE CLUB ACTIVE AND NO-ACTIVE
   const handleToggleSwitch = async (item, toggleBtn) => {
-    // setswitchToggle(!switchToggle);
-    // console.log("item===>", item);
     let obj = {
       isPublished: !toggleBtn,
     };
@@ -644,8 +603,6 @@ export default function ClubDashboard() {
   );
 
   const isNotFound = !filteredData.length && !!filterName;
-
-  console.log("filteredData===>", filteredData);
   return (
     <>
       <Helmet>
@@ -653,10 +610,13 @@ export default function ClubDashboard() {
       </Helmet>
 
       <Container sx={{ height: "100%" }}>
-        <Typography variant="h6" sx={{ color: "#E4D0B5" }}>
+        <Typography variant="h6" sx={{ color: palette.primary.gold }}>
           Hi, Welcome back
         </Typography>
-        <Typography variant="h4" sx={{ marginBottom: 2, color: "#E4D0B5" }}>
+        <Typography
+          variant="h4"
+          sx={{ marginBottom: 2, color: palette.primary.gold }}
+        >
           {userName}
         </Typography>
         <Stack
@@ -667,7 +627,7 @@ export default function ClubDashboard() {
           }}
           alignItems="center"
         >
-          <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
+          <Typography variant="h4" sx={{ color: palette.primary.gold }}>
             Clubs
           </Typography>
           <Button
@@ -675,7 +635,7 @@ export default function ClubDashboard() {
               setaddClubPopUp(true);
             }}
             style={{
-              backgroundColor: "#E4D0B5",
+              backgroundColor: palette.primary.gold,
               color: "black",
               padding: 8,
               borderRadius: 10,
@@ -728,7 +688,7 @@ export default function ClubDashboard() {
                             style={{
                               margin: 20,
                             }}
-                            bgcolor={"#E4D0B5"}
+                            bgcolor={palette.primary.gold}
                             // hover
                             key={_id}
                             tabIndex={-1}
@@ -739,12 +699,6 @@ export default function ClubDashboard() {
                                   size="large"
                                   color="inherit"
                                   onClick={async () => {
-                                    //  const data = await getClubDetails(_id);
-                                    //   if (data.data) {
-                                    //  console.log("data===>", data.data);
-
-                                    // setselectedClubData(data.data.data);
-                                    console.log("item=>", item);
                                     setselectedClubData(item);
                                     setViewClubInfoPopUp(true);
                                     //  }
@@ -755,7 +709,7 @@ export default function ClubDashboard() {
                               </Stack>
                             </TableCell>
                             <TableCell
-                              bgcolor={"#E4D0B5"}
+                              bgcolor={palette.primary.gold}
                               component="th"
                               scope="row"
                               padding="none"
@@ -816,9 +770,6 @@ export default function ClubDashboard() {
                                       item.stripeAccountNumber
                                     );
                                     setinstaHandle(item.instaHandle);
-
-                                    //LEFT WITH LINE ITEMS & ADDRESS TO UPDATE
-                                    // alert("EDIT alert");
                                   }}
                                 >
                                   <Iconify icon={"material-symbols:edit"} />
@@ -845,7 +796,6 @@ export default function ClubDashboard() {
                                 checked={isPublished === true ? true : false}
                                 onChange={async () => {
                                   //CHECKING THE IMAGES
-                                  console.log("photos===>", photos?.length);
                                   if (photos?.length >= 3) {
                                     handleToggleSwitch(
                                       item,
@@ -872,7 +822,7 @@ export default function ClubDashboard() {
                 {isNotFound && (
                   <TableBody
                     style={{
-                      backgroundColor: "#E4D0B5",
+                      backgroundColor: palette.primary.gold,
                     }}
                   >
                     <TableRow>
@@ -882,7 +832,7 @@ export default function ClubDashboard() {
                             textAlign: "center",
                           }}
                           style={{
-                            backgroundColor: "#E4D0B5",
+                            backgroundColor: palette.primary.gold,
                           }}
                         >
                           <Typography variant="h6" paragraph>
@@ -904,7 +854,7 @@ export default function ClubDashboard() {
                 {filteredData.length === 0 && (
                   <TableBody
                     style={{
-                      backgroundColor: "#E4D0B5",
+                      backgroundColor: palette.primary.gold,
                     }}
                   >
                     <TableRow>
@@ -914,7 +864,7 @@ export default function ClubDashboard() {
                             textAlign: "center",
                           }}
                           style={{
-                            backgroundColor: "#E4D0B5",
+                            backgroundColor: palette.primary.gold,
                           }}
                         >
                           <Typography variant="h6" paragraph>
@@ -963,8 +913,7 @@ export default function ClubDashboard() {
               p: 1,
               width: "90%",
               hieght: "100%",
-              borderColor: "#E4D0B5",
-              // backgroundColor: '#E4D0B5',
+              borderColor: palette.primary.gold,
               borderWidth: 1,
 
               "& .MuiMenuItem-root": {
@@ -973,7 +922,7 @@ export default function ClubDashboard() {
                 alignItems: "center",
                 justifyContent: "center",
                 width: "80%",
-                borderColor: "#E4D0B5",
+                borderColor: palette.primary.gold,
                 borderWidth: 12,
               },
             },
@@ -1243,7 +1192,7 @@ export default function ClubDashboard() {
                     <Box sx={{ width: "30%" }}>
                       <Button
                         style={{
-                          backgroundColor: "#E4D0B5",
+                          backgroundColor: palette.primary.gold,
                           color: "black",
                           fontSize: 14,
                           fontWeight: "600",
@@ -1340,7 +1289,7 @@ export default function ClubDashboard() {
                 >
                   <Button
                     onClick={() => {
-                      EditClub != true ? addClub() : editClub();
+                      EditClub !== true ? addClub() : editClub();
                       //setaddClubPopUp(true);
                     }}
                     // variant="contained"

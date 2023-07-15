@@ -11,16 +11,12 @@ import "../../css/DasboardCss.css";
 import { useTheme } from "@mui/material/styles";
 // @mui
 import {
-  Card,
   Table,
   Stack,
   Paper,
-  Avatar,
   Button,
   Popover,
-  Checkbox,
   TableRow,
-  MenuItem,
   TableBody,
   TableCell,
   Container,
@@ -28,7 +24,6 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
-  withStyles,
   Dialog,
   DialogActions,
   DialogContent,
@@ -46,7 +41,6 @@ import ResponsiveDateTimePickers from "src/component/ResponsiveDateTimePIcker";
 // sections
 import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
 // mock
-import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
 //theme
 import palette from "../../theme/palette";
 // ----------------------------------------------------------------------
@@ -58,7 +52,10 @@ import {
 } from "src/services/Event";
 import { getCurrentDate, convertToTimeStamp } from "../../utils/Day";
 
-import { EVENTS_TABLE_HEAD } from "../../Table_Head/index";
+import {
+  EVENTS_TABLE_HEAD,
+  EVENTS_TABLE_CONFIG_HEAD,
+} from "../../Table_Head/index";
 import ViewEventInfo from "./ViewEventInfo";
 import { LocalStorageKey } from "src/utils/localStorage/keys";
 //services
@@ -84,7 +81,7 @@ export default function EventDashboard() {
   //clubs
   const [clubs_data, setclubs_data] = useState([]);
   //CLicked Button
-  const [selected_club_btn, setselected_club_btn] = useState("0");
+  const [selected_club_btn, setselected_club_btn] = useState(0);
   //selected club data
   const [selectedClubData, setselectedClubData] = useState([]);
 
@@ -175,12 +172,7 @@ export default function EventDashboard() {
     if (data.status === true) {
       setEventData(data.data);
     } else if (data.status === false) {
-      if (data?.message === "No events found for the club") {
-        setEventData([]);
-      } else {
-        // NO EVENTS FOUND
-        setEventData([]);
-      }
+      setEventData([]);
     }
   };
 
@@ -382,8 +374,6 @@ export default function EventDashboard() {
       selectedClubData?._id,
       eventData?._id
     );
-
-    console.log("eventAllConfigs===>", eventAllConfigs?.tableConfigForEvent);
     if (eventAllConfigs.status === true) {
       settableConfigData(eventAllConfigs.tableConfigForEvent);
       setshowAllConfigDataPopUp(true);
@@ -400,17 +390,12 @@ export default function EventDashboard() {
       tableMapId: tmapleIDTC,
     };
     const tcAdd = await createTableConfig(obj);
-    console.log("tcAdd", tcAdd?.data?.data);
-    console.log("status", tcAdd?.data.status);
 
-    // ADD TABLE CONFIGURATION
-    // PATCH EVENT ADD
     // GET EVENT NEW DETAILS
     if (tcAdd?.data.status === true) {
       setaddTableConfigPopup(!true);
       alert("Table Configuration Addded!");
     }
-    // console.log("obj===>", obj);
   };
 
   //UPDATE TABLE CONFIGURATION
@@ -468,7 +453,6 @@ export default function EventDashboard() {
   );
 
   const isNotFound = !filteredData?.length && !!filterName;
-  //  console.log("isNotFound===>", isNotFound, !filteredData?.length);
   return (
     <>
       <Helmet>
@@ -478,7 +462,7 @@ export default function EventDashboard() {
       <Container maxWidth="xl">
         <Container>
           <Stack direction="row" justifyContent="space-between" mb={5}>
-            <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
+            <Typography variant="h4" sx={{ color: palette.primary.gold }}>
               Events
             </Typography>
           </Stack>
@@ -502,7 +486,7 @@ export default function EventDashboard() {
                   setEventClubPopUp(true);
                 }}
                 style={{
-                  backgroundColor: "#E4D0B5",
+                  backgroundColor: palette.primary.gold,
                   color: "black",
                   padding: 8,
                   borderRadius: 10,
@@ -533,20 +517,26 @@ export default function EventDashboard() {
                       borderRadius={2}
                       marginRight={2}
                       borderColor={
-                        index === selected_club_btn ? "black" : "#E4D0B5"
+                        index === selected_club_btn
+                          ? "black"
+                          : palette.primary.gold
                       }
                       flexDirection={"row"}
                       justifyContent={"center"}
                       alignItems={"center"}
                       backgroundColor={
-                        index === selected_club_btn ? "#E4D0B5" : "black"
+                        index === selected_club_btn
+                          ? palette.primary.gold
+                          : "black"
                       }
                     >
                       <Typography
                         variant="body1"
                         style={{
                           color:
-                            index === selected_club_btn ? "black" : "#E4D0B5",
+                            index === selected_club_btn
+                              ? "black"
+                              : palette.primary.gold,
                           fontWeight:
                             index === selected_club_btn ? "bold" : "500",
                           padding: 10,
@@ -565,7 +555,7 @@ export default function EventDashboard() {
           <Container
             style={{
               borderWidth: 1,
-              backgroundColor: "#E4D0B5",
+              backgroundColor: palette.primary.gold,
               padding: 1,
               borderRadius: 4,
             }}
@@ -610,7 +600,7 @@ export default function EventDashboard() {
                                 style={{
                                   margin: 20,
                                 }}
-                                bgcolor={"#E4D0B5"}
+                                bgcolor={palette.primary.gold}
                                 // hover
                                 key={_id}
                                 tabIndex={-1}
@@ -643,7 +633,7 @@ export default function EventDashboard() {
                                           }}
                                         >
                                           <Iconify
-                                            color={"#E4D0B5"}
+                                            color={palette.primary.gold}
                                             icon={
                                               isTableConfigAdded === false
                                                 ? "eva:plus-fill"
@@ -656,7 +646,7 @@ export default function EventDashboard() {
                                   </Typography>
                                 </TableCell>
                                 <TableCell
-                                  bgcolor={"#E4D0B5"}
+                                  bgcolor={palette.primary.gold}
                                   component="th"
                                   scope="row"
                                   padding="none"
@@ -671,7 +661,7 @@ export default function EventDashboard() {
                                   </Typography>
                                 </TableCell>
                                 <TableCell
-                                  bgcolor={"#E4D0B5"}
+                                  bgcolor={palette.primary.gold}
                                   component="th"
                                   scope="row"
                                   padding="none"
@@ -737,7 +727,7 @@ export default function EventDashboard() {
                   {isNotFound && (
                     <TableBody
                       style={{
-                        backgroundColor: "#E4D0B5",
+                        backgroundColor: palette.primary.gold,
                       }}
                     >
                       <TableRow>
@@ -747,7 +737,7 @@ export default function EventDashboard() {
                               textAlign: "center",
                             }}
                             style={{
-                              backgroundColor: "#E4D0B5",
+                              backgroundColor: palette.primary.gold,
                             }}
                           >
                             <Typography variant="h6" paragraph>
@@ -803,8 +793,7 @@ export default function EventDashboard() {
               p: 1,
               width: "90%",
               hieght: "100%",
-              borderColor: "#E4D0B5",
-              // backgroundColor: '#E4D0B5',
+              borderColor: palette.primary.gold,
               borderWidth: 1,
 
               "& .MuiMenuItem-root": {
@@ -813,7 +802,7 @@ export default function EventDashboard() {
                 alignItems: "center",
                 justifyContent: "center",
                 width: "80%",
-                borderColor: "#E4D0B5",
+                borderColor: palette.primary.gold,
                 borderWidth: 12,
               },
             },
@@ -961,7 +950,7 @@ export default function EventDashboard() {
                               <Box>
                                 <img
                                   src={eventImage}
-                                  alt="Image"
+                                  alt={eventImage}
                                   style={{ width: "300px", height: "200px" }} // Set the desired width and height
                                 />
                               </Box>
@@ -1008,7 +997,7 @@ export default function EventDashboard() {
                           width: "100%",
                         }}
                       >
-                        {editEvent != false ? "Update" : "Add"} Event
+                        {editEvent !== false ? "Update" : "Add"} Event
                       </Button>
                     </Box>
                   </>
@@ -1073,7 +1062,7 @@ export default function EventDashboard() {
               p: 1,
               width: "90%",
               hieght: "100%",
-              borderColor: "#E4D0B5",
+              borderColor: palette.primary.gold,
               borderWidth: 1,
 
               "& .MuiMenuItem-root": {
@@ -1082,7 +1071,7 @@ export default function EventDashboard() {
                 alignItems: "center",
                 justifyContent: "center",
                 width: "80%",
-                borderColor: "#E4D0B5",
+                borderColor: palette.primary.gold,
                 borderWidth: 12,
               },
             },
@@ -1280,7 +1269,7 @@ export default function EventDashboard() {
               p: 1,
               width: "90%",
               hieght: "100%",
-              borderColor: "#E4D0B5",
+              borderColor: palette.primary.gold,
               // backgroundColor: '#E4D0B5',
               borderWidth: 1,
 
@@ -1290,13 +1279,23 @@ export default function EventDashboard() {
                 alignItems: "center",
                 justifyContent: "center",
                 width: "80%",
-                borderColor: "#E4D0B5",
+                borderColor: palette.primary.gold,
                 borderWidth: 12,
               },
             },
           }}
         >
-          <Scrollbar>
+          <Box
+            component="form"
+            sx={{
+              width: "100%",
+              borderWidth: 2,
+              backgroundColor: "black",
+              borderRadius: 4,
+              height: 500,
+            }}
+            autoComplete="on"
+          >
             <Box
               component="form"
               sx={{
@@ -1304,32 +1303,21 @@ export default function EventDashboard() {
                 borderWidth: 2,
                 backgroundColor: "black",
                 borderRadius: 4,
-                height: 500,
               }}
               autoComplete="on"
             >
-              <Box
-                component="form"
-                sx={{
-                  width: "100%",
-                  borderWidth: 2,
-                  backgroundColor: "black",
-                  borderRadius: 4,
-                }}
-                autoComplete="on"
-              >
-                <Stack alignItems={"flex-end"} justifyItems={"right"}>
-                  <IconButton
-                    size="large"
-                    color="inherit"
-                    onClick={() => {
-                      setshowAllConfigDataPopUp(false);
-                    }}
-                  >
-                    <Iconify color={palette.primary.gold} icon={"maki:cross"} />
-                  </IconButton>
-                </Stack>
-                <Stack justifyContent={"center"}>
+              <Stack alignItems={"flex-end"} justifyItems={"right"}>
+                <IconButton
+                  size="large"
+                  color="inherit"
+                  onClick={() => {
+                    setshowAllConfigDataPopUp(false);
+                  }}
+                >
+                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                </IconButton>
+              </Stack>
+              {/* <Stack justifyContent={"center"} style={{ paddingBottom: 12 }}>
                   <Typography
                     sx={{
                       color: palette.primary.gold,
@@ -1340,118 +1328,138 @@ export default function EventDashboard() {
                   >
                     All Table Configuration
                   </Typography>
-                </Stack>
-                <Box display="flex">
-                  <Box width="50%" textAlign="left"></Box>{" "}
-                  <Box width="50%" textAlign="right">
-                    <Button
-                      onClick={() => {
-                        setaddTableConfigPopup(true);
-                      }}
-                      style={{
-                        backgroundColor: "#E4D0B5",
-                        color: "black",
-                        borderRadius: 10,
-                      }}
-                      variant="Outlined"
-                      startIcon={<Iconify icon="eva:plus-fill" />}
-                    >
-                      Add Table Config {tableConfigData?.length}
-                    </Button>
-                  </Box>
+                </Stack> */}
+              <Box display="flex">
+                <Box width="50%">
+                  <Typography
+                    sx={{
+                      color: palette.primary.gold,
+                      textAlign: "left",
+                      fontSize: 20,
+                      fontWeight: "bold",
+                      paddingLeft: 2,
+                    }}
+                  >
+                    All Table Configuration
+                  </Typography>
+                </Box>{" "}
+                <Box width="50%" style={{ padding: 12, textAlign: "right" }}>
+                  <Button
+                    onClick={() => {
+                      setaddTableConfigPopup(true);
+                    }}
+                    style={{
+                      backgroundColor: palette.primary.gold,
+                      color: "black",
+                      borderRadius: 10,
+                    }}
+                    variant="Outlined"
+                    startIcon={<Iconify icon="eva:plus-fill" />}
+                  >
+                    Add Table Config
+                  </Button>
                 </Box>
-                <Container
-            style={{
-              borderWidth: 1,
-              backgroundColor: "#E4D0B5",
-              padding: 1,
-              borderRadius: 4,
-            }}
-            alignItems
-          >
-                <Scrollbar>
-                  <TableContainer>
-                    <Table>
-                      {tableConfigData?.map((item, index) => {
-                        return (
-                          <>
-                            <TableRow
-                              style={{
-                                margin: 20,
-                              }}
-                              bgcolor={"#E4D0B5"}
-                              // hover
-                            >
-                              <TableCell>
-                                <Typography
-                                  sx={{ color: "black", px: 2 }}
-                                  variant="subtitle2"
-                                  noWrap
-                                >
-                                  Sr No {index}
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ color: "black", px: 2 }}
-                                  variant="subtitle2"
-                                  noWrap
-                                >
-                                  Minimum Price {item.minPrice}
-                                </Typography>
-                              </TableCell>
-                              <TableCell>
-                                <Typography
-                                  sx={{ color: "black", px: 2 }}
-                                  variant="subtitle2"
-                                  noWrap
-                                >
-                                  Type {item.type}
-                                </Typography>
-                              </TableCell>
+              </Box>
+              <Scrollbar style={{ paddingLeft: 2, paddingRight: 2 }}>
+                <TableContainer>
+                  <Table>
+                    <UserListHead
+                      headLabel={EVENTS_TABLE_CONFIG_HEAD}
+                      rowCount={EventData.length}
+                      numSelected={selected.length}
+                    />
+                    <TableBody></TableBody>
+                  </Table>
+                </TableContainer>
+              </Scrollbar>
+              <Container
+                style={{
+                  borderWidth: 1,
+                  backgroundColor: palette.primary.gold,
+                  padding: 1,
+                  borderRadius: 4,
+                }}
+                alignItems
+              >
+                <TableContainer>
+                  <Table>
+                    {tableConfigData?.map((item, index) => {
+                      return (
+                        <>
+                          <TableRow
+                            style={{
+                              margin: 20,
+                            }}
+                            bgcolor={palette.primary.gold}
+                            // hover
+                          >
+                            <TableCell>
+                              <Typography
+                                sx={{ color: "black", px: 2 }}
+                                variant="subtitle2"
+                                noWrap
+                              >
+                                {index}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography
+                                sx={{ color: "black", px: 2 }}
+                                variant="subtitle2"
+                                noWrap
+                              >
+                                {item.minPrice}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography
+                                sx={{ color: "black", px: 2 }}
+                                variant="subtitle2"
+                                noWrap
+                              >
+                                {item.type}
+                              </Typography>
+                            </TableCell>
 
-                              <TableCell align="left">
-                                <Typography
-                                  sx={{ color: "black", px: 2 }}
-                                  variant="subtitle2"
-                                  noWrap
-                                >
-                                  Recommended Capacity{" "}
-                                  {item.recommendedCapacity}
-                                </Typography>
-                              </TableCell>
+                            <TableCell align="left">
+                              <Typography
+                                sx={{ color: "black", px: 2 }}
+                                variant="subtitle2"
+                                noWrap
+                              >
+                                {item.recommendedCapacity}
+                              </Typography>
+                            </TableCell>
 
-                              <TableCell>
-                                <Stack flexDirection={"row"}>
-                                  <IconButton
-                                    size="large"
-                                    color="inherit"
-                                    onClick={() => {}}
-                                  >
-                                    <Iconify icon={"material-symbols:edit"} />
-                                  </IconButton>
-                                </Stack>
-                              </TableCell>
-                              <TableCell>
+                            <TableCell>
+                              <Stack flexDirection={"row"}>
                                 <IconButton
                                   size="large"
                                   color="inherit"
                                   onClick={() => {}}
                                 >
-                                  <Iconify icon={"ic:baseline-delete"} />
+                                  <Iconify icon={"material-symbols:edit"} />
                                 </IconButton>
-                              </TableCell>
-                            </TableRow>
-                          </>
-                        );
-                      })}
-                    </Table>
-                  </TableContainer>
-                </Scrollbar>
-                </Container>
-              </Box>
+                              </Stack>
+                            </TableCell>
+                            <TableCell>
+                              <IconButton
+                                size="large"
+                                color="inherit"
+                                onClick={() => {}}
+                              >
+                                <Iconify icon={"ic:baseline-delete"} />
+                              </IconButton>
+                            </TableCell>
+                          </TableRow>
+                        </>
+                      );
+                    })}
+                  </Table>
+                </TableContainer>
+              </Container>
             </Box>
-          </Scrollbar>
+          </Box>
         </Popover>
         <DeleteEventDialog />
       </Container>

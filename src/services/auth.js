@@ -13,6 +13,5 @@ export const otpVerify = async (obj) => {
     `${process.env.REACT_APP_BASE_URL}auth/verifyOTP`,
     obj
   );
-
   return data;
 };

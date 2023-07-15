@@ -85,7 +85,7 @@ export default function ViewClubInfo(data) {
           <Box></Box>
 
           <Box sx={{ paddingBottom: 10 }}>
-            <Typography variant="h4" sx={{ mb: 2, color: "#E4D0B5" }}>
+            <Typography variant="h4" sx={{ mb: 2, color: palette.primary.gold }}>
               Representative Information
             </Typography>
             <FeildShow
@@ -100,7 +100,7 @@ export default function ViewClubInfo(data) {
             />
             <FeildShow keyName={"Role"} value={data?.data?.role} />
 
-            <Typography variant="h4" sx={{ mb: 3, mt: 3, color: "#E4D0B5" }}>
+            <Typography variant="h4" sx={{ mb: 3, mt: 3, color: palette.primary.gold }}>
               Privileges{" "}
             </Typography>
 

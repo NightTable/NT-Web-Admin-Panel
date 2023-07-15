@@ -50,7 +50,7 @@ export default function ViewClubInfo({ data }) {
         }}
         maxWidth="xl"
       >
-        <Typography variant="h4" sx={{ mb: 5, color: "#E4D0B5" }}>
+        <Typography variant="h4" sx={{ mb: 5, color: palette.primary.gold }}>
           Club Information
         </Typography>
         {displayData?.photos?.length > 0 && (
@@ -72,7 +72,7 @@ export default function ViewClubInfo({ data }) {
           </ImageList>
         )}
         <Box sx={{ paddingBottom: 60 }}>
-          <Typography variant="h4" sx={{ mb: 2, color: "#E4D0B5" }}>
+          <Typography variant="h4" sx={{ mb: 2, color: palette.primary.gold }}>
             Details
           </Typography>
           <FeildShow keyName={"Name "} value={displayData.name} />
@@ -91,7 +91,7 @@ export default function ViewClubInfo({ data }) {
             keyName={"Line Items"}
             value={displayData?.Address?.Address}
           />
-          {/* <Typography variant="h4" sx={{ mb: 2, mt: 2, color: "#E4D0B5" }}>
+          {/* <Typography variant="h4" sx={{ mb: 2, mt: 2, color: palette.primary.gold }}>
             Line Items
           </Typography> */}
         </Box>

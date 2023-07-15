@@ -237,7 +237,7 @@ export default function MDashboard() {
         <Container>
           <Box display="flex">
             <Box width="50%" textAlign="left">
-              <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
+              <Typography variant="h4" sx={{ color: palette.primary.gold }}>
                 Let's Add Something to Menu
               </Typography>
             </Box>
@@ -247,13 +247,13 @@ export default function MDashboard() {
                   setpopup_open(true);
                 }}
                 style={{
-                  backgroundColor: "#E4D0B5",
+                  backgroundColor: palette.primary.gold,
                   color: "black",
                   padding: 8,
                   borderRadius: 10,
                 }}
                 variant="Outlined"
-                // sx={{ backgroundColor: "#E4D0B5", color: "black" }}
+                // sx={{ backgroundColor: palette.primary.gold, color: "black" }}
                 startIcon={<Iconify icon="eva:plus-fill" />}
               >
                 Add Menu
@@ -276,20 +276,20 @@ export default function MDashboard() {
                       borderRadius={2}
                       marginRight={2}
                       borderColor={
-                        index == selected_club_btn ? "black" : "#E4D0B5"
+                        index == selected_club_btn ? "black" : palette.primary.gold
                       }
                       flexDirection={"row"}
                       justifyContent={"center"}
                       alignItems={"center"}
                       backgroundColor={
-                        index == selected_club_btn ? "#E4D0B5" : "black"
+                        index == selected_club_btn ? palette.primary.gold : "black"
                       }
                     >
                       <Typography
                         variant="body1"
                         style={{
                           color:
-                            index == selected_club_btn ? "black" : "#E4D0B5",
+                            index == selected_club_btn ? "black" : palette.primary.gold,
                           fontWeight:
                             index == selected_club_btn ? "bold" : "500",
 
@@ -306,7 +306,7 @@ export default function MDashboard() {
             </Stack>
           </Scrollbar>
           <Box width="50%" textAlign="left">
-            <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
+            <Typography variant="h4" sx={{ color: palette.primary.gold }}>
               Menu Items
             </Typography>
           </Box>
@@ -369,7 +369,7 @@ export default function MDashboard() {
             p: 1,
             width: "90%",
             hieght: "100%",
-            borderColor: "#E4D0B5",
+            borderColor: palette.primary.gold,
             // backgroundColor: '#E4D0B5',
             borderWidth: 1,
 
@@ -379,7 +379,7 @@ export default function MDashboard() {
               alignItems: "center",
               justifyContent: "center",
               width: "80%",
-              borderColor: "#E4D0B5",
+              borderColor: palette.primary.gold,
               borderWidth: 12,
             },
           },

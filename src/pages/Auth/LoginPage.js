@@ -1,42 +1,20 @@
 import { Helmet } from "react-helmet-async";
 // @mui
-import { styled } from "@mui/material/styles";
 import { Container, Typography } from "@mui/material";
 // hooks
 import useResponsive from "../../hooks/useResponsive";
-// sections
+//COMPONENT
 import LoginForm from "../../features/Auth/LoginForm";
+//IMAGE
 import logoImg from "../../assets/logo-bg.png";
-// ----------------------------------------------------------------------
+//THEME
+import palette from "src/theme/palette";
+//UTILS
 import { getGreetingMsg } from "src/utils/Utils";
-const StyledRoot = styled("div")(({ theme }) => ({
-  [theme.breakpoints.up("md")]: {
-    display: "flex",
-  },
-}));
+//CSS
+import { StyledRoot, StyledContent, StyledSection } from "./css/css";
 
-const StyledSection = styled("div")(({ theme }) => ({
-  width: "100%",
-  maxWidth: 480,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  boxShadow: theme.customShadows.card,
-  backgroundColor: "black",
-}));
-
-const StyledContent = styled("div")(({ theme }) => ({
-  maxWidth: 480,
-  margin: "auto",
-  minHeight: "100vh",
-  display: "flex",
-  justifyContent: "center",
-  flexDirection: "column",
-  padding: theme.spacing(12, 0),
-}));
-
-// ----------------------------------------------------------------------
-
+//Main function
 export default function LoginPage() {
   const mdUp = useResponsive("up", "md");
   return (
@@ -45,20 +23,23 @@ export default function LoginPage() {
         <title> Login | Night Table Admin's Dashboard </title>
       </Helmet>
 
-      <StyledRoot style={{ backgroundColor: "black" }}>
+      <StyledRoot style={{ backgroundColor: palette.common.black }}>
         {mdUp && (
           <StyledSection>
             <img style={{ height: 300 }} src={logoImg} alt="login" />
           </StyledSection>
         )}
-
-        <Container sx={{ backgroundColor: "black" }} maxWidth="sm">
+        <Container sx={{ backgroundColor: palette.common.black }} maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
+            <Typography variant="h4" sx={{ color: palette.primary.gold }}>
               {getGreetingMsg()} Admin
             </Typography>
 
-            <Typography sx={{ color: "#E4D0B5" }} variant="h3" gutterBottom>
+            <Typography
+              sx={{ color: palette.primary.gold }}
+              variant="h3"
+              gutterBottom
+            >
               Sign in to Night Table
             </Typography>
             <LoginForm />

@@ -377,8 +377,8 @@ export default function RepresentativeDashboard() {
               p: 1,
               width: "90%",
               hieght: "100%",
-              borderColor: "#E4D0B5",
-              backgroundColor: "#E4D0B5",
+              borderColor: palette.primary.gold,
+              backgroundColor: palette.primary.gold,
               borderWidth: 1,
 
               "& .MuiMenuItem-root": {
@@ -387,7 +387,7 @@ export default function RepresentativeDashboard() {
                 alignItems: "center",
                 justifyContent: "center",
                 width: "80%",
-                borderColor: "#E4D0B5",
+                borderColor: palette.primary.gold,
                 borderWidth: 12,
               },
             },
@@ -483,7 +483,7 @@ export default function RepresentativeDashboard() {
       </Helmet>
 
       <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ margin: 3, color: "#E4D0B5" }}>
+        <Typography variant="h4" sx={{ margin: 3, color: palette.primary.gold }}>
           Hi, Welcome back {process.env.REACT_APP_BASE_URL}
         </Typography>
         <Container>
@@ -493,7 +493,7 @@ export default function RepresentativeDashboard() {
             justifyContent="space-between"
             mb={1}
           >
-            <Typography variant="h4" sx={{ color: "#E4D0B5" }}>
+            <Typography variant="h4" sx={{ color: palette.primary.gold }}>
               Representatives
             </Typography>
             <Button
@@ -502,13 +502,13 @@ export default function RepresentativeDashboard() {
                 setaddRepresentativePopUp(true);
               }}
               style={{
-                backgroundColor: "#E4D0B5",
+                backgroundColor: palette.primary.gold,
                 color: "black",
                 padding: 8,
                 borderRadius: 10,
               }}
               variant="Outlined"
-              // sx={{ backgroundColor: "#E4D0B5", color: "black" }}
+              // sx={{ backgroundColor: palette.primary.gold, color: "black" }}
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
               Add
@@ -530,20 +530,20 @@ export default function RepresentativeDashboard() {
                       borderRadius={2}
                       marginRight={2}
                       borderColor={
-                        index == selected_club_btn ? "black" : "#E4D0B5"
+                        index == selected_club_btn ? "black" : palette.primary.gold
                       }
                       flexDirection={"row"}
                       justifyContent={"center"}
                       alignItems={"center"}
                       backgroundColor={
-                        index == selected_club_btn ? "#E4D0B5" : "black"
+                        index == selected_club_btn ? palette.primary.gold : "black"
                       }
                     >
                       <Typography
                         variant="body1"
                         style={{
                           color:
-                            index == selected_club_btn ? "black" : "#E4D0B5",
+                            index == selected_club_btn ? "black" : palette.primary.gold,
                           fontWeight:
                             index == selected_club_btn ? "bold" : "500",
 
@@ -562,7 +562,7 @@ export default function RepresentativeDashboard() {
           <Container
             style={{
               borderWidth: 1,
-              backgroundColor: "#E4D0B5",
+              backgroundColor: palette.primary.gold,
               padding: 1,
               borderRadius: 4,
             }}
@@ -603,7 +603,7 @@ export default function RepresentativeDashboard() {
                               style={{
                                 margin: 20,
                               }}
-                              bgcolor={"#E4D0B5"}
+                              bgcolor={palette.primary.gold}
                               // hover
                               key={_id}
                               tabIndex={-1}
@@ -624,7 +624,7 @@ export default function RepresentativeDashboard() {
                               </TableCell>
 
                               <TableCell
-                                bgcolor={"#E4D0B5"}
+                                bgcolor={palette.primary.gold}
                                 component="th"
                                 scope="row"
                                 padding="none"
@@ -711,7 +711,7 @@ export default function RepresentativeDashboard() {
                     <>
                       <TableBody
                         style={{
-                          backgroundColor: "#E4D0B5",
+                          backgroundColor: palette.primary.gold,
                         }}
                       >
                         <TableRow>
@@ -721,7 +721,7 @@ export default function RepresentativeDashboard() {
                                 textAlign: "center",
                               }}
                               style={{
-                                backgroundColor: "#E4D0B5",
+                                backgroundColor: palette.primary.gold,
                                 paddingTop: 20,
                               }}
                             >
@@ -744,7 +744,7 @@ export default function RepresentativeDashboard() {
                   {isNotFound && (
                     <TableBody
                       style={{
-                        backgroundColor: "#E4D0B5",
+                        backgroundColor: palette.primary.gold,
                       }}
                     >
                       <TableRow>
@@ -754,7 +754,7 @@ export default function RepresentativeDashboard() {
                               textAlign: "center",
                             }}
                             style={{
-                              backgroundColor: "#E4D0B5",
+                              backgroundColor: palette.primary.gold,
                             }}
                           >
                             <Typography variant="h6" paragraph>
@@ -812,7 +812,7 @@ export default function RepresentativeDashboard() {
               p: 1,
               width: "90%",
               hieght: "100%",
-              borderColor: "#E4D0B5",
+              borderColor: palette.primary.gold,
               // backgroundColor: '#E4D0B5',
               borderWidth: 1,
 
@@ -822,7 +822,7 @@ export default function RepresentativeDashboard() {
                 alignItems: "center",
                 justifyContent: "center",
                 width: "80%",
-                borderColor: "#E4D0B5",
+                borderColor: palette.primary.gold,
                 borderWidth: 12,
               },
             },
