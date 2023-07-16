@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -65,6 +66,7 @@ import UploadSingleImage from "../UploadImage/UploadSingleImage";
 import { AddImage } from "src/services/upload";
 import {
   createTableConfig,
+  deleteTableConfig,
   getEventConfigsData,
 } from "src/services/tableConfig";
 
@@ -156,6 +158,7 @@ export default function EventDashboard() {
         name: item.club.name,
         _id: item._id,
       });
+      return true;
     });
 
     setselectedClubData(tempArr[0]);
@@ -230,7 +233,7 @@ export default function EventDashboard() {
       Data.append("files", eventImage[0]);
       //ADD EVENT IMAGE API CALL
       const ImgUpload = await AddImage(Data);
-      if (ImgUpload.message == "files uploaded") {
+      if (ImgUpload.message === "files uploaded") {
         let obj = {
           name: EventName,
           picture: ImgUpload.data[0],
@@ -276,9 +279,9 @@ export default function EventDashboard() {
         selectedEventData._id,
         obj
       );
-      if (updateData.status == true) {
+      if (updateData.status === true) {
         const index = EventData.findIndex((item) => {
-          return item._id == selectedEventData._id;
+          return item._id === selectedEventData._id;
         });
 
         EventData[index] = updateData.data;
@@ -362,7 +365,7 @@ export default function EventDashboard() {
       } else {
         alert("ERROR IN DELETING THE EVENT ");
       }
-    } else id == "2";
+    } else id === "2";
     setdeleteDialogOpen(false);
   };
 
@@ -395,6 +398,18 @@ export default function EventDashboard() {
     if (tcAdd?.data.status === true) {
       setaddTableConfigPopup(!true);
       alert("Table Configuration Addded!");
+      console.log("tcAdd?.data===>", tcAdd?.data);
+      console.log("tableConfigData====>", tableConfigData);
+      const tempTableConfigData = [tcAdd?.data.data, ...tableConfigData];
+      settableConfigData(tempTableConfigData);
+      console.log("====================================");
+      console.log("DATA UPDATED ::::");
+      console.log("====================================");
+
+      resettingTableConfigstates();
+    }
+    else {
+      console.log('tcAdd?.data',tcAdd?.data)
     }
   };
 
@@ -413,6 +428,23 @@ export default function EventDashboard() {
     // GET EVENT NEW DETAILS
 
     // console.log("obj===>", obj);
+    resettingTableConfigstates();
+  };
+
+  const deleteTableConfigurations = async (data) => {
+    let obj = {
+      deleteTableConfig: data._id,
+    };
+
+    const apiCall = await deleteTableConfig();
+    console.log("apiCall ======>", apiCall);
+  };
+  //resettingtable config the states
+  const resettingTableConfigstates = () => {
+    settypeTC("");
+    setminPriceTC("");
+    setrecomCapacityTC("");
+    settmapleIDTC("");
   };
 
   // PAGES HANDLE
@@ -425,11 +457,7 @@ export default function EventDashboard() {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  function getComparator(order, orderBy) {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  }
+  function getComparator(order, orderBy) {}
 
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - EventData.length) : 0;
@@ -482,7 +510,6 @@ export default function EventDashboard() {
                   seteditEvent(false);
                   clearAddPopUpStates();
                   seteditEventImage(true);
-
                   setEventClubPopUp(true);
                 }}
                 style={{
@@ -616,7 +643,6 @@ export default function EventDashboard() {
                                           size="large"
                                           color="inherit"
                                           onClick={() => {
-                                            // console.log("icons pressed ===?>");
                                             setselectedEventData(item);
                                             // IF TC = FALSE : DIRECT TC ADD
                                             if (isTableConfigAdded === false) {
@@ -981,9 +1007,8 @@ export default function EventDashboard() {
                     >
                       <Button
                         onClick={() => {
-                          {
-                            editEvent != false ? updateEvent() : addEvent();
-                          }
+                          editEvent != false ? updateEvent() : addEvent();
+
                           //setEventClubPopUp(true);
                         }}
                         style={{
@@ -1317,18 +1342,7 @@ export default function EventDashboard() {
                   <Iconify color={palette.primary.gold} icon={"maki:cross"} />
                 </IconButton>
               </Stack>
-              {/* <Stack justifyContent={"center"} style={{ paddingBottom: 12 }}>
-                  <Typography
-                    sx={{
-                      color: palette.primary.gold,
-                      textAlign: "center",
-                      fontSize: 20,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    All Table Configuration
-                  </Typography>
-                </Stack> */}
+             
               <Box display="flex">
                 <Box width="50%">
                   <Typography
@@ -1346,6 +1360,7 @@ export default function EventDashboard() {
                 <Box width="50%" style={{ padding: 12, textAlign: "right" }}>
                   <Button
                     onClick={() => {
+                      resettingTableConfigstates();
                       setaddTableConfigPopup(true);
                     }}
                     style={{

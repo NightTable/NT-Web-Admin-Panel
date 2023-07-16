@@ -32,3 +32,13 @@ export const createTableConfig = async (obj) => {
 
   return data;
 };
+
+//CREATE TABLE CONFIGURATION
+export const deleteTableConfig = async (obj) => {
+  const data = await PostRequest(
+    `${process.env.REACT_APP_BASE_URL}tableconfigurations/${obj.tableconfigId}`,
+    obj
+  );
+
+  return data;
+};
