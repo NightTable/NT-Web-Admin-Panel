@@ -30,8 +30,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Grid,
 } from "@mui/material";
-import Switch from "@material-ui/core/Switch";
 import Iconify from "../../component/iconify";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -40,7 +40,7 @@ import Scrollbar from "../../component/scrollbar";
 import ResponsiveDateTimePickers from "src/component/ResponsiveDateTimePIcker";
 
 // sections
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import { UserListHead } from "../../sections/@dashboard/user";
 // mock
 //theme
 import palette from "../../theme/palette";
@@ -51,13 +51,11 @@ import {
   getEventofClub,
   updateEventToDB,
 } from "src/services/Event";
-import { getCurrentDate, convertToTimeStamp } from "../../utils/Day";
 
 import {
   EVENTS_TABLE_HEAD,
   EVENTS_TABLE_CONFIG_HEAD,
 } from "../../Table_Head/index";
-import ViewEventInfo from "./ViewEventInfo";
 import { LocalStorageKey } from "src/utils/localStorage/keys";
 //services
 import { getProfileData } from "src/services/representative";
@@ -68,6 +66,7 @@ import {
   createTableConfig,
   deleteTableConfig,
   getEventConfigsData,
+  updateTableConfig,
 } from "src/services/tableConfig";
 
 //MAIN FUNCTION
@@ -77,7 +76,6 @@ export default function EventDashboard() {
   const currentDateinISO5601 = dayjs().format("YYYY-MM-DDTHH:MM");
   const currentDateinTimeStamp = dayjs().valueOf();
 
-  const theme = useTheme();
   //NAVIGATION
   const navigate = useNavigate();
   //clubs
@@ -134,6 +132,8 @@ export default function EventDashboard() {
   //table mapId
   const [tmapleIDTC, settmapleIDTC] = useState("");
 
+  // globalLoader
+  const [loaderEnabled, setloaderEnabled] = useState(false);
   useEffect(() => {
     loadData();
   }, []);
@@ -208,7 +208,7 @@ export default function EventDashboard() {
           const updateArray = [storeEvent?.data.data, ...EventData];
           setEventData(updateArray);
           //CLEAR THE STATES
-          clearAddPopUpStates();
+          resettingEventStates();
           //CLOSE ADD EVENT POP-UP
           setEventClubPopUp(false);
           seteventLoader(false);
@@ -256,10 +256,7 @@ export default function EventDashboard() {
           setEventData(EventData);
           alert("EVENT UPDATED SUCCESSFULLY!");
           //CLEAR THE STATES
-          clearAddPopUpStates();
-          //CLOSE ADD EVENT POP-UP
-          setEventClubPopUp(false);
-          seteventLoader(false);
+          resettingEventStates();
         } else {
           //WHEN IMAGE DOES N'T GET UPLOADED
           alert("ERROR while Updating Events!");
@@ -288,7 +285,7 @@ export default function EventDashboard() {
         setEventData(EventData);
         alert("EVENT UPDATED SUCCESSFULLY!");
         //CLEAR THE STATES
-        clearAddPopUpStates();
+        resettingEventStates();
         //CLOSE ADD EVENT POP-UP
         setEventClubPopUp(false);
         seteventLoader(false);
@@ -299,10 +296,13 @@ export default function EventDashboard() {
     }
   };
   // CLEAR ADD POP-UP STATES
-  const clearAddPopUpStates = () => {
+  const resettingEventStates = () => {
     // setEventDate("");
     setEventName("");
     setticketLink("");
+    seteditEventImage(!true);
+    seteditEvent(false);
+    seteventLoader(false);
   };
 
   // DELETE EVENT UI
@@ -378,12 +378,15 @@ export default function EventDashboard() {
       eventData?._id
     );
     if (eventAllConfigs.status === true) {
-      settableConfigData(eventAllConfigs.tableConfigForEvent);
+      settableConfigData(eventAllConfigs.tableConfigForEvent.reverse());
       setshowAllConfigDataPopUp(true);
     }
   };
+
   //TABLE CONFIGURATION
   const addTableConfiguration = async () => {
+    setloaderEnabled(true);
+
     let obj = {
       type: typeTC,
       minPrice: minPriceTC,
@@ -393,28 +396,64 @@ export default function EventDashboard() {
       tableMapId: tmapleIDTC,
     };
     const tcAdd = await createTableConfig(obj);
-
     // GET EVENT NEW DETAILS
-    if (tcAdd?.data.status === true) {
+    if (tcAdd?.data?.status === true) {
       setaddTableConfigPopup(!true);
       alert("Table Configuration Addded!");
-      console.log("tcAdd?.data===>", tcAdd?.data);
-      console.log("tableConfigData====>", tableConfigData);
-      const tempTableConfigData = [tcAdd?.data.data, ...tableConfigData];
-      settableConfigData(tempTableConfigData);
-      console.log("====================================");
-      console.log("DATA UPDATED ::::");
-      console.log("====================================");
+      if (tableConfigData.length === 0) {
+        console.log("Event Data ::", EventData);
+        console.log("Selected Event Data::", selectedEventData);
+        const eventIndex = EventData.findIndex((item) => {
+          return item._id == selectedEventData._id;
+        });
+        EventData[eventIndex].isTableConfigAdded = true;
+      } else {
+        const tempTableConfigData = [tcAdd?.data.data, ...tableConfigData];
+        settableConfigData(tempTableConfigData);
+      }
 
       resettingTableConfigstates();
-    }
-    else {
-      console.log('tcAdd?.data',tcAdd?.data)
+      setloaderEnabled(!true);
+    } else {
+      console.log("tcAdd?.data", tcAdd.response.data?.message);
+      alert(tcAdd?.response?.data?.message);
+      setloaderEnabled(!true);
     }
   };
 
-  //UPDATE TABLE CONFIGURATION
-  const updateTableConfiguration = async () => {
+  const updateStateforEditUpdateTableConfig = (data) => {
+    setselectedTableConfigData([data]);
+    settypeTC(data.type);
+    setminPriceTC(data.minPrice);
+    setrecomCapacityTC(data.recommendedCapacity);
+    settmapleIDTC(data.tableMapId);
+    seteditTableConfigCheck(true);
+    setaddTableConfigPopup(true);
+  };
+
+  const deleteTableConfigurations = async (data) => {
+    setloaderEnabled(true);
+
+    let obj = {
+      tableconfigId: data._id,
+    };
+    const apiCall = await deleteTableConfig(obj);
+    if (apiCall?.data?.status === true) {
+      alert(apiCall?.data?.message);
+      const tempTableConfigData = tableConfigData.filter((item) => {
+        return item._id !== data._id;
+      });
+
+      settableConfigData(tempTableConfigData);
+      setloaderEnabled(!true);
+    } else {
+      alert("Technical Error !");
+      setloaderEnabled(!true);
+    }
+  };
+  //setselectedTableConfigData
+  const editUpdateTableConfigurations = async (data) => {
+    setloaderEnabled(true);
     let obj = {
       type: typeTC,
       minPrice: minPriceTC,
@@ -423,21 +462,24 @@ export default function EventDashboard() {
       eventId: selectedEventData._id,
       tableMapId: tmapleIDTC,
     };
-    // ADD TABLE CONFIGURATION
-    // PATCH EVENT ADD
-    // GET EVENT NEW DETAILS
+    const apiCall = await updateTableConfig(
+      selectedTableConfigData[0]._id,
+      obj
+    );
+    if (apiCall.data?.status === true) {
+      alert("Table Config Updated Successfully!");
+      const updatingIndvTableConfigData = tableConfigData.findIndex((item) => {
+        return item._id == selectedTableConfigData[0]._id;
+      });
 
-    // console.log("obj===>", obj);
-    resettingTableConfigstates();
-  };
-
-  const deleteTableConfigurations = async (data) => {
-    let obj = {
-      deleteTableConfig: data._id,
-    };
-
-    const apiCall = await deleteTableConfig();
-    console.log("apiCall ======>", apiCall);
+      tableConfigData[updatingIndvTableConfigData] = apiCall.data.data;
+      setaddTableConfigPopup(!true);
+      setloaderEnabled(!true);
+    } else {
+      alert("Techincal Error ");
+      setaddTableConfigPopup(!true);
+      setloaderEnabled(!true);
+    }
   };
   //resettingtable config the states
   const resettingTableConfigstates = () => {
@@ -445,6 +487,7 @@ export default function EventDashboard() {
     setminPriceTC("");
     setrecomCapacityTC("");
     settmapleIDTC("");
+    seteditTableConfigCheck(false);
   };
 
   // PAGES HANDLE
@@ -508,7 +551,7 @@ export default function EventDashboard() {
               <Button
                 onClick={() => {
                   seteditEvent(false);
-                  clearAddPopUpStates();
+                  resettingEventStates();
                   seteditEventImage(true);
                   setEventClubPopUp(true);
                 }}
@@ -628,7 +671,6 @@ export default function EventDashboard() {
                                   margin: 20,
                                 }}
                                 bgcolor={palette.primary.gold}
-                                // hover
                                 key={_id}
                                 tabIndex={-1}
                               >
@@ -643,6 +685,9 @@ export default function EventDashboard() {
                                           size="large"
                                           color="inherit"
                                           onClick={() => {
+                                            resettingTableConfigstates();
+                                            settableConfigData([]);
+
                                             setselectedEventData(item);
                                             // IF TC = FALSE : DIRECT TC ADD
                                             if (isTableConfigAdded === false) {
@@ -799,6 +844,7 @@ export default function EventDashboard() {
             />
           </Container>
         </Container>
+        {/* {'ADD EVENT  START POP-UP'} */}
 
         <Popover
           open={addEventPopUp}
@@ -1007,7 +1053,7 @@ export default function EventDashboard() {
                     >
                       <Button
                         onClick={() => {
-                          editEvent != false ? updateEvent() : addEvent();
+                          editEvent !== false ? updateEvent() : addEvent();
 
                           //setEventClubPopUp(true);
                         }}
@@ -1248,7 +1294,7 @@ export default function EventDashboard() {
                       // eslint-disable-next-line no-lone-blocks
                       {
                         editTableConfigCheck !== false
-                          ? updateTableConfiguration()
+                          ? editUpdateTableConfigurations()
                           : addTableConfiguration();
                       }
                     }}
@@ -1264,7 +1310,7 @@ export default function EventDashboard() {
                       width: "100%",
                     }}
                   >
-                    {editTableConfigCheck != false ? "Update" : "Add"}{" "}
+                    {editTableConfigCheck !== false ? "Update" : "Add"}{" "}
                     Configuration
                   </Button>
                 </Box>
@@ -1342,7 +1388,7 @@ export default function EventDashboard() {
                   <Iconify color={palette.primary.gold} icon={"maki:cross"} />
                 </IconButton>
               </Stack>
-             
+
               <Box display="flex">
                 <Box width="50%">
                   <Typography
@@ -1403,7 +1449,7 @@ export default function EventDashboard() {
                         <>
                           <TableRow
                             style={{
-                              margin: 20,
+                              marginTop: 20,
                             }}
                             bgcolor={palette.primary.gold}
                             // hover
@@ -1451,7 +1497,9 @@ export default function EventDashboard() {
                                 <IconButton
                                   size="large"
                                   color="inherit"
-                                  onClick={() => {}}
+                                  onClick={() => {
+                                    updateStateforEditUpdateTableConfig(item);
+                                  }}
                                 >
                                   <Iconify icon={"material-symbols:edit"} />
                                 </IconButton>
@@ -1461,7 +1509,9 @@ export default function EventDashboard() {
                               <IconButton
                                 size="large"
                                 color="inherit"
-                                onClick={() => {}}
+                                onClick={() => {
+                                  deleteTableConfigurations(item);
+                                }}
                               >
                                 <Iconify icon={"ic:baseline-delete"} />
                               </IconButton>
@@ -1476,7 +1526,61 @@ export default function EventDashboard() {
             </Box>
           </Box>
         </Popover>
+
         <DeleteEventDialog />
+        {/*LOADER MODAL*/}
+        <Popover
+          open={loaderEnabled}
+          anchorEl={open}
+          onClose={() => {
+            setloaderEnabled(!true);
+          }}
+          anchorOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          PaperProps={{
+            sx: {
+              width: "100%",
+              hieght: "100%",
+            },
+          }}
+        >
+          <Grid
+            container
+            style={{
+              height: "100vh",
+              width: "100%",
+              backgroundColor: "black",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress
+              style={{
+                justifyItems: "center",
+                alignItems: "center",
+              }}
+              color={"success"}
+            />
+            <Typography
+              sx={{
+                color: palette.primary.gold,
+                textAlign: "center",
+                paddingTop: 4,
+                paddingBottom: 4,
+                fontSize: 12,
+                fontWeight: "bold",
+              }}
+            >
+              Please wait we are saving the data!
+            </Typography>
+          </Grid>
+        </Popover>
       </Container>
     </>
   );

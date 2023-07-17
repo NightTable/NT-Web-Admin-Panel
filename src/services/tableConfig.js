@@ -1,5 +1,5 @@
 import axios, * as others from "axios";
-import { PostRequest } from "src/utils/axios/Axios";
+import { DeleteRequest, PostRequest, PutRequest } from "src/utils/axios/Axios";
 
 //GET INDIVDUAL EVENT TABLE CONFIG
 export const getEventConfigsData = async (clubId, eventId) => {
@@ -29,16 +29,22 @@ export const createTableConfig = async (obj) => {
     `${process.env.REACT_APP_BASE_URL}tableconfigurations/club/${obj.clubId}`,
     obj
   );
-
   return data;
 };
 
 //CREATE TABLE CONFIGURATION
 export const deleteTableConfig = async (obj) => {
-  const data = await PostRequest(
+  const data = await DeleteRequest(
     `${process.env.REACT_APP_BASE_URL}tableconfigurations/${obj.tableconfigId}`,
     obj
   );
-
+  return data;
+};
+//CREATE TABLE CONFIGURATION
+export const updateTableConfig = async (tableconfigId, obj) => {
+  const data = await PutRequest(
+    `${process.env.REACT_APP_BASE_URL}tableconfigurations/${tableconfigId}`,
+    obj
+  );
   return data;
 };

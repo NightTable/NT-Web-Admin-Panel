@@ -483,7 +483,10 @@ export default function RepresentativeDashboard() {
       </Helmet>
 
       <Container maxWidth="xl">
-        <Typography variant="h4" sx={{ margin: 3, color: palette.primary.gold }}>
+        <Typography
+          variant="h4"
+          sx={{ margin: 3, color: palette.primary.gold }}
+        >
           Hi, Welcome back {process.env.REACT_APP_BASE_URL}
         </Typography>
         <Container>
@@ -530,20 +533,26 @@ export default function RepresentativeDashboard() {
                       borderRadius={2}
                       marginRight={2}
                       borderColor={
-                        index == selected_club_btn ? "black" : palette.primary.gold
+                        index == selected_club_btn
+                          ? "black"
+                          : palette.primary.gold
                       }
                       flexDirection={"row"}
                       justifyContent={"center"}
                       alignItems={"center"}
                       backgroundColor={
-                        index == selected_club_btn ? palette.primary.gold : "black"
+                        index == selected_club_btn
+                          ? palette.primary.gold
+                          : "black"
                       }
                     >
                       <Typography
                         variant="body1"
                         style={{
                           color:
-                            index == selected_club_btn ? "black" : palette.primary.gold,
+                            index == selected_club_btn
+                              ? "black"
+                              : palette.primary.gold,
                           fontWeight:
                             index == selected_club_btn ? "bold" : "500",
 

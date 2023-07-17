@@ -72,3 +72,32 @@ export const PatchRequest = async (session_url, body, token = null) => {
     return error;
   }
 };
+export const DeleteRequest = async (session_url, body, token = null) => {
+  if (token) {
+    var config = {
+      headers: {
+        token: token,
+      },
+    };
+  }
+  try {
+    return await axios.delete(session_url, body, config);
+  } catch (error) {
+    return error;
+  }
+};
+
+export const PutRequest = async (session_url, body, token = null) => {
+  if (token) {
+    var config = {
+      headers: {
+        token: token,
+      },
+    };
+  }
+  try {
+    return await axios.put(session_url, body, config);
+  } catch (error) {
+    return error;
+  }
+};
