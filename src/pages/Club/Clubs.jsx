@@ -268,7 +268,7 @@ export default function ClubDashboard() {
     if (data?.status === true) {
       alert("Club Added");
       //update the club array
-      const updateClubArr = [...clubs_data, data.data];
+      const updateClubArr = [data.data, ...clubs_data];
       setclubs_data(updateClubArr);
       //resetting the states to inital
       resetStates();

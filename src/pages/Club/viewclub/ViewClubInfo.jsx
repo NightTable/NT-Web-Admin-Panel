@@ -41,7 +41,6 @@ export default function ViewClubInfo({ data }) {
           </ImageList>
         )}
         <Box className="details-container">
-          
           <FeildShow keyName={"Name "} value={displayData.name} />
           <FeildShow keyName={"Phone Number"} value={displayData.phoneNumber} />
           <FeildShow keyName={"InstaHandle"} value={displayData?.instaHandle} />
