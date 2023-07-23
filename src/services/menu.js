@@ -37,6 +37,8 @@ export const getMenuforClub = async (club_id) => {
 
     axios(config)
       .then(function (response) {
+
+        console.log('getMenuforClub:  API CALL :: DATA:: response.data.data====>',response.data.data)
         resolve(response.data.data);
       })
       .catch(function (error) {

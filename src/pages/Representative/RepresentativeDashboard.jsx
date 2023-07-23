@@ -155,10 +155,10 @@ const Privilegesarr = [
 export default function RepresentativeDashboard() {
   const theme = useTheme();
 
-  const admin_username = localStorage.getItem(LocalStorageKey.USER_DATA);
-  let UName = JSON.parse(admin_username);
+  const userData = localStorage.getItem(LocalStorageKey.USER_DATA);
+  let parsedUserData = JSON.parse(userData);
   let fullName =
-    UName?.firstName?.toUpperCase() + " " + UName?.lastName?.toUpperCase();
+  parsedUserData?.firstName?.toUpperCase() + " " + parsedUserData?.lastName?.toUpperCase();
   const [admin_name, setadmin_name] = useState(fullName);
   //clubs
   const [clubs_data, setclubs_data] = useState([]);

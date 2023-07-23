@@ -34,6 +34,7 @@ import {
   updateMenuforClub,
 } from "src/services/menu";
 import { deleteEvent } from "src/services/Event";
+import { getClubs } from "src/services/club";
 
 //MAIN FUNCTION
 
@@ -77,11 +78,20 @@ export default function MDashboard() {
   //LOAD DATA
   const loadData = async () => {
     const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
+    const userData = localStorage.getItem(LocalStorageKey.USER_DATA);
+    let parsedUserData = JSON.parse(userData);
 
+    console.log("parsedUserData====>", parsedUserData);
     if (representativeId === null) {
       navigate("/");
     } else {
-      getClubData(JSON.parse(representativeId));
+      if (parsedUserData?.role == "godFather") {
+        const data = await getClubs();
+        setclubs_data(data?.data);
+        getMenuDataClub(data?.data[0]._id);
+      } else {
+        getClubData(JSON.parse(representativeId));
+      }
     }
   };
 
@@ -107,6 +117,7 @@ export default function MDashboard() {
 
   //GET MENU ITEMS
   const getMenuDataClub = async (club_id) => {
+    console.log("getMenuDataClub:::club_id===>", club_id);
     const data = await getMenuforClub(club_id);
     setmenuItemsData(data);
   };
@@ -224,7 +235,6 @@ export default function MDashboard() {
     const callApi = await deleteMenuforClub(menu._id);
     alert("Menu Deleted Successfully !");
     setdeleteDialogOpen(false);
-
   };
 
   return (
@@ -276,20 +286,26 @@ export default function MDashboard() {
                       borderRadius={2}
                       marginRight={2}
                       borderColor={
-                        index == selected_club_btn ? "black" : palette.primary.gold
+                        index == selected_club_btn
+                          ? "black"
+                          : palette.primary.gold
                       }
                       flexDirection={"row"}
                       justifyContent={"center"}
                       alignItems={"center"}
                       backgroundColor={
-                        index == selected_club_btn ? palette.primary.gold : "black"
+                        index == selected_club_btn
+                          ? palette.primary.gold
+                          : "black"
                       }
                     >
                       <Typography
                         variant="body1"
                         style={{
                           color:
-                            index == selected_club_btn ? "black" : palette.primary.gold,
+                            index == selected_club_btn
+                              ? "black"
+                              : palette.primary.gold,
                           fontWeight:
                             index == selected_club_btn ? "bold" : "500",
 
@@ -317,12 +333,12 @@ export default function MDashboard() {
               marginTop: 10,
             }}
           ></Box>
-          {/* {menuItemsData?.length === undefined ||
+          {menuItemsData?.length === undefined ||
             (menuItemsData?.length === 0 && (
               <>
-                <Typography>NO MENU ITEM IS FOUND</Typography>
+                <Typography style={{textAlign:'center',color:palette.primary.gold,paddingTop:200}}>NO MENU ITEM IS FOUND</Typography>
               </>
-            ))} */}
+            ))}
           {menuItemsData?.map((item) => {
             return (
               <>
