@@ -43,16 +43,12 @@ import palette from "../../theme/palette";
 import { getClubs } from "../../services/club";
 import {
   addRepresentativetoClub,
-  getProfileData,
   getRepresentativebyClub,
   editRepresentativetoClub,
   deleteRepresentativebyClub,
 } from "../../services/representative";
 import { REPRESENTATIVE_CONFIG_TABLE_HEAD } from "../../Table_Head/index";
-
-//LOCAL STORAGE
 import { LocalStorageKey } from "src/utils/localStorage/keys";
-
 //RESET PRIVILEGE DATA FIELDS
 
 const resetPrivilege = [
@@ -159,6 +155,11 @@ const Privilegesarr = [
 export default function RepresentativeDashboard() {
   const theme = useTheme();
 
+  const admin_username = localStorage.getItem(LocalStorageKey.USER_DATA);
+  let UName = JSON.parse(admin_username);
+  let fullName =
+    UName?.firstName?.toUpperCase() + " " + UName?.lastName?.toUpperCase();
+  const [admin_name, setadmin_name] = useState(fullName);
   //clubs
   const [clubs_data, setclubs_data] = useState([]);
 
@@ -447,9 +448,7 @@ export default function RepresentativeDashboard() {
   };
 
   function getComparator(order, orderBy) {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
+    return [];
   }
 
   const emptyRows =
@@ -487,7 +486,7 @@ export default function RepresentativeDashboard() {
           variant="h4"
           sx={{ margin: 3, color: palette.primary.gold }}
         >
-          Hi, Welcome back {process.env.REACT_APP_BASE_URL}
+          Hi, Welcome back {admin_name}
         </Typography>
         <Container>
           <Stack

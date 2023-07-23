@@ -9,7 +9,6 @@ import Box from "@mui/material/Box";
 import { TextField } from "@material-ui/core";
 import "../../css/DasboardCss.css";
 // @mui
-import { useTheme } from "@mui/material/styles";
 // @mui
 import {
   Table,
@@ -557,7 +556,7 @@ export default function EventDashboard() {
                 }}
                 style={{
                   backgroundColor: palette.primary.gold,
-                  color: "black",
+                  color: palette.common.black,
                   padding: 8,
                   borderRadius: 10,
                 }}
@@ -588,7 +587,7 @@ export default function EventDashboard() {
                       marginRight={2}
                       borderColor={
                         index === selected_club_btn
-                          ? "black"
+                          ? palette.common.black
                           : palette.primary.gold
                       }
                       flexDirection={"row"}
@@ -597,7 +596,7 @@ export default function EventDashboard() {
                       backgroundColor={
                         index === selected_club_btn
                           ? palette.primary.gold
-                          : "black"
+                          : palette.common.black
                       }
                     >
                       <Typography
@@ -605,7 +604,7 @@ export default function EventDashboard() {
                         style={{
                           color:
                             index === selected_club_btn
-                              ? "black"
+                              ? palette.common.black
                               : palette.primary.gold,
                           fontWeight:
                             index === selected_club_btn ? "bold" : "500",
@@ -675,12 +674,12 @@ export default function EventDashboard() {
                                 tabIndex={-1}
                               >
                                 <TableCell align="left">
-                                  <Typography sx={{ color: "black" }}>
+                                  <Typography sx={{ color: palette.common.black }}>
                                     {
                                       <>
                                         <IconButton
                                           style={{
-                                            background: "black",
+                                            background: palette.common.black,
                                           }}
                                           size="large"
                                           color="inherit"
@@ -723,7 +722,7 @@ export default function EventDashboard() {
                                   padding="none"
                                 >
                                   <Typography
-                                    sx={{ color: "black", px: 2 }}
+                                    sx={{ color: palette.common.black, px: 2 }}
                                     variant="subtitle2"
                                     noWrap
                                   >
@@ -738,7 +737,7 @@ export default function EventDashboard() {
                                   padding="none"
                                 >
                                   <Typography
-                                    sx={{ color: "black", px: 2 }}
+                                    sx={{ color: palette.common.black, px: 2 }}
                                     variant="subtitle2"
                                     noWrap
                                   >
@@ -831,7 +830,7 @@ export default function EventDashboard() {
             </Scrollbar>
             <TablePagination
               style={{
-                backgroundColor: "black",
+                backgroundColor: palette.common.black,
                 color: "white",
               }}
               rowsPerPageOptions={[5, 10, 25]}
@@ -886,7 +885,7 @@ export default function EventDashboard() {
               sx={{
                 width: "100%",
                 borderWidth: 2,
-                backgroundColor: "black",
+                backgroundColor: palette.common.black,
                 borderRadius: 4,
               }}
               autoComplete="on"
@@ -1062,7 +1061,7 @@ export default function EventDashboard() {
                           textAlign: "center",
                           fontSize: 16,
                           fontWeight: "bold",
-                          color: "black",
+                          color: palette.common.black,
                           justifyContent: "center",
                           alignItems: "center",
                           width: "100%",
@@ -1154,7 +1153,7 @@ export default function EventDashboard() {
               sx={{
                 width: "100%",
                 borderWidth: 2,
-                backgroundColor: "black",
+                backgroundColor: palette.common.black,
                 borderRadius: 4,
               }}
               autoComplete="on"
@@ -1304,7 +1303,7 @@ export default function EventDashboard() {
                       textAlign: "center",
                       fontSize: 16,
                       fontWeight: "bold",
-                      color: "black",
+                      color: palette.common.black,
                       justifyContent: "center",
                       alignItems: "center",
                       width: "100%",
@@ -1361,7 +1360,7 @@ export default function EventDashboard() {
             sx={{
               width: "100%",
               borderWidth: 2,
-              backgroundColor: "black",
+              backgroundColor: palette.common.black,
               borderRadius: 4,
               height: 500,
             }}
@@ -1372,7 +1371,7 @@ export default function EventDashboard() {
               sx={{
                 width: "100%",
                 borderWidth: 2,
-                backgroundColor: "black",
+                backgroundColor: palette.common.black,
                 borderRadius: 4,
               }}
               autoComplete="on"
@@ -1411,7 +1410,7 @@ export default function EventDashboard() {
                     }}
                     style={{
                       backgroundColor: palette.primary.gold,
-                      color: "black",
+                      color: palette.common.black,
                       borderRadius: 10,
                     }}
                     variant="Outlined"
@@ -1445,6 +1444,9 @@ export default function EventDashboard() {
                 <TableContainer>
                   <Table>
                     {tableConfigData?.map((item, index) => {
+                    console.log('====================================');
+                    console.log('item',item);
+                    console.log('====================================');
                       return (
                         <>
                           <TableRow
@@ -1454,18 +1456,10 @@ export default function EventDashboard() {
                             bgcolor={palette.primary.gold}
                             // hover
                           >
+                           
                             <TableCell>
                               <Typography
-                                sx={{ color: "black", px: 2 }}
-                                variant="subtitle2"
-                                noWrap
-                              >
-                                {index}
-                              </Typography>
-                            </TableCell>
-                            <TableCell>
-                              <Typography
-                                sx={{ color: "black", px: 2 }}
+                                sx={{ color: palette.common.black, px: 2 }}
                                 variant="subtitle2"
                                 noWrap
                               >
@@ -1474,7 +1468,7 @@ export default function EventDashboard() {
                             </TableCell>
                             <TableCell>
                               <Typography
-                                sx={{ color: "black", px: 2 }}
+                                sx={{ color: palette.common.black, px: 2 }}
                                 variant="subtitle2"
                                 noWrap
                               >
@@ -1484,14 +1478,22 @@ export default function EventDashboard() {
 
                             <TableCell align="left">
                               <Typography
-                                sx={{ color: "black", px: 2 }}
+                                sx={{ color: palette.common.black, px: 2 }}
                                 variant="subtitle2"
                                 noWrap
                               >
                                 {item.recommendedCapacity}
                               </Typography>
                             </TableCell>
-
+                            <TableCell>
+                              <Typography
+                                sx={{ color: palette.common.black, px: 2 }}
+                                variant="subtitle2"
+                                noWrap
+                              >
+                                {item?.tableMapId}
+                              </Typography>
+                            </TableCell>
                             <TableCell>
                               <Stack flexDirection={"row"}>
                                 <IconButton
@@ -1555,7 +1557,7 @@ export default function EventDashboard() {
             style={{
               height: "100vh",
               width: "100%",
-              backgroundColor: "black",
+              backgroundColor: palette.common.black,
               justifyContent: "center",
               alignItems: "center",
             }}
