@@ -9,6 +9,7 @@ import * as serviceWorker from './serviceWorker';
 // ----------------------------------------------------------------------
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+document.documentElement.style.setProperty('--primary-color', '#E4D0B5');
 
 root.render(
   <HelmetProvider>

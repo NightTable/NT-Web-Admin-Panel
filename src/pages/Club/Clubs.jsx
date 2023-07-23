@@ -57,7 +57,7 @@ import {
   citiesOfStates,
 } from "../../services/countries";
 import { DASHBOARD_TABLE_HEAD } from "../../Table_Head/index";
-import ViewClubInfo from "./ViewClubInfo";
+import ViewClubInfo from "./viewclub/ViewClubInfo";
 
 //LOCAL STORAGE
 import { LocalStorageKey } from "src/utils/localStorage/keys";
