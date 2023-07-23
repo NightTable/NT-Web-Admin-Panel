@@ -67,6 +67,7 @@ import {
   getEventConfigsData,
   updateTableConfig,
 } from "src/services/tableConfig";
+import { getClubs } from "src/services/club";
 
 //MAIN FUNCTION
 
@@ -141,10 +142,24 @@ export default function EventDashboard() {
   //IF
   const loadData = async () => {
     const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
+    // GETTING SAVED USER DATA
+    const userData = localStorage.getItem(LocalStorageKey.USER_DATA);
+    let parsedUserData = JSON.parse(userData);
+    //CHECKING THE ROLE
+
     if (representativeId === null) {
       navigate("/");
     } else {
-      getClubData(JSON.parse(representativeId));
+      if (parsedUserData?.role == "godFather") {
+        const data = await getClubs();
+        setclubs_data(data?.data);
+        let obj = {
+          date: currentDateinTimeStamp,
+        };
+        getClubsEvent(data?.data[0]._id, obj);
+      } else {
+        getClubData(JSON.parse(representativeId));
+      }
     }
   };
 
@@ -674,7 +689,9 @@ export default function EventDashboard() {
                                 tabIndex={-1}
                               >
                                 <TableCell align="left">
-                                  <Typography sx={{ color: palette.common.black }}>
+                                  <Typography
+                                    sx={{ color: palette.common.black }}
+                                  >
                                     {
                                       <>
                                         <IconButton
@@ -1444,9 +1461,9 @@ export default function EventDashboard() {
                 <TableContainer>
                   <Table>
                     {tableConfigData?.map((item, index) => {
-                    console.log('====================================');
-                    console.log('item',item);
-                    console.log('====================================');
+                      console.log("====================================");
+                      console.log("item", item);
+                      console.log("====================================");
                       return (
                         <>
                           <TableRow
@@ -1456,7 +1473,6 @@ export default function EventDashboard() {
                             bgcolor={palette.primary.gold}
                             // hover
                           >
-                           
                             <TableCell>
                               <Typography
                                 sx={{ color: palette.common.black, px: 2 }}
