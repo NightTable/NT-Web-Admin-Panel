@@ -15,7 +15,6 @@ import { AddClubImage, getClubs } from "../../services/club";
 import { CircularProgress } from "@mui/material";
 //Main Function
 
-
 const AddPosterImage = (data) => {
   const [alert, setAlert] = useState({
     open: false,
@@ -86,13 +85,11 @@ const AddPosterImage = (data) => {
       console.log("Data----Data", Data);
       setimageUploadLoader(true);
       data.onSubmit(Data);
-
-      
     }
   };
 
   return (
-    <div>
+    <div style={{ height: "900px" }}>
       <Box
         sx={{
           flexDirection: {
@@ -103,12 +100,10 @@ const AddPosterImage = (data) => {
             ms: "flex-start",
             xs: "center",
           },
-        }}
-        style={{
+          flex: 1,
           display: "flex",
-          justifyContent: "space-between",
-          justifyItems: "center",
-          alignItems: "center",
+          height: "100%",
+          backgroundColor: "black",
         }}
       >
         <Typography
@@ -119,7 +114,7 @@ const AddPosterImage = (data) => {
             color: "white",
           }}
         >
-         {data.heading} 
+          {data.heading}
         </Typography>
         <div
           style={{
@@ -236,26 +231,7 @@ const useStyles = makeStyles((theme) => ({
       background: "#FAFCFF",
     },
   },
-  Browsebtn: {
-    color: "#000",
-    // border: "1px solid rgb(3, 126, 243)",
-    padding: "0.8rem",
-    paddingLeft: "2rem",
-    paddingRight: "2rem",
-    fontSize: "16px",
-    boxSizing: "border-box",
-    fontStyle: "normal",
-    textAlign: "center",
-    fontFamily: "Inter",
-    fontWeight: "bold",
-    borderRadius: "5px",
-    position: "relative",
-    transform: "translate(0px, 165px)",
-    zIndex: 100,
-    [theme.breakpoints.down("sm")]: {
-      transform: "translate(0px, 190px)",
-    },
-  },
+  
   customFileUpload: {
     cursor: "pointer",
   },
