@@ -9,9 +9,7 @@ import SizeSectionComp from '../../features/modals/DeleteMenuItemModal/SizeSecti
 
 import styles from './DeleteMenuItemModal.module.css';
 
-const DeleteMenuItemModal = (props) => {
-
-    return (<div className={styles.deleteMenuItemModalContainer}>
+const DeleteMenuItemModal = (props) => (<div className={styles.deleteMenuItemModalContainer}>
         <div className={styles.deleteMenuItemTitleContainer}>
             <span style={{color: '#c3195d', marginLeft: '1rem'}}>Delete Menu Item</span>
         </div>
@@ -26,7 +24,7 @@ const DeleteMenuItemModal = (props) => {
             <span className={styles.labelStyle}>Name:</span>
             <span className={styles.valueStyle}>Champaigne</span>
         </div>
-        <SizeSectionComp></SizeSectionComp>
+        <SizeSectionComp />
         <div className={styles.buttonRowContainer}>
             <button onClick={props.onLocalCancelDeleteMenuItemAction} style={{marginRight: '4rem'}} className={styles.lowerButtonStyle}>
                 <span>no</span>
@@ -35,8 +33,7 @@ const DeleteMenuItemModal = (props) => {
                 <span style={{color: 'orange'}}>yes</span>
             </button>
         </div>
-    </div>)
-}
+    </div>);
 
 export default DeleteMenuItemModal;
 

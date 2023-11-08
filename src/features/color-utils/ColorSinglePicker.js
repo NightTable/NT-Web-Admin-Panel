@@ -16,13 +16,13 @@ const ColorSinglePicker = forwardRef(({ colors, ...other }, ref) => (
         <Radio
           key={color}
           value={color}
-          color="default"
+          color='default'
           icon={<Icon whiteColor={whiteColor} />}
           checkedIcon={<Icon checked whiteColor={whiteColor} />}
           sx={{
             color,
             '&:hover': { opacity: 0.72 },
-            '& svg': { width: 12, height: 12 },
+            '& svg': { width: 12, height: 12 }
           }}
         />
       );
@@ -31,7 +31,7 @@ const ColorSinglePicker = forwardRef(({ colors, ...other }, ref) => (
 ));
 
 ColorSinglePicker.propTypes = {
-  colors: PropTypes.arrayOf(PropTypes.string),
+  colors: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default ColorSinglePicker;

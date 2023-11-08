@@ -24,7 +24,7 @@ const RepresentativesDashboardScreen = (props) => {
             role: 'management',
             completedTransactions: 2
         }
-    ]
+    ];
 
     return (<div className={styles.representativesDashboardScreenContainer}>
         <div className={styles.upperRepresentativeScreenContainer}>
@@ -52,7 +52,7 @@ const RepresentativesDashboardScreen = (props) => {
                     <div className={styles.representativeCategoryBlockContainer}>
                         <span className={styles.representativeLabelTextStyle}>completed transactions</span>
                     </div>
-                    <div className={styles.representativeCategoryBlockContainer}></div>
+                    <div className={styles.representativeCategoryBlockContainer} />
                 </div>
                 <div className={styles.representativeItemListContainer}>
                     {dummyRepresentativeData.map((representative, index) => (
@@ -61,7 +61,7 @@ const RepresentativesDashboardScreen = (props) => {
                             name={representative.name}
                             username={representative.username}
                             role={representative.role}
-                            completedTransactions={representative.completedTransactions}></RepresentativeItemHorizComp>
+                            completedTransactions={representative.completedTransactions} />
                     ))}
                 </div>
             </div>
@@ -71,7 +71,7 @@ const RepresentativesDashboardScreen = (props) => {
                 <span className={styles.addNewRepresentativeTextStyle}>Add new representative</span>
             </button>
         </div>
-    </div>)
-}
+    </div>);
+};
 
 export default RepresentativesDashboardScreen;

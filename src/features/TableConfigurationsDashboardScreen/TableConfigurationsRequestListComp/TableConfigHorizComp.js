@@ -5,14 +5,12 @@
 // when its authorized use is terminated.
 
 import React from 'react';
-import Pencil from '../../../assets/pencilpick.png'
-import XPic from '../../../assets/xpic.png'
-import styles from './TableConfigHorizComp.module.css'
+import Pencil from '../../../assets/pencilpick.png';
+import XPic from '../../../assets/xpic.png';
+import styles from './TableConfigHorizComp.module.css';
 
 
-const TableConfigHorizComp = (props) => {
-
-    return (
+const TableConfigHorizComp = (props) => (
     <div className={styles.requestHorizCompContainer}>
         <div className={styles.requestHorizSectionContainer}>
             <span>{props.requestObj.tableType}</span>
@@ -23,12 +21,11 @@ const TableConfigHorizComp = (props) => {
         <div className={styles.requestHorizSectionEndContainer}>
             <div className={styles.buttonContainer}>
                 <span className={styles.textStyle}>{props.requestObj.people}</span>
-                <img className={styles.imageStyle} src={Pencil}></img>
-                <img className={styles.imageStyle} src={XPic}></img>
+                <img className={styles.imageStyle} src={Pencil} />
+                <img className={styles.imageStyle} src={XPic} />
             </div>
         </div>
-    </div>)
-}
+    </div>);
 
 
 

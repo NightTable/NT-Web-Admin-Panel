@@ -12,12 +12,12 @@ import ActiveTableRequestListComp from '../../features/ActiveTablesDashboardScre
 
 const PollingTablesDashboardScreen = (props) => {
 
-    let pollingTableRequests = [
+    const pollingTableRequests = [
         {
             id: '3893ujh',
-            organizer: "Janelle May",
-            tableType: "floor",
-            requestType: "snpl",
+            organizer: 'Janelle May',
+            tableType: 'floor',
+            requestType: 'snpl',
             taken: 4,
             available: 8,
             size: 12,
@@ -25,15 +25,15 @@ const PollingTablesDashboardScreen = (props) => {
         },
         {
             id: '393iji',
-            organizer: "Jack Smith",
-            tableType: "standing",
-            requestType: "pnsl",
+            organizer: 'Jack Smith',
+            tableType: 'standing',
+            requestType: 'pnsl',
             taken: 3,
             available: 1,
             size: 4,
             price: 500
         }
-    ]
+    ];
 
     return (<div className={styles.pollingTablesDashboardContainer}>
         <div className={styles.pollingTablesInnerContainer}>
@@ -66,9 +66,9 @@ const PollingTablesDashboardScreen = (props) => {
                 </div>
              </div>
              <ActiveTableRequestListComp
-                tableRequests={pollingTableRequests}></ActiveTableRequestListComp>
+                tableRequests={pollingTableRequests} />
         </div>
-    </div>)
-}
+    </div>);
+};
 
 export default PollingTablesDashboardScreen;

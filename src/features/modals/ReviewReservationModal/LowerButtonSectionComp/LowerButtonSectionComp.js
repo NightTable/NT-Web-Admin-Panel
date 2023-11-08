@@ -8,12 +8,9 @@ import React from 'react';
 
 import styles from './LowerButtonSectionComp.module.css';
 
-const LowerButtonSectionComp = (props) => {
-
-    return (<div className={styles.lowerButtonSectionCompContainer}>
+const LowerButtonSectionComp = (props) => (<div className={styles.lowerButtonSectionCompContainer}>
         <button className={styles.reviewReservationCancelButtonStyle}>cancel</button>
         <button className={styles.reviewReservationSubmitPaymentButtonStyle}>submit payment</button>
-    </div>)
-}
+    </div>);
 
 export default LowerButtonSectionComp;

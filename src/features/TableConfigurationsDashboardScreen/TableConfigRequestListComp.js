@@ -8,16 +8,13 @@ import React from 'react';
 
 import styles from './TableConfigRequestListComp.module.css';
 import TableConfigHorizComp from './TableConfigurationsRequestListComp/TableConfigHorizComp';
-const TableConfigRequestListComp = (props) => {
 
-
-    return (<div className={styles.tableConfigRequestListCompContainer}>
+const TableConfigRequestListComp = (props) => (<div className={styles.tableConfigRequestListCompContainer}>
         {props.configRequests.map((tableReq, index) => (
             <TableConfigHorizComp
                 key={index}
-                requestObj={tableReq}></TableConfigHorizComp>
+                requestObj={tableReq} />
         ))}
-    </div>)
-}
+    </div>);
 
 export default TableConfigRequestListComp;

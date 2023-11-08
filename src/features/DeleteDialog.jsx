@@ -4,36 +4,34 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  DialogContentText,
-} from "@mui/material";
+  DialogContentText
+} from '@mui/material';
 
 export const DeleteDialog = ({
   heading,
   paragraph,
   deleteBtnPressed,
   closeBtnPressed,
-  deleteDialogOpen,
-}) => {
-  return (
-    <>
-      <Dialog
+  deleteDialogOpen
+}) => (
+    <Dialog
         open={deleteDialogOpen}
         keepMounted
         onClose={() => {
           closeBtnPressed(deleteDialogOpen);
         }}
-        aria-describedby="alert-dialog-slide-description"
+        aria-describedby='alert-dialog-slide-description'
       >
         <DialogTitle>{heading}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
+          <DialogContentText id='alert-dialog-slide-description'>
             {paragraph}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
-              deleteBtnPressed(`1`);
+              deleteBtnPressed('1');
             }}
           >
             Delete
@@ -47,6 +45,4 @@ export const DeleteDialog = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </>
   );
-};

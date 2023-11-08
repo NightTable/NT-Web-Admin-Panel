@@ -1,86 +1,84 @@
-import axios, * as others from "axios";
-import { GetRequest, PostRequest } from "../utils/axios/Axios";
+import axios, * as others from 'axios';
+import { GetRequest, PostRequest } from '../utils/axios/Axios';
 
 export const getClubs = async () => {
   try {
     const response = await GetRequest(
       `${process.env.REACT_APP_BASE_URL}clubs/clubs`,
-      "",
-      ""
+      '',
+      ''
     );
-    console.log('response.data',response.data)
+    console.log('response.data',response.data);
     return response.data;
   } catch (error) {}
 };
 
 export const getClubDetails = async (club_id) => {
-  var config = {
-    method: "get",
+  const config = {
+    method: 'get',
     url: `${process.env.REACT_APP_BASE_URL}clubs/club/${club_id}`,
-    headers: {},
+    headers: {}
   };
 
   const data = await axios(config);
   return data;
 };
 export const addClubtoServer = async (obj) => {
-  var config = {
-    method: "post",
+  const config = {
+    method: 'post',
     url: `${process.env.REACT_APP_BASE_URL}clubs/createClub`,
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json'
     },
-    data: obj,
+    data: obj
   };
 
   const apiCall = await axios(config);
   return apiCall?.data;
 };
 
-export const clubUpdate = async (obj, clubId) => {
-  return new Promise((resolve, reject) => {
+export const clubUpdate = async (obj, clubId) => new Promise((resolve, reject) => {
     try {
-      var config = {
-        method: "put",
+      const config = {
+        method: 'put',
         url: `${process.env.REACT_APP_BASE_URL}clubs/club/${clubId}`,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json'
         },
-        data: obj,
+        data: obj
       };
-      console.log("config=====>", config);
+      console.log('config=====>', config);
 
       axios(config)
-        .then(function (response) {
+        .then((response) => {
           resolve(response);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log(error);
         });
     } catch (error) {
       reject(error);
     }
   });
-};
 
 export const deleteClub = async (obj, clubId) => {
   try {
-    var config = {
-      method: "delete",
+    const config = {
+      method: 'delete',
       url: `${process.env.REACT_APP_BASE_URL}clubs/club/${clubId}`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      data: obj,
+      data: obj
     };
 
-    console.log("config===>", config);
+    console.log('config===>', config);
     axios(config)
-      .then(function (response) {
-        console.log("response", response);
+      .then((response) => {
+        console.log('response', response);
         return response;
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   } catch (error) {

@@ -11,7 +11,7 @@ AppWebsiteVisits.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
   chartData: PropTypes.array.isRequired,
-  chartLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
+  chartLabels: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
 export default function AppWebsiteVisits({ title, subheader, chartLabels, chartData, ...other }) {
@@ -29,17 +29,17 @@ export default function AppWebsiteVisits({ title, subheader, chartLabels, chartD
             return `${y.toFixed(0)} visits`;
           }
           return y;
-        },
-      },
-    },
+        }
+      }
+    }
   });
 
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
 
-      <Box sx={{ p: 3, pb: 1 }} dir="ltr">
-        <ReactApexChart type="line" series={chartData} options={chartOptions} height={364} />
+      <Box sx={{ p: 3, pb: 1 }} dir='ltr'>
+        <ReactApexChart type='line' series={chartData} options={chartOptions} height={364} />
       </Box>
     </Card>
   );

@@ -8,9 +8,7 @@ import React from 'react';
 
 import styles from './BidderChildHorizComp.module.css';
 
-const BidderChildHorizComp = (props) => {
-
-    return (<div className={styles.bidderChildHorizCompContainer}>
+const BidderChildHorizComp = (props) => (<div className={styles.bidderChildHorizCompContainer}>
         <div className={styles.bidderChildBlockContainerStyle}>
             <span>{props.bidderData.name}</span>
         </div>
@@ -26,7 +24,6 @@ const BidderChildHorizComp = (props) => {
         <div className={styles.bidderChildBlockContainerStyle}>
             <span>-</span>
         </div>
-    </div>)
-}
+    </div>);
 
 export default BidderChildHorizComp;

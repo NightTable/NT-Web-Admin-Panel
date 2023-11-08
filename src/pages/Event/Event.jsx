@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import * as React from "react";
-import { useNavigate } from "react-router-dom";
+import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
-import { filter } from "lodash";
-import Box from "@mui/material/Box";
-import { TextField } from "@material-ui/core";
-import "../../css/DasboardCss.css";
+import { Helmet } from 'react-helmet-async';
+import { useState, useEffect } from 'react';
+import { filter } from 'lodash';
+import Box from '@mui/material/Box';
+import { TextField } from '@material-ui/core';
+import '../../css/DasboardCss.css';
 // @mui
 // @mui
 import {
@@ -29,108 +29,108 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Grid,
-} from "@mui/material";
-import Iconify from "../../component/iconify";
-import CircularProgress from "@mui/material/CircularProgress";
+  Grid
+} from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // components
-import Scrollbar from "../../component/scrollbar";
-import ResponsiveDateTimePickers from "src/component/ResponsiveDateTimePIcker";
+import ResponsiveDateTimePickers from 'src/component/ResponsiveDateTimePIcker';
 
 // sections
-import { UserListHead } from "../../sections/@dashboard/user";
 // mock
-//theme
-import palette from "../../theme/palette";
+// theme
 // ----------------------------------------------------------------------
 import {
   addEventtoDb,
   deleteEvent,
   getEventofClub,
-  updateEventToDB,
-} from "src/services/Event";
+  updateEventToDB
+} from 'src/services/Event';
 
-import {
-  EVENTS_TABLE_HEAD,
-  EVENTS_TABLE_CONFIG_HEAD,
-} from "../../Table_Head/index";
-import { LocalStorageKey } from "src/utils/localStorage/keys";
-//services
-import { getProfileData } from "src/services/representative";
-import dayjs from "dayjs";
-import UploadSingleImage from "../UploadImage/UploadSingleImage";
-import { AddImage } from "src/services/upload";
+import { LocalStorageKey } from 'src/utils/localStorage/keys';
+// services
+import { getProfileData } from 'src/services/representative';
+import dayjs from 'dayjs';
+import { AddImage } from 'src/services/upload';
 import {
   createTableConfig,
   deleteTableConfig,
   getEventConfigsData,
-  updateTableConfig,
-} from "src/services/tableConfig";
-import { getClubs } from "src/services/club";
+  updateTableConfig
+} from 'src/services/tableConfig';
+import { getClubs } from 'src/services/club';
+import UploadSingleImage from '../UploadImage/UploadSingleImage';
+import {
+  EVENTS_TABLE_HEAD,
+  EVENTS_TABLE_CONFIG_HEAD
+} from '../../Table_Head/index';
+import palette from '../../theme/palette';
+import { UserListHead } from '../../sections/@dashboard/user';
+import Scrollbar from '../../component/scrollbar';
+import Iconify from '../../component/iconify';
 
-//MAIN FUNCTION
+// MAIN FUNCTION
 
 export default function EventDashboard() {
-  //get the current date
-  const currentDateinISO5601 = dayjs().format("YYYY-MM-DDTHH:MM");
+  // get the current date
+  const currentDateinISO5601 = dayjs().format('YYYY-MM-DDTHH:MM');
   const currentDateinTimeStamp = dayjs().valueOf();
 
-  //NAVIGATION
+  // NAVIGATION
   const navigate = useNavigate();
-  //clubs
+  // clubs
   const [clubs_data, setclubs_data] = useState([]);
-  //CLicked Button
+  // CLicked Button
   const [selected_club_btn, setselected_club_btn] = useState(0);
-  //selected club data
+  // selected club data
   const [selectedClubData, setselectedClubData] = useState([]);
 
-  //States
+  // States
 
-  //EVENT
+  // EVENT
   const [EventData, setEventData] = useState([]);
   const [selectedEventData, setselectedEventData] = useState([]);
 
-  //CREATE EVENT pop-over open
+  // CREATE EVENT pop-over open
   const [addEventPopUp, setEventClubPopUp] = useState(false);
-  //CREATE EVENT STATES==>
-  const [EventName, setEventName] = useState("");
-  const [ticketLink, setticketLink] = useState("");
+  // CREATE EVENT STATES==>
+  const [EventName, setEventName] = useState('');
+  const [ticketLink, setticketLink] = useState('');
   const [eventImage, seteventImage] = useState();
   const [EventDate, setEventDate] = useState(currentDateinISO5601);
   const [eventLoader, seteventLoader] = useState(false);
-  //IMAGE POP-UP LOADER
+  // IMAGE POP-UP LOADER
   const [eventImageLoader, seteventImageLoader] = useState(false);
-  //EDIT EVENT
+  // EDIT EVENT
   const [editEvent, seteditEvent] = useState(false);
   const [editEventImage, seteditEventImage] = useState(true);
-  //SHOW CLUB
+  // SHOW CLUB
   const [open, setOpen] = useState(null);
   const [page, setPage] = useState(0);
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState("name");
-  const [filterName, setFilterName] = useState("");
+  const [orderBy, setOrderBy] = useState('name');
+  const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  //dialog
+  // dialog
 
   const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
 
-  //TABLE CONFIGURATION
+  // TABLE CONFIGURATION
   const [addTableConfigPopup, setaddTableConfigPopup] = useState(false);
   const [selectedTableConfigData, setselectedTableConfigData] = useState([]);
   const [editTableConfigCheck, seteditTableConfigCheck] = useState(false);
   const [tableConfigData, settableConfigData] = useState([]);
 
   const [showAllConfigDataPopUp, setshowAllConfigDataPopUp] = useState(false);
-  //minimun price
-  const [minPriceTC, setminPriceTC] = useState("");
-  //type
-  const [typeTC, settypeTC] = useState("");
-  //recommendedCapacity
-  const [recomCapacityTC, setrecomCapacityTC] = useState("");
-  //table mapId
-  const [tmapleIDTC, settmapleIDTC] = useState("");
+  // minimun price
+  const [minPriceTC, setminPriceTC] = useState('');
+  // type
+  const [typeTC, settypeTC] = useState('');
+  // recommendedCapacity
+  const [recomCapacityTC, setrecomCapacityTC] = useState('');
+  // table mapId
+  const [tmapleIDTC, settmapleIDTC] = useState('');
 
   // globalLoader
   const [loaderEnabled, setloaderEnabled] = useState(false);
@@ -139,51 +139,49 @@ export default function EventDashboard() {
   }, []);
 
   // get the clubs
-  //IF
+  // IF
   const loadData = async () => {
     const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
     // GETTING SAVED USER DATA
     const userData = localStorage.getItem(LocalStorageKey.USER_DATA);
-    let parsedUserData = JSON.parse(userData);
-    //CHECKING THE ROLE
+    const parsedUserData = JSON.parse(userData);
+    // CHECKING THE ROLE
 
     if (representativeId === null) {
-      navigate("/");
-    } else {
-      if (parsedUserData?.role == "godFather") {
+      navigate('/');
+    } else if (parsedUserData?.role == 'godFather') {
         const data = await getClubs();
         setclubs_data(data?.data);
-        let obj = {
-          date: currentDateinTimeStamp,
+        const obj = {
+          date: currentDateinTimeStamp
         };
         getClubsEvent(data?.data[0]._id, obj);
       } else {
         getClubData(JSON.parse(representativeId));
       }
-    }
   };
 
-  //GET CLUB DATA ====>
+  // GET CLUB DATA ====>
   const getClubData = async (representativeId) => {
     const data = await getProfileData(representativeId);
-    let tempArr = [];
+    const tempArr = [];
     data.clubPrivileges.map((item) => {
       tempArr.push({
         name: item.club.name,
-        _id: item._id,
+        _id: item._id
       });
       return true;
     });
 
     setselectedClubData(tempArr[0]);
-    let obj = {
-      date: currentDateinTimeStamp,
+    const obj = {
+      date: currentDateinTimeStamp
     };
     setclubs_data(tempArr);
     getClubsEvent(tempArr[0]._id, obj);
   };
 
-  //GET CLUBS OF EVENT
+  // GET CLUBS OF EVENT
   const getClubsEvent = async (club_id, obj) => {
     const data = await getEventofClub(club_id, obj);
     if (data.status === true) {
@@ -193,49 +191,49 @@ export default function EventDashboard() {
     }
   };
 
-  var Data = new FormData();
+  const Data = new FormData();
 
-  //API CALL : ADD EVENT CLUB
+  // API CALL : ADD EVENT CLUB
   const addEvent = async () => {
     if (eventImage.length !== undefined) {
       seteventLoader(true);
-      //ADD EVENT IMAGE DATA APPEND
-      Data.append("_id", selectedClubData._id);
-      Data.append("files", eventImage[0]);
-      //ADD EVENT IMAGE API CALL
+      // ADD EVENT IMAGE DATA APPEND
+      Data.append('_id', selectedClubData._id);
+      Data.append('files', eventImage[0]);
+      // ADD EVENT IMAGE API CALL
       const ImgUpload = await AddImage(Data);
       //  console.log("ImgUpload====>", ImgUpload);
       if (ImgUpload?.status == true) {
-        let obj = {
+        const obj = {
           name: EventName,
           picture: ImgUpload.data[0],
           eventDate: EventDate,
           eventTime: EventDate,
-          ticketLink: ticketLink,
-          clubId: selectedClubData?._id,
+          ticketLink,
+          clubId: selectedClubData?._id
         };
 
         const storeEvent = await addEventtoDb(obj, selectedClubData?._id);
-        console.log("storeEvent====>", storeEvent);
+        console.log('storeEvent====>', storeEvent);
         if (storeEvent?.data?.status === true) {
-          //UPDATE THE MAIN ARRAY
+          // UPDATE THE MAIN ARRAY
           const updateArray = [storeEvent?.data.data, ...EventData];
           setEventData(updateArray);
-          //CLEAR THE STATES
+          // CLEAR THE STATES
           resettingEventStates();
-          //CLOSE ADD EVENT POP-UP
+          // CLOSE ADD EVENT POP-UP
           setEventClubPopUp(false);
           seteventLoader(false);
         } else {
-          //WHEN EVENT ADD API NOT WORKING
-          alert("ERROR while creating Events!");
+          // WHEN EVENT ADD API NOT WORKING
+          alert('ERROR while creating Events!');
         }
       } else {
-        //WHEN IMAGE DOES N'T GET UPLOADED
-        alert("ERROR while uploading Event Image!");
+        // WHEN IMAGE DOES N'T GET UPLOADED
+        alert('ERROR while uploading Event Image!');
       }
     } else {
-      alert("Please select a Event Image!");
+      alert('Please select a Event Image!');
     }
   };
 
@@ -243,18 +241,18 @@ export default function EventDashboard() {
     seteventLoader(true);
 
     if (editEventImage === true) {
-      Data.append("_id", selectedClubData._id);
-      Data.append("files", eventImage[0]);
-      //ADD EVENT IMAGE API CALL
+      Data.append('_id', selectedClubData._id);
+      Data.append('files', eventImage[0]);
+      // ADD EVENT IMAGE API CALL
       const ImgUpload = await AddImage(Data);
-      if (ImgUpload.message === "files uploaded") {
-        let obj = {
+      if (ImgUpload.message === 'files uploaded') {
+        const obj = {
           name: EventName,
           picture: ImgUpload.data[0],
           eventDate: EventDate,
           eventTime: EventDate,
-          ticketLink: ticketLink,
-          clubId: selectedClubData?._id,
+          ticketLink,
+          clubId: selectedClubData?._id
         };
         const updateData = await updateEventToDB(
           selectedClubData?._id,
@@ -262,28 +260,26 @@ export default function EventDashboard() {
           obj
         );
         if (updateData.status == true) {
-          const index = EventData.findIndex((item) => {
-            return item._id == selectedEventData._id;
-          });
+          const index = EventData.findIndex((item) => item._id == selectedEventData._id);
 
           EventData[index] = updateData.data;
           setEventData(EventData);
-          alert("EVENT UPDATED SUCCESSFULLY!");
-          //CLEAR THE STATES
+          alert('EVENT UPDATED SUCCESSFULLY!');
+          // CLEAR THE STATES
           resettingEventStates();
         } else {
-          //WHEN IMAGE DOES N'T GET UPLOADED
-          alert("ERROR while Updating Events!");
+          // WHEN IMAGE DOES N'T GET UPLOADED
+          alert('ERROR while Updating Events!');
         }
       }
     } else {
-      let obj = {
+      const obj = {
         name: EventName,
         picture: eventImage,
         eventDate: EventDate,
         eventTime: EventDate,
-        ticketLink: ticketLink,
-        clubId: selectedClubData?._id,
+        ticketLink,
+        clubId: selectedClubData?._id
       };
       const updateData = await updateEventToDB(
         selectedClubData?._id,
@@ -291,49 +287,45 @@ export default function EventDashboard() {
         obj
       );
       if (updateData.status === true) {
-        const index = EventData.findIndex((item) => {
-          return item._id === selectedEventData._id;
-        });
+        const index = EventData.findIndex((item) => item._id === selectedEventData._id);
 
         EventData[index] = updateData.data;
         setEventData(EventData);
-        alert("EVENT UPDATED SUCCESSFULLY!");
-        //CLEAR THE STATES
+        alert('EVENT UPDATED SUCCESSFULLY!');
+        // CLEAR THE STATES
         resettingEventStates();
-        //CLOSE ADD EVENT POP-UP
+        // CLOSE ADD EVENT POP-UP
         setEventClubPopUp(false);
         seteventLoader(false);
       } else {
-        //WHEN IMAGE DOES N'T GET UPLOADED
-        alert("ERROR while Updating Events!");
+        // WHEN IMAGE DOES N'T GET UPLOADED
+        alert('ERROR while Updating Events!');
       }
     }
   };
   // CLEAR ADD POP-UP STATES
   const resettingEventStates = () => {
     // setEventDate("");
-    setEventName("");
-    setticketLink("");
+    setEventName('');
+    setticketLink('');
     seteditEventImage(!true);
     seteditEvent(false);
     seteventLoader(false);
   };
 
   // DELETE EVENT UI
-  const DeleteEventDialog = () => {
-    return (
-      <>
-        <Dialog
+  const DeleteEventDialog = () => (
+      <Dialog
           open={deleteDialogOpen}
           keepMounted
           onClose={() => {
             setdeleteDialogOpen(!deleteDialogOpen);
           }}
-          aria-describedby="alert-dialog-slide-description"
+          aria-describedby='alert-dialog-slide-description'
         >
-          <DialogTitle>{"Delete the Event?"}</DialogTitle>
+          <DialogTitle>Delete the Event?</DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
+            <DialogContentText id='alert-dialog-slide-description'>
               Are you sure want to delete the Event, as you won't be able to
               recover it ?
             </DialogContentText>
@@ -341,50 +333,46 @@ export default function EventDashboard() {
           <DialogActions>
             <Button
               onClick={() => {
-                handleClose(`1`);
+                handleClose('1');
               }}
             >
               Delete
             </Button>
             <Button
               onClick={() => {
-                handleClose(`2`);
+                handleClose('2');
               }}
             >
               Close
             </Button>
           </DialogActions>
         </Dialog>
-      </>
     );
-  };
 
-  //delete event pop-up
+  // delete event pop-up
   const handleClose = async (id) => {
-    if (id == "1") {
-      //API CALL
+    if (id == '1') {
+      // API CALL
       const eventtoDelete = await deleteEvent(
         selectedClubData._id,
         selectedEventData._id
       );
 
       if (eventtoDelete.status === true) {
-        const a = EventData.filter((item) => {
-          return item._id !== selectedEventData._id;
-        });
+        const a = EventData.filter((item) => item._id !== selectedEventData._id);
         // UPDATE THE DATA
         setEventData(a);
         setdeleteDialogOpen(false);
-        alert("EVENT DELETED SUCCESSFULLY !");
+        alert('EVENT DELETED SUCCESSFULLY !');
       } else {
-        alert("ERROR IN DELETING THE EVENT ");
+        alert('ERROR IN DELETING THE EVENT ');
       }
-    } else id === "2";
+    } else id === '2';
     setdeleteDialogOpen(false);
   };
 
-  //TABLE CONFIGURATIONS
-  //GET TABLE CONFIG
+  // TABLE CONFIGURATIONS
+  // GET TABLE CONFIG
 
   const getIndEventTableConfig = async (eventData) => {
     const eventAllConfigs = await getEventConfigsData(
@@ -397,29 +385,27 @@ export default function EventDashboard() {
     }
   };
 
-  //TABLE CONFIGURATION
+  // TABLE CONFIGURATION
   const addTableConfiguration = async () => {
     setloaderEnabled(true);
 
-    let obj = {
+    const obj = {
       type: typeTC,
       minPrice: minPriceTC,
       recommendedCapacity: recomCapacityTC,
       clubId: selectedClubData._id,
       eventId: selectedEventData._id,
-      tableMapId: tmapleIDTC,
+      tableMapId: tmapleIDTC
     };
     const tcAdd = await createTableConfig(obj);
     // GET EVENT NEW DETAILS
     if (tcAdd?.data?.status === true) {
       setaddTableConfigPopup(!true);
-      alert("Table Configuration Addded!");
+      alert('Table Configuration Addded!');
       if (tableConfigData.length === 0) {
-        console.log("Event Data ::", EventData);
-        console.log("Selected Event Data::", selectedEventData);
-        const eventIndex = EventData.findIndex((item) => {
-          return item._id == selectedEventData._id;
-        });
+        console.log('Event Data ::', EventData);
+        console.log('Selected Event Data::', selectedEventData);
+        const eventIndex = EventData.findIndex((item) => item._id == selectedEventData._id);
         EventData[eventIndex].isTableConfigAdded = true;
       } else {
         const tempTableConfigData = [tcAdd?.data.data, ...tableConfigData];
@@ -429,7 +415,7 @@ export default function EventDashboard() {
       resettingTableConfigstates();
       setloaderEnabled(!true);
     } else {
-      console.log("tcAdd?.data", tcAdd.response.data?.message);
+      console.log('tcAdd?.data', tcAdd.response.data?.message);
       alert(tcAdd?.response?.data?.message);
       setloaderEnabled(!true);
     }
@@ -448,59 +434,55 @@ export default function EventDashboard() {
   const deleteTableConfigurations = async (data) => {
     setloaderEnabled(true);
 
-    let obj = {
-      tableconfigId: data._id,
+    const obj = {
+      tableconfigId: data._id
     };
     const apiCall = await deleteTableConfig(obj);
     if (apiCall?.data?.status === true) {
       alert(apiCall?.data?.message);
-      const tempTableConfigData = tableConfigData.filter((item) => {
-        return item._id !== data._id;
-      });
+      const tempTableConfigData = tableConfigData.filter((item) => item._id !== data._id);
 
       settableConfigData(tempTableConfigData);
       setloaderEnabled(!true);
     } else {
-      alert("Technical Error !");
+      alert('Technical Error !');
       setloaderEnabled(!true);
     }
   };
-  //setselectedTableConfigData
+  // setselectedTableConfigData
   const editUpdateTableConfigurations = async (data) => {
     setloaderEnabled(true);
-    let obj = {
+    const obj = {
       type: typeTC,
       minPrice: minPriceTC,
       recommendedCapacity: recomCapacityTC,
       clubId: selectedClubData._id,
       eventId: selectedEventData._id,
-      tableMapId: tmapleIDTC,
+      tableMapId: tmapleIDTC
     };
     const apiCall = await updateTableConfig(
       selectedTableConfigData[0]._id,
       obj
     );
     if (apiCall.data?.status === true) {
-      alert("Table Config Updated Successfully!");
-      const updatingIndvTableConfigData = tableConfigData.findIndex((item) => {
-        return item._id == selectedTableConfigData[0]._id;
-      });
+      alert('Table Config Updated Successfully!');
+      const updatingIndvTableConfigData = tableConfigData.findIndex((item) => item._id == selectedTableConfigData[0]._id);
 
       tableConfigData[updatingIndvTableConfigData] = apiCall.data.data;
       setaddTableConfigPopup(!true);
       setloaderEnabled(!true);
     } else {
-      alert("Techincal Error ");
+      alert('Techincal Error ');
       setaddTableConfigPopup(!true);
       setloaderEnabled(!true);
     }
   };
-  //resettingtable config the states
+  // resettingtable config the states
   const resettingTableConfigstates = () => {
-    settypeTC("");
-    setminPriceTC("");
-    setrecomCapacityTC("");
-    settmapleIDTC("");
+    settypeTC('');
+    setminPriceTC('');
+    setrecomCapacityTC('');
+    settmapleIDTC('');
     seteditTableConfigCheck(false);
   };
 
@@ -544,15 +526,15 @@ export default function EventDashboard() {
         <title> Night Table : Events </title>
       </Helmet>
 
-      <Container maxWidth="xl">
+      <Container maxWidth='xl'>
         <Container>
-          <Stack direction="row" justifyContent="space-between" mb={5}>
-            <Typography variant="h4" sx={{ color: palette.primary.gold }}>
+          <Stack direction='row' justifyContent='space-between' mb={5}>
+            <Typography variant='h4' sx={{ color: palette.primary.gold }}>
               Events
             </Typography>
           </Stack>
-          <Box display="flex">
-            <Box width="50%" textAlign="left">
+          <Box display='flex'>
+            <Box width='50%' textAlign='left'>
               <ResponsiveDateTimePickers
                 value={currentDateinISO5601}
                 onChange={(date) => {
@@ -561,7 +543,7 @@ export default function EventDashboard() {
               />
               {/* </Box> */}
             </Box>
-            <Box width="50%" textAlign="right">
+            <Box width='50%' textAlign='right'>
               <Button
                 onClick={() => {
                   seteditEvent(false);
@@ -573,10 +555,10 @@ export default function EventDashboard() {
                   backgroundColor: palette.primary.gold,
                   color: palette.common.black,
                   padding: 8,
-                  borderRadius: 10,
+                  borderRadius: 10
                 }}
-                variant="Outlined"
-                startIcon={<Iconify icon="eva:plus-fill" />}
+                variant='Outlined'
+                startIcon={<Iconify icon='eva:plus-fill' />}
               >
                 Add Event
               </Button>
@@ -584,16 +566,14 @@ export default function EventDashboard() {
           </Box>
 
           <Scrollbar>
-            <Stack direction="row" mt={2} mb={2}>
-              {clubs_data.map((item, index) => {
-                return (
-                  <>
-                    <Box
+            <Stack direction='row' mt={2} mb={2}>
+              {clubs_data.map((item, index) => (
+                  <Box
                       onClick={() => {
                         setselected_club_btn(index);
                         setselectedClubData(item);
-                        let obj = {
-                          date: currentDateinTimeStamp,
+                        const obj = {
+                          date: currentDateinTimeStamp
                         };
                         getClubsEvent(item._id, obj);
                       }}
@@ -605,9 +585,9 @@ export default function EventDashboard() {
                           ? palette.common.black
                           : palette.primary.gold
                       }
-                      flexDirection={"row"}
-                      justifyContent={"center"}
-                      alignItems={"center"}
+                      flexDirection='row'
+                      justifyContent='center'
+                      alignItems='center'
                       backgroundColor={
                         index === selected_club_btn
                           ? palette.primary.gold
@@ -615,24 +595,22 @@ export default function EventDashboard() {
                       }
                     >
                       <Typography
-                        variant="body1"
+                        variant='body1'
                         style={{
                           color:
                             index === selected_club_btn
                               ? palette.common.black
                               : palette.primary.gold,
                           fontWeight:
-                            index === selected_club_btn ? "bold" : "500",
+                            index === selected_club_btn ? 'bold' : '500',
                           padding: 10,
-                          textAlign: "center",
+                          textAlign: 'center'
                         }}
                       >
                         {item?.name}
                       </Typography>
                     </Box>
-                  </>
-                );
-              })}
+                ))}
             </Stack>
           </Scrollbar>
 
@@ -641,7 +619,7 @@ export default function EventDashboard() {
               borderWidth: 1,
               backgroundColor: palette.primary.gold,
               padding: 1,
-              borderRadius: 4,
+              borderRadius: 4
             }}
             alignItems
           >
@@ -653,7 +631,7 @@ export default function EventDashboard() {
                     rowCount={EventData.length}
                     numSelected={selected.length}
                   />
-                  <TableBody></TableBody>
+                  <TableBody />
                 </Table>
               </TableContainer>
             </Scrollbar>
@@ -675,31 +653,29 @@ export default function EventDashboard() {
                             isTableConfigAdded,
                             picture,
                             ticketLink,
-                            eventDate,
+                            eventDate
                           } = item;
 
                           return (
-                            <>
-                              <TableRow
+                            <TableRow
                                 style={{
-                                  margin: 20,
+                                  margin: 20
                                 }}
                                 bgcolor={palette.primary.gold}
                                 key={_id}
                                 tabIndex={-1}
                               >
-                                <TableCell align="left">
+                                <TableCell align='left'>
                                   <Typography
                                     sx={{ color: palette.common.black }}
                                   >
                                     {
-                                      <>
-                                        <IconButton
+                                      <IconButton
                                           style={{
-                                            background: palette.common.black,
+                                            background: palette.common.black
                                           }}
-                                          size="large"
-                                          color="inherit"
+                                          size='large'
+                                          color='inherit'
                                           onClick={() => {
                                             resettingTableConfigstates();
                                             settableConfigData([]);
@@ -714,7 +690,7 @@ export default function EventDashboard() {
                                               isTableConfigAdded !== false
                                             ) {
                                               getIndEventTableConfig(item);
-                                              //GET TC DATA
+                                              // GET TC DATA
                                             }
                                             // ELSE IF : TC.LENGTH > 1 - MID POP-UP FOR TC : GET TC ARRAY : UPDATE & DELETE
                                           }}
@@ -723,86 +699,84 @@ export default function EventDashboard() {
                                             color={palette.primary.gold}
                                             icon={
                                               isTableConfigAdded === false
-                                                ? "eva:plus-fill"
-                                                : "material-symbols:edit"
+                                                ? 'eva:plus-fill'
+                                                : 'material-symbols:edit'
                                             }
                                           />
                                         </IconButton>
-                                      </>
                                     }
                                   </Typography>
                                 </TableCell>
                                 <TableCell
                                   bgcolor={palette.primary.gold}
-                                  component="th"
-                                  scope="row"
-                                  padding="none"
+                                  component='th'
+                                  scope='row'
+                                  padding='none'
                                 >
                                   <Typography
                                     sx={{ color: palette.common.black, px: 2 }}
-                                    variant="subtitle2"
+                                    variant='subtitle2'
                                     noWrap
                                   >
                                     {index + 1}
-                                    {" )"} {name}
+                                    {' )'} {name}
                                   </Typography>
                                 </TableCell>
                                 <TableCell
                                   bgcolor={palette.primary.gold}
-                                  component="th"
-                                  scope="row"
-                                  padding="none"
+                                  component='th'
+                                  scope='row'
+                                  padding='none'
                                 >
                                   <Typography
                                     sx={{ color: palette.common.black, px: 2 }}
-                                    variant="subtitle2"
+                                    variant='subtitle2'
                                     noWrap
                                   >
                                     {dayjs(eventDate).format(
-                                      "DD-MM-YYYY HH:MM"
+                                      'DD-MM-YYYY HH:MM'
                                     )}
                                   </Typography>
                                 </TableCell>
 
-                                <TableCell align="right">
-                                  <Stack flexDirection={"row"}>
+                                <TableCell align='right'>
+                                  <Stack flexDirection='row'>
                                     <IconButton
-                                      size="large"
-                                      color="inherit"
+                                      size='large'
+                                      color='inherit'
                                       onClick={() => {
-                                        //TO UPDATE CHECK FOR ADD AND UPDATE
+                                        // TO UPDATE CHECK FOR ADD AND UPDATE
                                         seteditEvent(true);
-                                        //EVENT DATA
+                                        // EVENT DATA
                                         setselectedEventData(item);
-                                        //WANT TO UPLOAD NEW IMAGE
+                                        // WANT TO UPLOAD NEW IMAGE
                                         seteditEventImage(false);
-                                        //SET EVENT DATA FOR UPDATION
+                                        // SET EVENT DATA FOR UPDATION
                                         seteventImage(picture);
                                         setEventName(name);
                                         setEventDate(eventDate);
                                         setticketLink(ticketLink);
-                                        //ENABLE POP-UP
+                                        // ENABLE POP-UP
                                         setEventClubPopUp(true);
                                       }}
                                     >
-                                      <Iconify icon={"material-symbols:edit"} />
+                                      <Iconify icon='material-symbols:edit' />
                                     </IconButton>
                                   </Stack>
                                 </TableCell>
-                                <TableCell align="left">
+                                <TableCell align='left'>
                                   <IconButton
-                                    size="large"
-                                    color="inherit"
+                                    size='large'
+                                    color='inherit'
                                     onClick={() => {
                                       setselectedEventData(item);
                                       setdeleteDialogOpen(true);
                                     }}
                                   >
-                                    <Iconify icon={"ic:baseline-delete"} />
+                                    <Iconify icon='ic:baseline-delete' />
                                   </IconButton>
                                 </TableCell>
                               </TableRow>
-                            </>
                           );
                         })}
                     {emptyRows > 0 && (
@@ -814,24 +788,24 @@ export default function EventDashboard() {
                   {isNotFound && (
                     <TableBody
                       style={{
-                        backgroundColor: palette.primary.gold,
+                        backgroundColor: palette.primary.gold
                       }}
                     >
                       <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <TableCell align='center' colSpan={6} sx={{ py: 3 }}>
                           <Paper
                             sx={{
-                              textAlign: "center",
+                              textAlign: 'center'
                             }}
                             style={{
-                              backgroundColor: palette.primary.gold,
+                              backgroundColor: palette.primary.gold
                             }}
                           >
-                            <Typography variant="h6" paragraph>
+                            <Typography variant='h6' paragraph>
                               Not found
                             </Typography>
 
-                            <Typography variant="body2">
+                            <Typography variant='body2'>
                               No results found for &nbsp;
                               <strong>&quot;{filterName}&quot;</strong>.
                               <br /> Try checking for typos or using complete
@@ -848,10 +822,10 @@ export default function EventDashboard() {
             <TablePagination
               style={{
                 backgroundColor: palette.common.black,
-                color: "white",
+                color: 'white'
               }}
               rowsPerPageOptions={[5, 10, 25]}
-              component="div"
+              component='div'
               count={clubs_data.length}
               rowsPerPage={rowsPerPage}
               page={page}
@@ -869,98 +843,98 @@ export default function EventDashboard() {
             setEventClubPopUp(!true);
           }}
           anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           PaperProps={{
             sx: {
               p: 1,
-              width: "90%",
-              hieght: "100%",
+              width: '90%',
+              hieght: '100%',
               borderColor: palette.primary.gold,
               borderWidth: 1,
 
-              "& .MuiMenuItem-root": {
-                typography: "body2",
+              '& .MuiMenuItem-root': {
+                typography: 'body2',
                 // borderRadius: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                width: "80%",
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '80%',
                 borderColor: palette.primary.gold,
-                borderWidth: 12,
-              },
-            },
+                borderWidth: 12
+              }
+            }
           }}
         >
           <Scrollbar>
             <Box
-              component="form"
+              component='form'
               sx={{
-                width: "100%",
+                width: '100%',
                 borderWidth: 2,
                 backgroundColor: palette.common.black,
-                borderRadius: 4,
+                borderRadius: 4
               }}
-              autoComplete="on"
+              autoComplete='on'
             >
-              <Stack alignItems={"flex-end"} justifyItems={"right"}>
+              <Stack alignItems='flex-end' justifyItems='right'>
                 <IconButton
-                  size="large"
-                  color="inherit"
+                  size='large'
+                  color='inherit'
                   onClick={() => {
                     seteventLoader(false);
                     setEventClubPopUp(!true);
                   }}
                 >
-                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                  <Iconify color={palette.primary.gold} icon='maki:cross' />
                 </IconButton>
               </Stack>
               <Typography
                 sx={{
                   color: palette.primary.gold,
-                  textAlign: "center",
+                  textAlign: 'center',
                   paddingTop: 4,
                   paddingBottom: 4,
                   fontSize: 20,
-                  fontWeight: "bold",
+                  fontWeight: 'bold'
                 }}
               >
-                {editEvent !== false ? "Update" : "Add"} Event
+                {editEvent !== false ? 'Update' : 'Add'} Event
               </Typography>
-              <Container sx={{ width: "100%" }}>
+              <Container sx={{ width: '100%' }}>
                 {eventLoader !== true ? (
                   <>
-                    <Stack flexDirection={"row"}>
-                      <Box sx={{ width: "30%" }}>
+                    <Stack flexDirection='row'>
+                      <Box sx={{ width: '30%' }}>
                         <Typography sx={{ color: palette.primary.gold }}>
                           Name
                         </Typography>
                       </Box>
-                      <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                      <Box sx={{ width: '70%', paddingBottom: 2 }}>
                         <TextField
                           fullWidth
-                          autoComplete="off"
-                          label="Event Name"
-                          variant="outlined"
+                          autoComplete='off'
+                          label='Event Name'
+                          variant='outlined'
                           value={EventName}
                           onChange={(text) => {
                             setEventName(text.target.value);
                           }}
                           inputProps={{
-                            style: { color: palette.primary.gold },
+                            style: { color: palette.primary.gold }
                           }}
                           InputLabelProps={{
-                            style: { color: palette.primary.gold },
+                            style: { color: palette.primary.gold }
                           }}
                         />
                       </Box>
                     </Stack>
-                    <Stack flexDirection={"row"}>
-                      <Box sx={{ width: "30%" }}>
+                    <Stack flexDirection='row'>
+                      <Box sx={{ width: '30%' }}>
                         <Typography
                           fullWidth
                           sx={{ color: palette.primary.gold }}
@@ -968,29 +942,29 @@ export default function EventDashboard() {
                           Ticket Url
                         </Typography>
                       </Box>
-                      <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                      <Box sx={{ width: '70%', paddingBottom: 2 }}>
                         <Box sx={{ paddingBottom: 2 }}>
                           <TextField
-                            label={"Ticket Link "}
-                            autoComplete="no-autocomplete-random-string"
+                            label='Ticket Link '
+                            autoComplete='no-autocomplete-random-string'
                             fullWidth
-                            variant="outlined"
+                            variant='outlined'
                             value={ticketLink}
                             onChange={(text) => {
                               setticketLink(text.target.value);
                             }}
                             inputProps={{
-                              style: { color: palette.primary.gold },
+                              style: { color: palette.primary.gold }
                             }}
                             InputLabelProps={{
-                              style: { color: palette.primary.gold },
+                              style: { color: palette.primary.gold }
                             }}
                           />
                         </Box>
                       </Box>
                     </Stack>
-                    <Stack flexDirection={"row"}>
-                      <Box sx={{ width: "30%" }}>
+                    <Stack flexDirection='row'>
+                      <Box sx={{ width: '30%' }}>
                         <Typography
                           fullWidth
                           sx={{ color: palette.primary.gold }}
@@ -998,7 +972,7 @@ export default function EventDashboard() {
                           Event Date
                         </Typography>
                       </Box>
-                      <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                      <Box sx={{ width: '70%', paddingBottom: 2 }}>
                         <Box sx={{ paddingBottom: 2 }}>
                           <ResponsiveDateTimePickers
                             value={EventDate}
@@ -1009,29 +983,28 @@ export default function EventDashboard() {
                         </Box>
                       </Box>
                     </Stack>
-                    <Stack justifyItem={"center"}>
+                    <Stack justifyItem='center'>
                       <Box sx={{ paddingBottom: 2 }}>
                         {editEventImage !== true ? (
-                          <>
-                            <Box
+                          <Box
                               style={{
-                                width: "100%",
+                                width: '100%'
                               }}
                             >
                               <Stack
-                                alignItems={"flex-end"}
-                                justifyItems={"right"}
+                                alignItems='flex-end'
+                                justifyItems='right'
                               >
                                 <IconButton
-                                  size="large"
-                                  color="inherit"
+                                  size='large'
+                                  color='inherit'
                                   onClick={() => {
                                     seteditEventImage(true);
                                   }}
                                 >
                                   <Iconify
                                     color={palette.primary.gold}
-                                    icon={"maki:cross"}
+                                    icon='maki:cross'
                                   />
                                 </IconButton>
                               </Stack>
@@ -1039,91 +1012,86 @@ export default function EventDashboard() {
                                 <img
                                   src={eventImage}
                                   alt={eventImage}
-                                  style={{ width: "300px", height: "200px" }} // Set the desired width and height
+                                  style={{ width: '300px', height: '200px' }} // Set the desired width and height
                                 />
                               </Box>
                             </Box>
-                          </>
                         ) : (
-                          <>
-                            <UploadSingleImage
-                              heading={""}
+                          <UploadSingleImage
+                              heading=''
                               filesLimit={1}
                               eventImageLoader={eventImageLoader}
-                              btnDisabled={true}
+                              btnDisabled
                               handleSubmit={async (Data) => {
                                 if (Data) {
                                   seteventImage(Data);
                                 }
                               }}
                             />
-                          </>
                         )}
                       </Box>
                     </Stack>
                     <Box
                       sx={{
-                        width: "100%",
-                        padding: 2,
+                        width: '100%',
+                        padding: 2
                       }}
                     >
                       <Button
                         onClick={() => {
                           editEvent !== false ? updateEvent() : addEvent();
 
-                          //setEventClubPopUp(true);
+                          // setEventClubPopUp(true);
                         }}
                         style={{
                           backgroundColor: palette.primary.gold,
-                          textAlign: "center",
+                          textAlign: 'center',
                           fontSize: 16,
-                          fontWeight: "bold",
+                          fontWeight: 'bold',
                           color: palette.common.black,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          width: "100%",
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          width: '100%'
                         }}
                       >
-                        {editEvent !== false ? "Update" : "Add"} Event
+                        {editEvent !== false ? 'Update' : 'Add'} Event
                       </Button>
                     </Box>
                   </>
                 ) : (
-                  <>
-                    <Box
+                  <Box
                       style={{
                         height: 500,
-                        width: "100%",
+                        width: '100%'
                       }}
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
+                      display='flex'
+                      justifyContent='center'
+                      alignItems='center'
                     >
                       <CircularProgress
                         style={{
-                          justifyItems: "center",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          alignSelf: "center",
+                          justifyItems: 'center',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          alignSelf: 'center'
                         }}
-                        color="success"
+                        color='success'
                       />
                       <Typography
                         sx={{
                           color: palette.primary.gold,
-                          textAlign: "center",
+                          textAlign: 'center',
                           paddingTop: 4,
                           paddingBottom: 4,
                           fontSize: 12,
-                          fontWeight: "bold",
+                          fontWeight: 'bold'
                         }}
                       >
-                        Please wait we are{" "}
-                        {editEvent != false ? "Updating" : "Adding"} your event
+                        Please wait we are{' '}
+                        {editEvent != false ? 'Updating' : 'Adding'} your event
                         !
                       </Typography>
                     </Box>
-                  </>
                 )}
               </Container>
             </Box>
@@ -1137,162 +1105,162 @@ export default function EventDashboard() {
             setaddTableConfigPopup(!true);
           }}
           anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           PaperProps={{
             sx: {
               p: 1,
-              width: "90%",
-              hieght: "100%",
+              width: '90%',
+              hieght: '100%',
               borderColor: palette.primary.gold,
               borderWidth: 1,
 
-              "& .MuiMenuItem-root": {
-                typography: "body2",
+              '& .MuiMenuItem-root': {
+                typography: 'body2',
                 // borderRadius: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                width: "80%",
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '80%',
                 borderColor: palette.primary.gold,
-                borderWidth: 12,
-              },
-            },
+                borderWidth: 12
+              }
+            }
           }}
         >
           <Scrollbar>
             <Box
-              component="form"
+              component='form'
               sx={{
-                width: "100%",
+                width: '100%',
                 borderWidth: 2,
                 backgroundColor: palette.common.black,
-                borderRadius: 4,
+                borderRadius: 4
               }}
-              autoComplete="on"
+              autoComplete='on'
             >
-              <Stack alignItems={"flex-end"} justifyItems={"right"}>
+              <Stack alignItems='flex-end' justifyItems='right'>
                 <IconButton
-                  size="large"
-                  color="inherit"
+                  size='large'
+                  color='inherit'
                   onClick={() => {
                     setaddTableConfigPopup(!true);
                   }}
                 >
-                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                  <Iconify color={palette.primary.gold} icon='maki:cross' />
                 </IconButton>
               </Stack>
               <Typography
                 sx={{
                   color: palette.primary.gold,
-                  textAlign: "center",
+                  textAlign: 'center',
                   paddingTop: 4,
                   paddingBottom: 4,
                   fontSize: 20,
-                  fontWeight: "bold",
+                  fontWeight: 'bold'
                 }}
               >
-                {editTableConfigCheck !== false ? "Update" : "Add"} Table
+                {editTableConfigCheck !== false ? 'Update' : 'Add'} Table
                 Configuration
               </Typography>
-              <Container sx={{ width: "100%" }}>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+              <Container sx={{ width: '100%' }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography sx={{ color: palette.primary.gold }}>
                       Table Type
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <TextField
                       fullWidth
-                      autoComplete="off"
-                      label="configuration"
-                      variant="outlined"
+                      autoComplete='off'
+                      label='configuration'
+                      variant='outlined'
                       value={typeTC}
                       onChange={(text) => {
                         settypeTC(text.target.value);
                       }}
                       inputProps={{ style: { color: palette.primary.gold } }}
                       InputLabelProps={{
-                        style: { color: palette.primary.gold },
+                        style: { color: palette.primary.gold }
                       }}
                     />
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
                       Minimum Price
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
-                        label={"price "}
-                        autoComplete="no-autocomplete-random-string"
+                        label='price '
+                        autoComplete='no-autocomplete-random-string'
                         fullWidth
-                        variant="outlined"
+                        variant='outlined'
                         value={minPriceTC}
                         onChange={(text) => {
                           setminPriceTC(text.target.value);
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                         InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                          style: { color: palette.primary.gold }
                         }}
                       />
                     </Box>
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
                       Seating Capacity
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
-                        label={"capacity"}
-                        autoComplete="no-autocomplete-random-string"
+                        label='capacity'
+                        autoComplete='no-autocomplete-random-string'
                         fullWidth
-                        variant="outlined"
+                        variant='outlined'
                         value={recomCapacityTC}
                         onChange={(text) => {
                           setrecomCapacityTC(text.target.value);
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                         InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                          style: { color: palette.primary.gold }
                         }}
                       />
                     </Box>
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
                       Table Map ID
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
-                        label={"Map id "}
-                        autoComplete="no-autocomplete-random-string"
+                        label='Map id '
+                        autoComplete='no-autocomplete-random-string'
                         fullWidth
-                        variant="outlined"
+                        variant='outlined'
                         value={tmapleIDTC}
                         onChange={(text) => {
                           settmapleIDTC(text.target.value);
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                         InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                          style: { color: palette.primary.gold }
                         }}
                       />
                     </Box>
@@ -1301,8 +1269,8 @@ export default function EventDashboard() {
 
                 <Box
                   sx={{
-                    width: "100%",
-                    padding: 2,
+                    width: '100%',
+                    padding: 2
                   }}
                 >
                   <Button
@@ -1317,16 +1285,16 @@ export default function EventDashboard() {
                     // variant="contained"
                     style={{
                       backgroundColor: palette.primary.gold,
-                      textAlign: "center",
+                      textAlign: 'center',
                       fontSize: 16,
-                      fontWeight: "bold",
+                      fontWeight: 'bold',
                       color: palette.common.black,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "100%",
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%'
                     }}
                   >
-                    {editTableConfigCheck !== false ? "Update" : "Add"}{" "}
+                    {editTableConfigCheck !== false ? 'Update' : 'Add'}{' '}
                     Configuration
                   </Button>
                 </Box>
@@ -1344,82 +1312,82 @@ export default function EventDashboard() {
             setshowAllConfigDataPopUp(!true);
           }}
           anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           PaperProps={{
             sx: {
               p: 1,
-              width: "90%",
-              hieght: "100%",
+              width: '90%',
+              hieght: '100%',
               borderColor: palette.primary.gold,
               // backgroundColor: '#E4D0B5',
               borderWidth: 1,
 
-              "& .MuiMenuItem-root": {
-                typography: "body2",
+              '& .MuiMenuItem-root': {
+                typography: 'body2',
                 // borderRadius: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                width: "80%",
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '80%',
                 borderColor: palette.primary.gold,
-                borderWidth: 12,
-              },
-            },
+                borderWidth: 12
+              }
+            }
           }}
         >
           <Box
-            component="form"
+            component='form'
             sx={{
-              width: "100%",
+              width: '100%',
               borderWidth: 2,
               backgroundColor: palette.common.black,
               borderRadius: 4,
-              height: 500,
+              height: 500
             }}
-            autoComplete="on"
+            autoComplete='on'
           >
             <Box
-              component="form"
+              component='form'
               sx={{
-                width: "100%",
+                width: '100%',
                 borderWidth: 2,
                 backgroundColor: palette.common.black,
-                borderRadius: 4,
+                borderRadius: 4
               }}
-              autoComplete="on"
+              autoComplete='on'
             >
-              <Stack alignItems={"flex-end"} justifyItems={"right"}>
+              <Stack alignItems='flex-end' justifyItems='right'>
                 <IconButton
-                  size="large"
-                  color="inherit"
+                  size='large'
+                  color='inherit'
                   onClick={() => {
                     setshowAllConfigDataPopUp(false);
                   }}
                 >
-                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                  <Iconify color={palette.primary.gold} icon='maki:cross' />
                 </IconButton>
               </Stack>
 
-              <Box display="flex">
-                <Box width="50%">
+              <Box display='flex'>
+                <Box width='50%'>
                   <Typography
                     sx={{
                       color: palette.primary.gold,
-                      textAlign: "left",
+                      textAlign: 'left',
                       fontSize: 20,
-                      fontWeight: "bold",
-                      paddingLeft: 2,
+                      fontWeight: 'bold',
+                      paddingLeft: 2
                     }}
                   >
                     All Table Configuration
                   </Typography>
-                </Box>{" "}
-                <Box width="50%" style={{ padding: 12, textAlign: "right" }}>
+                </Box>{' '}
+                <Box width='50%' style={{ padding: 12, textAlign: 'right' }}>
                   <Button
                     onClick={() => {
                       resettingTableConfigstates();
@@ -1428,10 +1396,10 @@ export default function EventDashboard() {
                     style={{
                       backgroundColor: palette.primary.gold,
                       color: palette.common.black,
-                      borderRadius: 10,
+                      borderRadius: 10
                     }}
-                    variant="Outlined"
-                    startIcon={<Iconify icon="eva:plus-fill" />}
+                    variant='Outlined'
+                    startIcon={<Iconify icon='eva:plus-fill' />}
                   >
                     Add Table Config
                   </Button>
@@ -1445,7 +1413,7 @@ export default function EventDashboard() {
                       rowCount={EventData.length}
                       numSelected={selected.length}
                     />
-                    <TableBody></TableBody>
+                    <TableBody />
                   </Table>
                 </TableContainer>
               </Scrollbar>
@@ -1454,21 +1422,20 @@ export default function EventDashboard() {
                   borderWidth: 1,
                   backgroundColor: palette.primary.gold,
                   padding: 1,
-                  borderRadius: 4,
+                  borderRadius: 4
                 }}
                 alignItems
               >
                 <TableContainer>
                   <Table>
                     {tableConfigData?.map((item, index) => {
-                      console.log("====================================");
-                      console.log("item", item);
-                      console.log("====================================");
+                      console.log('====================================');
+                      console.log('item', item);
+                      console.log('====================================');
                       return (
-                        <>
-                          <TableRow
+                        <TableRow
                             style={{
-                              marginTop: 20,
+                              marginTop: 20
                             }}
                             bgcolor={palette.primary.gold}
                             // hover
@@ -1476,7 +1443,7 @@ export default function EventDashboard() {
                             <TableCell>
                               <Typography
                                 sx={{ color: palette.common.black, px: 2 }}
-                                variant="subtitle2"
+                                variant='subtitle2'
                                 noWrap
                               >
                                 {item.minPrice}
@@ -1485,17 +1452,17 @@ export default function EventDashboard() {
                             <TableCell>
                               <Typography
                                 sx={{ color: palette.common.black, px: 2 }}
-                                variant="subtitle2"
+                                variant='subtitle2'
                                 noWrap
                               >
                                 {item.type}
                               </Typography>
                             </TableCell>
 
-                            <TableCell align="left">
+                            <TableCell align='left'>
                               <Typography
                                 sx={{ color: palette.common.black, px: 2 }}
-                                variant="subtitle2"
+                                variant='subtitle2'
                                 noWrap
                               >
                                 {item.recommendedCapacity}
@@ -1504,38 +1471,37 @@ export default function EventDashboard() {
                             <TableCell>
                               <Typography
                                 sx={{ color: palette.common.black, px: 2 }}
-                                variant="subtitle2"
+                                variant='subtitle2'
                                 noWrap
                               >
                                 {item?.tableMapId}
                               </Typography>
                             </TableCell>
                             <TableCell>
-                              <Stack flexDirection={"row"}>
+                              <Stack flexDirection='row'>
                                 <IconButton
-                                  size="large"
-                                  color="inherit"
+                                  size='large'
+                                  color='inherit'
                                   onClick={() => {
                                     updateStateforEditUpdateTableConfig(item);
                                   }}
                                 >
-                                  <Iconify icon={"material-symbols:edit"} />
+                                  <Iconify icon='material-symbols:edit' />
                                 </IconButton>
                               </Stack>
                             </TableCell>
                             <TableCell>
                               <IconButton
-                                size="large"
-                                color="inherit"
+                                size='large'
+                                color='inherit'
                                 onClick={() => {
                                   deleteTableConfigurations(item);
                                 }}
                               >
-                                <Iconify icon={"ic:baseline-delete"} />
+                                <Iconify icon='ic:baseline-delete' />
                               </IconButton>
                             </TableCell>
                           </TableRow>
-                        </>
                       );
                     })}
                   </Table>
@@ -1546,7 +1512,7 @@ export default function EventDashboard() {
         </Popover>
 
         <DeleteEventDialog />
-        {/*LOADER MODAL*/}
+        {/* LOADER MODAL */}
         <Popover
           open={loaderEnabled}
           anchorEl={open}
@@ -1554,45 +1520,45 @@ export default function EventDashboard() {
             setloaderEnabled(!true);
           }}
           anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           PaperProps={{
             sx: {
-              width: "100%",
-              hieght: "100%",
-            },
+              width: '100%',
+              hieght: '100%'
+            }
           }}
         >
           <Grid
             container
             style={{
-              height: "100vh",
-              width: "100%",
+              height: '100vh',
+              width: '100%',
               backgroundColor: palette.common.black,
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
             <CircularProgress
               style={{
-                justifyItems: "center",
-                alignItems: "center",
+                justifyItems: 'center',
+                alignItems: 'center'
               }}
-              color={"success"}
+              color='success'
             />
             <Typography
               sx={{
                 color: palette.primary.gold,
-                textAlign: "center",
+                textAlign: 'center',
                 paddingTop: 4,
                 paddingBottom: 4,
                 fontSize: 12,
-                fontWeight: "bold",
+                fontWeight: 'bold'
               }}
             >
               Please wait we are saving the data!

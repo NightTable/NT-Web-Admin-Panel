@@ -15,24 +15,21 @@ import PriceTaxSectionInfoComp from '../../features/modals/ReviewReservationModa
 import StripePaymentSectionComp from '../../features/modals/ReviewReservationModal/StripePaymentSectionComp/StripePaymentSectionComp';
 import LowerButtonSectionComp from '../../features/modals/ReviewReservationModal/LowerButtonSectionComp/LowerButtonSectionComp';
 
-const ReviewReservationModal = (props) => {
-
-    return (<div className={styles.reviewReservationModalContainer}>
+const ReviewReservationModal = (props) => (<div className={styles.reviewReservationModalContainer}>
         <div className={styles.upperReviewReservationHeaderContainer}>
             <span style={{marginLeft: '0.8rem'}}>Review Reservation</span>
         </div>
         <div className={styles.lowerReviewReservationBodyContainer}>
             <div className={styles.backButtonRowContainer}>
-                <LeftArrowCircleDetailComp></LeftArrowCircleDetailComp>
+                <LeftArrowCircleDetailComp />
                 <span className={styles.backLabelTextStyle}>back</span>
             </div>
-            <BasicReservationInfoSectionComp></BasicReservationInfoSectionComp>
-            <TableInformationSectionComp></TableInformationSectionComp>
-            <PriceTaxSectionInfoComp></PriceTaxSectionInfoComp>
-            <StripePaymentSectionComp></StripePaymentSectionComp>
-            <LowerButtonSectionComp></LowerButtonSectionComp>
+            <BasicReservationInfoSectionComp />
+            <TableInformationSectionComp />
+            <PriceTaxSectionInfoComp />
+            <StripePaymentSectionComp />
+            <LowerButtonSectionComp />
         </div> 
-    </div>)
-}
+    </div>);
 
 export default ReviewReservationModal;

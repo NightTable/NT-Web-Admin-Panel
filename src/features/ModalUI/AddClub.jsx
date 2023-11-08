@@ -15,12 +15,12 @@ const AddClub = () => {
   return (
     <div>
       <TextField
-        label="Key"
+        label='Key'
         value={key}
         onChange={(event) => setKey(event.target.value)}
       />
       <TextField
-        label="Value"
+        label='Value'
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />

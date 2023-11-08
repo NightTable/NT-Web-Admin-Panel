@@ -1,21 +1,19 @@
-import React from "react";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
+import React from 'react';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
 // @mui
-import { Stack, Container, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import palette from "../theme/palette";
+import { Stack, Container, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import palette from '../theme/palette';
 
-export const FeildShow = (item) => {
-    return (
-      <>
-        <Stack sx={{ padding: 1 }} flexDirection={"row"}>
+export const FeildShow = (item) => (
+      <Stack sx={{ padding: 1 }} flexDirection='row'>
           <Typography
             sx={{
               color: palette.primary.gold,
               fontSize: 16,
-              fontWeight: "600",
-              paddingRight: 2,
+              fontWeight: '600',
+              paddingRight: 2
             }}
           >
             {item?.keyName} :
@@ -24,12 +22,10 @@ export const FeildShow = (item) => {
             sx={{
               color: palette.primary.gold,
               fontSize: 16,
-              fontWeight: "600",
+              fontWeight: '600'
             }}
           >
             {item?.value}
           </Typography>
         </Stack>
-      </>
     );
-  };

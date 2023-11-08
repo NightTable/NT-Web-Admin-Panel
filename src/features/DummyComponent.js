@@ -23,12 +23,12 @@ const DummyComponent = (props) => {
 
         dispatch(mainActions.incrementButtonAction());
 
-    }
+    };
 
     const handleLocalStatePress = () => {
 
         setCounter((state) => state + 1);
-    }
+    };
 
 
     return (<div>
@@ -39,7 +39,7 @@ const DummyComponent = (props) => {
         <p>{buttonValue}</p>
         <button onClick={handleLocalStatePress}> Click here to locally press</button>
         <p>{counter}</p>
-    </div>)
+    </div>);
 };
 
 export default DummyComponent;

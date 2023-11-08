@@ -11,9 +11,7 @@ import styles from './RepresentativeItemHorizComp.module.css';
 import pencilPicGraphic from '../../../assets/pencilpick.png';
 import xPicGraphic from '../../../assets/xpic.png';
 
-const RepresentativeItemHorizComp = (props) => {
-
-    return (<div className={styles.representativeItemHorizCompContainer}>
+const RepresentativeItemHorizComp = (props) => (<div className={styles.representativeItemHorizCompContainer}>
         <div className={styles.representativeItemBlockContainer}>
             <span className={styles.representativeItemTextLabelStyle}>{props.name}</span>
         </div>
@@ -28,11 +26,10 @@ const RepresentativeItemHorizComp = (props) => {
         </div>
         <div className={styles.representativeButtonItemBlockContainer}>
             <div className={styles.outerButtonContainerStyle}>
-                <img className={styles.buttonIconGraphicStyle} src={pencilPicGraphic}></img>
-                <img className={styles.buttonIconGraphicStyle}  src={xPicGraphic}></img>
+                <img className={styles.buttonIconGraphicStyle} src={pencilPicGraphic} />
+                <img className={styles.buttonIconGraphicStyle}  src={xPicGraphic} />
             </div>
         </div>
-    </div>)
-}
+    </div>);
 
 export default RepresentativeItemHorizComp;

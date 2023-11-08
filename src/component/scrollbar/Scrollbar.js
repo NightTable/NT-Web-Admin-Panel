@@ -9,10 +9,10 @@ import { StyledRootScrollbar, StyledScrollbar } from './styles';
 
 Scrollbar.propTypes = {
   sx: PropTypes.object,
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
-function Scrollbar({ children, sx, ...other }) {
+const Scrollbar = ({ children, sx, ...other }) => {
   const userAgent = typeof navigator === 'undefined' ? 'SSR' : navigator.userAgent;
 
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
@@ -32,6 +32,6 @@ function Scrollbar({ children, sx, ...other }) {
       </StyledScrollbar>
     </StyledRootScrollbar>
   );
-}
+};
 
 export default memo(Scrollbar);

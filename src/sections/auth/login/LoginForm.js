@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import {
   Link,
@@ -7,32 +7,33 @@ import {
   IconButton,
   InputAdornment,
   TextField,
-  Checkbox,
-} from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+  Checkbox
+} from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 // components
-import Iconify from "../../../component/iconify";
-//services
-import { getCountries } from "src/services/countries";
-import Dropdown from "../../../component/Dropdown";
+import { getCountries } from 'src/services/countries';
+import Iconify from '../../../component/iconify';
+// services
+import Dropdown from '../../../component/Dropdown';
 // ----------------------------------------------------------------------
-import palette from "../../../theme/palette";
+import palette from '../../../theme/palette';
+
 export default function LoginForm() {
   const navigate = useNavigate();
 
   const [countriesData, setcountriesData] = useState([]);
-  const [phoneNumber, setphoneNumber] = useState("");
+  const [phoneNumber, setphoneNumber] = useState('');
   const handleClick = () => {
-    navigate("/dashboard", { replace: true });
+    navigate('/dashboard', { replace: true });
   };
 
   const getCountryCode = async () => {
     const data = await getCountries();
-    let arr = [];
+    const arr = [];
     data.map((item) => {
       arr.push({
         label: item.name,
-        value: item.phoneNumberCode,
+        value: item.phoneNumberCode
       });
     });
     setcountriesData(arr);
@@ -46,22 +47,22 @@ export default function LoginForm() {
     <>
       <Stack sx={{ paddingTop: 4 }} spacing={3}>
         <Dropdown
-          textinputLabel={"Select Country"}
+          textinputLabel='Select Country'
           data={countriesData}
           changedValue={(item) => {
-            console.log("item===>", item);
+            console.log('item===>', item);
             //  setcountry(item.label);
           }}
         />
         <TextField
           className={styles.textField}
-          name="phone"
-          label="Phone Number"
+          name='phone'
+          label='Phone Number'
           inputProps={{
-            style: { color: palette.primary.gold, backgroundColor: "black" },
+            style: { color: palette.primary.gold, backgroundColor: 'black' }
           }}
           InputLabelProps={{
-            style: { color: palette.primary.gold, backgroundColor: "black" },
+            style: { color: palette.primary.gold, backgroundColor: 'black' }
           }}
           onChange={(event) => {
             setphoneNumber(event.target.value);
@@ -69,14 +70,14 @@ export default function LoginForm() {
         />
       </Stack>
 
-      <Stack sx={{ paddingTop: 4 }}></Stack>
+      <Stack sx={{ paddingTop: 4 }} />
       <LoadingButton
         fullWidth
-        size="large"
-        color="info"
-        type="submit"
-        variant="outlined"
-        loadingPosition={"center"}
+        size='large'
+        color='info'
+        type='submit'
+        variant='outlined'
+        loadingPosition='center'
         onClick={handleClick}
       >
         Login
@@ -88,23 +89,23 @@ export default function LoginForm() {
 const styles = {
   root: {
     // - The TextField-root
-    border: "solid 3px #0ff", // - For demonstration: set the TextField-root border
-    padding: "3px", // - Make the border more distinguishable
+    border: 'solid 3px #0ff', // - For demonstration: set the TextField-root border
+    padding: '3px', // - Make the border more distinguishable
 
     // (Note: space or no space after `&` matters. See SASS "parent selector".)
-    "& .MuiOutlinedInput-root": {
+    '& .MuiOutlinedInput-root': {
       // - The Input-root, inside the TextField-root
-      "& fieldset": {
+      '& fieldset': {
         // - The <fieldset> inside the Input-root
-        borderColor: "pink", // - Set the Input border
+        borderColor: 'pink' // - Set the Input border
       },
-      "&:hover fieldset": {
-        borderColor: "yellow", // - Set the Input border when parent has :hover
+      '&:hover fieldset': {
+        borderColor: 'yellow' // - Set the Input border when parent has :hover
       },
-      "&.Mui-focused fieldset": {
+      '&.Mui-focused fieldset': {
         // - Set the Input border when parent is focused
-        borderColor: "green",
-      },
-    },
-  },
+        borderColor: 'green'
+      }
+    }
+  }
 };

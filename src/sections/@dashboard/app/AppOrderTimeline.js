@@ -10,7 +10,7 @@ import { fDateTime } from '../../../utils/formatTime';
 AppOrderTimeline.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
-  list: PropTypes.array.isRequired,
+  list: PropTypes.array.isRequired
 };
 
 export default function AppOrderTimeline({ title, subheader, list, ...other }) {
@@ -21,8 +21,8 @@ export default function AppOrderTimeline({ title, subheader, list, ...other }) {
       <CardContent
         sx={{
           '& .MuiTimelineItem-missingOppositeContent:before': {
-            display: 'none',
-          },
+            display: 'none'
+          }
         }}
       >
         <Timeline>
@@ -42,11 +42,11 @@ OrderItem.propTypes = {
   item: PropTypes.shape({
     time: PropTypes.instanceOf(Date),
     title: PropTypes.string,
-    type: PropTypes.string,
-  }),
+    type: PropTypes.string
+  })
 };
 
-function OrderItem({ item, isLast }) {
+const OrderItem = ({ item, isLast }) => {
   const { type, title, time } = item;
   return (
     <TimelineItem>
@@ -64,12 +64,12 @@ function OrderItem({ item, isLast }) {
       </TimelineSeparator>
 
       <TimelineContent>
-        <Typography variant="subtitle2">{title}</Typography>
+        <Typography variant='subtitle2'>{title}</Typography>
 
-        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+        <Typography variant='caption' sx={{ color: 'text.secondary' }}>
           {fDateTime(time)}
         </Typography>
       </TimelineContent>
     </TimelineItem>
   );
-}
+};

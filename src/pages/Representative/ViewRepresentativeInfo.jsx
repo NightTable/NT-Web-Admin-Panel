@@ -1,43 +1,43 @@
-import React from "react";
+import React from 'react';
 // @mui
-import { FeildShow } from "src/features/FieldShow";
+import { FeildShow } from 'src/features/FieldShow';
 // @mui
-import Scrollbar from "../../component/scrollbar";
 // @mui
 import {
   Box,
   Stack,
   Container,
-  Typography,
-} from "@mui/material";
-import { TextField } from "@material-ui/core";
-import Switch from "react-switch";
+  Typography
+} from '@mui/material';
+import { TextField } from '@material-ui/core';
+import Switch from 'react-switch';
 
-import palette from "src/theme/palette";
-//main function
+import palette from 'src/theme/palette';
+import Scrollbar from '../../component/scrollbar';
+// main function
 export default function ViewClubInfo(data) {
-  console.log("data", data?.data);
+  console.log('data', data?.data);
 
   const privilegesCondition = data.data.clubPrivileges[0].privileges;
 
   const PivilegeArr = [
     {
       id: 0,
-      text: "Add, edit or delete table configurations?",
+      text: 'Add, edit or delete table configurations?',
       privilege: privilegesCondition.tableConfigPrivilege,
-      name: "tableConfigPrivilege",
+      name: 'tableConfigPrivilege'
     },
     {
       id: 1,
-      text: "Add, edit or delete events ?",
+      text: 'Add, edit or delete events ?',
       privilege: privilegesCondition.eventPrivileges,
-      name: "eventPrivileges",
+      name: 'eventPrivileges'
     },
     {
       id: 2,
-      text: "Delete reservations, place orders during reservation ?",
+      text: 'Delete reservations, place orders during reservation ?',
       privilege: privilegesCondition.reservationManagementPrivileges,
-      name: "reservationManagementPrivileges",
+      name: 'reservationManagementPrivileges'
     },
     // {
     //   id: 3,
@@ -47,76 +47,73 @@ export default function ViewClubInfo(data) {
     // },
     {
       id: 4,
-      text: "Set custom table minimums on NightTable App ?",
+      text: 'Set custom table minimums on NightTable App ?',
       privilege: privilegesCondition.mobileAppTableMinimumPrivileges,
-      name: "mobileAppTableMinimumPrivileges",
+      name: 'mobileAppTableMinimumPrivileges'
     },
     {
       id: 5,
-      text: "Add, edit or delete menu items ?",
+      text: 'Add, edit or delete menu items ?',
       privilege: privilegesCondition.menuItemPrivileges,
-      name: "menuItemPrivileges",
+      name: 'menuItemPrivileges'
     },
     {
       id: 6,
-      text: "Add, edit or delete clubs ?",
+      text: 'Add, edit or delete clubs ?',
       privilege: privilegesCondition.clubPrivileges,
-      name: "clubPrivileges",
+      name: 'clubPrivileges'
     },
     {
       id: 7,
-      text: "Add, edit or delete representatives ?",
+      text: 'Add, edit or delete representatives ?',
       privilege: privilegesCondition.representativePrivileges,
-      name: "representativePrivileges",
-    },
+      name: 'representativePrivileges'
+    }
   ];
 
   return (
-    <>
-      <Scrollbar>
+    <Scrollbar>
         <Container
           sx={{
-            bgcolor: "black",
-            width: "100%",
-            height: "100%",
+            bgcolor: 'black',
+            width: '100%',
+            height: '100%'
           }}
-          maxWidth="xl"
+          maxWidth='xl'
         >
-          <Box></Box>
+          <Box />
 
           <Box sx={{ paddingBottom: 10 }}>
-            <Typography variant="h4" sx={{ mb: 2, color: palette.primary.gold }}>
+            <Typography variant='h4' sx={{ mb: 2, color: palette.primary.gold }}>
               Representative Information
             </Typography>
             <FeildShow
-              keyName={"Name "}
+              keyName='Name '
               value={`${data?.data?.firstName} ${data?.data?.lastName}`}
             />
-            <FeildShow keyName={"User Name"} value={data?.data?.username} />
-            <FeildShow keyName={"Email"} value={data?.data?.email} />
+            <FeildShow keyName='User Name' value={data?.data?.username} />
+            <FeildShow keyName='Email' value={data?.data?.email} />
             <FeildShow
-              keyName={"Phone Number"}
+              keyName='Phone Number'
               value={data?.data?.phoneNumber}
             />
-            <FeildShow keyName={"Role"} value={data?.data?.role} />
+            <FeildShow keyName='Role' value={data?.data?.role} />
 
-            <Typography variant="h4" sx={{ mb: 3, mt: 3, color: palette.primary.gold }}>
-              Privileges{" "}
+            <Typography variant='h4' sx={{ mb: 3, mt: 3, color: palette.primary.gold }}>
+              Privileges{' '}
             </Typography>
 
-            {PivilegeArr.map((item, index) => {
-              return (
-                <>
-                  <Stack flexDirection={"row"}>
-                    <Box sx={{ width: "70%" }}>
+            {PivilegeArr.map((item, index) => (
+                <Stack flexDirection='row'>
+                    <Box sx={{ width: '70%' }}>
                       <Typography
                         fullWidth
                         sx={{ color: palette.primary.gold }}
                       >
-                        {item.text}{" "}
+                        {item.text}{' '}
                       </Typography>
                     </Box>
-                    <Box sx={{ width: "30%", paddingBottom: 2 }}>
+                    <Box sx={{ width: '30%', paddingBottom: 2 }}>
                       <Box sx={{ paddingBottom: 2 }}>
                         {/* <Switch
                           style={{
@@ -129,27 +126,24 @@ export default function ViewClubInfo(data) {
 
                         <Switch
                           checked={item.privilege}
-                          onColor={"#AA6C39"}
+                          onColor='#AA6C39'
                           onHandleColor={palette.primary.gold}
                           handleDiameter={30}
                           uncheckedIcon={false}
                           checkedIcon={false}
-                          boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                          activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                          boxShadow='0px 1px 5px rgba(0, 0, 0, 0.6)'
+                          activeBoxShadow='0px 0px 1px 10px rgba(0, 0, 0, 0.2)'
                           height={20}
                           width={48}
-                          className="react-switch"
-                          id="material-switch"
+                          className='react-switch'
+                          id='material-switch'
                         />
                       </Box>
                     </Box>
                   </Stack>
-                </>
-              );
-            })}
+              ))}
           </Box>
         </Container>
       </Scrollbar>
-    </>
   );
 }

@@ -7,9 +7,7 @@
 import React from 'react';
 import styles from './ReservedTableItemComp.module.css';
 
-const ReservedTableItemComp = (props) => {
-
-    return (<div className={styles.reservedTableItemCompContainer}>
+const ReservedTableItemComp = (props) => (<div className={styles.reservedTableItemCompContainer}>
         <div className={styles.infoDetailContainer}>
             <span>{props.tableType}</span>
         </div>
@@ -22,7 +20,6 @@ const ReservedTableItemComp = (props) => {
         <div className={styles.infoDetailContainer}>
             <span>{props.qty}x</span>
         </div>
-    </div>)
-}
+    </div>);
 
 export default ReservedTableItemComp;

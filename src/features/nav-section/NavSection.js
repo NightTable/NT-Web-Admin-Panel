@@ -8,7 +8,7 @@ import { StyledNavItem } from './styles';
 // ----------------------------------------------------------------------
 
 NavSection.propTypes = {
-  data: PropTypes.array,
+  data: PropTypes.array
 };
 
 export default function NavSection({ data = [], ...other }) {
@@ -26,10 +26,10 @@ export default function NavSection({ data = [], ...other }) {
 // ----------------------------------------------------------------------
 
 NavItem.propTypes = {
-  item: PropTypes.object,
+  item: PropTypes.object
 };
 
-function NavItem({ item }) {
+const NavItem = ({ item }) => {
   const { title, path, icon, info } = item;
 
   return (
@@ -40,7 +40,7 @@ function NavItem({ item }) {
         '&.active': {
           color: '#E4D0B5',
           fontWeight: 'fontWeightBold',
-          margin:8,
+          margin:8
         },
         color:'#E4D0B5',
         margin:8,
@@ -53,4 +53,4 @@ function NavItem({ item }) {
       {info && info}
     </StyledNavItem>
   );
-}
+};

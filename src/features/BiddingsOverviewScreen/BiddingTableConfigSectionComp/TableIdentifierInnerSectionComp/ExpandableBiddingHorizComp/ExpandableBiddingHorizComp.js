@@ -23,7 +23,7 @@ const ExpandableBiddingHorizComp = (props) => {
 
     if (bidComponentSelected) {
 
-        dynamicContainerHeight = `${(localIdentifierObject.previousBidders.length * 2.8) + 2.5}rem`
+        dynamicContainerHeight = `${(localIdentifierObject.previousBidders.length * 2.8) + 2.5}rem`;
 
     } else {
 
@@ -43,7 +43,7 @@ const ExpandableBiddingHorizComp = (props) => {
     const handleParentBidInformationClick = () => {
 
         setBidComponentSelected((state) => !state);
-    }
+    };
 
     return (<div 
         style={expandableBiddingHorizCompStyle}>
@@ -56,7 +56,7 @@ const ExpandableBiddingHorizComp = (props) => {
                 {localIdentifierObject.previousBidders.length > 1 ? <img
                     className={styles.arrowGraphicStyle}
                     src={ bidComponentSelected ? downArrowGraphic : rightArrowGraphic}
-                    ></img> : null }
+                     /> : null }
             </div>
             <div className={styles.expandableBiddingHorizCompBlockContainer}>
                 <span>{localIdentifierObject.bidder}</span>
@@ -78,10 +78,10 @@ const ExpandableBiddingHorizComp = (props) => {
             {bidComponentSelected && childBiddersData.map((bidder, index) => (
                 <BidderChildHorizComp
                     bidderData={bidder}
-                    key={index}></BidderChildHorizComp>
+                    key={index} />
             ))}
         </div>
-    </div>)
-}
+    </div>);
+};
 
 export default ExpandableBiddingHorizComp;

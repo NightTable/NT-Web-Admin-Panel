@@ -9,17 +9,15 @@ import React from 'react';
 import styles from './EventBubbleHorizComp.module.css';
 import sampleNightClubPic from '../../assets/randomnightclubpic.jpeg';
 
-import Pencil from '../../assets/pencilpick.png'
-import XPic from '../../assets/xpic.png'
+import Pencil from '../../assets/pencilpick.png';
+import XPic from '../../assets/xpic.png';
 
-const EventBubbleHorizComp = (props) => {
-
-    return (<div className={styles.eventBubbleHorizContainerComp}>
+const EventBubbleHorizComp = (props) => (<div className={styles.eventBubbleHorizContainerComp}>
         <div className={styles.eventHorizNameContainer}>
             <span>{props.name}</span>
         </div>
         <div className={styles.eventHorizPhotoContainer}>
-            <img src={props.image} className={styles.sampleNightClubImageStyle}></img>
+            <img src={props.image} className={styles.sampleNightClubImageStyle} />
         </div>
         <div className={styles.eventHorizDateContainer}>
             <span>{props.date}</span>
@@ -32,11 +30,10 @@ const EventBubbleHorizComp = (props) => {
                 <span>{props.ticketLink}</span>
             </div>
             <div className={styles.buttonContainer}>
-                <img className={styles.imageEditIcon} src={Pencil}></img>
-                <img className={styles.imageEditIcon} src={XPic}></img>
+                <img className={styles.imageEditIcon} src={Pencil} />
+                <img className={styles.imageEditIcon} src={XPic} />
             </div>
         </div>      
-    </div>)
-}
+    </div>);
 
 export default EventBubbleHorizComp;

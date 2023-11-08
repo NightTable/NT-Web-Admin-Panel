@@ -31,12 +31,12 @@ const ReservationDetailWhiteBubbleComp = (props) => {
             price: 600,
             qty: 1
         }
-    ]
+    ];
 
     return (<div className={styles.reservationDetailWhiteBubbleCompContainer}>
         <div className={styles.backButtonRowContainer}>
             <div className={styles.backButtonImageContainer}>
-                <LeftArrowCircleDetailComp></LeftArrowCircleDetailComp>
+                <LeftArrowCircleDetailComp />
             </div>
         </div>
         <div className={styles.middleRowReservationDetailBodyContainer}>
@@ -64,7 +64,7 @@ const ReservationDetailWhiteBubbleComp = (props) => {
                             tableType={reservationObject.tableType}
                             price={reservationObject.price}
                             size={reservationObject.size}
-                            qty={reservationObject.qty}></ReservedTableItemComp>
+                            qty={reservationObject.qty} />
                     ))}
                 </div>
             </div>
@@ -87,7 +87,7 @@ const ReservationDetailWhiteBubbleComp = (props) => {
                 edit reservation
             </button>
         </div>
-    </div>)
-} 
+    </div>);
+}; 
 
 export default ReservationDetailWhiteBubbleComp;

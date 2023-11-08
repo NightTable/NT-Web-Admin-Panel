@@ -1,36 +1,36 @@
-import axios, * as others from "axios";
+import axios, * as others from 'axios';
 
 export const GetRequest = async (session_url, body, params, header = null) => {
-  var startTime = performance.now();
+  const startTime = performance.now();
 
   try {
-    var config = "";
+    let config = '';
     if (body) {
       config = {
-        method: "get",
+        method: 'get',
         url: session_url,
-        body: body,
+        body
       };
     } else if (params) {
       config = {
-        method: "get",
+        method: 'get',
         url: session_url,
-        params: params,
+        params
       };
     } else if (header) {
       config = {
-        method: "get",
+        method: 'get',
         url: session_url,
-        headers: header,
+        headers: header
       };
     } else {
       config = {
-        method: "get",
-        url: session_url,
+        method: 'get',
+        url: session_url
       };
     }
-    var resultAxios = await axios(config);
-    var endTime = performance.now();
+    const resultAxios = await axios(config);
+    const endTime = performance.now();
     console.log(`Call ${session_url} ${endTime - startTime} milliseconds.`);
 
     return resultAxios;
@@ -40,16 +40,16 @@ export const GetRequest = async (session_url, body, params, header = null) => {
 };
 
 export const PostRequest = async (session_url, body, token = null) => {
-  console.log("session_url, body, params, header = null", session_url);
-  var config;
+  console.log('session_url, body, params, header = null', session_url);
+  let config;
   if (token) {
     config = {
       headers: {
-        token: token,
-      },
+        token
+      }
     };
   } else {
-    config = "";
+    config = '';
   }
   try {
     return await axios.post(session_url, body, config);
@@ -62,8 +62,8 @@ export const PatchRequest = async (session_url, body, token = null) => {
   if (token) {
     var config = {
       headers: {
-        token: token,
-      },
+        token
+      }
     };
   }
   try {
@@ -76,8 +76,8 @@ export const DeleteRequest = async (session_url, body, token = null) => {
   if (token) {
     var config = {
       headers: {
-        token: token,
-      },
+        token
+      }
     };
   }
   try {
@@ -91,8 +91,8 @@ export const PutRequest = async (session_url, body, token = null) => {
   if (token) {
     var config = {
       headers: {
-        token: token,
-      },
+        token
+      }
     };
   }
   try {

@@ -1,21 +1,21 @@
-import axios, * as others from "axios";
+import axios, * as others from 'axios';
 
-//GET ALL THE CLUBS EVENT
+// GET ALL THE CLUBS EVENT
 export const getEventofClub = async (clubId, obj) => {
-  console.log(clubId, obj, "clubId, obj");
+  console.log(clubId, obj, 'clubId, obj');
   return new Promise((resolve, reject) => {
-    var config = {
-      method: "get",
+    const config = {
+      method: 'get',
       url: `${process.env.REACT_APP_BASE_URL}events/club/${clubId}`,
       headers: {},
-      data: obj,
+      data: obj
     };
     axios(config)
-      .then(function (response) {
+      .then((response) => {
         resolve(response.data);
       })
-      .catch(function (error) {
-        if (error.message === "Request failed with status code 404") {
+      .catch((error) => {
+        if (error.message === 'Request failed with status code 404') {
           resolve([]);
         } else {
           reject(error);
@@ -24,30 +24,28 @@ export const getEventofClub = async (clubId, obj) => {
   });
 };
 
-//----SHOWING PARTICULAR EVENT ---//
+// ----SHOWING PARTICULAR EVENT ---//
 
-//expect params  let obj ={ clubId:'',EventId:''}
-export const ViewEvent = async (obj) => {
-  return new Promise((resolve, reject) => {
-    var config = {
-      method: "get",
+// expect params  let obj ={ clubId:'',EventId:''}
+export const ViewEvent = async (obj) => new Promise((resolve, reject) => {
+    const config = {
+      method: 'get',
       url: `${process.env.REACT_APP_BASE_URL}events/club/${obj.clubId}/${obj.EventId}`,
-      headers: {},
+      headers: {}
     };
 
     axios(config)
-      .then(function (response) {
+      .then((response) => {
         resolve(response.data.data);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
         reject(error);
       });
   });
-};
 
-//----ADD & EDIT EVENT  ---//
-//EXPECT THIS Event
+// ----ADD & EDIT EVENT  ---//
+// EXPECT THIS Event
 // let obj  = {
 //       name: "new event",
 //       picture: "jdkaHSFKASFIKANVAJ",
@@ -56,90 +54,82 @@ export const ViewEvent = async (obj) => {
 //       ticketLink: "",
 //       clubId: "",
 //     }
-export const addEventtoDb = async (obj, clubId) => {
-  return new Promise((resolve, reject) => {
-    var config = {
-      method: "post",
+export const addEventtoDb = async (obj, clubId) => new Promise((resolve, reject) => {
+    const config = {
+      method: 'post',
       url: `${process.env.REACT_APP_BASE_URL}events/club/${clubId}`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      data: obj,
+      data: obj
     };
 
     axios(config)
-      .then(function (response) {
-        resolve(response)
+      .then((response) => {
+        resolve(response);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
         reject(error);
       });
   });
-};
 
-export const editEvent = async (obj, clubId, EventId) => {
-  return new Promise((resolve, reject) => {
-    var config = {
-      method: "put",
+export const editEvent = async (obj, clubId, EventId) => new Promise((resolve, reject) => {
+    const config = {
+      method: 'put',
       url: `${process.env.REACT_APP_BASE_URL}events/club/${clubId}/${EventId}`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      data: obj,
+      data: obj
     };
 
     axios(config)
-      .then(function (response) {
+      .then((response) => {
         resolve(response.data.data);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
         reject(error);
       });
   });
-};
 
-//DELETE EVENT BY CLUB
-export const deleteEvent = async (clubId, EventId) => {
-  return new Promise((resolve, reject) => {
-    var config = {
-      method: "delete",
+// DELETE EVENT BY CLUB
+export const deleteEvent = async (clubId, EventId) => new Promise((resolve, reject) => {
+    const config = {
+      method: 'delete',
       url: `${process.env.REACT_APP_BASE_URL}events/club/${clubId}/${EventId}`,
       headers: {
-        "Content-Type": "application/json",
-      },
+        'Content-Type': 'application/json'
+      }
     };
     axios(config)
-      .then(function (response) {
+      .then((response) => {
         resolve(response.data);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
         reject(error);
       });
   });
-};
 
 
 
-export const updateEventToDB = async (clubId, EventId, data) => {
-  return new Promise((resolve, reject) => {
-    var config = {
-      method: "put",
+export const updateEventToDB = async (clubId, EventId, data) => new Promise((resolve, reject) => {
+    const config = {
+      method: 'put',
       url: `${process.env.REACT_APP_BASE_URL}events/club/${clubId}/${EventId}`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
       },
-      data:data
+      data
     };
     axios(config)
-      .then(function (response) {
+      .then((response) => {
         resolve(response.data);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
         reject(error);
       });
   });
-};

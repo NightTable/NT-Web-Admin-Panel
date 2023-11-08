@@ -6,25 +6,23 @@ import React from 'react';
 import styles from './AddEventModal.module.css';
 import EventInputComp from './EventInputComp/EventInputComp';
 
-const AddEventModal = (props) => {
-
-    return (<div className={styles.addEventModalContainer}>
+const AddEventModal = (props) => (<div className={styles.addEventModalContainer}>
         <div className={styles.upperHeaderContainer}>
             <span className={styles.addEventLabelContainer}>Add an event</span>
         </div>
         <div className={styles.mainBodyContainer}>
             <EventInputComp
-                labelName="name"></EventInputComp>
+                labelName='name' />
             <div className={styles.photoLabelStyle}>
                 <span className={styles.labelInputStyle}>photo:</span>
                 <button className={styles.choosePhotoButtonStyle}>choose photo</button>
             </div>
             <EventInputComp
-                labelName="date"></EventInputComp>
+                labelName='date' />
             <EventInputComp
-                labelName="time"></EventInputComp>
+                labelName='time' />
             <EventInputComp
-                labelName="tickets"></EventInputComp>
+                labelName='tickets' />
         </div>
         <div className={styles.lowerButtonRowContainer}>
             <button onClick={props.onCancelButtonClick} className={styles.cancelButtonStyle}>
@@ -34,7 +32,6 @@ const AddEventModal = (props) => {
                 add
             </button>
         </div>
-    </div>)
-}
+    </div>);
 
 export default AddEventModal;

@@ -12,20 +12,16 @@ import BasicReservationInfoSectionComp from '../../features/modals/AddReservatio
 import TableDateSelectionInfoComp from '../../features/modals/AddReservationModal/TableDateSelectionInfoComp/TableDateSelectionInfoComp';
 import LowerButtonContainerComp from '../../features/modals/AddReservationModal/LowerButtonContainerComp/LowerButtonContainerComp';
 
-const AddReservationModal = (props) => {
-
-
-    return (<div className={styles.addReservationModalContainer}>
+const AddReservationModal = (props) => (<div className={styles.addReservationModalContainer}>
         <div className={styles.reservationUpperHeaderContainer}>
             <span className={styles.addNewReservationLabelContainer}>Add new reservation</span>
         </div>
         <div className={styles.reservationLowerContainer}>
-            <BasicReservationInfoSectionComp></BasicReservationInfoSectionComp>
-            <TableDateSelectionInfoComp></TableDateSelectionInfoComp>
+            <BasicReservationInfoSectionComp />
+            <TableDateSelectionInfoComp />
             <LowerButtonContainerComp
-                onLowerButtonContainerCancelClick={props.onCancelButtonClick}></LowerButtonContainerComp>
+                onLowerButtonContainerCancelClick={props.onCancelButtonClick} />
         </div>
-    </div>)
-}
+    </div>);
 
 export default AddReservationModal;

@@ -1,12 +1,12 @@
-import * as React from "react";
-
-import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
-import { filter } from "lodash";
-import { TextField, Switch } from "@material-ui/core";
-import "../../css/DasboardCss.css";
+import * as React from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { useState, useEffect } from 'react';
+import { filter } from 'lodash';
+import { TextField, Switch } from '@material-ui/core';
+import '../../css/DasboardCss.css';
 // @mui
-import { useTheme } from "@mui/material/styles";
+import { useTheme } from '@mui/material/styles';
 // @mui
 import {
   Box,
@@ -22,112 +22,114 @@ import {
   Typography,
   IconButton,
   TableContainer,
-  TablePagination,
-} from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
+  TablePagination
+} from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 
 // components
-import Iconify from "../../component/iconify";
-import Scrollbar from "../../component/scrollbar";
-import Dropdown from "../../component/Dropdown";
-import { DeleteDialog } from "../../features/DeleteDialog";
-//dialog
+import Tooltip from '@mui/material/Tooltip';
+import { LocalStorageKey } from 'src/utils/localStorage/keys';
+import Iconify from '../../component/iconify';
+import Scrollbar from '../../component/scrollbar';
+import Dropdown from '../../component/Dropdown';
+import { DeleteDialog } from '../../features/DeleteDialog';
+// dialog
 
-//dropdown
-import AddPosterImage from "../UploadImage/AddImage";
+// dropdown
+import AddPosterImage from '../UploadImage/AddImage';
 
 // sections
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user";
+import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 // mock
-import Tooltip from "@mui/material/Tooltip";
-//theme
-import palette from "../../theme/palette";
+// theme
+import palette from '../../theme/palette';
 // ----------------------------------------------------------------------
-//servie files
+// servie files
 import {
   getClubs,
   addClubtoServer,
   clubUpdate,
-  deleteClub,
-} from "../../services/club";
-import { AddImage } from "../../services/upload";
+  deleteClub
+} from '../../services/club';
+import { AddImage } from '../../services/upload';
 import {
   getCountries,
   getStatesOfCountry,
-  citiesOfStates,
-} from "../../services/countries";
-import { DASHBOARD_TABLE_HEAD } from "../../Table_Head/index";
-import ViewClubInfo from "./viewclub/ViewClubInfo";
+  citiesOfStates
+} from '../../services/countries';
+import { DASHBOARD_TABLE_HEAD } from '../../Table_Head/index';
+import ViewClubInfo from './viewclub/ViewClubInfo';
 
-//LOCAL STORAGE
-import { LocalStorageKey } from "src/utils/localStorage/keys";
+// LOCAL STORAGE
 
-//MAIN FUNCTION
+// MAIN FUNCTION
 export default function ClubDashboard() {
-  //IMAGE POP-UP LOADER
+  // IMAGE POP-UP LOADER
   const [imageLoader, setimageLoader] = useState(false);
-  //States
-  //useername
-  const [userName, setuserName] = useState("");
+  // States
+  // useername
+  const [userName, setuserName] = useState('');
 
-  const [clubName, setclubName] = useState("");
-  const [addressLine, setaddressLine] = useState("");
-  //country data
-  const [country, setcountry] = useState("");
+  const [clubName, setclubName] = useState('');
+  const [addressLine, setaddressLine] = useState('');
+  // country data
+  const [country, setcountry] = useState('');
   const [countryData, setcountryData] = useState([]);
-  const [countryCode, setcountryCode] = useState("");
-  //cities data
-  const [citiesData, setcitiesData] = useState("");
-  const [citiesCodeData, setcitiesCodeData] = useState("");
-  const [city, setcity] = useState("");
-  //states data
+  const [countryCode, setcountryCode] = useState('');
+  // cities data
+  const [citiesData, setcitiesData] = useState('');
+  const [citiesCodeData, setcitiesCodeData] = useState('');
+  const [city, setcity] = useState('');
+  // states data
   const [stateData, setstateData] = useState([]);
-  const [stateCode, setstateCode] = useState("");
-  const [state, setstate] = useState("");
+  const [stateCode, setstateCode] = useState('');
+  const [state, setstate] = useState('');
 
-  //instagram
-  const [instaHandle, setinstaHandle] = useState("");
-  const [stripeAccountNo, setstripeAccountNo] = useState("");
-  const [WebsiteUrl, setWebsiteUrl] = useState("");
-  const [phoneNumber, setphoneNumber] = useState("");
+  // instagram
+  const [instaHandle, setinstaHandle] = useState('');
+  const [stripeAccountNo, setstripeAccountNo] = useState('');
+  const [WebsiteUrl, setWebsiteUrl] = useState('');
+  const [phoneNumber, setphoneNumber] = useState('');
   const [longitude, setlongitude] = useState(12.919806);
   const [latitude, setlatitude] = useState(77.636505);
 
-  //add entities
+  // add entities
   const [keyValuePairs, setKeyValuePairs] = useState({});
-  const [key, setKey] = useState("");
-  const [value, setValue] = useState("");
+  const [key, setKey] = useState('');
+  const [value, setValue] = useState('');
   const [showLineItemError, setshowError] = useState(false);
   const [switchToggle, setswitchToggle] = React.useState(false);
 
-  //dialog
+  // dialog
 
   const [ImageDialogPopUp, setImageDialogPopUp] = useState(false);
   const [ViewClubInfoPopUp, setViewClubInfoPopUp] = useState(false);
   const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
-  //add club pop-over open
+  // add club pop-over open
   const [addClubPopUp, setaddClubPopUp] = useState(false);
 
-  //selected club data
+  // selected club data
   const [selectedClubData, setselectedClubData] = useState([]);
 
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
 
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState('asc');
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState('name');
 
-  const [filterName, setFilterName] = useState("");
+  const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  //clubs
+  // clubs
   const [clubs_data, setclubs_data] = useState([]);
   const [EditClub, setEditClub] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadData();
@@ -135,38 +137,38 @@ export default function ClubDashboard() {
 
   useEffect(() => {
     async function fetchData() {
-      if (countryCode != "") {
-        let obj = {
-          countryCode: countryCode,
+      if (countryCode != '') {
+        const obj = {
+          countryCode
         };
 
         const statesData = await getStatesOfCountry(obj);
-        let arr = [];
+        const arr = [];
         statesData.forEach((element) => {
           arr.push({
             label: element.name,
             value: element.isoCode,
-            phoneNumberCode: element.phoneNumberCode,
+            phoneNumberCode: element.phoneNumberCode
           });
         });
         setstateData(arr);
       }
-      if (stateCode != "") {
-        let obj = {
-          stateCode: stateCode,
-          countryCode: countryCode,
+      if (stateCode != '') {
+        const obj = {
+          stateCode,
+          countryCode
         };
         const citiesData = await citiesOfStates(obj);
-        let arr = [];
+        const arr = [];
         citiesData.forEach((element) => {
           arr.push({
             label: element.name,
             value: element.isoCode,
-            phoneNumberCode: element.phoneNumberCode,
+            phoneNumberCode: element.phoneNumberCode
           });
         });
         setcitiesData(arr);
-        console.log("citiesData===>", citiesData);
+        console.log('citiesData===>', citiesData);
       }
     }
 
@@ -174,26 +176,26 @@ export default function ClubDashboard() {
   }, [countryCode, stateCode]);
 
   const resetStates = async () => {
-    setcountryCode("");
-    setcity("");
-    setstate("");
-    setcountryCode("");
-    setcitiesData("");
-    setstateData("");
-    setinstaHandle("");
-    setstripeAccountNo("");
-    setphoneNumber("");
-    setWebsiteUrl("");
+    setcountryCode('');
+    setcity('');
+    setstate('');
+    setcountryCode('');
+    setcitiesData('');
+    setstateData('');
+    setinstaHandle('');
+    setstripeAccountNo('');
+    setphoneNumber('');
+    setWebsiteUrl('');
     setKeyValuePairs({});
   };
 
   const handleAddKeyValue = () => {
-    if (key === "" && value === "") {
-      setshowError("Please enter both Line items and value");
+    if (key === '' && value === '') {
+      setshowError('Please enter both Line items and value');
     }
     setKeyValuePairs({ ...keyValuePairs, [key]: value });
-    setKey("");
-    setValue("");
+    setKey('');
+    setValue('');
   };
 
   const handleDeleteKeyValue = (deleteKey) => {
@@ -208,13 +210,13 @@ export default function ClubDashboard() {
     const UserName = localStorage.getItem(LocalStorageKey.USER_DATA);
 
     if (representativeId === null && UserName === null) {
-      navigate("/");
+      navigate('/');
     } else {
       getClubData(JSON.parse(representativeId));
 
-      let UName = JSON.parse(UserName);
-      let fullName =
-        UName?.firstName?.toUpperCase() + " " + UName?.lastName?.toUpperCase();
+      const UName = JSON.parse(UserName);
+      const fullName =
+        `${UName?.firstName?.toUpperCase()  } ${  UName?.lastName?.toUpperCase()}`;
       setuserName(fullName);
     }
   };
@@ -224,53 +226,53 @@ export default function ClubDashboard() {
     if (data.status === true) {
       setclubs_data(data.data);
       const countriesData = await getCountries();
-      let arr = [];
+      const arr = [];
       countriesData.forEach((element) => {
         arr.push({
           label: element.name,
           value: element.isoCode,
-          phoneNumberCode: element.phoneNumberCode,
+          phoneNumberCode: element.phoneNumberCode
         });
       });
       setcountryData(arr);
     }
   };
 
-  //API CALL : ADD CLUB
+  // API CALL : ADD CLUB
   const addClub = async () => {
-    let keys = Object.keys(keyValuePairs);
-    let arr = [];
+    const keys = Object.keys(keyValuePairs);
+    const arr = [];
     for (let i = 0; i < keys.length; i++) {
       arr.push({
         name: keys[i],
-        percentage: keyValuePairs[keys[i]],
+        percentage: keyValuePairs[keys[i]]
       });
     }
-    var obj = {
+    const obj = {
       name: clubName,
       location: [longitude, latitude],
-      instaHandle: instaHandle,
-      phoneNumber: phoneNumber,
+      instaHandle,
+      phoneNumber,
       Address: {
         Address: addressLine,
         City: city,
         State: state,
-        Country: country,
+        Country: country
       },
       website: WebsiteUrl,
       photos: [],
       stripeAccountNumber: stripeAccountNo,
-      ownedBy: "god",
-      lineItems: arr,
+      ownedBy: 'god',
+      lineItems: arr
     };
 
     const data = await addClubtoServer(obj);
     if (data?.status === true) {
-      alert("Club Added");
-      //update the club array
+      alert('Club Added');
+      // update the club array
       const updateClubArr = [data.data, ...clubs_data];
       setclubs_data(updateClubArr);
-      //resetting the states to inital
+      // resetting the states to inital
       resetStates();
       setaddClubPopUp(false);
     } else {
@@ -278,38 +280,38 @@ export default function ClubDashboard() {
     }
   };
 
-  //API CALL : UPDATE CLUB
+  // API CALL : UPDATE CLUB
   const editClub = async () => {
-    let keys = Object.keys(keyValuePairs);
-    let arr = [];
+    const keys = Object.keys(keyValuePairs);
+    const arr = [];
     for (let i = 0; i < keys.length; i++) {
       arr.push({
         name: keys[i],
-        percentage: keyValuePairs[keys[i]],
+        percentage: keyValuePairs[keys[i]]
       });
     }
 
-    //OBJ
-    var obj = {
+    // OBJ
+    const obj = {
       name: clubName,
       location: [longitude, latitude],
-      instaHandle: instaHandle,
-      phoneNumber: phoneNumber,
+      instaHandle,
+      phoneNumber,
       Address: {
         Address: selectedClubData.Address.Addres,
         City: selectedClubData.Address.city,
         State: selectedClubData.Address.state,
-        Country: selectedClubData.Address.country,
+        Country: selectedClubData.Address.country
       },
       website: WebsiteUrl,
       photos: [],
       stripeAccountNumber: stripeAccountNo,
-      ownedBy: "god",
-      lineItems: arr,
+      ownedBy: 'god',
+      lineItems: arr
     };
 
     // UPDATE OBJ INTERNALLY
-    let index = clubs_data.findIndex((e) => e._id == selectedClubData._id);
+    const index = clubs_data.findIndex((e) => e._id == selectedClubData._id);
     clubs_data[index] = obj;
     setclubs_data(clubs_data);
 
@@ -317,20 +319,18 @@ export default function ClubDashboard() {
     const data = await clubUpdate(obj, selectedClubData._id);
 
     if (data?.data?.status === true) {
-      alert("Club Updated Successfully !");
+      alert('Club Updated Successfully !');
       setaddClubPopUp(false);
     } else {
-      alert("ERROR IN ADDING CLUB ");
+      alert('ERROR IN ADDING CLUB ');
       setaddClubPopUp(false);
     }
   };
 
-  //close pop-up
+  // close pop-up
   const handleClose = async (id) => {
-    if (id === "1") {
-      const a = clubs_data.filter((item) => {
-        return item._id !== selectedClubData._id;
-      });
+    if (id === '1') {
+      const a = clubs_data.filter((item) => item._id !== selectedClubData._id);
 
       const clubtoDelete = await deleteClub(
         selectedClubData,
@@ -339,70 +339,68 @@ export default function ClubDashboard() {
 
       setclubs_data(a);
       // console.log("clubtoDelete", clubtoDelete);
-    } else id === "2";
+    } else id === '2';
     setdeleteDialogOpen(false);
   };
 
-  const AddImageDialog = () => {
-    return (
-      <>
-        <Popover
+  const AddImageDialog = () => (
+      <Popover
           open={ImageDialogPopUp}
           anchorEl={open}
           onClose={() => {
             setImageDialogPopUp(!true);
           }}
           anchorOrigin={{
-            horizontal: "center",
+            horizontal: 'center'
           }}
           PaperProps={{
             sx: {
               p: 1,
-              width: "100%",
-              height: "100%",
+              width: '100%',
+              height: '100%',
               borderColor: palette.primary.gold,
-              "& .MuiMenuItem-root": {
-                typography: "body2",
+              '& .MuiMenuItem-root': {
+                typography: 'body2',
                 // borderRadius: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                width: "100%",
-                height: "100%",
-                borderColor: palette.primary.gold,
-              },
-            },
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%',
+                height: '100%',
+                borderColor: palette.primary.gold
+              }
+            }
           }}
         >
-          <Stack alignItems={"flex-end"} justifyItems={"right"}>
+          <Stack alignItems='flex-end' justifyItems='right'>
             <IconButton
-              size="large"
-              color="inherit"
+              size='large'
+              color='inherit'
               onClick={() => {
                 setImageDialogPopUp(!true);
               }}
             >
-              <Iconify color={"black"} icon={"maki:cross"} />
+              <Iconify color='black' icon='maki:cross' />
             </IconButton>
           </Stack>
           <Scrollbar>
             <Box
-              component="form"
+              component='form'
               sx={{
-                width: "100%",
+                width: '100%',
                 borderWidth: 4,
-                backgroundColor: "black",
-                borderRadius: 4,
+                backgroundColor: 'black',
+                borderRadius: 4
               }}
               // autoComplete="on"
             >
               <Box
                 sx={{
-                  width: "100%",
-                  height: "50%",
+                  width: '100%',
+                  height: '50%'
                 }}
               >
                 <AddPosterImage
-                  heading={"Add Club Image"}
+                  heading='Add Club Image'
                   filesLimit={10}
                   imageLoader={imageLoader}
                   data={selectedClubData}
@@ -413,29 +411,27 @@ export default function ClubDashboard() {
                       if (clubImg.status === true) {
                         let newArr = [];
 
-                        //UPDATE PATCH THE IMAGES
+                        // UPDATE PATCH THE IMAGES
                         newArr = [...clubImg?.data, ...selectedClubData.photos];
-                        let obj = {
-                          photos: newArr,
+                        const obj = {
+                          photos: newArr
                         };
                         const updateClubtoActive = await clubUpdate(
                           obj,
                           selectedClubData._id
                         );
                         if (updateClubtoActive.data.status === true) {
-                          //UPDATE THE CLUB DATA LOCALLY
+                          // UPDATE THE CLUB DATA LOCALLY
 
-                          const filteredData = clubs_data.findIndex((item) => {
-                            return item._id === selectedClubData._id;
-                          });
+                          const filteredData = clubs_data.findIndex((item) => item._id === selectedClubData._id);
 
                           clubs_data[filteredData].photos = newArr;
 
                           setclubs_data(clubs_data);
-                          //CLOSE THE LOADER
+                          // CLOSE THE LOADER
                           setimageLoader(false);
                           setImageDialogPopUp(!true);
-                          alert("Image uploaded Successfully !");
+                          alert('Image uploaded Successfully !');
                         }
                       }
                     }
@@ -444,103 +440,93 @@ export default function ClubDashboard() {
               </Box>
               <Box
                 sx={{
-                  width: "100%",
-                  height: "50%",
+                  width: '100%',
+                  height: '50%'
                 }}
-              ></Box>
+               />
             </Box>
           </Scrollbar>
         </Popover>
-      </>
     );
-  };
 
-  const DeleteClubDialog = () => {
-    return (
-      <>
-        <DeleteDialog
-          heading={"Delete the club?"}
+  const DeleteClubDialog = () => (
+      <DeleteDialog
+          heading='Delete the club?'
           paragraph={
             " Are you sure want to delete the club, as you won't be able to recover it !"
           }
           deleteBtnPressed={(value) => {
-            handleClose(`1`);
+            handleClose('1');
           }}
           closeBtnPressed={(value) => {
             setdeleteDialogOpen(!value);
           }}
           deleteDialogOpen={deleteDialogOpen}
         />
-      </>
     );
-  };
 
-  const ViewClubInforamtionDialog = () => {
-    return (
-      <>
-        <Popover
+  const ViewClubInforamtionDialog = () => (
+      <Popover
           open={ViewClubInfoPopUp}
           anchorEl={open}
           onClose={() => {
             setViewClubInfoPopUp(!true);
           }}
           anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           PaperProps={{
             sx: {
               p: 1,
-              width: "80%",
-              hieght: "100%",
+              width: '80%',
+              hieght: '100%',
               borderColor: palette.primary.gold,
               borderWidth: 1,
 
-              "& .MuiMenuItem-root": {
-                typography: "body2",
+              '& .MuiMenuItem-root': {
+                typography: 'body2',
                 // borderRadius: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                width: "80%",
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '80%',
                 borderColor: palette.primary.gold,
-                borderWidth: 12,
-              },
-            },
+                borderWidth: 12
+              }
+            }
           }}
         >
           <Scrollbar>
             <Box
-              component="form"
+              component='form'
               sx={{
-                width: "100%",
+                width: '100%',
                 borderWidth: 4,
-                backgroundColor: "black",
-                borderRadius: 4,
+                backgroundColor: 'black',
+                borderRadius: 4
               }}
-              autoComplete="on"
+              autoComplete='on'
             >
-              <Stack alignItems={"flex-end"} justifyItems={"right"}>
+              <Stack alignItems='flex-end' justifyItems='right'>
                 <IconButton
-                  size="large"
-                  color="inherit"
+                  size='large'
+                  color='inherit'
                   onClick={() => {
                     setViewClubInfoPopUp(!true);
                   }}
                 >
-                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                  <Iconify color={palette.primary.gold} icon='maki:cross' />
                 </IconButton>
               </Stack>
               <ViewClubInfo data={selectedClubData} />
             </Box>
           </Scrollbar>
         </Popover>
-      </>
     );
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -550,23 +536,23 @@ export default function ClubDashboard() {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
-  //TO MAKE CLUB ACTIVE AND NO-ACTIVE
+  // TO MAKE CLUB ACTIVE AND NO-ACTIVE
   const handleToggleSwitch = async (item, toggleBtn) => {
-    let obj = {
-      isPublished: !toggleBtn,
+    const obj = {
+      isPublished: !toggleBtn
     };
 
     const updateClubtoActive = await clubUpdate(obj, item._id);
-    let index = clubs_data.findIndex((e) => e._id == item._id);
+    const index = clubs_data.findIndex((e) => e._id == item._id);
     clubs_data[index].isPublished = !toggleBtn;
     setclubs_data(clubs_data);
 
     if (updateClubtoActive.data.status === true) {
       setswitchToggle(!switchToggle);
-      alert("Club Status Updated!");
+      alert('Club Status Updated!');
       // getClubData();
     } else {
-      alert("TECHNICAL ERROR ! CONTACT ADMIN ");
+      alert('TECHNICAL ERROR ! CONTACT ADMIN ');
     }
     setswitchToggle(!switchToggle);
   };
@@ -607,25 +593,25 @@ export default function ClubDashboard() {
         <title> Night Table : Admin Dashboard </title>
       </Helmet>
 
-      <Container sx={{ height: "100%" }}>
-        <Typography variant="h6" sx={{ color: palette.primary.gold }}>
+      <Container sx={{ height: '100%' }}>
+        <Typography variant='h6' sx={{ color: palette.primary.gold }}>
           Hi, Welcome back
         </Typography>
         <Typography
-          variant="h4"
+          variant='h4'
           sx={{ marginBottom: 2, color: palette.primary.gold }}
         >
           {userName}
         </Typography>
         <Stack
           sx={{
-            justifyContent: "space-between",
-            flexDirection: "row",
-            marginBottom: 3,
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            marginBottom: 3
           }}
-          alignItems="center"
+          alignItems='center'
         >
-          <Typography variant="h4" sx={{ color: palette.primary.gold }}>
+          <Typography variant='h4' sx={{ color: palette.primary.gold }}>
             Clubs
           </Typography>
           <Button
@@ -634,12 +620,12 @@ export default function ClubDashboard() {
             }}
             style={{
               backgroundColor: palette.primary.gold,
-              color: "black",
+              color: 'black',
               padding: 8,
-              borderRadius: 10,
+              borderRadius: 10
             }}
-            variant="Outlined"
-            startIcon={<Iconify icon="eva:plus-fill" />}
+            variant='Outlined'
+            startIcon={<Iconify icon='eva:plus-fill' />}
           >
             Add Club
           </Button>
@@ -654,9 +640,9 @@ export default function ClubDashboard() {
           <Scrollbar>
             <TableContainer
               style={{
-                height: "100%",
-                backgroundColor: "black",
-                height: 400,
+                height: '100%',
+                backgroundColor: 'black',
+                height: 400
               }}
             >
               <Table>
@@ -678,81 +664,80 @@ export default function ClubDashboard() {
                         website,
                         isPublished,
                         phoneNumber,
-                        photos,
+                        photos
                       } = item;
                       return (
-                        <>
-                          <TableRow
+                        <TableRow
                             style={{
-                              margin: 20,
+                              margin: 20
                             }}
                             bgcolor={palette.primary.gold}
                             // hover
                             key={_id}
                             tabIndex={-1}
                           >
-                            <TableCell align="right">
-                              <Stack flexDirection={"row"}>
+                            <TableCell align='right'>
+                              <Stack flexDirection='row'>
                                 <IconButton
-                                  size="large"
-                                  color="inherit"
+                                  size='large'
+                                  color='inherit'
                                   onClick={async () => {
                                     setselectedClubData(item);
                                     setViewClubInfoPopUp(true);
                                     //  }
                                   }}
                                 >
-                                  <Iconify icon={"ic:sharp-remove-red-eye"} />
+                                  <Iconify icon='ic:sharp-remove-red-eye' />
                                 </IconButton>
                               </Stack>
                             </TableCell>
                             <TableCell
                               bgcolor={palette.primary.gold}
-                              component="th"
-                              scope="row"
-                              padding="none"
+                              component='th'
+                              scope='row'
+                              padding='none'
                             >
                               <Typography
-                                sx={{ color: "black", px: 2 }}
-                                variant="subtitle2"
+                                sx={{ color: 'black', px: 2 }}
+                                variant='subtitle2'
                                 noWrap
                               >
                                 {index + 1}
-                                {" )"}{" "}
-                                <a href={website} rel="noreferrer">
+                                {' )'}{' '}
+                                <a href={website} rel='noreferrer'>
                                   {name}
                                 </a>
                               </Typography>
                             </TableCell>
-                            <TableCell align="left">
-                              <Typography sx={{ color: "black" }}>
+                            <TableCell align='left'>
+                              <Typography sx={{ color: 'black' }}>
                                 {phoneNumber}
                               </Typography>
                             </TableCell>
 
-                            <TableCell align="left">
+                            <TableCell align='left'>
                               <IconButton
-                                size="large"
-                                color="inherit"
+                                size='large'
+                                color='inherit'
                                 onClick={() => {
                                   setimageLoader(false);
                                   setselectedClubData(item);
                                   setImageDialogPopUp(true);
                                 }}
                               >
-                                <Iconify icon={"material-symbols:image"} />
+                                <Iconify icon='material-symbols:image' />
                               </IconButton>
                             </TableCell>
-                            <TableCell align="right">
-                              <Stack flexDirection={"row"}>
+                            <TableCell align='right'>
+                              <Stack flexDirection='row'>
                                 <IconButton
-                                  size="large"
-                                  color="inherit"
+                                  size='large'
+                                  color='inherit'
                                   onClick={() => {
                                     setEditClub(true);
                                     setselectedClubData(item);
                                     setaddClubPopUp(true);
-                                    let new_obj = item.lineItems.reduce(
+                                    const new_obj = item.lineItems.reduce(
                                       (obj, item) => {
                                         obj[item.name] = item.percentage;
                                         return obj;
@@ -770,45 +755,44 @@ export default function ClubDashboard() {
                                     setinstaHandle(item.instaHandle);
                                   }}
                                 >
-                                  <Iconify icon={"material-symbols:edit"} />
+                                  <Iconify icon='material-symbols:edit' />
                                 </IconButton>
                               </Stack>
                             </TableCell>
-                            <TableCell align="left">
+                            <TableCell align='left'>
                               <IconButton
-                                size="large"
-                                color="inherit"
+                                size='large'
+                                color='inherit'
                                 onClick={() => {
                                   setselectedClubData(item);
                                   setdeleteDialogOpen(true);
                                 }}
                               >
-                                <Iconify icon={"ic:baseline-delete"} />
+                                <Iconify icon='ic:baseline-delete' />
                               </IconButton>
                             </TableCell>
-                            <TableCell align="left">
+                            <TableCell align='left'>
                               <Switch
                                 style={{
-                                  color: "black",
+                                  color: 'black'
                                 }}
-                                checked={isPublished === true ? true : false}
+                                checked={isPublished === true}
                                 onChange={async () => {
-                                  //CHECKING THE IMAGES
+                                  // CHECKING THE IMAGES
                                   if (photos?.length >= 3) {
                                     handleToggleSwitch(
                                       item,
-                                      isPublished === true ? true : false
+                                      isPublished === true
                                     );
                                   } else {
                                     alert(
-                                      "Please Add at least 3 Images to make club Active!"
+                                      'Please Add at least 3 Images to make club Active!'
                                     );
                                   }
                                 }}
                               />
                             </TableCell>
                           </TableRow>
-                        </>
                       );
                     })}
                   {emptyRows > 0 && (
@@ -820,24 +804,24 @@ export default function ClubDashboard() {
                 {isNotFound && (
                   <TableBody
                     style={{
-                      backgroundColor: palette.primary.gold,
+                      backgroundColor: palette.primary.gold
                     }}
                   >
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align='center' colSpan={6} sx={{ py: 3 }}>
                         <Paper
                           sx={{
-                            textAlign: "center",
+                            textAlign: 'center'
                           }}
                           style={{
-                            backgroundColor: palette.primary.gold,
+                            backgroundColor: palette.primary.gold
                           }}
                         >
-                          <Typography variant="h6" paragraph>
+                          <Typography variant='h6' paragraph>
                             Not found
                           </Typography>
 
-                          <Typography variant="body2">
+                          <Typography variant='body2'>
                             No results found for &nbsp;
                             <strong>&quot;{filterName}&quot;</strong>.
                             <br /> Try checking for typos or using complete
@@ -852,20 +836,20 @@ export default function ClubDashboard() {
                 {filteredData.length === 0 && (
                   <TableBody
                     style={{
-                      backgroundColor: palette.primary.gold,
+                      backgroundColor: palette.primary.gold
                     }}
                   >
                     <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <TableCell align='center' colSpan={6} sx={{ py: 3 }}>
                         <Paper
                           sx={{
-                            textAlign: "center",
+                            textAlign: 'center'
                           }}
                           style={{
-                            backgroundColor: palette.primary.gold,
+                            backgroundColor: palette.primary.gold
                           }}
                         >
-                          <Typography variant="h6" paragraph>
+                          <Typography variant='h6' paragraph>
                             Not Data found ! Please add club
                           </Typography>
                         </Paper>
@@ -879,11 +863,11 @@ export default function ClubDashboard() {
 
           <TablePagination
             style={{
-              backgroundColor: "black",
-              color: "white",
+              backgroundColor: 'black',
+              color: 'white'
             }}
             rowsPerPageOptions={[5, 10, 25]}
-            component="div"
+            component='div'
             count={clubs_data.length}
             rowsPerPage={rowsPerPage}
             page={page}
@@ -899,120 +883,119 @@ export default function ClubDashboard() {
             setaddClubPopUp(!true);
           }}
           anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           PaperProps={{
             sx: {
               p: 1,
-              width: "90%",
-              hieght: "100%",
+              width: '90%',
+              hieght: '100%',
               borderColor: palette.primary.gold,
               borderWidth: 1,
 
-              "& .MuiMenuItem-root": {
-                typography: "body2",
+              '& .MuiMenuItem-root': {
+                typography: 'body2',
                 // borderRadius: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                width: "80%",
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '80%',
                 borderColor: palette.primary.gold,
-                borderWidth: 12,
-              },
-            },
+                borderWidth: 12
+              }
+            }
           }}
         >
           <Scrollbar>
             <Box
-              component="form"
+              component='form'
               sx={{
-                width: "100%",
+                width: '100%',
                 borderWidth: 2,
-                backgroundColor: "black",
-                borderRadius: 4,
+                backgroundColor: 'black',
+                borderRadius: 4
               }}
-              autoComplete="on"
+              autoComplete='on'
             >
-              <Stack alignItems={"flex-end"} justifyItems={"right"}>
+              <Stack alignItems='flex-end' justifyItems='right'>
                 <IconButton
-                  size="large"
-                  color="inherit"
+                  size='large'
+                  color='inherit'
                   onClick={() => {
                     setaddClubPopUp(!true);
                   }}
                 >
-                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                  <Iconify color={palette.primary.gold} icon='maki:cross' />
                 </IconButton>
               </Stack>
               <Typography
                 sx={{
                   color: palette.primary.gold,
-                  textAlign: "center",
+                  textAlign: 'center',
                   paddingTop: 4,
                   paddingBottom: 4,
                   fontSize: 20,
-                  fontWeight: "bold",
+                  fontWeight: 'bold'
                 }}
               >
-                {EditClub != true ? "Add " : "Edit "} New Club
+                {EditClub != true ? 'Add ' : 'Edit '} New Club
               </Typography>
-              <Container sx={{ width: "100%" }}>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+              <Container sx={{ width: '100%' }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography sx={{ color: palette.primary.gold }}>
                       Club Name
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <TextField
                       fullWidth
-                      autoComplete="off"
-                      label="Club Name"
-                      variant="outlined"
+                      autoComplete='off'
+                      label='Club Name'
+                      variant='outlined'
                       value={clubName}
                       onChange={(text) => {
                         setclubName(text.target.value);
                       }}
                       inputProps={{ style: { color: palette.primary.gold } }}
                       InputLabelProps={{
-                        style: { color: palette.primary.gold },
+                        style: { color: palette.primary.gold }
                       }}
                     />
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
                       Phone Number's
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
-                        label={"Phone Number"}
-                        autoComplete="no-autocomplete-random-string"
+                        label='Phone Number'
+                        autoComplete='no-autocomplete-random-string'
                         fullWidth
-                        variant="outlined"
+                        variant='outlined'
                         value={phoneNumber}
                         onChange={(text) => {
                           setphoneNumber(text.target.value);
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                         InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                          style: { color: palette.primary.gold }
                         }}
                       />
                     </Box>
                   </Box>
                 </Stack>
                 {EditClub != true ? (
-                  <>
-                    <Stack flexDirection={"row"}>
-                      <Box sx={{ width: "30%" }}>
+                  <Stack flexDirection='row'>
+                      <Box sx={{ width: '30%' }}>
                         <Typography
                           fullWidth
                           sx={{ color: palette.primary.gold }}
@@ -1020,30 +1003,30 @@ export default function ClubDashboard() {
                           Address
                         </Typography>
                       </Box>
-                      <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                      <Box sx={{ width: '70%', paddingBottom: 2 }}>
                         <Box sx={{ paddingBottom: 2 }}>
                           <TextField
                             fullWidth
-                            autoComplete="no-autocomplete-random-string"
-                            sx={{ width: "100%", paddingBottom: 2 }}
-                            label="Address Line"
-                            variant="outlined"
+                            autoComplete='no-autocomplete-random-string'
+                            sx={{ width: '100%', paddingBottom: 2 }}
+                            label='Address Line'
+                            variant='outlined'
                             value={addressLine}
                             onChange={(text) => {
                               setaddressLine(text.target.value);
                             }}
                             inputProps={{
-                              style: { color: palette.primary.gold },
+                              style: { color: palette.primary.gold }
                             }}
                             InputLabelProps={{
-                              style: { color: palette.primary.gold },
+                              style: { color: palette.primary.gold }
                             }}
                           />
                         </Box>
 
-                        <Stack flexDirection={"row"}>
+                        <Stack flexDirection='row'>
                           <Dropdown
-                            textinputLabel={"Select Country"}
+                            textinputLabel='Select Country'
                             data={countryData}
                             value={country}
                             changedValue={(item) => {
@@ -1053,149 +1036,142 @@ export default function ClubDashboard() {
                             }}
                           />
                         </Stack>
-                        <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
-                          {countryCode != "" ? (
-                            <>
-                              <Dropdown
-                                textinputLabel={"Select State"}
+                        <Stack flexDirection='row' style={{ paddingTop: 10 }}>
+                          {countryCode != '' ? (
+                            <Dropdown
+                                textinputLabel='Select State'
                                 data={stateData}
                                 changedValue={(item) => {
                                   setstateCode(item.value);
                                   setstate(item.label);
                                 }}
                               />
-                            </>
                           ) : (
                             <></>
                           )}
                         </Stack>
-                        <Stack flexDirection={"row"} style={{ paddingTop: 10 }}>
-                          {stateCode != "" ? (
-                            <>
-                              <Dropdown
-                                textinputLabel={"Select City"}
+                        <Stack flexDirection='row' style={{ paddingTop: 10 }}>
+                          {stateCode != '' ? (
+                            <Dropdown
+                                textinputLabel='Select City'
                                 data={citiesData}
                                 changedValue={(item) => {
                                   setcitiesCodeData(item.value);
                                   setcity(item.label);
                                 }}
                               />
-                            </>
                           ) : (
                             <></>
                           )}
                         </Stack>
                       </Box>
                     </Stack>
-                  </>
                 ) : (
                   <></>
                 )}
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography sx={{ color: palette.primary.gold }}>
                       Website
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%" }}>
+                  <Box sx={{ width: '70%' }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
                         fullWidth
-                        autoComplete="off"
-                        label="Website Url"
-                        variant="outlined"
+                        autoComplete='off'
+                        label='Website Url'
+                        variant='outlined'
                         value={WebsiteUrl}
                         onChange={(text) => {
                           setWebsiteUrl(text.target.value);
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                         InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                          style: { color: palette.primary.gold }
                         }}
                       />
                     </Box>
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography sx={{ color: palette.primary.gold }}>
                       Insta Handle
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%" }}>
+                  <Box sx={{ width: '70%' }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
                         fullWidth
-                        label="Instagram"
-                        variant="outlined"
+                        label='Instagram'
+                        variant='outlined'
                         value={instaHandle}
                         onChange={(text) => {
                           setinstaHandle(text.target.value);
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                         InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                          style: { color: palette.primary.gold }
                         }}
                       />
                     </Box>
                   </Box>
                 </Stack>
 
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography sx={{ color: palette.primary.gold }}>
                       Stripe Ac Number
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%" }}>
+                  <Box sx={{ width: '70%' }}>
                     <TextField
                       fullWidth
-                      label="Stripe Account No."
-                      variant="outlined"
+                      label='Stripe Account No.'
+                      variant='outlined'
                       value={stripeAccountNo}
                       onChange={(text) => {
                         setstripeAccountNo(text.target.value);
                       }}
                       inputProps={{ style: { color: palette.primary.gold } }}
                       InputLabelProps={{
-                        style: { color: palette.primary.gold },
+                        style: { color: palette.primary.gold }
                       }}
                     />
                   </Box>
                 </Stack>
                 <Stack>
-                  <Stack sx={{ paddingTop: 2 }} flexDirection={"row"}>
-                    <Box sx={{ width: "70%" }}>
-                      <Stack flexDirection={"row"}>
+                  <Stack sx={{ paddingTop: 2 }} flexDirection='row'>
+                    <Box sx={{ width: '70%' }}>
+                      <Stack flexDirection='row'>
                         <Typography
                           sx={{
                             color: palette.primary.gold,
-                            fontWeight: "bold",
+                            fontWeight: 'bold',
                             fontSize: 14,
-                            paddingRight: 2,
+                            paddingRight: 2
                           }}
                         >
-                          Line Items{" "}
+                          Line Items{' '}
                         </Typography>
                         <Tooltip
-                          title={
-                            "Table fee, Service Charges,tips, tax etc (All Items value will be consider as a percentage)"
-                          }
+                          title='Table fee, Service Charges,tips, tax etc (All Items value will be consider as a percentage)'
                         >
-                          <InfoIcon sx={{ color: "red" }} />
+                          <InfoIcon sx={{ color: 'red' }} />
                         </Tooltip>
                       </Stack>
                     </Box>
 
-                    <Box sx={{ width: "30%" }}>
+                    <Box sx={{ width: '30%' }}>
                       <Button
                         style={{
                           backgroundColor: palette.primary.gold,
-                          color: "black",
+                          color: 'black',
                           fontSize: 14,
-                          fontWeight: "600",
+                          fontWeight: '600'
                         }}
-                        variant="contained"
+                        variant='contained'
                         onClick={() => {
                           handleAddKeyValue();
                         }}
@@ -1205,27 +1181,27 @@ export default function ClubDashboard() {
                     </Box>
                   </Stack>
                   <Typography>{showLineItemError}</Typography>
-                  <Stack flexDirection={"row"} sx={{ paddingTop: 1 }}>
-                    <Box sx={{ width: "50%" }}>
+                  <Stack flexDirection='row' sx={{ paddingTop: 1 }}>
+                    <Box sx={{ width: '50%' }}>
                       <TextField
-                        variant="outlined"
-                        label="Line Item "
+                        variant='outlined'
+                        label='Line Item '
                         value={key}
                         onChange={(event) => setKey(event.target.value)}
                         InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                          style: { color: palette.primary.gold }
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                       />
                     </Box>
-                    <Box sx={{ width: "50%", paddingLeft: 1 }}>
+                    <Box sx={{ width: '50%', paddingLeft: 1 }}>
                       <TextField
-                        variant="outlined"
-                        label="Value"
+                        variant='outlined'
+                        label='Value'
                         value={value}
                         onChange={(event) => setValue(event.target.value)}
                         InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                          style: { color: palette.primary.gold }
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                       />
@@ -1233,30 +1209,29 @@ export default function ClubDashboard() {
                   </Stack>
 
                   {Object.entries(keyValuePairs).map(([key, value], index) => (
-                    <>
-                      <Stack flexDirection={"row"}>
-                        <Box sx={{ width: "40%" }}>
+                    <Stack flexDirection='row'>
+                        <Box sx={{ width: '40%' }}>
                           <Typography
                             sx={{
                               color: palette.primary.gold,
                               fontSize: 14,
-                              fontWeight: "600",
-                              padding: 2,
+                              fontWeight: '600',
+                              padding: 2
                             }}
                             key={key}
                           >
                             {index + 1}
-                            {")"} {key}:
+                            ) {key}:
                           </Typography>
                         </Box>
-                        <Box sx={{ width: "50%" }}>
-                          <Stack flexDirection={"row"}>
+                        <Box sx={{ width: '50%' }}>
+                          <Stack flexDirection='row'>
                             <Typography
                               sx={{
                                 color: palette.primary.gold,
                                 fontSize: 14,
-                                fontWeight: "600",
-                                padding: 2,
+                                fontWeight: '600',
+                                padding: 2
                               }}
                               key={key}
                             >
@@ -1264,11 +1239,11 @@ export default function ClubDashboard() {
                             </Typography>
                             <Button
                               style={{
-                                color: "red",
+                                color: 'red',
                                 fontSize: 14,
-                                fontWeight: "600",
+                                fontWeight: '600'
                               }}
-                              variant="contained"
+                              variant='contained'
                               onClick={() => handleDeleteKeyValue(key)}
                             >
                               Delete
@@ -1276,33 +1251,32 @@ export default function ClubDashboard() {
                           </Stack>
                         </Box>
                       </Stack>
-                    </>
                   ))}
                 </Stack>
                 <Box
                   sx={{
-                    width: "100%",
-                    padding: 2,
+                    width: '100%',
+                    padding: 2
                   }}
                 >
                   <Button
                     onClick={() => {
                       EditClub !== true ? addClub() : editClub();
-                      //setaddClubPopUp(true);
+                      // setaddClubPopUp(true);
                     }}
                     // variant="contained"
                     style={{
                       backgroundColor: palette.primary.gold,
-                      textAlign: "center",
+                      textAlign: 'center',
                       fontSize: 16,
-                      fontWeight: "bold",
-                      color: "black",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "100%",
+                      fontWeight: 'bold',
+                      color: 'black',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%'
                     }}
                   >
-                    {EditClub != true ? "Add" : "Edit"} Club
+                    {EditClub != true ? 'Add' : 'Edit'} Club
                   </Button>
                 </Box>
               </Container>

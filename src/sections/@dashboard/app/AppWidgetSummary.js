@@ -17,7 +17,7 @@ const StyledIcon = styled('div')(({ theme }) => ({
   width: theme.spacing(8),
   height: theme.spacing(8),
   justifyContent: 'center',
-  marginBottom: theme.spacing(3),
+  marginBottom: theme.spacing(3)
 }));
 
 // ----------------------------------------------------------------------
@@ -27,7 +27,7 @@ AppWidgetSummary.propTypes = {
   icon: PropTypes.string,
   title: PropTypes.string.isRequired,
   total: PropTypes.number.isRequired,
-  sx: PropTypes.object,
+  sx: PropTypes.object
 };
 
 export default function AppWidgetSummary({ title, total, icon, color = 'primary', sx, ...other }) {
@@ -39,7 +39,7 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
         textAlign: 'center',
         color: (theme) => theme.palette[color].darker,
         bgcolor: (theme) => theme.palette[color].lighter,
-        ...sx,
+        ...sx
       }}
       {...other}
     >
@@ -50,15 +50,15 @@ export default function AppWidgetSummary({ title, total, icon, color = 'primary'
             `linear-gradient(135deg, ${alpha(theme.palette[color].dark, 0)} 0%, ${alpha(
               theme.palette[color].dark,
               0.24
-            )} 100%)`,
+            )} 100%)`
         }}
       >
         <Iconify icon={icon} width={24} height={24} />
       </StyledIcon>
 
-      <Typography variant="h3">{fShortenNumber(total)}</Typography>
+      <Typography variant='h3'>{fShortenNumber(total)}</Typography>
 
-      <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
+      <Typography variant='subtitle2' sx={{ opacity: 0.72 }}>
         {title}
       </Typography>
     </Card>

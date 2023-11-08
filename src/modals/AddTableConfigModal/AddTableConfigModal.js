@@ -9,31 +9,28 @@ import React from 'react';
 
 import styles from './AddTableConfigModal.module.css';
 import AddTableConfigInputComp from './AddTableConfigInputComp/AddTableConfigInputComp';
-import AddTableConfigInputSizeComp from './AddTableConfigInputSizeComp/AddTableConfigInputSizeComp'
-const AddTableConfigModal = (props) => {
+import AddTableConfigInputSizeComp from './AddTableConfigInputSizeComp/AddTableConfigInputSizeComp';
 
-    return (<div className={styles.addTableConfigModalContainer}>
+const AddTableConfigModal = (props) => (<div className={styles.addTableConfigModalContainer}>
         <div className={styles.upperHeaderContainer}>
             <span className={styles.addTableConfigLabelContainer}>Add a table configuration</span>
         </div>
         <div className={styles.mainBodyContainer}>
             <AddTableConfigInputComp
-                labelName="type:"></AddTableConfigInputComp>
+                labelName='type:' />
             <div className={styles.sizeLabelStyle}>
                 <span className={styles.labelInputStyle}>sizes:</span>
             </div>
             <div className={styles.priceSizeContainer}>
                 <AddTableConfigInputSizeComp
-                    labelName="price: "
-                    showButton={false}>
-                </AddTableConfigInputSizeComp>
+                    labelName='price: '
+                    showButton={false} />
                 <AddTableConfigInputSizeComp
-                    labelName="size: "
-                    showButton={true}>
-                </AddTableConfigInputSizeComp>
+                    labelName='size: '
+                    showButton />
             </div>
             <AddTableConfigInputComp
-                labelName="max # of tables:"></AddTableConfigInputComp>
+                labelName='max # of tables:' />
         </div>
         <div className={styles.lowerButtonRowContainer}>
             <button onClick={props.onCancelButtonClick} className={styles.cancelButtonStyle}>
@@ -43,7 +40,6 @@ const AddTableConfigModal = (props) => {
                 add
             </button>
         </div>
-    </div>)
-}
+    </div>);
 
 export default AddTableConfigModal;

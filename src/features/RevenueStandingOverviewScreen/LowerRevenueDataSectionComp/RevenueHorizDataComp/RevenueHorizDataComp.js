@@ -8,9 +8,7 @@ import React from 'react';
 
 import styles from './RevenueHorizDataComp.module.css';
 
-const RevenueHorizDataComp = (props) => {
-
-    return (<div className={styles.revenueHorizDataCompContainer}>
+const RevenueHorizDataComp = (props) => (<div className={styles.revenueHorizDataCompContainer}>
         <div className={styles.innerLeftSideContainer}>
             <div className={styles.revenueHorizDataContainer}>
                 <span>{props.day}</span>
@@ -22,7 +20,6 @@ const RevenueHorizDataComp = (props) => {
                 <span>{props.numTransactions}</span>
             </div>
         </div>
-    </div>)
-}
+    </div>);
 
 export default RevenueHorizDataComp;

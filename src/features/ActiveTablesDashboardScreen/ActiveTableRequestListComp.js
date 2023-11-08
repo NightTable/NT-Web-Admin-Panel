@@ -9,16 +9,12 @@ import React from 'react';
 import styles from './ActiveTableRequestListComp.module.css';
 import RequestHorizComp from './ActiveTableRequestListComp/RequestHorizComp';
 
-const ActiveTableRequestListComp = (props) => {
-
-
-    return (<div className={styles.activeTableRequestListCompContainer}>
+const ActiveTableRequestListComp = (props) => (<div className={styles.activeTableRequestListCompContainer}>
         {props.tableRequests.map((tableReq, index) => (
             <RequestHorizComp
                 key={index}
-                requestObj={tableReq}></RequestHorizComp>
+                requestObj={tableReq} />
         ))}
-    </div>)
-}
+    </div>);
 
 export default ActiveTableRequestListComp;

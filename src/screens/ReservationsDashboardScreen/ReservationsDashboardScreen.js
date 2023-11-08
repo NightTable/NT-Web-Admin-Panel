@@ -45,7 +45,7 @@ const ReservationsDashboardScreen = (props) => {
             reservationDate: 'fri 1-17-22',
             tableSize: 3
         }
-    ]
+    ];
 
     return (<div className={styles.reservationsDashboardScreenContainer}>
         <div className={styles.upperHeaderLabelContainer}>
@@ -72,9 +72,9 @@ const ReservationsDashboardScreen = (props) => {
         </div>
         <ReservationsInnerInfoContainer
             onLocalAddReservationButtonPress={props.onAddReservationButtonPress}
-            reservationData={dummyReservationData}></ReservationsInnerInfoContainer>
-    </div>)
-}
+            reservationData={dummyReservationData} />
+    </div>);
+};
 
 export default ReservationsDashboardScreen;
 

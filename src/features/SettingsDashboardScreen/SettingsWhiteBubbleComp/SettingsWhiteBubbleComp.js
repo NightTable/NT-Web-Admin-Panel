@@ -18,9 +18,9 @@ const SettingsWhiteBubbleComp = (props) => {
 
     const handleStripeSetup = () => {
 
-        console.log("You just clicked on the stripe setup handler");
+        console.log('You just clicked on the stripe setup handler');
         setStripeSetupLinked((state) => !state);
-    }
+    };
 
     return (<div className={styles.settingsWhiteBubbleCompContainer}>
         <div className={styles.outerMiddleRowInfoContainer}>
@@ -29,8 +29,7 @@ const SettingsWhiteBubbleComp = (props) => {
                     <span className={styles.personalInformationTextLabel}>Personal Information</span>
                     <button className={styles.outerEditButtonStyle}>
                         <span className={styles.editTextLabel}>edit</span>
-                        <img className={styles.pencilImageGraphicStyle} src={pencilImageGraphic}>
-                        </img>
+                        <img className={styles.pencilImageGraphicStyle} src={pencilImageGraphic} />
                     </button>
                 </div>
                 <div className={styles.personalInformationBodyContainer}>
@@ -53,8 +52,7 @@ const SettingsWhiteBubbleComp = (props) => {
                     <span className={styles.clubInformationTextLabel}>Club Information</span>
                     <button className={styles.outerEditButtonStyle}>
                         <span className={styles.editTextLabel}>edit</span>
-                        <img className={styles.pencilImageGraphicStyle} src={pencilImageGraphic}>
-                        </img>
+                        <img className={styles.pencilImageGraphicStyle} src={pencilImageGraphic} />
                     </button>
                 </div>
                 <div className={styles.clubInformationBodyContainer}>
@@ -97,14 +95,14 @@ const SettingsWhiteBubbleComp = (props) => {
                     <div className={styles.generalInputContainer}>
                         <span className={styles.inputPromptTextLabel}>Stripe Account Number: </span>
                         <button onClick={handleStripeSetup} className={ stripeSetupLinked ? styles.stripeStatusButtonLabelStyleSelected : styles.stripeStatusButtonLabelStyle }>
-                            <img className={styles.statusIconGraphicStyle} src={stripeSetupLinked ? greenCheckMark : redXPic}></img>
-                            <span className={styles.linkLabelStyle}>{stripeSetupLinked ? "linked" : "not setup"}</span>
+                            <img className={styles.statusIconGraphicStyle} src={stripeSetupLinked ? greenCheckMark : redXPic} />
+                            <span className={styles.linkLabelStyle}>{stripeSetupLinked ? 'linked' : 'not setup'}</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>)
-}
+    </div>);
+};
 
 export default SettingsWhiteBubbleComp;

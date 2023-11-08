@@ -9,9 +9,7 @@ import ReservationDetailWhiteBubbleComp from './ReservationDetailWhiteBubbleComp
 
 import styles from './ReservationsDetailScreen.module.css';
 
-const ReservationsDetailScreen = (props) => {
-
-    return (<div className={styles.reservationsDetailScreenContainer}>
+const ReservationsDetailScreen = (props) => (<div className={styles.reservationsDetailScreenContainer}>
         <div className={styles.upperHeaderRowContainer}>
             <span className={styles.welcomeBackText}>Welcome back, Daniel!</span>
         </div>
@@ -28,9 +26,8 @@ const ReservationsDetailScreen = (props) => {
                 Reservation Detail:
             </span>
         </div>
-        <ReservationDetailWhiteBubbleComp></ReservationDetailWhiteBubbleComp>
+        <ReservationDetailWhiteBubbleComp />
 
-    </div>)
-}
+    </div>);
 
 export default ReservationsDetailScreen;

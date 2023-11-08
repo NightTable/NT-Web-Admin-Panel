@@ -4,8 +4,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  DialogContentText,
-} from "@mui/material";
+  DialogContentText
+} from '@mui/material';
 
 export const DialogBox = ({
   heading,
@@ -15,30 +15,29 @@ export const DialogBox = ({
   Btn1Pressed,
   Btn2Pressed,
   DialogOpen,
-}) => {
-  return (
-    <>
-      <Dialog
+  closeBtnPressed
+}) => (
+    <Dialog
         open={DialogOpen}
         keepMounted
         onClose={() => {
           closeBtnPressed(DialogOpen);
         }}
-        aria-describedby="alert-dialog-slide-description"
+        aria-describedby='alert-dialog-slide-description'
       >
         <DialogTitle>{heading}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
+          <DialogContentText id='alert-dialog-slide-description'>
             {paragraph}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
             onClick={() => {
-              Btn1Pressed(`1`);
+              Btn1Pressed('1');
             }}
           >
-            {Btn1Name}{" "}
+            {Btn1Name}{' '}
           </Button>
           <Button
             onClick={() => {
@@ -49,6 +48,4 @@ export const DialogBox = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </>
   );
-};

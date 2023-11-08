@@ -42,7 +42,7 @@ const MenuItemsDashboardScreen = (props) => {
                     sizes: [],
                     multiSized: false
                 }
-            ],
+            ]
         },
         {
             categoryName: 'beer',
@@ -69,7 +69,7 @@ const MenuItemsDashboardScreen = (props) => {
                 {dummyMainCategoryItems.map((outerEntry, index) => (
                     <MenuCategorySectionComp
                         key={index}
-                        categoryEntry={outerEntry}></MenuCategorySectionComp>
+                        categoryEntry={outerEntry} />
                 ))}
             </div>
         </div>
@@ -97,11 +97,11 @@ const MenuItemsDashboardScreen = (props) => {
                         <span>delete menu item</span>
                     </button>
                 </div>
-                <div className={styles.buttonBlockContainer}></div>
-                <div className={styles.buttonBlockContainer}></div>
+                <div className={styles.buttonBlockContainer} />
+                <div className={styles.buttonBlockContainer} />
             </div>
         </div>
-    </div>)
-}
+    </div>);
+};
 
 export default MenuItemsDashboardScreen;

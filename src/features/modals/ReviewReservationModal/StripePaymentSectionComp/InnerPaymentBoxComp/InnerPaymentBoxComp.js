@@ -8,10 +8,6 @@ import React from 'react';
 
 import styles from './InnerPaymentBoxComp.module.css';
 
-const InnerPaymentBoxComp = (props) => {
-
-    return (<div className={styles.innerPaymentBoxCompContainer}>
-    </div>)
-}
+const InnerPaymentBoxComp = (props) => (<div className={styles.innerPaymentBoxCompContainer} />);
 
 export default InnerPaymentBoxComp;

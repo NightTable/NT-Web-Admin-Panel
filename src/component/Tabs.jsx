@@ -1,10 +1,10 @@
-import * as React from "react";
-import { useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
-import { TextField } from "@material-ui/core";
+import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { useState, useEffect } from 'react';
+import { TextField } from '@material-ui/core';
 // @mui
-import { useTheme } from "@mui/material/styles";
+import { useTheme } from '@mui/material/styles';
 // @mui
 import {
   Box,
@@ -25,46 +25,40 @@ import {
   IconButton,
   TableContainer,
   TablePagination,
-  withStyles,
-} from "@mui/material";
+  withStyles
+} from '@mui/material';
 
-export const ButtonTabs = (props) => {
-  return (
+export const ButtonTabs = (props) => (
     <>
-      {props.tabData.map((item, index) => {
-        return (
-          <>
-            <Box
+      {props.tabData.map((item, index) => (
+          <Box
               onClick={() => {
                 props.setselected_btn(index,item);
               }}
               border={2}
               borderRadius={2}
               marginRight={2}
-              borderColor={index == props.selected_btn ? "black" : "#E4D0B5"}
-              flexDirection={"row"}
-              justifyContent={"center"}
-              alignItems={"center"}
+              borderColor={index == props.selected_btn ? 'black' : '#E4D0B5'}
+              flexDirection='row'
+              justifyContent='center'
+              alignItems='center'
               backgroundColor={
-                index == props.selected_btn ? "#E4D0B5" : "black"
+                index == props.selected_btn ? '#E4D0B5' : 'black'
               }
             >
               <Typography
-                variant="body1"
+                variant='body1'
                 style={{
-                  color: index == props.selected_btn ? "black" : "#E4D0B5",
-                  fontWeight: index == props.selected_btn ? "bold" : "500",
+                  color: index == props.selected_btn ? 'black' : '#E4D0B5',
+                  fontWeight: index == props.selected_btn ? 'bold' : '500',
 
                   padding: 10,
-                  textAlign: "center",
+                  textAlign: 'center'
                 }}
               >
                 {item?.name}
               </Typography>
             </Box>
-          </>
-        );
-      })}
+        ))}
     </>
   );
-};

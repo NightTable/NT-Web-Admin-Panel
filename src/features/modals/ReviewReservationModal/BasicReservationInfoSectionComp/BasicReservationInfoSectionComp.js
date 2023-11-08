@@ -8,9 +8,7 @@ import React from 'react';
 
 import styles from './BasicReservationInfoSectionComp.module.css';
 
-const BasicReservationInfoSectionComp = (props) => {
-
-    return (<div className={styles.basicReservationInfoSectionCompContainer}>
+const BasicReservationInfoSectionComp = (props) => (<div className={styles.basicReservationInfoSectionCompContainer}>
         <div className={styles.reviewReservationBasicInfoRowContainer}>
             <span className={styles.basicTextInfoStyle}>Reservation Organizer Name: </span>
             <span className={styles.basicTextValueStyle}>Amanda May</span>
@@ -23,7 +21,6 @@ const BasicReservationInfoSectionComp = (props) => {
             <span className={styles.basicTextInfoStyle}>Reservation Organizer Phone: </span>
             <span className={styles.basicTextValueStyle}>(584) 484-3333</span>
         </div>
-    </div>)
-}
+    </div>);
 
 export default BasicReservationInfoSectionComp;

@@ -39,12 +39,12 @@ const ReservationExpandableHorizComp = (props) => {
         height: dynamicHeightValue,
         flexDirection: 'column',
         overflow: 'hidden'
-    }
+    };
 
     const handleReservationParentClick = () => {
 
         setComponentExpanded((state) => !state);
-    }
+    };
 
     return (<div style={reservationExpandedHorizCompStyle}>
         <div 
@@ -55,8 +55,7 @@ const ReservationExpandableHorizComp = (props) => {
                 <span className={styles.idTextStyle}>{props.reservationItem.id}</span>
                  { tableConfigurationData.length !== 0 ? <img 
                     className={styles.arrowGraphicStyle}
-                    src={componentExpanded ? downArrowGraphic : rightArrowGraphic}>
-                </img> : null}
+                    src={componentExpanded ? downArrowGraphic : rightArrowGraphic} /> : null}
             </div>
             <div className={styles.reservationBlockInfoContainer}>
                 <span>{props.reservationItem.tableOrganizer}</span>
@@ -72,15 +71,15 @@ const ReservationExpandableHorizComp = (props) => {
             </div>
             <div className={styles.reservationBlockInfoContainer}>
                 <span>{props.reservationItem.reservationDate}</span>
-                {componentExpanded && <ArrowCircleDetailComp></ArrowCircleDetailComp>}
+                {componentExpanded && <ArrowCircleDetailComp />}
             </div>
         </div>
         {componentExpanded ? tableConfigurationData.map((tableConfiguration, index) => (
             <ReservationChildHorizComp
                 key={index}
-                tableConfigData={tableConfiguration}></ReservationChildHorizComp>
+                tableConfigData={tableConfiguration} />
         )) : null}
-    </div>)
-}
+    </div>);
+};
 
 export default ReservationExpandableHorizComp;

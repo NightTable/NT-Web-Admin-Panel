@@ -10,7 +10,7 @@ ColorMultiPicker.propTypes = {
   sx: PropTypes.object,
   colors: PropTypes.array,
   onChangeColor: PropTypes.func,
-  selected: PropTypes.arrayOf(PropTypes.string),
+  selected: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default function ColorMultiPicker({ colors, selected, onChangeColor, sx, ...other }) {
@@ -22,9 +22,9 @@ export default function ColorMultiPicker({ colors, selected, onChangeColor, sx, 
         return (
           <Checkbox
             key={color}
-            size="small"
+            size='small'
             value={color}
-            color="default"
+            color='default'
             checked={selected.includes(color)}
             onChange={() => onChangeColor(color)}
             icon={<Icon whiteColor={whiteColor} />}
@@ -32,7 +32,7 @@ export default function ColorMultiPicker({ colors, selected, onChangeColor, sx, 
             sx={{
               color,
               '&:hover': { opacity: 0.72 },
-              '& svg': { width: 12, height: 12 },
+              '& svg': { width: 12, height: 12 }
             }}
             {...other}
           />

@@ -12,9 +12,7 @@ import UpperBasicRevenueInfoSectionComp from '../../features/RevenueStandingOver
 import LowerRevenueDataSectionComp from '../../features/RevenueStandingOverviewScreen/LowerRevenueDataSectionComp/LowerRevenueDataSectionComp';
 import PaginationButtonSectionComp from '../../features/RevenueStandingOverviewScreen/PaginationButtonSectionComp/PaginationButtonSectionComp';
 
-const RevenueStandingOverviewScreen = (props) => {
-
-    return (<div className={styles.revenueStandingOverviewScreenContainer}>
+const RevenueStandingOverviewScreen = (props) => (<div className={styles.revenueStandingOverviewScreenContainer}>
         <div className={styles.welcomeHeaderRowContainer}>
             <span className={styles.revenueStandingUpperWelcomeStyle}>Welcome back, John</span>
         </div>
@@ -27,10 +25,9 @@ const RevenueStandingOverviewScreen = (props) => {
                 <span>the grand</span>
             </button>
         </div>
-        <UpperBasicRevenueInfoSectionComp></UpperBasicRevenueInfoSectionComp>
-        <LowerRevenueDataSectionComp></LowerRevenueDataSectionComp>
-        <PaginationButtonSectionComp></PaginationButtonSectionComp>
-    </div>)
-}
+        <UpperBasicRevenueInfoSectionComp />
+        <LowerRevenueDataSectionComp />
+        <PaginationButtonSectionComp />
+    </div>);
 
 export default RevenueStandingOverviewScreen;

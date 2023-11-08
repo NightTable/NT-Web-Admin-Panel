@@ -12,7 +12,7 @@ import Scrollbar from '../../../component/scrollbar';
 AppNewsUpdate.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
-  list: PropTypes.array.isRequired,
+  list: PropTypes.array.isRequired
 };
 
 export default function AppNewsUpdate({ title, subheader, list, ...other }) {
@@ -31,7 +31,7 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
       <Divider />
 
       <Box sx={{ p: 2, textAlign: 'right' }}>
-        <Button size="small" color="inherit" endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}>
+        <Button size='small' color='inherit' endIcon={<Iconify icon='eva:arrow-ios-forward-fill' />}>
           View all
         </Button>
       </Box>
@@ -46,30 +46,30 @@ NewsItem.propTypes = {
     description: PropTypes.string,
     image: PropTypes.string,
     postedAt: PropTypes.instanceOf(Date),
-    title: PropTypes.string,
-  }),
+    title: PropTypes.string
+  })
 };
 
-function NewsItem({ news }) {
+const NewsItem = ({ news }) => {
   const { image, title, description, postedAt } = news;
 
   return (
-    <Stack direction="row" alignItems="center" spacing={2}>
-      <Box component="img" alt={title} src={image} sx={{ width: 48, height: 48, borderRadius: 1.5, flexShrink: 0 }} />
+    <Stack direction='row' alignItems='center' spacing={2}>
+      <Box component='img' alt={title} src={image} sx={{ width: 48, height: 48, borderRadius: 1.5, flexShrink: 0 }} />
 
       <Box sx={{ minWidth: 240, flexGrow: 1 }}>
-        <Link color="inherit" variant="subtitle2" underline="hover" noWrap>
+        <Link color='inherit' variant='subtitle2' underline='hover' noWrap>
           {title}
         </Link>
 
-        <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+        <Typography variant='body2' sx={{ color: 'text.secondary' }} noWrap>
           {description}
         </Typography>
       </Box>
 
-      <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, color: 'text.secondary' }}>
+      <Typography variant='caption' sx={{ pr: 3, flexShrink: 0, color: 'text.secondary' }}>
         {fToNow(postedAt)}
       </Typography>
     </Stack>
   );
-}
+};

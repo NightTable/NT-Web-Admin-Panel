@@ -23,15 +23,15 @@ export function bgBlur(props) {
         height: '100%',
         backdropFilter: `blur(${blur}px)`,
         WebkitBackdropFilter: `blur(${blur}px)`,
-        backgroundColor: alpha(color, opacity),
-      },
+        backgroundColor: alpha(color, opacity)
+      }
     };
   }
 
   return {
     backdropFilter: `blur(${blur}px)`,
     WebkitBackdropFilter: `blur(${blur}px)`,
-    backgroundColor: alpha(color, opacity),
+    backgroundColor: alpha(color, opacity)
   };
 }
 
@@ -49,12 +49,12 @@ export function bgGradient(props) {
       background: `linear-gradient(${direction}, ${startColor || color}, ${endColor || color}), url(${imgUrl})`,
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center center',
+      backgroundPosition: 'center center'
     };
   }
 
   return {
-    background: `linear-gradient(${direction}, ${startColor}, ${endColor})`,
+    background: `linear-gradient(${direction}, ${startColor}, ${endColor})`
   };
 }
 
@@ -64,7 +64,7 @@ export function textGradient(value) {
   return {
     background: `-webkit-linear-gradient(${value})`,
     WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
+    WebkitTextFillColor: 'transparent'
   };
 }
 
@@ -74,7 +74,7 @@ export function filterStyles(value) {
   return {
     filter: value,
     WebkitFilter: value,
-    MozFilter: value,
+    MozFilter: value
   };
 }
 
@@ -85,8 +85,8 @@ export const hideScrollbarY = {
   scrollbarWidth: 'none',
   overflowY: 'scroll',
   '&::-webkit-scrollbar': {
-    display: 'none',
-  },
+    display: 'none'
+  }
 };
 
 // ----------------------------------------------------------------------
@@ -96,6 +96,6 @@ export const hideScrollbarX = {
   scrollbarWidth: 'none',
   overflowX: 'scroll',
   '&::-webkit-scrollbar': {
-    display: 'none',
-  },
+    display: 'none'
+  }
 };

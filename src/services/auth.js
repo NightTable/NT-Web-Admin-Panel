@@ -1,4 +1,4 @@
-import { PostRequest } from "../utils/axios/Axios";
+import { PostRequest } from '../utils/axios/Axios';
 
 export const loginApi = async (obj) => {
   const data = await PostRequest(

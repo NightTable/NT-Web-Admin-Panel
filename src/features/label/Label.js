@@ -14,18 +14,18 @@ const Label = forwardRef(({ children, color = 'default', variant = 'soft', start
   const iconStyle = {
     width: 16,
     height: 16,
-    '& svg, img': { width: 1, height: 1, objectFit: 'cover' },
+    '& svg, img': { width: 1, height: 1, objectFit: 'cover' }
   };
 
   return (
     <StyledLabel
       ref={ref}
-      component="span"
+      component='span'
       ownerState={{ color, variant }}
       sx={{
         ...(startIcon && { pl: 0.75 }),
         ...(endIcon && { pr: 0.75 }),
-        ...sx,
+        ...sx
       }}
       theme={theme}
       {...other}
@@ -45,7 +45,7 @@ Label.propTypes = {
   children: PropTypes.node,
   startIcon: PropTypes.node,
   variant: PropTypes.oneOf(['filled', 'outlined', 'ghost', 'soft']),
-  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
+  color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'])
 };
 
 export default Label;

@@ -6,10 +6,9 @@
 
 import React from 'react';
 
-import styles from './RequestHorizComp.module.css'
-const RequestHorizComp = (props) => {
+import styles from './RequestHorizComp.module.css';
 
-    return (<div className={styles.requestHorizCompContainer}>
+const RequestHorizComp = (props) => (<div className={styles.requestHorizCompContainer}>
         <div className={styles.requestHorizSectionContainer}>
             <span>{props.requestObj.id}</span>
         </div>
@@ -34,8 +33,7 @@ const RequestHorizComp = (props) => {
         <div className={styles.requestHorizSectionContainer}>
             <span className={styles.purpleText}>${props.requestObj.price}</span>
         </div>
-    </div>)
-}
+    </div>);
 
 export default RequestHorizComp;
 

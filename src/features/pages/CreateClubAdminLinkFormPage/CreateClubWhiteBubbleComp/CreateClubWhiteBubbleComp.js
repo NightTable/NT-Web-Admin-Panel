@@ -11,12 +11,9 @@ import styles from './CreateClubWhiteBubbleComp.module.css';
 import ClubDescriptionSectionComp from './ClubDescriptionSectionComp/ClubDescriptionSectionComp';
 import InputSectionComp from './InputSectionComp/InputSectionComp';
 
-const CreateClubWhiteBubbleComp = (props) => {
-
-    return (<div className={styles.createClubWhiteBubbleCompContainer}>
-        <ClubDescriptionSectionComp></ClubDescriptionSectionComp>
-        <InputSectionComp></InputSectionComp>
-    </div>)
-}
+const CreateClubWhiteBubbleComp = (props) => (<div className={styles.createClubWhiteBubbleCompContainer}>
+        <ClubDescriptionSectionComp />
+        <InputSectionComp />
+    </div>);
 
 export default CreateClubWhiteBubbleComp;

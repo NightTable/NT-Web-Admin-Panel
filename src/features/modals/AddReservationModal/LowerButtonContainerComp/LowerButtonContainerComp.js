@@ -8,16 +8,13 @@ import React from 'react';
 
 import styles from './LowerButtonContainerComp.module.css';
 
-const LowerButtonContainerComp = (props) => {
-
-    return (<div className={styles.lowerButtonContainerCompContainer}>
+const LowerButtonContainerComp = (props) => (<div className={styles.lowerButtonContainerCompContainer}>
         <button onClick={props.onLowerButtonContainerCancelClick} className={styles.cancelButtonStyle}>
             <span>cancel</span>
         </button>
         <button className={styles.continueButtonStyle}>
             <span>continue</span>
         </button>
-    </div>)
-}
+    </div>);
 
 export default LowerButtonContainerComp;

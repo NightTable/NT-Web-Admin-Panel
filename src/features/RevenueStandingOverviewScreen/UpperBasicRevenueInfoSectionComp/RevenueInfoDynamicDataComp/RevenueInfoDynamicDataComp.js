@@ -8,16 +8,13 @@ import React from 'react';
 
 import styles from './RevenueInfoDynamicDataComp.module.css';
 
-const RevenueInfoDynamicDataComp = (props) => {
-
-
-    return (<div className={styles.revenueInfoDynamicDataCompContainer}>
+const RevenueInfoDynamicDataComp = (props) => (<div className={styles.revenueInfoDynamicDataCompContainer}>
         <div className={styles.dataDisplayHeadingRowContainer}>
             <span className={styles.headingTextStyle}>The Grand Revenue Standings</span>
-            {props.isProfitCut ? <React.Fragment><div className={styles.profitCutValueWhiteContainer}>
+            {props.isProfitCut ? <><div className={styles.profitCutValueWhiteContainer}>
                 <span>10%</span>
             </div>
-            <span className={styles.profitCutHeadingTextStyle}>Profit Cut</span></React.Fragment>  : null }
+            <span className={styles.profitCutHeadingTextStyle}>Profit Cut</span></>  : null }
         </div>
         <div className={styles.dataDisplayRowContainer}>
             <span className={styles.timeLabelTextStyle}>This week (starting 5-12-22):</span>
@@ -31,7 +28,6 @@ const RevenueInfoDynamicDataComp = (props) => {
             <span className={styles.timeLabelTextStyle}>This Year (2022):</span>
             <span className={styles.valueLabelTextStyle}>$360.034.10</span>
         </div>
-    </div>)
-}
+    </div>);
 
 export default RevenueInfoDynamicDataComp;

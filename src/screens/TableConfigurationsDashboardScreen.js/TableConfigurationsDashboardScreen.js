@@ -7,24 +7,25 @@
 import React from 'react';
 import styles from './TableConfigurationsDashboardScreen.module.css';
 import TableConfigRequestListComp from '../../features/TableConfigurationsDashboardScreen/TableConfigRequestListComp';
+
 const TableConfigurationsDashboardScreen = (props) => {
-    let tableConfigRequests = [
+    const tableConfigRequests = [
         {
-            tableType: "floor",
+            tableType: 'floor',
             people: 12,
             price: 200
         },
         {
-            tableType: "standing",
+            tableType: 'standing',
             people: 4,
             price: 500
         },
         {
-            tableType: "dj",
+            tableType: 'dj',
             people: 10,
             price: 500
         }
-    ]
+    ];
 
     return (
     <div className={styles.tableConfigDashboardContainer}>
@@ -45,14 +46,13 @@ const TableConfigurationsDashboardScreen = (props) => {
 
              </div>
              <TableConfigRequestListComp
-                configRequests={tableConfigRequests}>
-            </TableConfigRequestListComp>
+                configRequests={tableConfigRequests} />
         </div>
         <div className={styles.addTableConfigButtonContainer}>
                 <button onClick={props.onTableConfigButtonPress} className={styles.addTableConfigButtonStyle}>Add Table</button>
         </div>
 
-    </div>)
-}
+    </div>);
+};
 
 export default TableConfigurationsDashboardScreen;

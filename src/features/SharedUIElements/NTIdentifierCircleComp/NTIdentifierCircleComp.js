@@ -8,11 +8,8 @@ import React from 'react';
 
 import styles from './NTIdentifierCircleComp.module.css';
 
-const NTIdentifierCircleComp = (props) => {
-
-    return (<div className={styles.circleContainer}>
+const NTIdentifierCircleComp = (props) => (<div className={styles.circleContainer}>
         <span className={styles.ntLabelText}>NT</span>
-    </div>)
-}
+    </div>);
 
 export default NTIdentifierCircleComp;

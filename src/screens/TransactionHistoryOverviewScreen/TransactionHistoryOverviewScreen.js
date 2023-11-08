@@ -13,37 +13,37 @@ const TransactionHistoryOverviewScreen = (props) => {
 
     const dummyTransactionData = [
         {
-            id: "h280ihd",
+            id: 'h280ihd',
             isSelected: true,
             isNTMCustomer: true,
-            customer: "Janelle May",
+            customer: 'Janelle May',
             amount: 200,
             tablesPurchased: 8,
-            type: "reservation",
-            date: "12:39 PM fri 1-14-22",
-            action: "p"
+            type: 'reservation',
+            date: '12:39 PM fri 1-14-22',
+            action: 'p'
         },
         {
-            id: "h280ihd",
+            id: 'h280ihd',
             isSelected: false,
             isNTMCustomer: false,
-            customer: "Jake Smith",
+            customer: 'Jake Smith',
             amount: 374,
-            tablesPurchased: "-",
-            type: "reservation",
-            date: "8:39 PM fri 1-13-22",
-            action: "p"
+            tablesPurchased: '-',
+            type: 'reservation',
+            date: '8:39 PM fri 1-13-22',
+            action: 'p'
         },
         {
-            id: "h280ihd",
+            id: 'h280ihd',
             isSelected: false,
             isNTMCustomer: false,
-            customer: "John Nydam",
+            customer: 'John Nydam',
             amount: 200,
-            tablesPurchased: "-",
-            type: "menu",
-            date: "12:39 PM fri 1-14-22",
-            action: "p"
+            tablesPurchased: '-',
+            type: 'menu',
+            date: '12:39 PM fri 1-14-22',
+            action: 'p'
         }
     ];
 
@@ -96,10 +96,10 @@ const TransactionHistoryOverviewScreen = (props) => {
             {dummyTransactionData.map((transaction, index) => (
                 <TransactionElementHorizBubbleComp
                     key={index}
-                    transactionData={transaction}></TransactionElementHorizBubbleComp>
+                    transactionData={transaction} />
             ))}
         </div>
-    </div>)
-}
+    </div>);
+};
 
 export default TransactionHistoryOverviewScreen;

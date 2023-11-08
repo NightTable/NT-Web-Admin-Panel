@@ -13,15 +13,15 @@ const SizeSectionComp = (props) => {
 
     const dummySizeInfoData = [
         {
-            size: "small",
+            size: 'small',
             price: 250
         },
         {
-            size: "medium",
+            size: 'medium',
             price: 300
         },
         {
-            size: "large",
+            size: 'large',
             price: 400
         }
     ];
@@ -38,11 +38,11 @@ const SizeSectionComp = (props) => {
                     <SizeHorizComp
                         key={index}
                         size={sizeInfo.size}
-                        price={sizeInfo.price}></SizeHorizComp>
+                        price={sizeInfo.price} />
                 ))
             }
         </div>
-    </div>)
-}
+    </div>);
+};
 
 export default SizeSectionComp;

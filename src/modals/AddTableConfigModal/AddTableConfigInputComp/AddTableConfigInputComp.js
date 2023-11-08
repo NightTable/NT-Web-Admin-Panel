@@ -8,13 +8,9 @@ import React from 'react';
 import styles from './AddTableConfigInputComp.module.css';
 
 
-const AddTableConfigInputComp = (props) => {
-
-    return (<div className={styles.mainTableConfigInputCompContainer}>
+const AddTableConfigInputComp = (props) => (<div className={styles.mainTableConfigInputCompContainer}>
         <span className={styles.labelInputStyle}>{props.labelName}</span>
-        <input className={styles.mainTableConfigInputElementStyle}>
-        </input>
-    </div>)
-}
+        <input className={styles.mainTableConfigInputElementStyle} />
+    </div>);
 
 export default AddTableConfigInputComp;

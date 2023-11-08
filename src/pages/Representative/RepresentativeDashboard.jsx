@@ -1,12 +1,12 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Helmet } from "react-helmet-async";
-import { useState, useEffect } from "react";
-import { filter } from "lodash";
-import { TextField } from "@material-ui/core";
-import "../../css/DasboardCss.css";
+import { Helmet } from 'react-helmet-async';
+import { useState, useEffect } from 'react';
+import { filter } from 'lodash';
+import { TextField } from '@material-ui/core';
+import '../../css/DasboardCss.css';
 // @mui
-import { useTheme } from "@mui/material/styles";
+import { useTheme } from '@mui/material/styles';
 // @mui
 import {
   Box,
@@ -22,187 +22,187 @@ import {
   Typography,
   IconButton,
   TableContainer,
-  TablePagination,
-} from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
-import ViewRepresentativeInfo from "./ViewRepresentativeInfo";
+  TablePagination
+} from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
+import Switch from 'react-switch';
+import { LocalStorageKey } from 'src/utils/localStorage/keys';
+import ViewRepresentativeInfo from './ViewRepresentativeInfo';
 // components
-import Iconify from "../../component/iconify";
-import Scrollbar from "../../component/scrollbar";
-import Dropdown from "../../component/Dropdown";
-import { DeleteDialog } from "../../features/DeleteDialog";
-//dialog
-import Switch from "react-switch";
+import Iconify from '../../component/iconify';
+import Scrollbar from '../../component/scrollbar';
+import Dropdown from '../../component/Dropdown';
+import { DeleteDialog } from '../../features/DeleteDialog';
+// dialog
 
-//dropdown
+// dropdown
 
 // sections
-import { UserListHead, UserListToolbar } from "../../sections/@dashboard/user"; //theme
-import palette from "../../theme/palette";
+import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user'; // theme
+import palette from '../../theme/palette';
 // ----------------------------------------------------------------------
-import { getClubs } from "../../services/club";
+import { getClubs } from '../../services/club';
 import {
   addRepresentativetoClub,
   getRepresentativebyClub,
   editRepresentativetoClub,
-  deleteRepresentativebyClub,
-} from "../../services/representative";
-import { REPRESENTATIVE_CONFIG_TABLE_HEAD } from "../../Table_Head/index";
-import { LocalStorageKey } from "src/utils/localStorage/keys";
-//RESET PRIVILEGE DATA FIELDS
+  deleteRepresentativebyClub
+} from '../../services/representative';
+import { REPRESENTATIVE_CONFIG_TABLE_HEAD } from '../../Table_Head/index';
+// RESET PRIVILEGE DATA FIELDS
 
 const resetPrivilege = [
   {
     id: 0,
-    text: "Add, edit or delete table configurations?",
+    text: 'Add, edit or delete table configurations?',
     privilege: false,
-    name: "tableConfigPrivilege",
+    name: 'tableConfigPrivilege'
   },
   {
     id: 1,
-    text: "Add, edit or delete events ?",
+    text: 'Add, edit or delete events ?',
     privilege: false,
-    name: "eventPrivileges",
+    name: 'eventPrivileges'
   },
   {
     id: 2,
-    text: "Delete reservations, place orders during reservation ?",
+    text: 'Delete reservations, place orders during reservation ?',
     privilege: false,
-    name: "reservationManagementPrivileges",
+    name: 'reservationManagementPrivileges'
   },
   {
     id: 3,
-    text: "Confirm arrival of table groups ?",
+    text: 'Confirm arrival of table groups ?',
     privilege: false,
-    name: "arrivalConfirmationPrivileges",
+    name: 'arrivalConfirmationPrivileges'
   },
   {
     id: 4,
-    text: "Set custom table minimums on NightTable App ?",
+    text: 'Set custom table minimums on NightTable App ?',
     privilege: false,
-    name: "mobileAppTableMinimumPrivileges",
+    name: 'mobileAppTableMinimumPrivileges'
   },
   {
     id: 5,
-    text: "Add, edit or delete menu items ?",
+    text: 'Add, edit or delete menu items ?',
     privilege: false,
-    name: "menuItemPrivileges",
+    name: 'menuItemPrivileges'
   },
   {
     id: 6,
-    text: "Add, edit or delete clubs ?",
+    text: 'Add, edit or delete clubs ?',
     privilege: false,
-    name: "clubPrivileges",
+    name: 'clubPrivileges'
   },
   {
     id: 7,
-    text: "Add, edit or delete representatives ?",
+    text: 'Add, edit or delete representatives ?',
     privilege: false,
-    name: "representativePrivileges",
-  },
+    name: 'representativePrivileges'
+  }
 ];
 const Privilegesarr = [
   {
     id: 0,
-    text: "Add, edit or delete table configurations?",
+    text: 'Add, edit or delete table configurations?',
     privilege: false,
-    name: "tableConfigPrivilege",
+    name: 'tableConfigPrivilege'
   },
   {
     id: 1,
-    text: "Add, edit or delete events ?",
+    text: 'Add, edit or delete events ?',
     privilege: false,
-    name: "eventPrivileges",
+    name: 'eventPrivileges'
   },
   {
     id: 2,
-    text: "Delete reservations, place orders during reservation ?",
+    text: 'Delete reservations, place orders during reservation ?',
     privilege: false,
-    name: "reservationManagementPrivileges",
+    name: 'reservationManagementPrivileges'
   },
   {
     id: 3,
-    text: "Confirm arrival of table groups ?",
+    text: 'Confirm arrival of table groups ?',
     privilege: false,
-    name: "arrivalConfirmationPrivileges",
+    name: 'arrivalConfirmationPrivileges'
   },
   {
     id: 4,
-    text: "Set custom table minimums on NightTable App ?",
+    text: 'Set custom table minimums on NightTable App ?',
     privilege: false,
-    name: "mobileAppTableMinimumPrivileges",
+    name: 'mobileAppTableMinimumPrivileges'
   },
   {
     id: 5,
-    text: "Add, edit or delete menu items ?",
+    text: 'Add, edit or delete menu items ?',
     privilege: false,
-    name: "menuItemPrivileges",
+    name: 'menuItemPrivileges'
   },
   {
     id: 6,
-    text: "Add, edit or delete clubs ?",
+    text: 'Add, edit or delete clubs ?',
     privilege: false,
-    name: "clubPrivileges",
+    name: 'clubPrivileges'
   },
   {
     id: 7,
-    text: "Add, edit or delete representatives ?",
+    text: 'Add, edit or delete representatives ?',
     privilege: false,
-    name: "representativePrivileges",
-  },
+    name: 'representativePrivileges'
+  }
 ];
-//MAIN FUNCTION
+// MAIN FUNCTION
 export default function RepresentativeDashboard() {
   const theme = useTheme();
 
   const userData = localStorage.getItem(LocalStorageKey.USER_DATA);
-  let parsedUserData = JSON.parse(userData);
-  let fullName =
-  parsedUserData?.firstName?.toUpperCase() + " " + parsedUserData?.lastName?.toUpperCase();
+  const parsedUserData = JSON.parse(userData);
+  const fullName =
+  `${parsedUserData?.firstName?.toUpperCase()  } ${  parsedUserData?.lastName?.toUpperCase()}`;
   const [admin_name, setadmin_name] = useState(fullName);
-  //clubs
+  // clubs
   const [clubs_data, setclubs_data] = useState([]);
 
-  //CLicked Button
-  const [selected_club_btn, setselected_club_btn] = useState("0");
-  //SHOW REPRESENTATIVE DATA
+  // CLicked Button
+  const [selected_club_btn, setselected_club_btn] = useState('0');
+  // SHOW REPRESENTATIVE DATA
   const [representativeData, setrepresentativeData] = useState([]);
-  //SELECTED REPRESENTATIVE DATA
+  // SELECTED REPRESENTATIVE DATA
   const [selectedrepresentativeData, setselectedrepresentativeData] =
     useState();
-  //VIew pop-up enabled
+  // VIew pop-up enabled
   const [viewPopupEnabled, setviewPopupEnabled] = useState(false);
   // ADD REPRESENTATIVE
-  const [firstName, setfirstName] = useState("");
-  const [lastName, setlastName] = useState("");
-  const [phoneNumber, setphoneNumber] = useState("");
-  const [email, setemail] = useState("");
-  const [userName, setuserName] = useState("");
-  const [representativeRole, setrepresentativeRole] = useState("");
+  const [firstName, setfirstName] = useState('');
+  const [lastName, setlastName] = useState('');
+  const [phoneNumber, setphoneNumber] = useState('');
+  const [email, setemail] = useState('');
+  const [userName, setuserName] = useState('');
+  const [representativeRole, setrepresentativeRole] = useState('');
   const [switchToggle, setswitchToggle] = useState(false);
 
   const [editRepresentativeBoolean, seteditRepresentativeBoolean] =
     useState(false);
-  //add Representative pop-over open
+  // add Representative pop-over open
   const [addRepresentativePopUp, setaddRepresentativePopUp] = useState(false);
-  //PRIVILIGES ARRAY
+  // PRIVILIGES ARRAY
   const [PrivilegesData, setPrivilegesData] = useState(Privilegesarr);
-  //dialog
+  // dialog
 
   const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
 
-  //selected club data
+  // selected club data
   const [selectedClubData, setselectedClubData] = useState([]);
 
   const [page, setPage] = useState(0);
 
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState('asc');
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState("name");
+  const [orderBy, setOrderBy] = useState('name');
 
-  const [filterName, setFilterName] = useState("");
+  const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -213,18 +213,16 @@ export default function RepresentativeDashboard() {
   // get the clubs
   const loadData = async () => {
     const data = await getClubs();
-    //GET FIRST CLUB REPRESENTATIVE
+    // GET FIRST CLUB REPRESENTATIVE
     getClubRepData(data.data[0]._id);
-    //SELECTED CLUB DATA
+    // SELECTED CLUB DATA
     setselectedClubData(data.data[0]);
     setclubs_data(data.data);
   };
 
-  const DeleteClubDialog = () => {
-    return (
-      <>
-        <DeleteDialog
-          heading={"Delete the Representative?"}
+  const DeleteClubDialog = () => (
+      <DeleteDialog
+          heading='Delete the Representative?'
           paragraph={
             " Are you sure want to delete the representative, as you won't be able to recover it !"
           }
@@ -236,28 +234,26 @@ export default function RepresentativeDashboard() {
           }}
           deleteDialogOpen={deleteDialogOpen}
         />
-      </>
     );
-  };
 
-  //CLUB REPRESENTATIVE DATA
+  // CLUB REPRESENTATIVE DATA
   const getClubRepData = async (club_id) => {
     const data = await getRepresentativebyClub(club_id);
     setrepresentativeData(data);
   };
 
-  //ADD REPRESENTATIVE DATA TO DB
+  // ADD REPRESENTATIVE DATA TO DB
   const addRepresentativetoDB = async () => {
-    let tempObj = {};
+    const tempObj = {};
     PrivilegesData.forEach((item) => {
       tempObj[item.name] = item.privilege;
     });
 
-    let obj = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNumber: phoneNumber,
+    const obj = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
       username: userName,
       role: representativeRole,
       associatedClubs: [selectedClubData._id],
@@ -265,76 +261,74 @@ export default function RepresentativeDashboard() {
       clubPrivileges: [
         {
           club: selectedClubData._id,
-          privileges: tempObj,
-        },
-      ],
+          privileges: tempObj
+        }
+      ]
     };
     const addRepresentative = await addRepresentativetoClub(obj);
     if (addRepresentative.status === true) {
-      alert("Club Representative Added !");
+      alert('Club Representative Added !');
       resetRepresentataiveData();
       setaddRepresentativePopUp(false);
       setrepresentativeData([...representativeData, obj]);
       getClubRepData(selectedClubData._id);
     } else {
-      alert("Something Went Wrong!");
+      alert('Something Went Wrong!');
       resetRepresentataiveData();
       setaddRepresentativePopUp(false);
     }
   };
 
-  //EDIT REPRESENTATIVE
+  // EDIT REPRESENTATIVE
   const editRepresentativetoDB = async () => {
-    let tempObj = {};
+    const tempObj = {};
     PrivilegesData.forEach((item) => {
       tempObj[item.name] = item.privilege;
     });
 
-    let obj = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNumber: phoneNumber,
+    const obj = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
       username: userName,
       role: representativeRole,
       associatedClubs: [selectedClubData._id],
       clubPrivileges: [
         {
           club: selectedClubData._id,
-          privileges: tempObj,
-        },
-      ],
+          privileges: tempObj
+        }
+      ]
     };
     const addRepresentative = await editRepresentativetoClub(obj);
     if (addRepresentative.status === true) {
-      alert("Club Representative Updated Successfully !");
+      alert('Club Representative Updated Successfully !');
       resetRepresentataiveData();
       setaddRepresentativePopUp(false);
       setrepresentativeData([...representativeData, obj]);
       getClubRepData(selectedClubData._id);
     } else {
-      alert("Something Went Wrong!");
+      alert('Something Went Wrong!');
       resetRepresentataiveData();
       setaddRepresentativePopUp(false);
     }
   };
 
-  //DELETE REPRESENTATIVE DATA
+  // DELETE REPRESENTATIVE DATA
   const deleteRepresentative = async () => {
     const item = selectedrepresentativeData;
-    const filteredData = representativeData.filter((data) => {
-      return data._id != item._id;
-    });
-    //API NEED TO BE CALLED HERE
+    const filteredData = representativeData.filter((data) => data._id != item._id);
+    // API NEED TO BE CALLED HERE
 
-    console.log(item._id, "JSON.parse(item._id)");
+    console.log(item._id, 'JSON.parse(item._id)');
     const data = await deleteRepresentativebyClub(item._id);
-    alert("Representative Deleted Successfully!");
+    alert('Representative Deleted Successfully!');
     setdeleteDialogOpen(false);
     setrepresentativeData(filteredData);
   };
 
-  //HANDLE SWITCH PRIVILEGE DATA
+  // HANDLE SWITCH PRIVILEGE DATA
   const handleSwitchChange = (id) => {
     const updatedPrivileges = PrivilegesData.map((privilege) => {
       if (privilege.id === id) {
@@ -345,69 +339,67 @@ export default function RepresentativeDashboard() {
     setPrivilegesData(updatedPrivileges);
   };
 
-  //RESET ADD CLUB REPRESENTATIVE DATA
+  // RESET ADD CLUB REPRESENTATIVE DATA
   const resetRepresentataiveData = () => {
     setPrivilegesData(resetPrivilege);
-    setfirstName("");
-    setlastName("");
-    setuserName("");
-    setphoneNumber("");
-    setemail("");
-    setrepresentativeRole("");
+    setfirstName('');
+    setlastName('');
+    setuserName('');
+    setphoneNumber('');
+    setemail('');
+    setrepresentativeRole('');
   };
 
-  const ViewRepresentativePopup = () => {
-    return (
-      <>
-        <Popover
+  const ViewRepresentativePopup = () => (
+      <Popover
           open={viewPopupEnabled}
           anchorEl={null}
           onClose={() => {
             setviewPopupEnabled(false);
           }}
           anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           PaperProps={{
             sx: {
               p: 1,
-              width: "90%",
-              hieght: "100%",
+              width: '90%',
+              hieght: '100%',
               borderColor: palette.primary.gold,
               backgroundColor: palette.primary.gold,
               borderWidth: 1,
 
-              "& .MuiMenuItem-root": {
-                typography: "body2",
+              '& .MuiMenuItem-root': {
+                typography: 'body2',
                 // borderRadius: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                width: "80%",
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '80%',
                 borderColor: palette.primary.gold,
-                borderWidth: 12,
-              },
-            },
+                borderWidth: 12
+              }
+            }
           }}
         >
           <Box>
             <Stack
               style={{ marginBottom: 10 }}
-              alignItems={"flex-end"}
-              justifyItems={"right"}
+              alignItems='flex-end'
+              justifyItems='right'
             >
               <IconButton
-                size="large"
-                color="inherit"
+                size='large'
+                color='inherit'
                 onClick={() => {
                   setviewPopupEnabled(false);
                 }}
               >
-                <Iconify color={"black"} icon={"maki:cross"} />
+                <Iconify color='black' icon='maki:cross' />
               </IconButton>
             </Stack>
           </Box>
@@ -415,9 +407,7 @@ export default function RepresentativeDashboard() {
             <ViewRepresentativeInfo data={selectedrepresentativeData} />
           </Box>
         </Popover>
-      </>
     );
-  };
 
   function updatePrivilegeValues(privileges, Privilegesarr) {
     // Loop through the Privilegesarr array
@@ -481,21 +471,21 @@ export default function RepresentativeDashboard() {
         <title> Night Table : Representatives </title>
       </Helmet>
 
-      <Container maxWidth="xl">
+      <Container maxWidth='xl'>
         <Typography
-          variant="h4"
+          variant='h4'
           sx={{ margin: 3, color: palette.primary.gold }}
         >
           Hi, Welcome back {admin_name}
         </Typography>
         <Container>
           <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
+            direction='row'
+            alignItems='center'
+            justifyContent='space-between'
             mb={1}
           >
-            <Typography variant="h4" sx={{ color: palette.primary.gold }}>
+            <Typography variant='h4' sx={{ color: palette.primary.gold }}>
               Representatives
             </Typography>
             <Button
@@ -505,24 +495,22 @@ export default function RepresentativeDashboard() {
               }}
               style={{
                 backgroundColor: palette.primary.gold,
-                color: "black",
+                color: 'black',
                 padding: 8,
-                borderRadius: 10,
+                borderRadius: 10
               }}
-              variant="Outlined"
+              variant='Outlined'
               // sx={{ backgroundColor: palette.primary.gold, color: "black" }}
-              startIcon={<Iconify icon="eva:plus-fill" />}
+              startIcon={<Iconify icon='eva:plus-fill' />}
             >
               Add
             </Button>
           </Stack>
 
           <Scrollbar>
-            <Stack direction="row" mt={4} mb={2}>
-              {clubs_data.map((item, index) => {
-                return (
-                  <>
-                    <Box
+            <Stack direction='row' mt={4} mb={2}>
+              {clubs_data.map((item, index) => (
+                  <Box
                       onClick={() => {
                         setselected_club_btn(index);
                         setselectedClubData(item);
@@ -533,38 +521,36 @@ export default function RepresentativeDashboard() {
                       marginRight={2}
                       borderColor={
                         index == selected_club_btn
-                          ? "black"
+                          ? 'black'
                           : palette.primary.gold
                       }
-                      flexDirection={"row"}
-                      justifyContent={"center"}
-                      alignItems={"center"}
+                      flexDirection='row'
+                      justifyContent='center'
+                      alignItems='center'
                       backgroundColor={
                         index == selected_club_btn
                           ? palette.primary.gold
-                          : "black"
+                          : 'black'
                       }
                     >
                       <Typography
-                        variant="body1"
+                        variant='body1'
                         style={{
                           color:
                             index == selected_club_btn
-                              ? "black"
+                              ? 'black'
                               : palette.primary.gold,
                           fontWeight:
-                            index == selected_club_btn ? "bold" : "500",
+                            index == selected_club_btn ? 'bold' : '500',
 
                           padding: 10,
-                          textAlign: "center",
+                          textAlign: 'center'
                         }}
                       >
                         {item?.name}
                       </Typography>
                     </Box>
-                  </>
-                );
-              })}
+                ))}
             </Stack>
           </Scrollbar>
           <Container
@@ -572,7 +558,7 @@ export default function RepresentativeDashboard() {
               borderWidth: 1,
               backgroundColor: palette.primary.gold,
               padding: 1,
-              borderRadius: 4,
+              borderRadius: 4
             }}
           >
             {/* <UserListToolbar
@@ -603,71 +589,70 @@ export default function RepresentativeDashboard() {
                           email,
                           username,
                           role,
-                          phoneNumber,
+                          phoneNumber
                         } = item;
                         return (
-                          <>
-                            <TableRow
+                          <TableRow
                               style={{
-                                margin: 20,
+                                margin: 20
                               }}
                               bgcolor={palette.primary.gold}
                               // hover
                               key={_id}
                               tabIndex={-1}
                             >
-                              <TableCell align="right">
-                                <Stack flexDirection={"row"}>
+                              <TableCell align='right'>
+                                <Stack flexDirection='row'>
                                   <IconButton
-                                    size="large"
-                                    color="inherit"
+                                    size='large'
+                                    color='inherit'
                                     onClick={() => {
                                       setselectedrepresentativeData(item);
                                       setviewPopupEnabled(true);
                                     }}
                                   >
-                                    <Iconify icon={"ic:sharp-remove-red-eye"} />
+                                    <Iconify icon='ic:sharp-remove-red-eye' />
                                   </IconButton>
                                 </Stack>
                               </TableCell>
 
                               <TableCell
                                 bgcolor={palette.primary.gold}
-                                component="th"
-                                scope="row"
-                                padding="none"
+                                component='th'
+                                scope='row'
+                                padding='none'
                               >
                                 <Typography
-                                  sx={{ color: "black", px: 2 }}
-                                  variant="subtitle2"
+                                  sx={{ color: 'black', px: 2 }}
+                                  variant='subtitle2'
                                   noWrap
                                 >
                                   {index + 1}
-                                  {")"} {firstName}
+                                  ) {firstName}
                                 </Typography>
                               </TableCell>
-                              <TableCell align="left">
-                                <Typography sx={{ color: "black" }}>
-                                  {phoneNumber}{" "}
+                              <TableCell align='left'>
+                                <Typography sx={{ color: 'black' }}>
+                                  {phoneNumber}{' '}
                                 </Typography>
                               </TableCell>
-                              <TableCell align="left">
-                                <Typography sx={{ color: "black" }}>
-                                  {role}{" "}
+                              <TableCell align='left'>
+                                <Typography sx={{ color: 'black' }}>
+                                  {role}{' '}
                                 </Typography>
                               </TableCell>
 
-                              <TableCell align="right">
-                                <Stack flexDirection={"row"}>
+                              <TableCell align='right'>
+                                <Stack flexDirection='row'>
                                   <IconButton
-                                    size="large"
-                                    color="inherit"
+                                    size='large'
+                                    color='inherit'
                                     onClick={() => {
                                       seteditRepresentativeBoolean(true);
                                       setselectedrepresentativeData(item);
 
                                       const privileges = [
-                                        item.clubPrivileges[0].privileges,
+                                        item.clubPrivileges[0].privileges
                                       ];
 
                                       const duplicatePrivilegeData =
@@ -689,24 +674,23 @@ export default function RepresentativeDashboard() {
                                       // alert("EDIT alert");
                                     }}
                                   >
-                                    <Iconify icon={"material-symbols:edit"} />
+                                    <Iconify icon='material-symbols:edit' />
                                   </IconButton>
                                 </Stack>
                               </TableCell>
-                              <TableCell align="left">
+                              <TableCell align='left'>
                                 <IconButton
-                                  size="large"
-                                  color="inherit"
+                                  size='large'
+                                  color='inherit'
                                   onClick={() => {
                                     setselectedrepresentativeData(item);
                                     setdeleteDialogOpen(true);
                                   }}
                                 >
-                                  <Iconify icon={"ic:baseline-delete"} />
+                                  <Iconify icon='ic:baseline-delete' />
                                 </IconButton>
                               </TableCell>
                             </TableRow>
-                          </>
                         );
                       })}
                     {emptyRows > 0 && (
@@ -716,28 +700,27 @@ export default function RepresentativeDashboard() {
                     )}
                   </TableBody>
                   {filteredData?.length <= 0 ? (
-                    <>
-                      <TableBody
+                    <TableBody
                         style={{
-                          backgroundColor: palette.primary.gold,
+                          backgroundColor: palette.primary.gold
                         }}
                       >
                         <TableRow>
-                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          <TableCell align='center' colSpan={6} sx={{ py: 3 }}>
                             <Paper
                               sx={{
-                                textAlign: "center",
+                                textAlign: 'center'
                               }}
                               style={{
                                 backgroundColor: palette.primary.gold,
-                                paddingTop: 20,
+                                paddingTop: 20
                               }}
                             >
-                              <Typography variant="h6" paragraph>
+                              <Typography variant='h6' paragraph>
                                 No Representative found
                               </Typography>
 
-                              <Typography variant="body2">
+                              <Typography variant='body2'>
                                 <br />
                                 Please add representative to see here
                               </Typography>
@@ -745,31 +728,30 @@ export default function RepresentativeDashboard() {
                           </TableCell>
                         </TableRow>
                       </TableBody>
-                    </>
                   ) : (
                     <></>
                   )}
                   {isNotFound && (
                     <TableBody
                       style={{
-                        backgroundColor: palette.primary.gold,
+                        backgroundColor: palette.primary.gold
                       }}
                     >
                       <TableRow>
-                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                        <TableCell align='center' colSpan={6} sx={{ py: 3 }}>
                           <Paper
                             sx={{
-                              textAlign: "center",
+                              textAlign: 'center'
                             }}
                             style={{
-                              backgroundColor: palette.primary.gold,
+                              backgroundColor: palette.primary.gold
                             }}
                           >
-                            <Typography variant="h6" paragraph>
+                            <Typography variant='h6' paragraph>
                               Not found
                             </Typography>
 
-                            <Typography variant="body2">
+                            <Typography variant='body2'>
                               No results found for &nbsp;
                               <strong>&quot;{filterName}&quot;</strong>.
                               <br /> Try checking for typos or using complete
@@ -786,11 +768,11 @@ export default function RepresentativeDashboard() {
 
             <TablePagination
               style={{
-                backgroundColor: "black",
-                color: "white",
+                backgroundColor: 'black',
+                color: 'white'
               }}
               rowsPerPageOptions={[5, 10, 25]}
-              component="div"
+              component='div'
               count={clubs_data.length}
               rowsPerPage={rowsPerPage}
               page={page}
@@ -808,210 +790,210 @@ export default function RepresentativeDashboard() {
             resetRepresentataiveData();
           }}
           anchorOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           transformOrigin={{
-            vertical: "center",
-            horizontal: "center",
+            vertical: 'center',
+            horizontal: 'center'
           }}
           PaperProps={{
             sx: {
               p: 1,
-              width: "90%",
-              hieght: "100%",
+              width: '90%',
+              hieght: '100%',
               borderColor: palette.primary.gold,
               // backgroundColor: '#E4D0B5',
               borderWidth: 1,
 
-              "& .MuiMenuItem-root": {
-                typography: "body2",
+              '& .MuiMenuItem-root': {
+                typography: 'body2',
                 // borderRadius: 1,
-                alignItems: "center",
-                justifyContent: "center",
-                width: "80%",
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '80%',
                 borderColor: palette.primary.gold,
-                borderWidth: 12,
-              },
-            },
+                borderWidth: 12
+              }
+            }
           }}
         >
           <Scrollbar>
             <Box
-              component="form"
+              component='form'
               sx={{
-                width: "100%",
+                width: '100%',
                 borderWidth: 2,
-                backgroundColor: "black",
-                borderRadius: 4,
+                backgroundColor: 'black',
+                borderRadius: 4
               }}
-              autoComplete="on"
+              autoComplete='on'
             >
-              <Stack alignItems={"flex-end"} justifyItems={"right"}>
+              <Stack alignItems='flex-end' justifyItems='right'>
                 <IconButton
-                  size="large"
-                  color="inherit"
+                  size='large'
+                  color='inherit'
                   onClick={() => {
                     resetRepresentataiveData();
                     setaddRepresentativePopUp(!true);
                   }}
                 >
-                  <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                  <Iconify color={palette.primary.gold} icon='maki:cross' />
                 </IconButton>
               </Stack>
               <Typography
                 sx={{
                   color: palette.primary.gold,
-                  textAlign: "center",
+                  textAlign: 'center',
                   paddingTop: 4,
                   paddingBottom: 4,
                   fontSize: 20,
-                  fontWeight: "bold",
+                  fontWeight: 'bold'
                 }}
               >
-                {editRepresentativeBoolean === true ? "Edit" : "Add"} New
+                {editRepresentativeBoolean === true ? 'Edit' : 'Add'} New
                 Representative
               </Typography>
-              <Container sx={{ width: "100%" }}>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+              <Container sx={{ width: '100%' }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography sx={{ color: palette.primary.gold }}>
                       First Name
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <TextField
                       fullWidth
-                      autoComplete="off"
-                      label="name"
-                      variant="outlined"
+                      autoComplete='off'
+                      label='name'
+                      variant='outlined'
                       value={firstName}
                       onChange={(text) => {
                         setfirstName(text.target.value);
                       }}
                       inputProps={{ style: { color: palette.primary.gold } }}
                       InputLabelProps={{
-                        style: { color: palette.primary.gold },
+                        style: { color: palette.primary.gold }
                       }}
                     />
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography sx={{ color: palette.primary.gold }}>
                       Last Name
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <TextField
                       fullWidth
-                      autoComplete="off"
-                      label="name"
-                      variant="outlined"
+                      autoComplete='off'
+                      label='name'
+                      variant='outlined'
                       value={lastName}
                       onChange={(text) => {
                         setlastName(text.target.value);
                       }}
                       inputProps={{ style: { color: palette.primary.gold } }}
                       InputLabelProps={{
-                        style: { color: palette.primary.gold },
+                        style: { color: palette.primary.gold }
                       }}
                     />
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography sx={{ color: palette.primary.gold }}>
                       User Name
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <TextField
                       fullWidth
-                      autoComplete="off"
-                      label="user name"
-                      variant="outlined"
+                      autoComplete='off'
+                      label='user name'
+                      variant='outlined'
                       value={userName}
                       onChange={(text) => {
                         setuserName(text.target.value);
                       }}
                       inputProps={{ style: { color: palette.primary.gold } }}
                       InputLabelProps={{
-                        style: { color: palette.primary.gold },
+                        style: { color: palette.primary.gold }
                       }}
                     />
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
                       Phone Number
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
-                        label={"+XXXXXXXXX"}
-                        autoComplete="no-autocomplete-random-string"
+                        label='+XXXXXXXXX'
+                        autoComplete='no-autocomplete-random-string'
                         fullWidth
-                        variant="outlined"
+                        variant='outlined'
                         value={phoneNumber}
                         onChange={(text) => {
                           setphoneNumber(text.target.value);
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                         InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                          style: { color: palette.primary.gold }
                         }}
                       />
                     </Box>
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
                       Email
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
-                        label={"email"}
-                        autoComplete="no-autocomplete-random-string"
+                        label='email'
+                        autoComplete='no-autocomplete-random-string'
                         fullWidth
-                        variant="outlined"
+                        variant='outlined'
                         value={email}
                         onChange={(text) => {
                           setemail(text.target.value);
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                         InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                          style: { color: palette.primary.gold }
                         }}
                       />
                     </Box>
                   </Box>
                 </Stack>
-                <Stack flexDirection={"row"}>
-                  <Box sx={{ width: "30%" }}>
+                <Stack flexDirection='row'>
+                  <Box sx={{ width: '30%' }}>
                     <Typography fullWidth sx={{ color: palette.primary.gold }}>
                       Role
                     </Typography>
                   </Box>
-                  <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                  <Box sx={{ width: '70%', paddingBottom: 2 }}>
                     <Box sx={{ paddingBottom: 2 }}>
                       <TextField
-                        label={"role"}
-                        autoComplete="no-autocomplete-random-string"
+                        label='role'
+                        autoComplete='no-autocomplete-random-string'
                         fullWidth
-                        variant="outlined"
+                        variant='outlined'
                         value={representativeRole}
                         onChange={(text) => {
                           setrepresentativeRole(text.target.value);
                         }}
                         inputProps={{ style: { color: palette.primary.gold } }}
                         InputLabelProps={{
-                          style: { color: palette.primary.gold },
+                          style: { color: palette.primary.gold }
                         }}
                       />
                     </Box>
@@ -1023,19 +1005,17 @@ export default function RepresentativeDashboard() {
                 >
                   Privileges
                 </Typography>
-                {PrivilegesData.map((item, index) => {
-                  return (
-                    <>
-                      <Stack flexDirection={"row"}>
-                        <Box sx={{ width: "70%" }}>
+                {PrivilegesData.map((item, index) => (
+                    <Stack flexDirection='row'>
+                        <Box sx={{ width: '70%' }}>
                           <Typography
                             fullWidth
                             sx={{ color: palette.primary.gold }}
                           >
-                            {item.text}{" "}
+                            {item.text}{' '}
                           </Typography>
                         </Box>
-                        <Box sx={{ width: "30%", paddingBottom: 2 }}>
+                        <Box sx={{ width: '30%', paddingBottom: 2 }}>
                           <Box sx={{ paddingBottom: 2 }}>
                             {/* <Switch
                               style={{
@@ -1056,29 +1036,27 @@ export default function RepresentativeDashboard() {
                             <Switch
                               checked={item.privilege}
                               onChange={() => handleSwitchChange(item.id)}
-                              onColor={"#AA6C39"}
+                              onColor='#AA6C39'
                               onHandleColor={palette.primary.gold}
                               handleDiameter={30}
                               uncheckedIcon={false}
                               checkedIcon={false}
-                              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                              boxShadow='0px 1px 5px rgba(0, 0, 0, 0.6)'
+                              activeBoxShadow='0px 0px 1px 10px rgba(0, 0, 0, 0.2)'
                               height={20}
                               width={48}
-                              className="react-switch"
-                              id="material-switch"
+                              className='react-switch'
+                              id='material-switch'
                             />
                           </Box>
                         </Box>
                       </Stack>
-                    </>
-                  );
-                })}
+                  ))}
 
                 <Box
                   sx={{
-                    width: "100%",
-                    padding: 2,
+                    width: '100%',
+                    padding: 2
                   }}
                 >
                   <Button
@@ -1090,16 +1068,16 @@ export default function RepresentativeDashboard() {
                     // variant="contained"
                     style={{
                       backgroundColor: palette.primary.gold,
-                      textAlign: "center",
+                      textAlign: 'center',
                       fontSize: 16,
-                      fontWeight: "bold",
-                      color: "black",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "100%",
+                      fontWeight: 'bold',
+                      color: 'black',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: '100%'
                     }}
                   >
-                    {editRepresentativeBoolean === true ? "Edit" : "Add"}
+                    {editRepresentativeBoolean === true ? 'Edit' : 'Add'}
                   </Button>
                 </Box>
               </Container>

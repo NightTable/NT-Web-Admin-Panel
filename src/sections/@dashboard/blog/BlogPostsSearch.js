@@ -8,14 +8,14 @@ import Iconify from '../../../component/iconify';
 
 // ----------------------------------------------------------------------
 
-const StyledPopper = styled((props) => <Popper placement="bottom-start" {...props} />)({
-  width: '280px !important',
+const StyledPopper = styled((props) => <Popper placement='bottom-start' {...props} />)({
+  width: '280px !important'
 });
 
 // ----------------------------------------------------------------------
 
 BlogPostsSearch.propTypes = {
-  posts: PropTypes.array.isRequired,
+  posts: PropTypes.array.isRequired
 };
 
 export default function BlogPostsSearch({ posts }) {
@@ -31,14 +31,14 @@ export default function BlogPostsSearch({ posts }) {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="Search post..."
+          placeholder='Search post...'
           InputProps={{
             ...params.InputProps,
             startAdornment: (
-              <InputAdornment position="start">
-                <Iconify icon={'eva:search-fill'} sx={{ ml: 1, width: 20, height: 20, color: 'text.disabled' }} />
+              <InputAdornment position='start'>
+                <Iconify icon='eva:search-fill' sx={{ ml: 1, width: 20, height: 20, color: 'text.disabled' }} />
               </InputAdornment>
-            ),
+            )
           }}
         />
       )}

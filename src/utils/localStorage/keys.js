@@ -4,4 +4,4 @@ export const LocalStorageKey = {
     USER:{
         TOKEN:'TOKEN'
     }
-}
+};

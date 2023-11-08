@@ -9,12 +9,8 @@ import styles from './LeftArrowCircleDetailComp.module.css';
 
 import rightArrowPic from '../../../assets/rightarrowpurple.svg';
 
-const LeftArrowCircleDetailComp = (props) => {
-
-
-    return (<div className={styles.leftArrowCircleDetailContainer}>
-        <img className={styles.leftArrowImageStyle} src={rightArrowPic}></img>
-    </div>)
-}
+const LeftArrowCircleDetailComp = (props) => (<div className={styles.leftArrowCircleDetailContainer}>
+        <img className={styles.leftArrowImageStyle} src={rightArrowPic} />
+    </div>);
 
 export default LeftArrowCircleDetailComp;

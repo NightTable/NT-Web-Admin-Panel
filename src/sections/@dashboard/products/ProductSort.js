@@ -10,7 +10,7 @@ const SORT_BY_OPTIONS = [
   { value: 'featured', label: 'Featured' },
   { value: 'newest', label: 'Newest' },
   { value: 'priceDesc', label: 'Price: High-Low' },
-  { value: 'priceAsc', label: 'Price: Low-High' },
+  { value: 'priceAsc', label: 'Price: Low-High' }
 ];
 
 export default function ShopProductSort() {
@@ -27,13 +27,13 @@ export default function ShopProductSort() {
   return (
     <>
       <Button
-        color="inherit"
+        color='inherit'
         disableRipple
         onClick={handleOpen}
         endIcon={<Iconify icon={open ? 'eva:chevron-up-fill' : 'eva:chevron-down-fill'} />}
       >
         Sort By:&nbsp;
-        <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
+        <Typography component='span' variant='subtitle2' sx={{ color: 'text.secondary' }}>
           Newest
         </Typography>
       </Button>

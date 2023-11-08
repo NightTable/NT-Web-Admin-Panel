@@ -9,14 +9,11 @@ import RevenueInfoDynamicDataComp from './RevenueInfoDynamicDataComp/RevenueInfo
 
 import styles from './UpperBasicRevenueInfoSectionComp.module.css';
 
-const UpperBasicRevenueInfoSectionComp = (props) => {
-
-    return (<div className={styles.upperBasicRevenueInfoSectionCompContainer}>
+const UpperBasicRevenueInfoSectionComp = (props) => (<div className={styles.upperBasicRevenueInfoSectionCompContainer}>
         <RevenueInfoDynamicDataComp
-            isProfitCut={false}></RevenueInfoDynamicDataComp>
+            isProfitCut={false} />
         <RevenueInfoDynamicDataComp
-            isProfitCut></RevenueInfoDynamicDataComp>
-    </div>)
-}
+            isProfitCut />
+    </div>);
 
 export default UpperBasicRevenueInfoSectionComp;

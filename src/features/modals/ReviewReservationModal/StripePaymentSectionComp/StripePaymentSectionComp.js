@@ -9,15 +9,12 @@ import InnerPaymentBoxComp from './InnerPaymentBoxComp/InnerPaymentBoxComp';
 
 import styles from './StripePaymentSectionComp.module.css';
 
-const StripePaymentSectionComp = (props) => {
-
-    return (<div className={styles.stripePaymentSectionCompContainer}>
+const StripePaymentSectionComp = (props) => (<div className={styles.stripePaymentSectionCompContainer}>
         <div className={styles.paymentInformationRowHeading}>
             <span style={{marginLeft: '1rem'}}>Payment Information</span>
         </div>
-        <InnerPaymentBoxComp></InnerPaymentBoxComp>
+        <InnerPaymentBoxComp />
 
-    </div>)
-}
+    </div>);
 
 export default StripePaymentSectionComp;

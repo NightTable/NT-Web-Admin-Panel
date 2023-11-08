@@ -1,40 +1,40 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 // @mui
-import { styled, alpha } from "@mui/material/styles";
+import { styled, alpha } from '@mui/material/styles';
 import {
   Toolbar,
   Tooltip,
   IconButton,
   Typography,
   OutlinedInput,
-  InputAdornment,
-} from "@mui/material";
+  InputAdornment
+} from '@mui/material';
 // component
-import Iconify from "../../../component/iconify";
+import Iconify from '../../../component/iconify';
 
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled(Toolbar)(({ theme }) => ({
   height: 96,
-  display: "flex",
-  justifyContent: "space-between",
-  padding: theme.spacing(0, 1, 0, 3),
+  display: 'flex',
+  justifyContent: 'space-between',
+  padding: theme.spacing(0, 1, 0, 3)
 }));
 
 const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
-  width: "100%",
+  width: '100%',
   borderWidth: 2,
-  color: "#E4D0B5",
-  transition: theme.transitions.create(["box-shadow", "width"], {
+  color: '#E4D0B5',
+  transition: theme.transitions.create(['box-shadow', 'width'], {
     easing: theme.transitions.easing.easeInOut,
-    duration: theme.transitions.duration.shorter,
+    duration: theme.transitions.duration.shorter
   }),
-  "&.Mui-focused": {
-    boxShadow: theme.customShadows.z8,
+  '&.Mui-focused': {
+    boxShadow: theme.customShadows.z8
   },
-  "& fieldset": {
-    borderWidth: `1px !important`,
-  },
+  '& fieldset': {
+    borderWidth: '1px !important'
+  }
 }));
 
 // ----------------------------------------------------------------------
@@ -42,35 +42,35 @@ const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
 UserListToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
-  onFilterName: PropTypes.func,
+  onFilterName: PropTypes.func
 };
 
 export default function UserListToolbar({
   numSelected,
   filterName,
-  onFilterName,
+  onFilterName
 }) {
   return (
     <StyledRoot
       style={{
-        backgroundColor: "black",
+        backgroundColor: 'black'
        
       }}
     >
       {numSelected > 0 ? (
-        <Typography component="div" variant="subtitle1">
+        <Typography component='div' variant='subtitle1'>
           {numSelected} selected
         </Typography>
       ) : (
         <StyledSearch
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search ..."
+          placeholder='Search ...'
           startAdornment={
-            <InputAdornment position="start">
+            <InputAdornment position='start'>
               <Iconify
-                icon="eva:search-fill"
-                sx={{ color: "#E4D0B5", width: 20, height: 20 }}
+                icon='eva:search-fill'
+                sx={{ color: '#E4D0B5', width: 20, height: 20 }}
               />
             </InputAdornment>
           }

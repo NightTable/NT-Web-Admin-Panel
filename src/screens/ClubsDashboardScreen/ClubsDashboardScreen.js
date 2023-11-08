@@ -6,13 +6,10 @@
 
 import React from 'react';
 
-const ClubsDashboardScreen = (props) => {
-
-    return (
+const ClubsDashboardScreen = (props) => (
         <div>
             <span>This is the clubs dashboard screen</span>
         </div>
-    )
-}
+    );
 
 export default ClubsDashboardScreen;

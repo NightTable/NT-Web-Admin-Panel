@@ -10,9 +10,7 @@ import styles from './InnerWhiteTableDetailComp.module.css';
 
 import greenCheckmarkGraphic from '../../../../../assets/greencheckmark.png';
 
-const InnerWhiteTableDetailComp = (props) => {
-
-    return (<div className={styles.innerWhiteTableDetailCompContainer}>
+const InnerWhiteTableDetailComp = (props) => (<div className={styles.innerWhiteTableDetailCompContainer}>
         <div className={styles.inputRowContainer}>
             <span className={styles.inputLabelTextStyle}>type: </span>
             <button className={styles.selectButtonStyle}>
@@ -37,10 +35,9 @@ const InnerWhiteTableDetailComp = (props) => {
             <div className={styles.greenCheckmarkContainer}>
                 <img 
                     src={greenCheckmarkGraphic}
-                    className={styles.greenCheckmarkImage}></img>
+                    className={styles.greenCheckmarkImage} />
             </div>
         </div>
-    </div>)
-}
+    </div>);
 
 export default InnerWhiteTableDetailComp;

@@ -10,19 +10,14 @@ import styles from './PaginationButtonSectionComp.module.css';
 
 import rightPurpleArrowGraphic from '../../../assets/rightarrowpurple.svg';
 
-const PaginationButtonSectionComp = (props) => {
-
-    return (<div className={styles.paginationButtonSectionCompContainer}>
+const PaginationButtonSectionComp = (props) => (<div className={styles.paginationButtonSectionCompContainer}>
         <button className={styles.leftWhitePageArrowButtonStyle}>
-            <img style={{height: '80%', transform: 'rotate(180deg)'}} src={rightPurpleArrowGraphic}>
-            </img>
+            <img style={{height: '80%', transform: 'rotate(180deg)'}} src={rightPurpleArrowGraphic} />
         </button>
         <span className={styles.pageLabelTextStyle}>0</span>
         <button className={styles.whitePageArrowButtonStyle}>
-            <img style={{height: '80%'}} src={rightPurpleArrowGraphic}>
-            </img>
+            <img style={{height: '80%'}} src={rightPurpleArrowGraphic} />
         </button>
-    </div>)
-}
+    </div>);
 
 export default PaginationButtonSectionComp;

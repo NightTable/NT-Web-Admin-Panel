@@ -10,16 +10,13 @@ import styles from './TransactionElementHorizBubbleComp.module.css';
 import NTIdentifierCircleComp from '../../SharedUIElements/NTIdentifierCircleComp/NTIdentifierCircleComp';
 import ArrowCircleDetailComp from '../../SharedUIElements/ArrowCircleDetailComp/ArrowCircleDetailComp';
 
-const TransactionElementHorizBubbleComp = (props) => {
-
-
-    return (<div className={ props.transactionData.isSelected ? styles.transactionElementContainerSelected : styles.transactionElementContainer}>
+const TransactionElementHorizBubbleComp = (props) => (<div className={ props.transactionData.isSelected ? styles.transactionElementContainerSelected : styles.transactionElementContainer}>
         <div className={styles.transactionElementHeadingContainer}>
             {props.transactionData.id}
         </div>
         <div className={styles.transactionElementHeadingContainer}>
            <span>{props.transactionData.customer}</span> 
-           { props.transactionData.isNTMCustomer ? <NTIdentifierCircleComp></NTIdentifierCircleComp> : null }
+           { props.transactionData.isNTMCustomer ? <NTIdentifierCircleComp /> : null }
         </div>
         <div className={styles.transactionElementHeadingContainer}>
             ${props.transactionData.amount}
@@ -35,9 +32,8 @@ const TransactionElementHorizBubbleComp = (props) => {
         </div>
         <div className={styles.transactionElementHeadingContainer}>
             <span>{props.transactionData.action}</span>
-           {props.transactionData.isSelected ? <ArrowCircleDetailComp></ArrowCircleDetailComp> : null }
+           {props.transactionData.isSelected ? <ArrowCircleDetailComp /> : null }
         </div>
-    </div>)
-}
+    </div>);
 
 export default TransactionElementHorizBubbleComp;

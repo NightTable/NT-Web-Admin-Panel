@@ -8,9 +8,7 @@ import React from 'react';
 
 import styles from './ClubDescriptionSectionComp.module.css';
 
-const ClubDescriptionSectionComp = (props) => {
-
-    return (<div className={styles.clubDescriptionSectionCompContainer}>
+const ClubDescriptionSectionComp = (props) => (<div className={styles.clubDescriptionSectionCompContainer}>
         <div className={styles.createClubAccountRowContainer}>
             <span className={styles.createClubAdminTextHeadingStyle}>Create Club Admin Account</span>
         </div>
@@ -35,7 +33,6 @@ const ClubDescriptionSectionComp = (props) => {
                 <span className={styles.valueTextStyle}>34 Path Street, Boston, MA</span>
             </div>
         </div>
-    </div>)
-}
+    </div>);
 
 export default ClubDescriptionSectionComp;

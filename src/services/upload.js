@@ -1,28 +1,27 @@
-import axios, * as others from "axios";
+import axios, * as others from 'axios';
 
 
 
-//IMAGE UPLOAD 
-export const AddImage = (obj) => {
-    return new Promise((resolve, reject) => {
+// IMAGE UPLOAD 
+export const AddImage = (obj) => new Promise((resolve, reject) => {
       try {
-        var config = {
-          method: "post",
+        const config = {
+          method: 'post',
           url: `${process.env.REACT_APP_BASE_URL}fileUpload/file`,
   
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data'
           },
-          data: obj,
+          data: obj
         };
   
-        console.log("config===>", config);
+        console.log('config===>', config);
         axios(config)
           .then((response) => {
-            console.log("response", response.data);
+            console.log('response', response.data);
             resolve(response.data);
           })
-          .catch(function (error) {
+          .catch((error) => {
             console.log(error);
             resolve(error);
 
@@ -31,4 +30,3 @@ export const AddImage = (obj) => {
         return error;
       }
     });
-  };

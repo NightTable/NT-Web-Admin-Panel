@@ -11,7 +11,7 @@ import styles from './MenuCategorySectionComp.module.css';
 
 const MenuCategorySectionComp = (props) => {
 
-    let menuCategoryObject = props.categoryEntry;
+    const menuCategoryObject = props.categoryEntry;
 
     const numItems = menuCategoryObject.items.length;
 
@@ -19,7 +19,7 @@ const MenuCategorySectionComp = (props) => {
 
     menuCategoryObject.items.forEach((menuitem) => {
 
-        let subSizeArray = menuitem.sizes.length;
+        const subSizeArray = menuitem.sizes.length;
         totalSubSizes += subSizeArray;
     });
 
@@ -52,9 +52,9 @@ const MenuCategorySectionComp = (props) => {
         {menuCategoryObject.items.map((menuItem, index) => (
             <ExpandableMenuItemComp
                 itemObj={menuItem}
-                key={index}></ExpandableMenuItemComp>  
+                key={index} />  
         ))}
-    </div>)
-}
+    </div>);
+};
 
 export default MenuCategorySectionComp;

@@ -8,21 +8,17 @@ import React from 'react';
 
 import styles from './InputDetailHorizComp.module.css';
 
-const InputDetailHorizComp = (props) => {
-
-
-    return (<div className={styles.inputDetailHorizCompContainer}>
+const InputDetailHorizComp = (props) => (<div className={styles.inputDetailHorizCompContainer}>
         <div className={styles.innerInputRowContainer}>
             <label style={{fontSize: '0.9rem'}}>{props.labelInfoOne}:</label>
-            <input className={styles.clubInfoInputStyle}></input>
+            <input className={styles.clubInfoInputStyle} />
         </div>
         <div className={styles.innerInputRowContainer}>
             <label style={{fontSize: '0.9rem'}}>{props.labelInfoTwo}:</label>
             <input
-                type={props.labelInfoTwo === 'password' ? "password" : "text"}
-                className={styles.clubInfoInputStyle}></input>
+                type={props.labelInfoTwo === 'password' ? 'password' : 'text'}
+                className={styles.clubInfoInputStyle} />
         </div>
-    </div>)
-}
+    </div>);
 
 export default InputDetailHorizComp;

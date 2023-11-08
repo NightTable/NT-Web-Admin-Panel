@@ -60,9 +60,9 @@ const LowerRevenueDataSectionComp = (props) => {
                 key={index}
                 day={revenueDataPoint.day}
                 revenue={revenueDataPoint.revenue}
-                numTransactions={revenueDataPoint.numTransactions}></RevenueHorizDataComp>
+                numTransactions={revenueDataPoint.numTransactions} />
         ))}
-    </div>)
-}
+    </div>);
+};
 
 export default LowerRevenueDataSectionComp;

@@ -9,24 +9,21 @@ import InputDetailHorizComp from './InputDetailHorizComp/InputDetailHorizComp';
 
 import styles from './InputSectionComp.module.css';
 
-const InputSectionComp = (props) => {
-
-    return (<div className={styles.inputSectionCompContainer}>
+const InputSectionComp = (props) => (<div className={styles.inputSectionCompContainer}>
         <InputDetailHorizComp
-            labelInfoOne="first name"
-            labelInfoTwo="last name"></InputDetailHorizComp>
+            labelInfoOne='first name'
+            labelInfoTwo='last name' />
         <InputDetailHorizComp
-            labelInfoOne="username"
-            labelInfoTwo="password"></InputDetailHorizComp>
+            labelInfoOne='username'
+            labelInfoTwo='password' />
         <InputDetailHorizComp
-            labelInfoOne="phone number"
-            labelInfoTwo="email"></InputDetailHorizComp>
+            labelInfoOne='phone number'
+            labelInfoTwo='email' />
         <div className={styles.buttonRowContainer}>
             <button className={styles.createAccountButtonStyle}>
                 <span>Create account</span>
             </button>
         </div>
-    </div>)
-}
+    </div>);
 
 export default InputSectionComp;

@@ -9,14 +9,12 @@ import InnerWhiteTableDetailComp from './InnerWhiteTableDetailComp/InnerWhiteTab
 
 import styles from './TableDateSelectionInfoComp.module.css';
 
-const TableDateSelectionInfoComp = (props) => {
-
-    return (<div className={styles.tableDateSelectionInfoCompContainer}>
+const TableDateSelectionInfoComp = (props) => (<div className={styles.tableDateSelectionInfoCompContainer}>
         <div className={styles.tableHeaderRowContainer}>
             <span className={styles.tableHeaderTextLabelStyle}>Tables: </span>
         </div>
         <div className={styles.tableBlockRowContainer}>
-            <InnerWhiteTableDetailComp></InnerWhiteTableDetailComp>
+            <InnerWhiteTableDetailComp />
             <div className={styles.addTableButtonRowContainer}>
                 <button className={styles.addTableButtonStyle}>add table +</button>
             </div>
@@ -27,7 +25,6 @@ const TableDateSelectionInfoComp = (props) => {
                 </button>
             </div>
         </div>
-    </div>)
-}
+    </div>);
 
 export default TableDateSelectionInfoComp;

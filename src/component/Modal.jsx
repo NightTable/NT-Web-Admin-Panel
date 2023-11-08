@@ -12,7 +12,7 @@ const customStyles = {
     transform: 'translate(-50%, -50%)',
     backgroundColor:'red'
 
-  },
+  }
   
 };
 
@@ -24,9 +24,9 @@ export const DyanimcModal = ({
   afterOpenModal,
   closeModal,
   renderUi,
-  modalIsOpen,
+  modalIsOpen
 
-}) => {
+}) => 
   //   let subtitle;
 //   const [modalIsOpen, setIsOpen] = React.useState (false);
 
@@ -43,7 +43,7 @@ export const DyanimcModal = ({
   //     setIsOpen(false);
   //   }
 
-  return (
+   (
     <div>
       <Modal
         isOpen={modalIsOpen}
@@ -54,5 +54,5 @@ export const DyanimcModal = ({
         {renderUi ()}
       </Modal>
     </div>
-  );
-};
+  )
+;

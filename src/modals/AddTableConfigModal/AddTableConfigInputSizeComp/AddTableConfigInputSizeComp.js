@@ -6,16 +6,12 @@
 
 import React from 'react';
 import styles from './AddTableConfigInputSizeComp.module.css';
-import checkmark from '../../../../src/assets/checkmark.png'
+import checkmark from '../../../assets/checkmark.png';
 
-const AddTableConfigInputSizeComp = (props) => {
-
-    return (<div className={styles.mainTableConfigInputCompContainer}>
+const AddTableConfigInputSizeComp = (props) => (<div className={styles.mainTableConfigInputCompContainer}>
         <span className={styles.labelInputStyle}>{props.labelName}</span>
-        <input className={styles.mainTableConfigInputElementStyle}>
-        </input>
+        <input className={styles.mainTableConfigInputElementStyle} />
             {props.showButton ? <img className={styles.checkmarkSpecs} src={checkmark}/>: null}
-    </div>)
-}
+    </div>);
 
 export default AddTableConfigInputSizeComp;

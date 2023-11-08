@@ -1,22 +1,22 @@
-import { Helmet } from "react-helmet-async";
+import { Helmet } from 'react-helmet-async';
 // @mui
-import { Container, Typography } from "@mui/material";
+import { Container, Typography } from '@mui/material';
 // hooks
-import useResponsive from "../../hooks/useResponsive";
-//COMPONENT
-import LoginForm from "../../features/Auth/LoginForm";
-//IMAGE
-import logoImg from "../../assets/logo-bg.png";
-//THEME
-import palette from "src/theme/palette";
-//UTILS
-import { getGreetingMsg } from "src/utils/Utils";
-//CSS
-import { StyledRoot, StyledContent, StyledSection } from "./css/css";
+import palette from 'src/theme/palette';
+import { getGreetingMsg } from 'src/utils/Utils';
+import useResponsive from '../../hooks/useResponsive';
+// COMPONENT
+import LoginForm from '../../features/Auth/LoginForm';
+// IMAGE
+import logoImg from '../../assets/logo-bg.png';
+// THEME
+// UTILS
+// CSS
+import { StyledRoot, StyledContent, StyledSection } from './css/css';
 
-//Main function
+// Main function
 export default function LoginPage() {
-  const mdUp = useResponsive("up", "md");
+  const mdUp = useResponsive('up', 'md');
   return (
     <>
       <Helmet>
@@ -26,18 +26,18 @@ export default function LoginPage() {
       <StyledRoot style={{ backgroundColor: palette.common.black }}>
         {mdUp && (
           <StyledSection>
-            <img style={{ height: 300 }} src={logoImg} alt="login" />
+            <img style={{ height: 300 }} src={logoImg} alt='login' />
           </StyledSection>
         )}
-        <Container sx={{ backgroundColor: palette.common.black }} maxWidth="sm">
+        <Container sx={{ backgroundColor: palette.common.black }} maxWidth='sm'>
           <StyledContent>
-            <Typography variant="h4" sx={{ color: palette.primary.gold }}>
+            <Typography variant='h4' sx={{ color: palette.primary.gold }}>
               {getGreetingMsg()} Admin
             </Typography>
 
             <Typography
               sx={{ color: palette.primary.gold }}
-              variant="h3"
+              variant='h3'
               gutterBottom
             >
               Sign in to Night Table

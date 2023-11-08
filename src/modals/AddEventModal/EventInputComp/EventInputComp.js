@@ -7,13 +7,9 @@
 import React from 'react';
 import styles from './EventInputComp.module.css';
 
-const EventInputComp = (props) => {
-
-    return (<div className={styles.mainEventInputCompContainer}>
+const EventInputComp = (props) => (<div className={styles.mainEventInputCompContainer}>
         <span className={styles.labelInputStyle}>{props.labelName}</span>
-        <input className={styles.mainEventInputElementStyle}>
-        </input>
-    </div>)
-}
+        <input className={styles.mainEventInputElementStyle} />
+    </div>);
 
 export default EventInputComp;

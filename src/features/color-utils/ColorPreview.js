@@ -8,7 +8,7 @@ import { Box, Typography, Stack } from '@mui/material';
 ColorPreview.propTypes = {
   sx: PropTypes.object,
   limit: PropTypes.number,
-  colors: PropTypes.arrayOf(PropTypes.string),
+  colors: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default function ColorPreview({ colors, limit = 3, sx }) {
@@ -17,7 +17,7 @@ export default function ColorPreview({ colors, limit = 3, sx }) {
   const moreColor = colors.length - limit;
 
   return (
-    <Stack component="span" direction="row" alignItems="center" justifyContent="flex-end" sx={sx}>
+    <Stack component='span' direction='row' alignItems='center' justifyContent='flex-end' sx={sx}>
       {showColor.map((color, index) => (
         <Box
           key={color + index}
@@ -28,12 +28,12 @@ export default function ColorPreview({ colors, limit = 3, sx }) {
             borderRadius: '50%',
             border: (theme) => `solid 2px ${theme.palette.background.paper}`,
             boxShadow: (theme) => `inset -1px 1px 2px ${alpha(theme.palette.common.black, 0.24)}`,
-            bgcolor: color,
+            bgcolor: color
           }}
         />
       ))}
 
-      {colors.length > limit && <Typography variant="subtitle2">{`+${moreColor}`}</Typography>}
+      {colors.length > limit && <Typography variant='subtitle2'>{`+${moreColor}`}</Typography>}
     </Stack>
   );
 }

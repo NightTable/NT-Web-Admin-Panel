@@ -24,8 +24,8 @@ const BiddingsOverviewScreen = (props) => {
                     date: 'fri 1-14-22',
                     previousBidders: [
                         {
-                            name: "jake sulley",
-                            bidAmount: 359,
+                            name: 'jake sulley',
+                            bidAmount: 359
                         },
                         {
                             name: 'miranda smith',
@@ -44,7 +44,7 @@ const BiddingsOverviewScreen = (props) => {
                 }
             ]
         }
-    ]
+    ];
 
     return (<div className={styles.biddingsOverviewScreenContainer}>
         <div className={styles.biddingsUpperHeaderContainer}>
@@ -84,7 +84,7 @@ const BiddingsOverviewScreen = (props) => {
                     {dummyBiddingDataInfo.map((bidInfo, index) => (
                         <BiddingTableConfigSectionComp
                             bidObject={bidInfo}
-                            key={index}></BiddingTableConfigSectionComp>
+                            key={index} />
                     ))}
                 </div>
             </div>
@@ -94,7 +94,7 @@ const BiddingsOverviewScreen = (props) => {
                 <span>add/update bids</span>
             </button>
         </div>
-    </div>)
-}
+    </div>);
+};
 
 export default BiddingsOverviewScreen;

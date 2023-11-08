@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-//ROUTE
-import { useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import "../../css/DasboardCss.css";
+import React, { useState, useEffect } from 'react';
+// ROUTE
+import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import '../../css/DasboardCss.css';
 // @mui
 import {
   Box,
@@ -11,165 +11,161 @@ import {
   Popover,
   Container,
   Typography,
-  IconButton,
-} from "@mui/material";
-import { TextField } from "@material-ui/core";
-import { useTheme } from "@mui/material/styles";
+  IconButton
+} from '@mui/material';
+import { TextField } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
 
-//COMPONENTS
-import Iconify from "../../component/iconify";
-import Scrollbar from "../../component/scrollbar";
-import { MenuItemCard } from "../../features/menu/card";
-import { DeleteDialog } from "src/features/DeleteDialog";
-//THEME
-import palette from "../../theme/palette";
+// COMPONENTS
+import { DeleteDialog } from 'src/features/DeleteDialog';
+// THEME
 // LOCAL-STORAGE
-import { LocalStorageKey } from "src/utils/localStorage/keys";
-//services
-import { getProfileData } from "src/services/representative";
+import { LocalStorageKey } from 'src/utils/localStorage/keys';
+// services
+import { getProfileData } from 'src/services/representative';
 import {
   createMenuforClub,
   deleteMenuforClub,
   getMenuforClub,
-  updateMenuforClub,
-} from "src/services/menu";
-import { deleteEvent } from "src/services/Event";
-import { getClubs } from "src/services/club";
+  updateMenuforClub
+} from 'src/services/menu';
+import { deleteEvent } from 'src/services/Event';
+import { getClubs } from 'src/services/club';
+import palette from '../../theme/palette';
+import { MenuItemCard } from '../../features/menu/card';
+import Scrollbar from '../../component/scrollbar';
+import Iconify from '../../component/iconify';
 
-//MAIN FUNCTION
+// MAIN FUNCTION
 
 export default function MDashboard() {
   const theme = useTheme();
-  //NAVIGATION
+  // NAVIGATION
   const navigate = useNavigate();
-  //clubs
+  // clubs
   const [clubs_data, setclubs_data] = useState([]);
 
-  //CLicked Button
-  const [selected_club_btn, setselected_club_btn] = useState("0");
+  // CLicked Button
+  const [selected_club_btn, setselected_club_btn] = useState('0');
 
-  //POP-UP
+  // POP-UP
   const [popup_open, setpopup_open] = useState(false);
 
-  //CREATE EVENT STATES==>
-  const [CategoryName, setCategoryName] = useState("");
+  // CREATE EVENT STATES==>
+  const [CategoryName, setCategoryName] = useState('');
 
-  //selected club data
+  // selected club data
   const [selectedClubData, setselectedClubData] = useState([]);
-  //Menu obj
+  // Menu obj
   const [editMenuEnabled, seteditMenuEnabled] = useState(false);
-  //add entities
+  // add entities
   const [keyValuePairs, setKeyValuePairs] = useState([]);
-  const [menuItem, setMenuItem] = useState("");
-  const [stock, setstock] = useState("");
-  const [price, setprice] = useState("");
+  const [menuItem, setMenuItem] = useState('');
+  const [stock, setstock] = useState('');
+  const [price, setprice] = useState('');
   const [showLineItemError, setshowError] = useState(false);
 
-  //MENU ITEMS DATA FOR
+  // MENU ITEMS DATA FOR
   const [menuItemsData, setmenuItemsData] = useState([]);
   const [SelectedMenuData, setSelectedMenuData] = useState([]);
-  //delete dialog box open
+  // delete dialog box open
   const [deleteDialogOpen, setdeleteDialogOpen] = React.useState(false);
 
   useEffect(() => {
     loadData();
   }, []);
 
-  //LOAD DATA
+  // LOAD DATA
   const loadData = async () => {
     const representativeId = localStorage.getItem(LocalStorageKey.USER_ID);
     const userData = localStorage.getItem(LocalStorageKey.USER_DATA);
-    let parsedUserData = JSON.parse(userData);
+    const parsedUserData = JSON.parse(userData);
 
-    console.log("parsedUserData====>", parsedUserData);
+    console.log('parsedUserData====>', parsedUserData);
     if (representativeId === null) {
-      navigate("/");
-    } else {
-      if (parsedUserData?.role == "godFather") {
+      navigate('/');
+    } else if (parsedUserData?.role == 'godFather') {
         const data = await getClubs();
         setclubs_data(data?.data);
         getMenuDataClub(data?.data[0]._id);
       } else {
         getClubData(JSON.parse(representativeId));
       }
-    }
   };
 
   // get the clubs
   const getClubData = async (representativeId) => {
     const data = await getProfileData(representativeId);
 
-    let tempArr = [];
+    const tempArr = [];
     data.clubPrivileges.map((item) => {
       tempArr.push({
         name: item.club.name,
-        _id: item._id,
+        _id: item._id
       });
     });
 
     setselectedClubData(tempArr[0]);
-    let obj = {
-      clubId: tempArr[0]._id,
+    const obj = {
+      clubId: tempArr[0]._id
     };
     setclubs_data(tempArr);
     getMenuDataClub(tempArr[0]._id);
   };
 
-  //GET MENU ITEMS
+  // GET MENU ITEMS
   const getMenuDataClub = async (club_id) => {
-    console.log("getMenuDataClub:::club_id===>", club_id);
+    console.log('getMenuDataClub:::club_id===>', club_id);
     const data = await getMenuforClub(club_id);
     setmenuItemsData(data);
   };
 
-  //ADD ITEMS INTO CATEGORY MENU
+  // ADD ITEMS INTO CATEGORY MENU
   const addMenuItems = () => {
-    if (menuItem.trim() != "" && stock.trim() != "" && price.trim() != "") {
-      let obj = {
+    if (menuItem.trim() != '' && stock.trim() != '' && price.trim() != '') {
+      const obj = {
         name: menuItem,
         quantity: stock,
-        price: price,
+        price
       };
       setKeyValuePairs([...keyValuePairs, obj]);
-      setMenuItem("");
-      setstock("");
-      setprice("");
+      setMenuItem('');
+      setstock('');
+      setprice('');
     } else {
-      alert("Please add the items !");
+      alert('Please add the items !');
     }
   };
 
   const editMenuItems = async () => {
-    let obj = {
+    const obj = {
       clubId: selectedClubData._id,
       menuCatgeory: {
         category: CategoryName,
-        items: keyValuePairs,
-      },
+        items: keyValuePairs
+      }
     };
 
-    const editItemIndex = menuItemsData.findIndex((item) => {
-      return item._id === SelectedMenuData._id;
-    });
+    const editItemIndex = menuItemsData.findIndex((item) => item._id === SelectedMenuData._id);
     menuItemsData[editItemIndex] = obj.menuCatgeory;
     setSelectedMenuData(menuItemsData);
     const data = await updateMenuforClub(obj, SelectedMenuData._id);
     if (data?.status != undefined) {
       if (data?.status == true) {
         setpopup_open(false);
-        alert("Menu Updated");
+        alert('Menu Updated');
       } else if (data?.status === false) {
         setpopup_open(false);
 
         alert(data?.message);
       }
     } else {
-      alert("Something Went Wrong !");
+      alert('Something Went Wrong !');
     }
   };
 
   const deleteMenu = async () => {};
-  //DELETE ITEMS FROM CATEGORY MENU
+  // DELETE ITEMS FROM CATEGORY MENU
   const handleDeleteKeyValue = (name) => {
     const newKeyValuePairs = [...keyValuePairs];
     const findIndex = newKeyValuePairs.findIndex((a) => a.name === name);
@@ -177,26 +173,26 @@ export default function MDashboard() {
     setKeyValuePairs(newKeyValuePairs);
   };
 
-  //API CALL : ADD MENU
+  // API CALL : ADD MENU
   const addMenutoServer = async () => {
-    let obj = {
+    const obj = {
       clubId: selectedClubData._id,
       menuCatgeory: {
         category: CategoryName,
-        items: keyValuePairs,
-      },
+        items: keyValuePairs
+      }
     };
 
     const data = await createMenuforClub(obj);
     if (data.clubId === undefined) {
-      alert("Something went wrong");
+      alert('Something went wrong');
     } else if (data.clubId?.length > 0) {
-      alert("Menu Added Successfully !");
+      alert('Menu Added Successfully !');
       setKeyValuePairs([]);
-      setCategoryName("");
-      let obj = {
+      setCategoryName('');
+      const obj = {
         category: CategoryName,
-        items: keyValuePairs,
+        items: keyValuePairs
       };
       const updateMenuItemData = [...menuItemsData, obj];
       setmenuItemsData(updateMenuItemData);
@@ -204,11 +200,9 @@ export default function MDashboard() {
     }
   };
 
-  const DeleteClubDialog = () => {
-    return (
-      <>
-        <DeleteDialog
-          heading={"Delete the Menu?"}
+  const DeleteClubDialog = () => (
+      <DeleteDialog
+          heading='Delete the Menu?'
           paragraph={
             " Are you sure want to delete the Menu category , as you won't be able to recover it !"
           }
@@ -220,20 +214,16 @@ export default function MDashboard() {
           }}
           deleteDialogOpen={deleteDialogOpen}
         />
-      </>
     );
-  };
 
   const deleteMenuFn = async (menu) => {
     // const data = await deleteMenuforClub(menu_id)
-    console.log(menu, "menu ====>");
-    let menuData = [...menuItemsData];
-    const updatedData = menuData.filter((item) => {
-      return item.category != menu.category;
-    });
+    console.log(menu, 'menu ====>');
+    const menuData = [...menuItemsData];
+    const updatedData = menuData.filter((item) => item.category != menu.category);
     setmenuItemsData(updatedData);
     const callApi = await deleteMenuforClub(menu._id);
-    alert("Menu Deleted Successfully !");
+    alert('Menu Deleted Successfully !');
     setdeleteDialogOpen(false);
   };
 
@@ -243,28 +233,28 @@ export default function MDashboard() {
         <title> Night Table : Menu </title>
       </Helmet>
 
-      <Container maxWidth="xl">
+      <Container maxWidth='xl'>
         <Container>
-          <Box display="flex">
-            <Box width="50%" textAlign="left">
-              <Typography variant="h4" sx={{ color: palette.primary.gold }}>
+          <Box display='flex'>
+            <Box width='50%' textAlign='left'>
+              <Typography variant='h4' sx={{ color: palette.primary.gold }}>
                 Let's Add Something to Menu
               </Typography>
             </Box>
-            <Box width="50%" textAlign="right">
+            <Box width='50%' textAlign='right'>
               <Button
                 onClick={() => {
                   setpopup_open(true);
                 }}
                 style={{
                   backgroundColor: palette.primary.gold,
-                  color: "black",
+                  color: 'black',
                   padding: 8,
-                  borderRadius: 10,
+                  borderRadius: 10
                 }}
-                variant="Outlined"
+                variant='Outlined'
                 // sx={{ backgroundColor: palette.primary.gold, color: "black" }}
-                startIcon={<Iconify icon="eva:plus-fill" />}
+                startIcon={<Iconify icon='eva:plus-fill' />}
               >
                 Add Menu
               </Button>
@@ -272,11 +262,9 @@ export default function MDashboard() {
           </Box>
 
           <Scrollbar>
-            <Stack direction="row" mt={4} mb={2}>
-              {clubs_data.map((item, index) => {
-                return (
-                  <>
-                    <Box
+            <Stack direction='row' mt={4} mb={2}>
+              {clubs_data.map((item, index) => (
+                  <Box
                       onClick={() => {
                         setselected_club_btn(index);
                         setselectedClubData(item);
@@ -287,42 +275,40 @@ export default function MDashboard() {
                       marginRight={2}
                       borderColor={
                         index == selected_club_btn
-                          ? "black"
+                          ? 'black'
                           : palette.primary.gold
                       }
-                      flexDirection={"row"}
-                      justifyContent={"center"}
-                      alignItems={"center"}
+                      flexDirection='row'
+                      justifyContent='center'
+                      alignItems='center'
                       backgroundColor={
                         index == selected_club_btn
                           ? palette.primary.gold
-                          : "black"
+                          : 'black'
                       }
                     >
                       <Typography
-                        variant="body1"
+                        variant='body1'
                         style={{
                           color:
                             index == selected_club_btn
-                              ? "black"
+                              ? 'black'
                               : palette.primary.gold,
                           fontWeight:
-                            index == selected_club_btn ? "bold" : "500",
+                            index == selected_club_btn ? 'bold' : '500',
 
                           padding: 10,
-                          textAlign: "center",
+                          textAlign: 'center'
                         }}
                       >
                         {item?.name}
                       </Typography>
                     </Box>
-                  </>
-                );
-              })}
+                ))}
             </Stack>
           </Scrollbar>
-          <Box width="50%" textAlign="left">
-            <Typography variant="h4" sx={{ color: palette.primary.gold }}>
+          <Box width='50%' textAlign='left'>
+            <Typography variant='h4' sx={{ color: palette.primary.gold }}>
               Menu Items
             </Typography>
           </Box>
@@ -330,19 +316,15 @@ export default function MDashboard() {
             style={{
               height: 4,
               backgroundColor: palette.primary.gold,
-              marginTop: 10,
+              marginTop: 10
             }}
-          ></Box>
+           />
           {menuItemsData?.length === undefined ||
             (menuItemsData?.length === 0 && (
-              <>
-                <Typography style={{textAlign:'center',color:palette.primary.gold,paddingTop:200}}>NO MENU ITEM IS FOUND</Typography>
-              </>
+              <Typography style={{textAlign:'center',color:palette.primary.gold,paddingTop:200}}>NO MENU ITEM IS FOUND</Typography>
             ))}
-          {menuItemsData?.map((item) => {
-            return (
-              <>
-                <Scrollbar>
+          {menuItemsData?.map((item) => (
+              <Scrollbar>
                   <MenuItemCard
                     data={item}
                     SelectedMenuData={(data, index) => {
@@ -354,16 +336,14 @@ export default function MDashboard() {
                         setSelectedMenuData(data);
                         setpopup_open(true);
                       } else {
-                        //delete
+                        // delete
                         setSelectedMenuData(data);
                         setdeleteDialogOpen(true);
                       }
                     }}
                   />
                 </Scrollbar>
-              </>
-            );
-          })}
+            ))}
         </Container>
       </Container>
       <Popover
@@ -373,102 +353,102 @@ export default function MDashboard() {
           setpopup_open(!true);
         }}
         anchorOrigin={{
-          vertical: "center",
-          horizontal: "center",
+          vertical: 'center',
+          horizontal: 'center'
         }}
         transformOrigin={{
-          vertical: "center",
-          horizontal: "center",
+          vertical: 'center',
+          horizontal: 'center'
         }}
         PaperProps={{
           sx: {
             p: 1,
-            width: "90%",
-            hieght: "100%",
+            width: '90%',
+            hieght: '100%',
             borderColor: palette.primary.gold,
             // backgroundColor: '#E4D0B5',
             borderWidth: 1,
 
-            "& .MuiMenuItem-root": {
-              typography: "body2",
+            '& .MuiMenuItem-root': {
+              typography: 'body2',
               // borderRadius: 1,
-              alignItems: "center",
-              justifyContent: "center",
-              width: "80%",
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '80%',
               borderColor: palette.primary.gold,
-              borderWidth: 12,
-            },
-          },
+              borderWidth: 12
+            }
+          }
         }}
       >
         <Scrollbar>
           <Box
-            component="form"
+            component='form'
             sx={{
-              width: "100%",
+              width: '100%',
               borderWidth: 2,
-              backgroundColor: "black",
-              borderRadius: 4,
+              backgroundColor: 'black',
+              borderRadius: 4
             }}
-            autoComplete="on"
+            autoComplete='on'
           >
-            <Stack alignItems={"flex-end"} justifyItems={"right"}>
+            <Stack alignItems='flex-end' justifyItems='right'>
               <IconButton
-                size="large"
-                color="inherit"
+                size='large'
+                color='inherit'
                 onClick={() => {
                   setpopup_open(!true);
                 }}
               >
-                <Iconify color={palette.primary.gold} icon={"maki:cross"} />
+                <Iconify color={palette.primary.gold} icon='maki:cross' />
               </IconButton>
             </Stack>
             <Typography
               sx={{
                 color: palette.primary.gold,
-                textAlign: "center",
+                textAlign: 'center',
                 paddingTop: 2,
                 paddingBottom: 4,
                 fontSize: 20,
-                fontWeight: "bold",
+                fontWeight: 'bold'
               }}
             >
               {editMenuEnabled === true
-                ? "Update Menu of club "
-                : "Add Menu to club"}
+                ? 'Update Menu of club '
+                : 'Add Menu to club'}
             </Typography>
-            <Container sx={{ width: "100%" }}>
-              <Stack flexDirection={"row"}>
-                <Box sx={{ width: "30%" }}>
+            <Container sx={{ width: '100%' }}>
+              <Stack flexDirection='row'>
+                <Box sx={{ width: '30%' }}>
                   <Typography
                     sx={{
                       color: palette.primary.gold,
-                      alignItems: "center",
-                      justifyItems: "center",
+                      alignItems: 'center',
+                      justifyItems: 'center'
                     }}
                   >
                     Category Name
                   </Typography>
                 </Box>
-                <Box sx={{ width: "70%", paddingBottom: 2 }}>
+                <Box sx={{ width: '70%', paddingBottom: 2 }}>
                   <TextField
                     fullWidth
-                    autoComplete="off"
-                    label="Category Name"
-                    variant="outlined"
+                    autoComplete='off'
+                    label='Category Name'
+                    variant='outlined'
                     value={CategoryName}
                     onChange={(text) => {
                       setCategoryName(text.target.value);
                     }}
                     inputProps={{ style: { color: palette.primary.gold } }}
                     InputLabelProps={{
-                      style: { color: palette.primary.gold },
+                      style: { color: palette.primary.gold }
                     }}
                   />
                 </Box>
               </Stack>
 
-              <Stack flexDirection={"row"} sx={{ paddingTop: 1 }}>
+              <Stack flexDirection='row' sx={{ paddingTop: 1 }}>
                 <Button
                   onClick={() => {
                     addMenuItems();
@@ -476,49 +456,49 @@ export default function MDashboard() {
                   // variant="contained"
                   style={{
                     backgroundColor: palette.primary.gold,
-                    textAlign: "center",
+                    textAlign: 'center',
                     fontSize: 16,
-                    fontWeight: "bold",
-                    color: "black",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
+                    fontWeight: 'bold',
+                    color: 'black',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%'
                   }}
                 >
                   Add
                 </Button>
                 <Box>
                   <TextField
-                    variant="outlined"
-                    label="Menu Item "
+                    variant='outlined'
+                    label='Menu Item '
                     value={menuItem}
                     onChange={(event) => setMenuItem(event.target.value)}
                     InputLabelProps={{
-                      style: { color: palette.primary.gold },
+                      style: { color: palette.primary.gold }
                     }}
                     inputProps={{ style: { color: palette.primary.gold } }}
                   />
                 </Box>
                 <Box sx={{ paddingLeft: 1 }}>
                   <TextField
-                    variant="outlined"
-                    label="Stock"
+                    variant='outlined'
+                    label='Stock'
                     value={stock}
                     onChange={(event) => setstock(event.target.value)}
                     InputLabelProps={{
-                      style: { color: palette.primary.gold },
+                      style: { color: palette.primary.gold }
                     }}
                     inputProps={{ style: { color: palette.primary.gold } }}
                   />
                 </Box>
                 <Box sx={{ paddingLeft: 1 }}>
                   <TextField
-                    variant="outlined"
-                    label="Price "
+                    variant='outlined'
+                    label='Price '
                     value={price}
                     onChange={(event) => setprice(event.target.value)}
                     InputLabelProps={{
-                      style: { color: palette.primary.gold },
+                      style: { color: palette.primary.gold }
                     }}
                     inputProps={{ style: { color: palette.primary.gold } }}
                   />
@@ -530,19 +510,19 @@ export default function MDashboard() {
                     style={{
                       height: 4,
                       backgroundColor: palette.primary.gold,
-                      marginTop: 20,
+                      marginTop: 20
                     }}
-                  ></Box>
+                   />
                   <Stack
                     style={{
-                      flexDirection: "row",
-                      justifyContent: "space-evenly",
+                      flexDirection: 'row',
+                      justifyContent: 'space-evenly',
                       paddingBottom: 10,
-                      paddingTop: 10,
+                      paddingTop: 10
                     }}
                   >
                     <Typography style={{ color: palette.primary.gold }}>
-                      Menu Item{" "}
+                      Menu Item{' '}
                     </Typography>
                     <Typography style={{ color: palette.primary.gold }}>
                       Quantity
@@ -558,23 +538,21 @@ export default function MDashboard() {
                     style={{
                       height: 4,
                       backgroundColor: palette.primary.gold,
-                      marginTop: 4,
+                      marginTop: 4
                     }}
-                  ></Box>
+                   />
                 </>
               ) : (
                 <></>
               )}
-              {keyValuePairs?.map((item, index) => {
-                return (
-                  <>
-                    <Box style={{ paddingTop: 10 }}>
+              {keyValuePairs?.map((item, index) => (
+                  <Box style={{ paddingTop: 10 }}>
                       <Box>
                         <Stack
                           style={{
-                            flexDirection: "row",
-                            justifyContent: "space-evenly",
-                            marginTop: 20,
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            marginTop: 20
                           }}
                         >
                           <Typography style={{ color: palette.primary.gold }}>
@@ -588,11 +566,11 @@ export default function MDashboard() {
                           </Typography>
                           <Button
                             style={{
-                              color: "red",
+                              color: 'red',
                               fontSize: 14,
-                              fontWeight: "600",
+                              fontWeight: '600'
                             }}
-                            variant="contained"
+                            variant='contained'
                             onClick={() => handleDeleteKeyValue(item.name)}
                           >
                             Delete
@@ -600,14 +578,12 @@ export default function MDashboard() {
                         </Stack>
                       </Box>
                     </Box>
-                  </>
-                );
-              })}
+                ))}
 
               <Box
                 sx={{
-                  width: "100%",
-                  padding: 2,
+                  width: '100%',
+                  padding: 2
                 }}
               >
                 <Button
@@ -619,16 +595,16 @@ export default function MDashboard() {
                   // variant="contained"
                   style={{
                     backgroundColor: palette.primary.gold,
-                    textAlign: "center",
+                    textAlign: 'center',
                     fontSize: 16,
-                    fontWeight: "bold",
-                    color: "black",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
+                    fontWeight: 'bold',
+                    color: 'black',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '100%'
                   }}
                 >
-                  {editMenuEnabled === true ? "Update" : " Add"}
+                  {editMenuEnabled === true ? 'Update' : ' Add'}
                 </Button>
               </Box>
             </Container>

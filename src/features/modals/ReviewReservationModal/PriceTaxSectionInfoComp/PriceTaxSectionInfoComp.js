@@ -8,9 +8,7 @@ import React from 'react';
 
 import styles from './PriceTaxSectionInfoComp.module.css';
 
-const PriceTaxSectionInfoComp = (props) => {
-
-    return (<div className={styles.priceTaxSectionInfoCompContainer}>
+const PriceTaxSectionInfoComp = (props) => (<div className={styles.priceTaxSectionInfoCompContainer}>
         <div className={styles.priceDivisionRowContainer}>
             <span className={styles.priceInfoLabelStyle}>Subtotal: </span>
             <span className={styles.priceInfoValueStyle}>$353</span>
@@ -23,7 +21,6 @@ const PriceTaxSectionInfoComp = (props) => {
             <span className={styles.priceInfoTotalLabelStyle}>Total: </span>
             <span className={styles.priceInfoTotalValueStyle}>$375.06</span>
         </div>
-    </div>)
-}
+    </div>);
 
 export default PriceTaxSectionInfoComp;

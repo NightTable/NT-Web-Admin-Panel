@@ -39,7 +39,7 @@ const ReservationsInnerInfoContainer = (props) => {
                 {localReservationData.map((reservationObj, index) => (
                     <ReservationExpandableHorizComp
                         key={index}
-                       reservationItem={reservationObj} ></ReservationExpandableHorizComp>
+                       reservationItem={reservationObj}  />
 
                 ))}
             </div>
@@ -47,7 +47,7 @@ const ReservationsInnerInfoContainer = (props) => {
         <div className={styles.lowerReservationButtonContainer}>
             <button onClick={props.onLocalAddReservationButtonPress} className={styles.addReservationButtonStyle}>Add New Reservation</button>
         </div>
-    </div>)
-}
+    </div>);
+};
 
 export default ReservationsInnerInfoContainer;

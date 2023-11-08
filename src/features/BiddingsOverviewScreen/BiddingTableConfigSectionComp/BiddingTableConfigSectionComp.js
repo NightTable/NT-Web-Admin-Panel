@@ -9,15 +9,12 @@ import React from 'react';
 import styles from './BiddingTableConfigSectionComp.module.css';
 import TableIdentifierInnerSectionComp from './TableIdentifierInnerSectionComp/TableIdentifierInnerSectionComp';
 
-const BiddingTableConfigSectionComp = (props) => {
-
-    return (<div className={styles.biddingTableConfigSectionCompContainer}>
+const BiddingTableConfigSectionComp = (props) => (<div className={styles.biddingTableConfigSectionCompContainer}>
         <div className={styles.tableConfigRowContainer}>
             <span>Floor</span>
         </div>
         <TableIdentifierInnerSectionComp
-            tableIdentifierData={props.bidObject.tableIdentifiers}></TableIdentifierInnerSectionComp>
-    </div>)
-}
+            tableIdentifierData={props.bidObject.tableIdentifiers} />
+    </div>);
 
 export default BiddingTableConfigSectionComp;

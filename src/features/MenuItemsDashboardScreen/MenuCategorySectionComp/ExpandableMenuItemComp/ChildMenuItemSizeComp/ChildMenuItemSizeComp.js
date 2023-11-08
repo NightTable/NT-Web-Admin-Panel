@@ -8,16 +8,13 @@ import React from 'react';
 
 import styles from './ChildMenuItemSizeComp.module.css';
 
-const ChildMenuItemSizeComp = (props) => {
-
-    return (<div className={styles.childMenuItemSizeCompContainer}>
+const ChildMenuItemSizeComp = (props) => (<div className={styles.childMenuItemSizeCompContainer}>
         <div className={styles.childMenuItemSizeBlockContainer}>
             <span>{props.childData.sizeName}</span>
         </div>
         <div className={styles.childMenuItemSizeBlockContainer}>
             <span>${props.childData.price}</span>
         </div>
-    </div>)
-}
+    </div>);
 
 export default ChildMenuItemSizeComp;

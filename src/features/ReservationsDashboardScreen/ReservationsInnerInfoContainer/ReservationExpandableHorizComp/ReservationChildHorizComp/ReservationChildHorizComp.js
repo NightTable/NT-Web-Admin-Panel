@@ -8,16 +8,13 @@ import React from 'react';
 
 import styles from './ReservationChildHorizComp.module.css';
 
-const ReservationChildHorizComp = (props) => {
-
-    return (<div className={styles.reservationChildHorizCompContainer}>
+const ReservationChildHorizComp = (props) => (<div className={styles.reservationChildHorizCompContainer}>
         <div className={styles.reservationBlockChildContainer}>
             <span>{props.tableConfigData.tableType}</span>
         </div>
         <div className={styles.reservationBlockChildContainer}>
             <span>{props.tableConfigData.tableSize}</span>
         </div>
-    </div>)
-}
+    </div>);
 
 export default ReservationChildHorizComp;

@@ -14,7 +14,7 @@ import componentsOverride from './overrides';
 // ----------------------------------------------------------------------
 
 ThemeProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 export default function ThemeProvider({ children }) {
@@ -24,7 +24,7 @@ export default function ThemeProvider({ children }) {
       shape: { borderRadius: 6 },
       typography,
       shadows: shadows(),
-      customShadows: customShadows(),
+      customShadows: customShadows()
     }),
     []
   );

@@ -14,29 +14,29 @@ import sampleNightClubPic from '../../assets/randomnightclubpic.jpeg';
 const EventsDashboardScreen = (props) => {
 
 
-    let dummyEventArray = [
+    const dummyEventArray = [
         {
-            name: "bijou",
+            name: 'bijou',
             image: sampleNightClubPic,
-            date: "fri-1-14-2022",
-            time: "10:00 PM - 2:00AM",
-            ticketLink: "http://www.link.com"
+            date: 'fri-1-14-2022',
+            time: '10:00 PM - 2:00AM',
+            ticketLink: 'http://www.link.com'
         },
         {
-            name: "marsh",
+            name: 'marsh',
             image: sampleNightClubPic,
-            date: "fri-1-17-2022",
-            time: "10:00 PM - 2:00AM",
-            ticketLink: "http://www.link.com"
+            date: 'fri-1-17-2022',
+            time: '10:00 PM - 2:00AM',
+            ticketLink: 'http://www.link.com'
         },
         {
-            name: "high up",
+            name: 'high up',
             image: sampleNightClubPic,
-            date: "fri-1-20-2022",
-            time: "10:00 PM - 2:00AM",
-            ticketLink: "http://www.link.com"
-        },
-    ]
+            date: 'fri-1-20-2022',
+            time: '10:00 PM - 2:00AM',
+            ticketLink: 'http://www.link.com'
+        }
+    ];
 
 
     return (
@@ -72,14 +72,14 @@ const EventsDashboardScreen = (props) => {
                     image={eventElement.image}
                     date={eventElement.date}
                     time={eventElement.time}
-                    ticketLink={eventElement.ticketLink}></EventBubbleHorizComp>
+                    ticketLink={eventElement.ticketLink} />
                 ))}
             </div>
             <div className={styles.addEventButtonContainer}>
                 <button onClick={props.onAddEventButtonPress} className={styles.addEventButtonStyle}>Add event</button>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default EventsDashboardScreen;

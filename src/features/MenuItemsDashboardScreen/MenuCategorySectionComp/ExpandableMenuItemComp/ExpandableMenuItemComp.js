@@ -25,7 +25,7 @@ const ExpandableMenuItemComp = (props) => {
         }
 
         setItemClicked((state) => !state);
-    }
+    };
 
     let dynamicMinHeight = null;
 
@@ -45,7 +45,7 @@ const ExpandableMenuItemComp = (props) => {
         alignItems: 'center',
         overflow: 'hidden',
         color: '#c3195d'
-    }
+    };
 
     return (<div style={expandableMenuItemContainerStyle}>
         <div 
@@ -56,8 +56,7 @@ const ExpandableMenuItemComp = (props) => {
                 <span>{localMenuItemData.itemName}</span>
                 {localMenuItemData.sizes.length !== 0 ? <img 
                     className={styles.arrowGraphicStyle}
-                    src={itemClicked ? downArrowGraphic : rightArrowGraphic}>
-                </img> : null }
+                    src={itemClicked ? downArrowGraphic : rightArrowGraphic} /> : null }
             </div>
             <div className={styles.expandableHorizItemBlockContainer}>
                 <span>{localMenuItemData.sizes.length}</span>
@@ -70,10 +69,10 @@ const ExpandableMenuItemComp = (props) => {
             {localMenuItemData.sizes.map((sizeData, index) => (
                 <ChildMenuItemSizeComp
                     childData={sizeData}
-                    key={index}></ChildMenuItemSizeComp>
+                    key={index} />
             ))}
         </div> : null }
-    </div>)
-}
+    </div>);
+};
 
 export default ExpandableMenuItemComp;

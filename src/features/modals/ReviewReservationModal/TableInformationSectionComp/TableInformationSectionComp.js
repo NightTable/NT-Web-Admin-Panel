@@ -30,7 +30,7 @@ const TableInformationSectionComp = (props) => {
             price: 50,
             qty: 1
         }
-    ]
+    ];
 
     return (<div className={styles.tableInformationSectionCompContainer}>
         <div className={styles.tableLabelRowContainer}>
@@ -41,10 +41,10 @@ const TableInformationSectionComp = (props) => {
                 type={tableInfo.type}
                 recommendedCapacity={tableInfo.recommendedCapacity}
                 price={tableInfo.price}
-                qty={tableInfo.qty}></TableInfoHorizDetailComp>
+                qty={tableInfo.qty} />
         ))}
 
-    </div>)
-}
+    </div>);
+};
 
 export default TableInformationSectionComp;

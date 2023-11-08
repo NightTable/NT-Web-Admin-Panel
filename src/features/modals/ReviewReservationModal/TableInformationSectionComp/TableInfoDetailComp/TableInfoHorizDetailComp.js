@@ -8,9 +8,7 @@ import React from 'react';
 
 import styles from './TableInfoHorizDetailComp.module.css';
 
-const TableInfoHorizDetailComp = (props) => {
-
-    return (<div className={styles.tableInfoHorizDetailCompContainer}>
+const TableInfoHorizDetailComp = (props) => (<div className={styles.tableInfoHorizDetailCompContainer}>
         <div className={styles.tableInfoDivisionContainer}>
             <span>{props.type}</span>
         </div>
@@ -23,7 +21,6 @@ const TableInfoHorizDetailComp = (props) => {
         <div className={styles.tableInfoDivisionContainer}>
             <span>{props.qty}x</span>
         </div>
-    </div>)
-}
+    </div>);
 
 export default TableInfoHorizDetailComp;

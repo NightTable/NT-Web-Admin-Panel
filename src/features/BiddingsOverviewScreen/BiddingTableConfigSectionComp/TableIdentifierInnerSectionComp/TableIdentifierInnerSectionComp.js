@@ -37,9 +37,9 @@ const TableIdentifierInnerSectionComp = (props) => {
         {localTableIdentifiers.map((tableIdentifier, index) => (
             <ExpandableBiddingHorizComp
                 identifierObject={tableIdentifier}
-                key={index}></ExpandableBiddingHorizComp>
+                key={index} />
         ))}
-    </div>)
-}
+    </div>);
+};
 
 export default TableIdentifierInnerSectionComp;

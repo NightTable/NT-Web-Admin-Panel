@@ -13,7 +13,7 @@ import Iconify from '../../../component/iconify';
 
 const StyledCardMedia = styled('div')({
   position: 'relative',
-  paddingTop: 'calc(100% * 3 / 4)',
+  paddingTop: 'calc(100% * 3 / 4)'
 });
 
 const StyledTitle = styled(Link)({
@@ -21,7 +21,7 @@ const StyledTitle = styled(Link)({
   overflow: 'hidden',
   WebkitLineClamp: 2,
   display: '-webkit-box',
-  WebkitBoxOrient: 'vertical',
+  WebkitBoxOrient: 'vertical'
 });
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
@@ -30,7 +30,7 @@ const StyledAvatar = styled(Avatar)(({ theme }) => ({
   height: 32,
   position: 'absolute',
   left: theme.spacing(3),
-  bottom: theme.spacing(-2),
+  bottom: theme.spacing(-2)
 }));
 
 const StyledInfo = styled('div')(({ theme }) => ({
@@ -38,7 +38,7 @@ const StyledInfo = styled('div')(({ theme }) => ({
   flexWrap: 'wrap',
   justifyContent: 'flex-end',
   marginTop: theme.spacing(3),
-  color: theme.palette.text.disabled,
+  color: theme.palette.text.disabled
 }));
 
 const StyledCover = styled('img')({
@@ -46,14 +46,14 @@ const StyledCover = styled('img')({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  position: 'absolute',
+  position: 'absolute'
 });
 
 // ----------------------------------------------------------------------
 
 BlogPostCard.propTypes = {
   post: PropTypes.object.isRequired,
-  index: PropTypes.number,
+  index: PropTypes.number
 };
 
 export default function BlogPostCard({ post, index }) {
@@ -64,7 +64,7 @@ export default function BlogPostCard({ post, index }) {
   const POST_INFO = [
     { number: comment, icon: 'eva:message-circle-fill' },
     { number: view, icon: 'eva:eye-fill' },
-    { number: share, icon: 'eva:share-fill' },
+    { number: share, icon: 'eva:share-fill' }
   ];
 
   return (
@@ -80,20 +80,20 @@ export default function BlogPostCard({ post, index }) {
                 width: '100%',
                 height: '100%',
                 position: 'absolute',
-                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
-              },
+                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72)
+              }
             }),
             ...(latestPostLarge && {
               pt: {
                 xs: 'calc(100% * 4 / 3)',
-                sm: 'calc(100% * 3 / 4.66)',
-              },
-            }),
+                sm: 'calc(100% * 3 / 4.66)'
+              }
+            })
           }}
         >
           <SvgColor
-            color="paper"
-            src="/assets/icons/shape-avatar.svg"
+            color='paper'
+            src='/assets/icons/shape-avatar.svg'
             sx={{
               width: 80,
               height: 36,
@@ -101,7 +101,7 @@ export default function BlogPostCard({ post, index }) {
               bottom: -15,
               position: 'absolute',
               color: 'background.paper',
-              ...((latestPostLarge || latestPost) && { display: 'none' }),
+              ...((latestPostLarge || latestPost) && { display: 'none' })
             }}
           />
           <StyledAvatar
@@ -113,8 +113,8 @@ export default function BlogPostCard({ post, index }) {
                 top: 24,
                 left: 24,
                 width: 40,
-                height: 40,
-              }),
+                height: 40
+              })
             }}
           />
 
@@ -127,23 +127,23 @@ export default function BlogPostCard({ post, index }) {
             ...((latestPostLarge || latestPost) && {
               bottom: 0,
               width: '100%',
-              position: 'absolute',
-            }),
+              position: 'absolute'
+            })
           }}
         >
-          <Typography gutterBottom variant="caption" sx={{ color: 'text.disabled', display: 'block' }}>
+          <Typography gutterBottom variant='caption' sx={{ color: 'text.disabled', display: 'block' }}>
             {fDate(createdAt)}
           </Typography>
 
           <StyledTitle
-            color="inherit"
-            variant="subtitle2"
-            underline="hover"
+            color='inherit'
+            variant='subtitle2'
+            underline='hover'
             sx={{
               ...(latestPostLarge && { typography: 'h5', height: 60 }),
               ...((latestPostLarge || latestPost) && {
-                color: 'common.white',
-              }),
+                color: 'common.white'
+              })
             }}
           >
             {title}
@@ -158,12 +158,12 @@ export default function BlogPostCard({ post, index }) {
                   alignItems: 'center',
                   ml: index === 0 ? 0 : 1.5,
                   ...((latestPostLarge || latestPost) && {
-                    color: 'grey.500',
-                  }),
+                    color: 'grey.500'
+                  })
                 }}
               >
                 <Iconify icon={info.icon} sx={{ width: 16, height: 16, mr: 0.5 }} />
-                <Typography variant="caption">{fShortenNumber(info.number)}</Typography>
+                <Typography variant='caption'>{fShortenNumber(info.number)}</Typography>
               </Box>
             ))}
           </StyledInfo>

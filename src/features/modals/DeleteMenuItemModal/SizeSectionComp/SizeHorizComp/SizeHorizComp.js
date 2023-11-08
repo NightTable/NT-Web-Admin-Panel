@@ -8,16 +8,13 @@ import React from 'react';
 
 import styles from './SizeHorizComp.module.css';
 
-const SizeHorizComp = (props) => {
-
-    return (<div className={styles.sizeHorizCompContainer}>
+const SizeHorizComp = (props) => (<div className={styles.sizeHorizCompContainer}>
         <div className={styles.textDividerStyle}>
             <span>{props.size}</span>
         </div>
         <div className={styles.textDividerStyle}>
             <span>${props.price}</span>
         </div>
-    </div>)
-}
+    </div>);
 
 export default SizeHorizComp;

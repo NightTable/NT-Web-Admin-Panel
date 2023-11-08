@@ -8,22 +8,19 @@ import React from 'react';
 
 import styles from './BasicReservationInfoSectionComp.module.css';
 
-const BasicReservationInfoSectionComp = (props) => {
-
-    return (<div className={styles.basicReservationInfoSectionCompContainer}>
+const BasicReservationInfoSectionComp = (props) => (<div className={styles.basicReservationInfoSectionCompContainer}>
         <div className={styles.reservationInfoRowContainer}>
             <span className={styles.reservationBasicInfoTextStyle}>Reservation Organizer Name: </span>
-            <input className={styles.basicReservationInputStyle}></input>
+            <input className={styles.basicReservationInputStyle} />
         </div>
         <div className={styles.reservationInfoRowContainer}>
             <span className={styles.reservationBasicInfoTextStyle}>Reservation Organizer Email: </span>
-            <input className={styles.basicReservationInputStyle}></input>
+            <input className={styles.basicReservationInputStyle} />
         </div>
         <div className={styles.reservationInfoRowContainer}>
             <span className={styles.reservationBasicInfoTextStyle}>Reservation Organizer Phone: </span>
-            <input className={styles.basicReservationInputStyle}></input>
+            <input className={styles.basicReservationInputStyle} />
         </div>
-    </div>)
-}
+    </div>);
 
 export default BasicReservationInfoSectionComp;

@@ -9,10 +9,7 @@ import SettingsWhiteBubbleComp from '../../features/SettingsDashboardScreen/Sett
 
 import styles from './SettingsDashboardScreen.module.css';
 
-const SettingsDashboardScreen = (props) => {
-
-
-    return (<div className={styles.settingsDashboardScreenContainer}>
+const SettingsDashboardScreen = (props) => (<div className={styles.settingsDashboardScreenContainer}>
         <div className={styles.upperHeaderRowContainer}>
             <span className={styles.welcomeBackText}>Welcome back, Daniel</span>
         </div>
@@ -26,8 +23,7 @@ const SettingsDashboardScreen = (props) => {
                 </button>
             </div>
         </div>
-        <SettingsWhiteBubbleComp></SettingsWhiteBubbleComp>
-    </div>)
-}
+        <SettingsWhiteBubbleComp />
+    </div>);
 
 export default SettingsDashboardScreen;
