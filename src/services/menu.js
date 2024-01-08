@@ -1,6 +1,6 @@
 import axios, * as others from "axios";
 
-// C REATE MENU
+//CREATE MENU
 export const createMenuforClub = async (obj) => {
   return new Promise(async (resolve, reject) => {
     var config = {
