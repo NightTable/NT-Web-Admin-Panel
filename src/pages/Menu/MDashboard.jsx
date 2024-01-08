@@ -248,7 +248,7 @@ export default function MDashboard() {
           <Box display="flex">
             <Box width="50%" textAlign="left">
               <Typography variant="h4" sx={{ color: palette.primary.gold }}>
-                Let's Add Something to Menu
+                Customise Menus
               </Typography>
             </Box>
             <Box width="50%" textAlign="right">
