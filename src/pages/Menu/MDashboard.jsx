@@ -188,12 +188,12 @@ export default function MDashboard() {
     };
 
     const data = await createMenuforClub(obj);
-    if (data.clubId === undefined) {
+    if (data._id === undefined) {
       alert("Something went wrong");
-    } else if (data.clubId?.length > 0) {
-      alert("Menu Added Successfully !");
+    } else if (data._id?.length > 0) {
+      alert('Menu Added Successfully !');
       setKeyValuePairs([]);
-      setCategoryName("");
+      setCategoryName('');
       let obj = {
         category: CategoryName,
         items: keyValuePairs,
