@@ -200,7 +200,12 @@ export default function MDashboard() {
       };
       const updateMenuItemData = [...menuItemsData, obj];
       setmenuItemsData(updateMenuItemData);
+       // RESET THE STATES
+       setMenuItem('');
+       setstock('');
+       setprice('');
       setpopup_open(false);
+     
     }
   };
 
