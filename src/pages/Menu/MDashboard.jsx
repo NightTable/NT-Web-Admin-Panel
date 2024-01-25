@@ -186,6 +186,7 @@ export default function MDashboard() {
         items: keyValuePairs,
       },
     };
+    console.log(obj, "this is obj")
 
     const data = await createMenuforClub(obj);
     if (data._id === undefined) {
